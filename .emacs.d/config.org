@@ -1,0 +1,1564 @@
+#+AUTHOR: Tony Ampomah
+#+EMAIL: tony@arksolutons.it
+#+OPTIONS: toc:nil num:nil
+
+* Configure =use-package=
+
+I use =use-package= to install and configure my packages. My =init.el= includes
+the initial setup for =package.el= and ensures that =use-package= is installed,
+since I wanna do that right away.
+
+#+BEGIN_SRC emacs-lisp
+  (setq use-package-always-ensure t)
+#+END_SRC
+
+Always compile packages, and use the newest version available.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-compile
+    :config (auto-compile-on-load-mode))
+
+  (setq load-prefer-newer t)
+#+END_SRC
+
+* Essential Settings
+** Better defaults
+
+For a better user experience of GNU Emacs, here are the default values I use.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq-default
+   ad-redefinition-action 'accept                   ; Silence warnings for redefinition
+   cursor-in-non-selected-windows t                 ; Hide the cursor in inactive windows
+   display-time-default-load-average nil            ; Don't display load average
+   fill-column 80                                   ; Set width for automatic line breaks
+   help-window-select t                             ; Focus new help windows when opened
+   inhibit-startup-screen t                         ; Disable start-up screen
+   initial-scratch-message ""                       ; Empty the initial *scratch* buffer
+   kill-ring-max 128                                ; Maximum length of kill ring
+   load-prefer-newer t                              ; Prefers the newest version of a file
+   mark-ring-max 128                                ; Maximum length of mark ring
+   scroll-conservatively most-positive-fixnum       ; Always scroll by one line
+   select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
+   tab-width 4                                      ; Set width for tabs
+   use-package-always-ensure t                      ; Avoid the :ensure keyword for each package
+   user-full-name "Tony Ampomah"                    ; Set the full name of the current user
+   user-mail-address "tony@arksolutions.it"         ; Set the email address of the current user
+   vc-follow-symlinks t                             ; Always follow the symlinks
+   view-read-only t)                                ; Always open read-only buffers in view-mode
+  (cd "~/")                                         ; Move to the user directory
+  (column-number-mode 1)                            ; Show the column number
+  (display-time-mode 1)                             ; Enable time in the mode-line
+  (fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
+  (global-hl-line-mode)                             ; Hightlight current line
+  (set-default-coding-systems 'utf-8)               ; Default to utf-8 encoding
+  (show-paren-mode 1)                               ; Show the parent
+#+END_SRC
+
+** Sensible Defaults
+
+  #+BEGIN_SRC emacs-lisp
+    (load-file "~/.emacs.d/sensible-defaults.el")
+    (sensible-defaults/use-all-settings)
+    (sensible-defaults/backup-to-temp-directory)
+    (display-time-mode 1)
+    (add-to-list 'default-frame-alist '(fullscreen . maximized))
+    (setq-default line-spacing 10)
+    (add-to-list 'exec-path "/usr/local/bin")
+    (setq inhibit-splash-screen t
+          inhibit-startup-message t
+          inhibit-startup-echo-area-message t)
+    (menu-bar-mode -1)
+    (tool-bar-mode -1)
+    (when (boundp 'scroll-bar-mode)
+      (scroll-bar-mode -1))
+    (show-paren-mode 1)
+    (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
+    (setq-default left-fringe-width nil)
+    (setq-default indicate-empty-lines t)
+
+    (setq visible-bell t)
+    (setq vc-follow-symlinks t)
+    (setq large-file-warning-threshold nil)
+    (setq split-width-threshold nil)
+    (setq custom-safe-themes t)
+    (column-number-mode t)
+    (setq tramp-default-method "ssh")
+    (setq tramp-syntax 'simplified)
+
+    ;; Allow confusing functions
+    (put 'narrow-to-region 'disabled nil)
+    (put 'dired-find-alternate-file 'disabled nil)
+    (defvar backup-dir "~/.emacs.d/backups/")
+    (setq backup-directory-alist (list (cons "." backup-dir)))
+    (setq make-backup-files nil)
+  #+END_SRC
+
+** Customisation
+
+To avoid overloading the GNU Emacs custormization =init.el= file made by the
+user with the UI, I add the generated code in a separate file.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq-default custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (when (file-exists-p custom-file)
+    (load custom-file t))
+#+END_SRC
+
+** Always indent with spaces
+
+#+BEGIN_SRC emacs-lisp
+  (setq-default indent-tabs-mode nil)
+#+END_SRC
+
+* Evil Mode
+  #+BEGIN_SRC emacs-lisp
+    (defun kwamedat--config-evil-leader ()
+      "Configure evil leader mode."
+      (evil-leader/set-leader ",")
+      (evil-leader/set-key
+        ","  'other-window
+        "."  'mode-line-other-buffer
+        "b"  'helm-mini             ;; Switch to another buffer
+        "q"  'kill-this-buffer
+        "r"  'helm-imenu            ;; Jump to function in buffer
+        "g"  'magit-status
+        "l"  'whitespace-mode       ;; Show invisible characters
+        "o"  'delete-other-windows  ;; C-w o
+        "i"  'php-use-class'
+        "sp"  'helm-projectile-switch-project
+        "f"  'ag-project            ;; Ag search from project's root
+        "R"  (lambda () (interactive) (font-lock-fontify-buffer) (redraw-display))
+        "S"  'delete-trailing-whitespace
+        "t"  'helm-projectile
+        "w"  'save-buffer
+        "x"  'helm-M-x
+        "d"  'docker
+        "ev" 'kwamedat--visit-emacs-config
+        "y"  'yank-to-x-clipboard))
+
+
+    (defun kwamedat--config-evil ()
+      "Configure evil mode."
+
+      ;; Use Emacs state in these additional modes.
+      (dolist (mode '(ag-mode
+                      custom-mode
+                      custom-new-theme-mode
+                      dired-mode
+                      eshell-mode
+                      flycheck-error-list-mode
+                      git-rebase-mode
+                      org-capture-mode
+                      term-mode))
+        (add-to-list 'evil-emacs-state-modes mode))
+
+
+      (evil-add-hjkl-bindings occur-mode-map 'emacs
+        (kbd "/")       'evil-search-forward
+        (kbd "n")       'evil-search-next
+        (kbd "N")       'evil-search-previous
+        (kbd "C-d")     'evil-scroll-down
+        (kbd "C-u")     'evil-scroll-up
+        (kbd "C-w C-w") 'other-window)
+
+
+      ;; Global bindings.
+      (evil-define-key 'normal global-map (kbd "<down>")  'evil-next-visual-line)
+      (evil-define-key 'normal global-map (kbd "<up>")    'evil-previous-visual-line)
+      (evil-define-key 'normal global-map (kbd "-")       'dired-jump)
+      (evil-define-key 'normal global-map (kbd "C-`")     (lambda ()
+                                                            (interactive)
+                                                            (dired (expand-file-name "~"))))
+      (evil-define-key 'normal global-map (kbd "C-]")     'gtags-find-tag-from-here)
+      (evil-define-key 'normal global-map (kbd "g/")      'occur-last-search)
+      (evil-define-key 'normal global-map (kbd "[i")      'show-first-occurrence)
+      (evil-define-key 'normal global-map (kbd "S-SPC")   'kwamedat-pop-to-org-agenda-default)
+      (evil-define-key 'insert global-map (kbd "s-d")     'eval-last-sexp)
+      (evil-define-key 'normal global-map (kbd "s-d")     'eval-defun)
+      (evil-define-key 'normal global-map (kbd "\\ \\")   'tiny-menu)
+      (evil-define-key 'normal global-map (kbd "\\ a")    (tiny-menu-run-item "org-agendas"))
+      (evil-define-key 'normal global-map (kbd "\\ f")    (tiny-menu-run-item "org-files"))
+      (evil-define-key 'normal global-map (kbd "\\ t")    (tiny-menu-run-item "org-things"))
+      (evil-define-key 'normal global-map (kbd "\\ c")    (tiny-menu-run-item "org-captures"))
+      (evil-define-key 'normal global-map (kbd "\\ h")    (tiny-menu-run-item "org-personal-captures"))
+      (evil-define-key 'normal global-map (kbd "\\ l")    (tiny-menu-run-item "org-links"))
+
+      (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+      (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+      (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+      (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+      (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit))
+
+    (use-package evil
+      :ensure t
+      :commands (evil-mode evil-define-key)
+      :config
+      (add-hook 'evil-mode-hook 'kwamedat--config-evil)
+      (evil-mode 1)
+
+      (use-package evil-leader
+        :ensure t
+        :config
+        (global-evil-leader-mode)
+        (kwamedat--config-evil-leader))
+
+      (use-package evil-surround
+        :ensure t
+        :config
+        (global-evil-surround-mode))
+
+      (use-package evil-commentary
+        :ensure t
+        :config
+        (evil-commentary-mode))
+
+      (use-package evil-indent-textobject
+        :ensure t))
+  #+END_SRC
+
+* Tiny Menu
+#+BEGIN_SRC emacs-lisp
+  (use-package tiny-menu
+    :ensure t
+    :commands (tiny-menu-run-item)
+    :config
+    (setq tiny-menu-items
+          '(("reverts"      ("Revert"
+                             ((?r "This buffer"     revert-buffer)
+                              (?o "All Org buffers" org-revert-all-org-buffers))))
+            ("org-things"   ("Org Things"
+                             ((?t "Tag"       kwamedat-org-display-any-tag)
+                              (?i "ID"        kwamedat-org-goto-custom-id)
+                              (?k "Keyword"   org-search-view)
+                              (?h "Headings"  kwamedat-org-helm-headings)
+                              (?d "Directs"   kwamedat-org-display-directs)
+                              (?m "Managers"  kwamedat-org-display-managers)
+                              (?e "Engineers" kwamedat-org-display-engineers))))
+            ("org-agendas"  ("Org Agenda Views"
+                             ((?a "All"         kwamedat-pop-to-org-agenda-default)
+                              (?r "Review"      kwamedat-pop-to-org-agenda-review)
+                              (?h "Home"        kwamedat-pop-to-org-agenda-home)
+                              )))
+            ("org-links"    ("Org Links"
+                             ((?c "Capture"      org-store-link)
+                              (?l "Insert first" kwamedat-org-insert-first-link)
+                              (?L "Insert any"   org-insert-link)
+                              (?i "Custom ID"    kwamedat-org-insert-custom-id-link))))
+            ("org-files"    ("Org Files"
+                             ((?t "TODO"     (lambda () (kwamedat-pop-to-org-todo nil)))
+                              (?n "Notes"    (lambda () (interactive) (kwamedat-pop-to-org-notes nil)))
+                              (?v "Vault" (lambda () (interactive) (kwamedat-pop-to-org-vault nil))))))
+            ("org-captures" ("Org Captures"
+                             ((?c "Task/idea" kwamedat-org-task-capture)
+                              (?t "Tickler"   kwamedat-org-tickler-capture)
+                              (?n "Note"      (lambda () (interactive) (org-capture nil "n"))))))
+            ("org-personal-captures" ("Org Personal Captures"
+                                      ((?c "Task/idea" (lambda () (interactive (org-capture nil "h"))))
+                                       (?n "Note" (lambda () (interactive (org-capture nil "o")))))))
+
+            )))
+#+END_SRC
+
+* Docker
+** =docker=
+ #+BEGIN_SRC emacs-lisp
+ (use-package docker
+   :ensure t)
+ #+END_SRC
+
+** =dockerfile-mode=
+   #+BEGIN_SRC emacs-lisp
+     (use-package dockerfile-mode)
+     (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+   #+END_SRC
+
+* UI preferences
+** Load up a theme
+
+#+BEGIN_SRC emacs-lisp
+  (use-package doom-themes)
+
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+
+  (load-theme 'doom-molokai t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config)
+#+END_SRC
+
+** Use =doom-modeline=
+#+BEGIN_SRC emacs-lisp
+  (use-package doom-modeline
+        :ensure t
+        :hook (after-init . doom-modeline-mode))
+#+END_SRC
+
+** Set default font and configure font resizing
+
+I'm partial to Inconsolata.
+
+The standard =text-scale-= functions just resize the text in the current buffer;
+I'd generally like to resize the text in /every/ buffer, and I usually want to
+change the size of the modeline, too (this is especially helpful when
+presenting). These functions and bindings let me resize everything all together!
+
+Note that this overrides the default font-related keybindings from
+=sensible-defaults=.
+
+#+BEGIN_SRC emacs-lisp
+  (setq kwamedat--default-font "SF Mono")
+  (setq kwamedat--default-font-size 15)
+  (setq kwamedat--current-font-size kwamedat--default-font-size)
+
+  (setq kwamedat--font-change-increment 1.1)
+
+  (defun kwamedat--font-code ()
+    "Return a string representing the current font (like \"Inconsolata-14\")."
+    (concat kwamedat--default-font "-" (number-to-string kwamedat--current-font-size)))
+
+  (defun kwamedat--set-font-size ()
+    "Set the font to `kwamedat--default-font' at `kwamedat--current-font-size'.
+  Set that for the current frame, and also make it the default for
+  other, future frames."
+    (let ((font-code (kwamedat--font-code)))
+      (add-to-list 'default-frame-alist (cons 'font font-code))
+      (set-frame-font font-code)))
+
+  (defun kwamedat--reset-font-size ()
+    "Change font size back to `kwamedat--default-font-size'."
+    (interactive)
+    (setq kwamedat--current-font-size kwamedat--default-font-size)
+    (kwamedat--set-font-size))
+
+  (defun kwamedat--increase-font-size ()
+    "Increase current font size by a factor of `kwamedat--font-change-increment'."
+    (interactive)
+    (setq kwamedat--current-font-size
+          (ceiling (* kwamedat--current-font-size kwamedat--font-change-increment)))
+    (kwamedat--set-font-size))
+
+  (defun kwamedat--decrease-font-size ()
+    "Decrease current font size by a factor of `kwamedat--font-change-increment', down to a minimum size of 1."
+    (interactive)
+    (setq kwamedat--current-font-size
+          (max 1
+               (floor (/ kwamedat--current-font-size kwamedat--font-change-increment))))
+    (kwamedat--set-font-size))
+
+  (define-key global-map (kbd "C-)") 'kwamedat--reset-font-size)
+  (define-key global-map (kbd "C-+") 'kwamedat--increase-font-size)
+  (define-key global-map (kbd "C-=") 'kwamedat--increase-font-size)
+  (define-key global-map (kbd "C-_") 'kwamedat--decrease-font-size)
+  (define-key global-map (kbd "C--") 'kwamedat--decrease-font-size)
+
+  (kwamedat--reset-font-size)
+#+END_SRC
+
+** Highlight the current line
+
+=global-hl-line-mode= softly highlights the background color of the line
+containing point. It makes it a bit easier to find point, and it's useful when
+pkwamedating or presenting code.
+
+#+BEGIN_SRC emacs-lisp
+  (global-hl-line-mode)
+#+END_SRC
+
+** =all-the-icons=
+   #+BEGIN_SRC emacs-lisp
+     (use-package all-the-icons)
+   #+END_SRC
+
+** =all-the-icons-dired=
+   #+BEGIN_SRC emacs-lisp
+     (use-package all-the-icons-dired
+       :ensure t)
+   #+END_SRC
+
+** =highlight-symbol=
+   #+BEGIN_SRC emacs-lisp
+     (use-package highlight-symbol
+       :ensure t
+       :defer t
+       :diminish ""
+       :config
+       (setq-default highlight-symbol-idle-delay 1.5))
+   #+END_SRC
+
+* Project management
+
+I use a few packages in virtually every programming or writing environment to
+manage the project, handle auto-completion, search for terms, and deal with
+version control. That's all in here.
+
+** =ag=
+
+Set up =ag= for displaying search results.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ag
+    :ensure t
+    :commands (ag ag-project)
+    :config
+    (add-hook 'ag-mode-hook
+              (lambda ()
+                (wgrep-ag-setup)
+                (define-key ag-mode-map (kbd "n") 'evil-search-next)
+                (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
+    (setq ag-executable "/usr/local/bin/ag")
+    (setq ag-highlight-search t)
+    (setq ag-reuse-buffers t)
+    (setq ag-reuse-window t))
+#+END_SRC
+
+** =company=
+
+Use =company-mode= everywhere.
+
+#+BEGIN_SRC emacs-lisp
+(use-package company
+  :ensure t
+  :defer t
+  :init
+  (global-company-mode)
+  :config
+
+  (defun org-keyword-backend (command &optional arg &rest ignored)
+    "Company backend for org keywords.
+
+COMMAND, ARG, IGNORED are the arguments required by the variable
+`company-backends', which see."
+    (interactive (list 'interactive))
+    (cl-case command
+      (interactive (company-begin-backend 'org-keyword-backend))
+      (prefix (and (eq major-mode 'org-mode)
+                   (let ((p (company-grab-line "^#\\+\\(\\w*\\)" 1)))
+                     (if p (cons p t)))))
+      (candidates (mapcar #'upcase
+                          (cl-remove-if-not
+                           (lambda (c) (string-prefix-p arg c))
+                           (pcomplete-completions))))
+      (ignore-case t)
+      (duplicates t)))
+  (add-to-list 'company-backends 'org-keyword-backend)
+
+  (setq company-idle-delay 0.4)
+  (setq company-selection-wrap-around t)
+  (define-key company-active-map (kbd "ESC") 'company-abort)
+  (define-key company-active-map [tab] 'company-complete-common-or-cycle)
+  (define-key company-active-map (kbd "C-n") 'company-select-next)
+  (define-key company-active-map (kbd "C-p") 'company-select-previous))
+#+END_SRC
+
+** =magit=
+
+I use =magit= to handle version control. It's lovely, but I tweak a few things:
+
+- I bring up the status menu with =C-x g=.
+- Use =evil= keybindings with =magit=.
+- The default behavior of =magit= is to ask before pushing. I haven't had any
+  problems with accidentally pushing, so I'd rather not confirm that every time.
+- Per [[http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html][tpope's suggestions]], highlight commit text in the summary line that goes
+  beyond 50 characters.
+- On the command line I'll generally push a new branch with a plain old =git
+  push=, which automatically creates a tracking branch on (usually) =origin=.
+  Magit, by default, wants me to manually specify an upstream branch. This binds
+  =P P= to =magit-push-implicitly=, which is just a wrapper around =git push
+  -v=. Convenient!
+- I'd like to start in the insert state when writing a commit message.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :bind
+    ("C-x g" . magit-status)
+
+    :config
+    (use-package evil-magit)
+    (use-package with-editor)
+    (setq magit-push-always-verify nil)
+    (setq git-commit-summary-max-length 50)
+
+    (with-eval-after-load 'magit-remote
+      (magit-define-popup-action 'magit-push-popup ?P
+        'magit-push-implicitly--desc
+        'magit-push-implicitly ?p t))
+
+    (add-hook 'with-editor-mode-hook 'evil-insert-state))
+
+#+END_SRC
+
+** =projectile=
+
+Projectile's default binding of =projectile-ag= to =C-c p s s= is clunky enough
+that I rarely use it (and forget it when I need it). This binds it to the
+easier-to-type =C-c v= to useful searches.
+
+Bind =C-p= to fuzzy-finding files in the current project. We also need to
+explicitly set that in a few other modes.
+
+I use =ivy= as my completion system.
+
+When I visit a project with =projectile-switch-project=, the default action is
+to search for a file in that project. I'd rather just open up the top-level
+directory of the project in =dired= and find (or create) new files from there.
+
+I'd like to /always/ be able to recursively fuzzy-search for files, not just
+when I'm in a Projectile-defined project. I use the current directory as a
+project root (if I'm not in a "real" project).
+
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :bind
+    ("C-c v" . 'projectile-ag)
+    :config
+    (setq projectile-completion-system 'ivy)
+    (setq projectile-require-project-root nil))
+  (setq projectile-project-search-path '("~/Repositories/"))
+  (projectile-global-mode)
+#+END_SRC
+
+** =helm-projectile=
+#+BEGIN_SRC emacs-lisp
+(use-package helm-projectile
+  :commands (helm-projectile helm-projectile-switch-project)
+  :ensure t)
+#+END_SRC
+
+** =helm=
+   #+BEGIN_SRC emacs-lisp
+(use-package helm
+  :ensure t
+  :diminish helm-mode
+  :commands helm-mode
+  :config
+  (helm-mode 1)
+  (setq helm-buffers-fuzzy-matching t)
+  (setq helm-autoresize-mode t)
+  (setq helm-buffer-max-length 40)
+  (define-key helm-map (kbd "S-SPC") 'helm-toggle-visible-mark)
+  (define-key helm-find-files-map (kbd "C-k") 'helm-find-files-up-one-level))
+   #+END_SRC
+
+** =helm-make=
+	 #+BEGIN_SRC emacs-lisp
+(use-package helm-make
+  :ensure t
+  :config
+  (global-set-key (kbd "C-c m") 'helm-make-projectile))
+	 #+END_SRC
+
+** =undo-tree=
+
+I like tree-based undo management. I only rarely need it, but when I do, oh boy.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :ensure t
+    :diminish t
+    :config
+    (setq undo-tree-auto-save-history t)
+    (setq undo-tree-history-directory-alist
+          (list (cons "." (expand-file-name "undo-tree-history" user-emacs-directory)))))
+#+END_SRC
+
+** =dired=
+   #+BEGIN_SRC emacs-lisp
+     (defun kwamedat--dired-up-dir ()
+       "Go up a directory."
+       (interactive)
+       (let ((current-dir (dired-current-directory)))
+         (find-alternate-file "..")
+         (dired-goto-file current-dir)))
+
+          (define-key dired-mode-map "j" 'dired-next-line)
+          (define-key dired-mode-map "k" 'dired-previous-line)
+          (define-key dired-mode-map (kbd "C-.")     'dired-omit-mode)
+          (define-key dired-mode-map (kbd "c")       'find-file)
+          (define-key dired-mode-map (kbd "/")       'counsel-grep-or-swiper)
+          (define-key dired-mode-map (kbd "?")       'evil-search-backward)
+          (define-key dired-mode-map (kbd "RET")     'dired-find-alternate-file)
+
+          (eval-after-load 'wdired
+            (add-hook 'wdired-mode-hook 'evil-normal-state))
+   #+END_SRC
+
+ Hide dotfiles by default, but toggle their visibility with =.=.
+
+ #+BEGIN_SRC emacs-lisp
+   (use-package dired-hide-dotfiles
+     :config
+     (dired-hide-dotfiles-mode)
+     (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
+ #+END_SRC
+
+ Open media with the appropriate programs.
+
+ #+BEGIN_SRC emacs-lisp
+   (use-package dired-open
+     :config
+     (setq dired-open-extensions
+           '(("pdf" . "zathura")
+             ("mkv" . "vlc")
+             ("mp3" . "vlc")
+             ("mp4" . "vlc")
+             ("avi" . "vlc"))))
+ #+END_SRC
+
+ Use "j" and "k" to move around in =dired=.
+
+ #+BEGIN_SRC emacs-lisp
+   (evil-define-key 'normal dired-mode-map (kbd "j") 'dired-next-line)
+   (evil-define-key 'normal dired-mode-map (kbd "k") 'dired-previous-line)
+ #+END_SRC
+
+ Kill buffers of files/directories that are deleted in =dired=.
+
+ #+BEGIN_SRC emacs-lisp
+   (setq dired-clean-up-buffers-too t)
+ #+END_SRC
+
+ Always copy directories recursively instead of asking every time.
+
+ #+BEGIN_SRC emacs-lisp
+   (setq dired-recursive-copies 'always)
+ #+END_SRC
+
+ Ask before recursively /deleting/ a directory, though.
+
+ #+BEGIN_SRC emacs-lisp
+   (setq dired-recursive-deletes 'top)
+ #+END_SRC
+
+** =flycheck=
+   #+BEGIN_SRC emacs-lisp
+     (use-package flycheck
+       :ensure t
+       :diminish flycheck-mode
+       :config
+       (progn
+         (setq-default flycheck-phpcs-standard "PSR2")
+         (global-flycheck-mode)))
+   #+END_SRC
+
+** =autopair=
+   #+BEGIN_SRC emacs-lisp
+     (use-package autopair)
+     (autopair-global-mode)
+   #+END_SRC
+
+** =yasnippet=
+
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+  :ensure t
+  :defer t
+  :config
+  (yas-reload-all)
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+  (setq tab-always-indent 'complete)
+  (setq yas-prompt-functions '(yas-completing-prompt
+                               yas-ido-prompt
+                               yas-dropdown-prompt))
+  (define-key yas-minor-mode-map (kbd "<escape>") 'yas-exit-snippet))
+
+(use-package yasnippet-snippets
+  :ensure t)
+#+END_SRC
+
+** =swiper=
+#+BEGIN_SRC emacs-lisp
+  (use-package swiper
+    :ensure t
+    :commands swiper
+    :bind ("C-s" . counsel-grep-or-swiper)
+    :config
+    (require 'counsel)
+    (setq counsel-grep-base-command "grep -niE \"%s\" %s")
+    (setq ivy-height 20))
+#+END_SRC
+
+** =counsel=
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel
+    :bind
+    ("M-x" . 'counsel-M-x)
+    ("C-s" . 'swiper)
+
+    :config
+    (use-package flx)
+    (use-package smex)
+
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "(%d/%d) ")
+    (setq ivy-initial-inputs-alist nil)
+    (setq ivy-re-builders-alist
+          '((swiper . ivy--regex-plus)
+            (t . ivy--regex-fuzzy))))
+#+END_SRC
+
+** =which-key=
+
+=which-key= displays the possible completions for a long keybinding. That's
+really helpful for some modes (like =projectile=, for example).
+
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :config (which-key-mode))
+#+END_SRC
+
+* Programming environments
+
+Treating terms in CamelCase symbols as separate words makes editing a little
+harder for me, so I like to turn off =subword-mode= everywhere.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package subword
+    :config (global-subword-mode -1))
+#+END_SRC
+
+
+** PHP
+*** =php-mode=
+    #+BEGIN_SRC emacs-lisp
+      (defun kwamedat--configure-php-mode ()
+        "Set up all of my PHP mode preferences."
+        (require 'newcomment)
+        (setq auto-fill-function 'do-auto-fill)
+
+        (when (boundp 'company-backends)
+          (setq-local company-backends
+                      '((company-dabbrev-code php-extras-company))))
+
+        (when (fboundp 'php-extras-eldoc-documentation-function)
+          (add-function :before-until (local 'eldoc-documentation-function)
+                        'php-extras-eldoc-documentation-function))
+
+        (eldoc-mode t)
+        (highlight-symbol-mode)
+        (turn-on-auto-fill)
+        (flycheck-mode)
+        (yas-minor-mode t)
+        (gtags-mode t))
+
+      (use-package php-mode
+        :mode "\\.php\\'"
+        :config
+        (add-hook 'php-mode-hook 'kwamedat--configure-php-mode))
+    #+END_SRC
+
+*** =phpunit=
+ #+BEGIN_SRC emacs-lisp
+   (use-package phpunit
+     :ensure t)
+
+   (setq phpunit-configuration-file "phpunit.xml")
+   (setq phpunit-root-directory "./")
+   (add-to-list 'auto-mode-alist '("\\.php$'" . phpunit-mode))
+ #+END_SRC
+
+*** =ac-php=
+#+BEGIN_SRC emacs-lisp
+  (use-package ac-php)
+  (add-hook 'php-mode-hook
+            '(lambda ()
+               (require 'company-php)
+               (company-mode t)
+               (ac-php-core-eldoc-setup) ;; enable eldoc
+               (make-local-variable 'company-backends)
+               (define-key php-mode-map  ("C-]") 'ac-php-find-symbol-at-point)   ;goto define
+               (define-key php-mode-map  (kbd "C-t") 'ac-php-location-stack-back)    ;go back
+               (add-to-list 'company-backends 'company-ac-php-backend)))
+#+END_SRC
+
+*** =company-php=
+    #+BEGIN_SRC emacs-lisp
+   (use-package company-php)
+    #+END_SRC
+
+*** =php-extras=
+    #+BEGIN_SRC emacs-lisp
+      (use-package php-extras :ensure t :defer t)
+    #+END_SRC
+
+*** =flycheck-phpstan=
+    #+BEGIN_SRC emacs-lisp
+      ;; (use-package flycheck-phpstan)
+      ;; (defun my-php-mode-hook ()
+      ;;   "My PHP-mode hook."
+      ;;   (require 'flycheck-phpstan)
+      ;;   (flycheck-mode t)
+      ;;   (flycheck-select-checker 'phpstan))
+
+      ;; (add-hook 'php-mode-hook 'my-php-mode-hook)
+    #+END_SRC
+
+** CSS, Sass, and Less
+
+Indent by 2 spaces.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package css-mode
+    :config
+    (setq css-indent-offset 2))
+#+END_SRC
+
+Don't compile the current SCSS file every time I save.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package scss-mode
+    :config
+    (setq scss-compile-at-save nil))
+#+END_SRC
+
+Install Less.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package less-css-mode)
+#+END_SRC
+
+** Haml and Slim
+
+Install the Haml and Slim packages.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package haml-mode)
+  (use-package slim-mode)
+#+END_SRC
+
+If I'm editing Haml or Slim templates I'm probably in a Rails project. In that
+case, I'd like to still be able to run my tests from the appropriate buffers.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'slim-mode-hook 'rspec-mode)
+  (add-hook 'haml-mode-hook 'rspec-mode)
+#+END_SRC
+
+** JavaScript and CoffeeScript
+
+Install =coffee-mode= from editing CoffeeScript code.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package coffee-mode)
+#+END_SRC
+
+Install =js2-mode= from editing Javascript code.
+#+BEGIN_SRC emacs-lisp
+(use-package js2-mode
+  :ensure t
+  :config
+  (setq js2-strict-missing-semi-warning nil)
+  (setq js2-missing-semi-one-line-override t))
+#+END_SRC
+
+Indent everything by 2 spaces.
+
+#+BEGIN_SRC emacs-lisp
+  (setq js-indent-level 2)
+
+  (add-hook 'coffee-mode-hook
+            (lambda ()
+              (yas-minor-mode 1)
+              (setq coffee-tab-width 2)))
+#+END_SRC
+
+** Lisps
+
+I like to use =paredit= in Lisp modes to balance parentheses (and more!).
+
+#+BEGIN_SRC emacs-lisp
+  (use-package paredit)
+#+END_SRC
+
+If I'm writing in Emacs lisp I'd like to use =eldoc-mode= to display
+documentation.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package eldoc
+    :config
+    (add-hook 'emacs-lisp-mode-hook 'eldoc-mode))
+#+END_SRC
+
+** =sh=
+
+Indent with 2 spaces.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'sh-mode-hook
+            (lambda ()
+              (setq sh-basic-offset 2
+                    sh-indentation 2)))
+#+END_SRC
+
+** =web-mode=
+#+BEGIN_SRC emacs-lisp
+  (use-package web-mode)
+#+END_SRC
+
+If I'm in =web-mode=, I'd like to:
+
+- Enable =emmet-mode=
+- Enable =yasnippet=
+- Enable =flycheck=
+- Indent everything with 2 spaces.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'web-mode-hook
+            (lambda ()
+              (setq web-mode-style-padding 2)
+              (setq web-mode-markup-indent-offset 2)
+              (yas-minor-mode t)
+              (emmet-mode)
+              (flycheck-add-mode 'html-tidy 'web-mode)
+              (flycheck-mode)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.twig$" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.restclient$" . restclient-mode))
+  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.blade.php\\'" . web-mode))
+#+END_SRC
+
+*** =emmet-mode=
+#+BEGIN_SRC emacs-lisp
+  (use-package emmet-mode
+    :ensure t
+    :commands emmet-mode)
+
+  (add-hook 'emmet-mode-hook
+            (lambda ()
+              (evil-define-key 'insert emmet-mode-keymap (kbd "C-S-l") 'emmet-next-edit-point)
+              (evil-define-key 'insert emmet-mode-keymap (kbd "C-S-h") 'emmet-prev-edit-point)))
+#+END_SRC
+** YAML
+
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode)
+#+END_SRC
+** =gtags=
+	 #+BEGIN_SRC emacs-lisp
+			 (add-hook 'gtags-select-mode-hook
+								 (lambda ()
+									 (evil-define-key 'normal gtags-select-mode-map (kbd "RET") 'gtags-select-tag)
+									 (evil-define-key 'normal gtags-select-mode-map (kbd "q") 'kill-buffer-and-window)))
+
+			 (defun gtags-index-initial (path)
+				 "Generate initial GTAGS files for PATH."
+				 (let ((bpr-process-directory path))
+					 (bpr-spawn "gtags")))
+
+			 (defun gtags-reindex ()
+				 "Kick off gtags reindexing."
+				 (interactive)
+				 (let* ((root-path (expand-file-name (vc-git-root (buffer-file-name))))
+								(gtags-filename (expand-file-name "GTAGS" root-path)))
+					 (if (file-exists-p gtags-filename)
+							 (gtags-index-update root-path)
+						 (gtags-index-initial root-path))))
+
+			 (defun gtags-index-update (path)
+				 "Update GTAGS in PATH."
+				 (let ((bpr-process-directory path))
+					 (bpr-spawn "global -uv")))
+
+		 (use-package gtags)
+	 #+END_SRC
+** =bpr= for managing background process
+   #+BEGIN_SRC emacs-lisp
+   (use-package bpr)
+   #+END_SRC
+
+* Terminal
+
+I want to execute from shell to keep the same shell instance.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package exec-path-from-shell
+    :ensure t
+    :defer t
+    :config
+    (when (memq window-system '(mac ns))
+      (exec-path-from-shell-initialize)))
+  (add-to-list 'exec-path "/usr/local/bin")
+
+  (use-package exec-path-from-shell
+    :ensure t
+    :config
+    (exec-path-from-shell-initialize)
+    (exec-path-from-shell-copy-env "GOPATH"))
+#+END_SRC
+
+I use =multi-term= to manage my shell sessions. It's bound to =C-c t=.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package multi-term)
+  (global-set-key (kbd "C-c t") 'multi-term)
+#+END_SRC
+
+Use a login shell:
+
+#+BEGIN_SRC emacs-lisp
+  (setq multi-term-program-switches "--login")
+#+END_SRC
+
+I'd rather not use Evil in the terminal. It's not especially useful (I don't use
+vi bindings in xterm) and it shadows useful keybindings (=C-d= for EOF, for
+example).
+
+#+BEGIN_SRC emacs-lisp
+  (evil-set-initial-state 'term-mode 'emacs)
+#+END_SRC
+
+I add a bunch of hooks to =term-mode=:
+
+- I'd like links (URLs, etc) to be clickable.
+- Yanking in =term-mode= doesn't quite work. The text from the paste appears in
+  the buffer but isn't sent to the shell process. This correctly binds =C-y= and
+  middle-click to yank the way we'd expect.
+- I bind =M-o= to quickly change windows. I'd like that in terminals, too.
+- I don't want to perform =yasnippet= expansion when tab-completing.
+
+#+BEGIN_SRC emacs-lisp
+  (defun kwamedat--term-paste (&optional string)
+    (interactive)
+    (process-send-string
+     (get-buffer-process (current-buffer))
+     (if string string (current-kill 0))))
+
+  (add-hook 'term-mode-hook
+            (lambda ()
+              (goto-address-mode)
+              (define-key term-raw-map (kbd "C-y") 'kwamedat--term-paste)
+              (define-key term-raw-map (kbd "<mouse-2>") 'kwamedat--term-paste)
+              (define-key term-raw-map (kbd "M-o") 'other-window)
+              (setq yas-dont-activate t)))
+#+END_SRC
+
+* Publishing and task management with Org-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package org)
+  (use-package org-evil
+    :ensure t
+    :config
+    (evil-define-minor-mode-key 'normal 'org-evil-heading-mode
+      "@" 'org-refile)
+    (evil-define-minor-mode-key 'normal 'org-evil-heading-mode
+      "#" 'org-add-note))
+
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+    (setq org-bullets-bullet-list '("•")))
+#+END_SRC
+
+** Display preferences
+
+I like to see an outline of pretty bullets instead of a list of asterisks.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :init
+    (add-hook 'org-mode-hook 'org-bullets-mode))
+#+END_SRC
+
+I like seeing a little downward-pointing arrow instead of the usual ellipsis
+(=...=) that org displays when there's stuff under a header.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-ellipsis "⤵")
+#+END_SRC
+
+Use syntax highlighting in source blocks while editing.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-fontify-natively t)
+#+END_SRC
+
+Make TAB act as if it were issued in a buffer of the language's major mode.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-tab-acts-natively t)
+#+END_SRC
+
+When editing a code snippet, use the current window rather than popping open a
+new one (which shows the same information).
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-window-setup 'current-window)
+#+END_SRC
+
+Quickly insert a block of elisp:
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-structure-template-alist
+               '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+#+END_SRC
+
+** Task and org-capture management
+
+Store my org files in =~/Repositories/Notes=, maintain an inbox in iCloud, define
+the location of an index file (my main todo list), and archive finished tasks in
+=~/Repositories/Notes/archive.org=.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-directory "~/Repositories/Notes")
+
+  (defun org-file-path (filename)
+    "Return the absolute address of an org file, given its relative name."
+    (concat (file-name-as-directory org-directory) filename))
+
+  (setq org-inbox-file "~/Repositories/Notes/inbox.org")
+  (setq org-index-file (org-file-path "TODOs.org"))
+  (setq org-archive-location
+        (concat (org-file-path "archive.org") "::* From %s"))
+#+END_SRC
+
+I use [[http://agiletortoise.com/drafts/][Drafts]] to create new tasks, format them according to a template, and
+append them to an "inbox.org" file in my Dropbox. This function lets me import
+them easily from that inbox file to my index.
+
+#+BEGIN_SRC emacs-lisp
+  (defun kwamedat--copy-tasks-from-inbox ()
+    (when (file-exists-p org-inbox-file)
+      (save-excursion
+        (find-file org-index-file)
+        (goto-char (point-max))
+        (insert-file-contents org-inbox-file)
+        (delete-file org-inbox-file))))
+#+END_SRC
+
+I store all my todos in =~/Repositories/Notes/TODOs.org=, so I'd like to derive my
+agenda from there.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-files (list org-index-file))
+#+END_SRC
+
+Hitting =C-c C-x C-s= will mark a todo as done and move it to an appropriate
+place in the archive.
+
+#+BEGIN_SRC emacs-lisp
+  (defun kwamedat--mark-done-and-archive ()
+    "Mark the state of an org-mode item as DONE and archive it."
+    (interactive)
+    (org-todo 'done)
+    (org-archive-subtree))
+
+  (define-key org-mode-map (kbd "C-c C-x C-s") 'kwamedat--mark-done-and-archive)
+#+END_SRC
+
+Record the time that a todo was archived.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-log-done 'time)
+#+END_SRC
+
+**** Capturing tasks
+
+Define a few common tasks as capture templates. Specifically, I frequently:
+
+- Maintain a todo list in =~/Repositories/Notes/inbox.org=.
+- Convert emails into todos to maintain an empty inbox.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-capture-templates
+        '(("e" "Email" entry
+           (file+headline org-index-file "Inbox")
+           "* TODO %?\n\n%a\n\n")
+
+          ("t" "Todo"
+           entry
+           (file+headline org-index-file "Inbox")
+           "* TODO %?\n")))
+#+END_SRC
+
+When I'm starting an Org capture template I'd like to begin in insert mode. I'm
+opening it up in order to start typing something, so this skips a step.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-capture-mode-hook 'evil-insert-state)
+#+END_SRC
+
+Refiling according to the document's hierarchy.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-refile-use-outline-path t)
+  (setq org-outline-path-complete-in-steps nil)
+#+END_SRC
+
+**** Keybindings
+
+Bind a few handy keys.
+
+#+BEGIN_SRC emacs-lisp
+  (define-key global-map "\C-cl" 'org-store-link)
+  (define-key global-map "\C-ca" 'org-agenda)
+  (define-key global-map "\C-cc" 'org-capture)
+#+END_SRC
+
+Hit =C-c i= to quickly open up my todo list.
+
+#+BEGIN_SRC emacs-lisp
+  (defun kwamedat--open-index-file ()
+    "Open the master org TODO list."
+    (interactive)
+    (kwamedat--copy-tasks-from-inbox)
+    (find-file org-index-file)
+    (flycheck-mode -1)
+    (end-of-buffer))
+
+  (global-set-key (kbd "C-c i") 'kwamedat--open-index-file)
+#+END_SRC
+
+Hit =M-n= to quickly open up a capture template for a new todo.
+
+#+BEGIN_SRC emacs-lisp
+  (defun org-capture-todo ()
+    (interactive)
+    (org-capture :keys "t"))
+
+  (global-set-key (kbd "M-n") 'org-capture-todo)
+  (add-hook 'gfm-mode-hook
+            (lambda () (local-set-key (kbd "M-n") 'org-capture-todo)))
+  (add-hook 'haskell-mode-hook
+            (lambda () (local-set-key (kbd "M-n") 'org-capture-todo)))
+#+END_SRC
+
+** Exporting
+
+Allow export to markdown and beamer (for presentations).
+
+#+BEGIN_SRC emacs-lisp
+  (require 'ox-md)
+  (require 'ox-beamer)
+#+END_SRC
+
+Allow =babel= to evaluate Emacs lisp, Ruby, dot, or Gnuplot code.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package gnuplot)
+
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (ruby . t)
+     (dot . t)
+     (gnuplot . t)))
+#+END_SRC
+
+Don't ask before evaluating code blocks.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-confirm-babel-evaluate nil)
+#+END_SRC
+
+Associate the "dot" language with the =graphviz-dot= major mode.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package graphviz-dot-mode)
+  (add-to-list 'org-src-lang-modes '("dot" . graphviz-dot))
+#+END_SRC
+
+Translate regular ol' straight quotes to typographically-correct curly quotes
+when exporting.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-export-with-smart-quotes t)
+#+END_SRC
+
+**** Exporting to HTML
+
+Don't include a footer with my contact and publishing information at the bottom
+of every exported HTML document.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-html-postamble nil)
+#+END_SRC
+
+**** Exporting to PDF
+
+I want to produce PDFs with syntax highlighting in the code. The best way to do
+that seems to be with the =minted= package, but that package shells out to
+=pygments= to do the actual work. =pdflatex= usually disallows shell commands;
+this enables that.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-latex-pdf-process
+        '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+#+END_SRC
+
+Include the =minted= package in all of my LaTeX exports.
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  (setq org-latex-listings 'minted)
+#+END_SRC
+
+** TeX configuration
+
+I rarely write LaTeX directly any more, but I often export through it with
+org-mode, so I'm keeping them together.
+
+Automatically parse the file after loading it.
+
+#+BEGIN_SRC emacs-lisp
+  (setq TeX-parse-self t)
+#+END_SRC
+
+Always use =pdflatex= when compiling LaTeX documents. I don't really have any
+use for DVIs.
+
+#+BEGIN_SRC emacs-lisp
+  (setq TeX-PDF-mode t)
+#+END_SRC
+
+Open compiled PDFs in =zathura= instead of in the editor.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook
+        '(lambda ()
+           (delete '("\\.pdf\\'" . default) org-file-apps)
+           (add-to-list 'org-file-apps '("\\.pdf\\'" . "zathura %s"))))
+#+END_SRC
+
+Enable a minor mode for dealing with math (it adds a few useful keybindings),
+and always treat the current file as the "main" file. That's intentional, since
+I'm usually actually in an org document.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'LaTeX-mode-hook
+            (lambda ()
+              (LaTeX-math-mode)
+              (setq TeX-master t)))
+#+END_SRC
+
+* Writing prose
+** Enable spell-checking in the usual places
+
+I want to make sure that I've enabled spell-checking if I'm editing text,
+composing an email, or authoring a Git commit.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flyspell
+    :config
+    (add-hook 'text-mode-hook 'turn-on-auto-fill)
+    (add-hook 'gfm-mode-hook 'flyspell-mode)
+    (add-hook 'org-mode-hook 'flyspell-mode)
+
+    (add-hook 'git-commit-mode-hook 'flyspell-mode)
+    (add-hook 'mu4e-compose-mode-hook 'flyspell-mode))
+  (setq ispell-program-name "/usr/local/bin/aspell")
+#+END_SRC
+
+** Dictionary lookup
+   #+BEGIN_SRC emacs-lisp
+     (use-package dictionary
+       :ensure t)
+   #+END_SRC
+
+** Look up words in a thesaurus
+
+   Synosaurus is hooked up to wordnet to provide access to a thesaurus. Hitting
+   =C-x s= searches for synonyms.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package synosaurus
+       :ensure t)
+   #+END_SRC
+
+** Editing with Markdown
+
+Because I can't always use =org=.
+
+- Associate =.md= files with GitHub-flavored Markdown.
+- Use =pandoc= to render the results.
+- Leave the code block font unchanged.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode
+    :commands gfm-mode
+
+    :mode (("\\.md$" . gfm-mode))
+
+    :config
+    (setq markdown-command "pandoc --standalone --mathjax --from=markdown")
+    (custom-set-faces
+     '(markdown-code-face ((t nil)))))
+#+END_SRC
+
+** Wrap paragraphs automatically
+
+=AutoFillMode= automatically wraps paragraphs, kinda like hitting =M-q=. I wrap
+a lot of paragraphs, so this automatically wraps 'em when I'm writing text,
+Markdown, or Org.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'text-mode-hook 'auto-fill-mode)
+  (add-hook 'gfm-mode-hook 'auto-fill-mode)
+  (add-hook 'org-mode-hook 'auto-fill-mode)
+#+END_SRC
+
+** Linting prose
+
+I use [[http://proselint.com/][proselint]] to check my prose for common errors. This creates a flycheck
+checker that runs proselint in texty buffers and displays my errors.
+
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
+
+Use flycheck in the appropriate buffers:
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'markdown-mode-hook #'flycheck-mode)
+  (add-hook 'gfm-mode-hook #'flycheck-mode)
+  (add-hook 'text-mode-hook #'flycheck-mode)
+  (add-hook 'org-mode-hook #'flycheck-mode)
+#+END_SRC
+
+* Editing settings
+** Quickly visit Emacs configuration
+
+I futz around with my dotfiles a lot. This binds =,ev= to quickly open my
+Emacs configuration file.
+
+#+BEGIN_SRC emacs-lisp
+  (defun kwamedat--visit-emacs-config ()
+    (interactive)
+    (find-file "~/.emacs.d/config.org"))
+#+END_SRC
+
+** Set up =helpful=
+The =helpful= package provides, among other things, more context in Help
+buffers.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helpful)
+
+  (global-set-key (kbd "C-h f") #'helpful-callable)
+  (global-set-key (kbd "C-h v") #'helpful-variable)
+  (global-set-key (kbd "C-h k") #'helpful-key)
+  (evil-define-key 'normal helpful-mode-map (kbd "q") 'quit-window)
+#+END_SRC
+
+** Mass editing of =grep= results
+
+I like the idea of mass editing =grep= results the same way I can edit filenames
+in =dired=. These keybindings allow me to use =C-x C-q= to start editing =grep=
+results and =C-c C-c= to stop, just like in =dired=.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package wgrep)
+
+  (eval-after-load 'grep
+    '(define-key grep-mode-map
+      (kbd "C-x C-q") 'wgrep-change-to-wgrep-mode))
+
+  (eval-after-load 'wgrep
+    '(define-key grep-mode-map
+      (kbd "C-c C-c") 'wgrep-finish-edit))
+
+  (setq wgrep-auto-save-buffer t)
+#+END_SRC
+
+** Add a bunch of engines for =engine-mode=
+
+Enable [[https://github.com/kwamedat--engine-mode][engine-mode]] and define a few useful engines.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package engine-mode)
+  (require 'engine-mode)
+
+  (defengine duckduckgo
+    "https://duckduckgo.com/?q=%s"
+    :keybinding "d")
+
+  (defengine github
+    "https://github.com/search?ref=simplesearch&q=%s"
+    :keybinding "g")
+
+  (defengine google
+    "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s")
+
+  (defengine rfcs
+    "http://pretty-rfc.herokuapp.com/search?q=%s")
+
+  (defengine stack-overflow
+    "https://stackoverflow.com/search?q=%s"
+    :keybinding "s")
+
+  (defengine wikipedia
+    "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
+    :keybinding "w")
+
+  (defengine wiktionary
+    "https://www.wikipedia.org/search-redirect.php?family=wiktionary&language=en&go=Go&search=%s")
+
+  (defengine youtube
+    "https://www.youtube.com/results?search_query=%s")
+
+  (engine-mode t)
+#+END_SRC
+
+** use relative number =nlium-relative=
+   #+BEGIN_SRC emacs-lisp
+     ;; If `display-line-numbers-mode' is available (only in Emacs 26),
+     ;; use it! Otherwise, install and run nlinum-relative.
+     (if (functionp 'display-line-numbers-mode)
+         (and (add-hook 'display-line-numbers-mode-hook
+                        (lambda () (setq display-line-numbers-type 'relative)))
+              (add-hook 'prog-mode-hook #'display-line-numbers-mode))
+       (use-package nlinum-relative
+         :ensure t
+         :config
+         (nlinum-relative-setup-evil)
+         (setq nlinum-relative-redisplay-delay 0)
+         (add-hook 'prog-mode-hook #'nlinum-relative-mode)))
+   #+END_SRC
+
+** =atomic-chrome= for editing text from emacs inside of google chrome.
+   #+BEGIN_SRC emacs-lisp
+     (use-package atomic-chrome
+       :ensure t)
+   #+END_SRC
+
+* Ledger mode
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package ledger-mode
+      :mode ("\\.dat\\'"
+             "\\.ledger\\'")
+      :custom (ledger-clear-whole-transactions t))
+
+    (use-package flycheck-ledger :after ledger-mode)
+  #+END_SRC
+
+* Email with =mu4e=
+  #+BEGIN_SRC emacs-lisp
+    ;; (require 'mu4e)
+    ;; (setq mu4e-contexts
+    ;;       `( ,(make-mu4e-context
+    ;;            :name "tony@arksolutions.it"
+    ;;            :match-func (lambda (msg) (when msg
+    ;;                                        (string-prefix-p "/tony@arksolutions.it" (mu4e-message-field msg :maildir))))
+    ;;            :vars '(
+    ;;                    (mu4e-trash-folder . "/tony@arksolutions.it/[tony@arksolutions.it].Trash")
+    ;;                    (mu4e-refile-folder . "/tony@arksolutions.it/[tony@arksolutions.it].Archive")
+    ;;                    ))
+    ;;          ))
+  #+END_SRC

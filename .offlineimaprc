@@ -1,0 +1,19 @@
+[general]
+accounts = tony@arksolutions.it
+
+[Account tony@arksolutions.it]
+localrepository = tony@arksolutions.it-local
+remoterepository = tony@arksolutions.it-remote
+autorefresh = 5
+quick = 10
+postsynchook = mu index --maildir ~/Maildir
+
+[Repository tony@arksolutions.it-local]
+type = Maildir
+localfolders = ~/Maildir/tony@arksolutions.it
+
+[Repository tony@arksolutions.it-remote]
+type = IMAP
+remotehost = imap.zoho.com
+remoteuser = tony@arksolutions.it
+sslcacertfile = /usr/local/etc/openssl/cert.pem
