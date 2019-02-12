@@ -176,6 +176,8 @@ user with the UI, I add the generated code in a separate file.
       (evil-define-key 'normal global-map (kbd "S-SPC")   'kwamedat-pop-to-org-agenda-default)
       (evil-define-key 'insert global-map (kbd "s-d")     'eval-last-sexp)
       (evil-define-key 'normal global-map (kbd "s-d")     'eval-defun)
+      (evil-define-key 'normal global-map (kbd "C-p")     'helm-projectile)
+      (evil-define-key 'normal global-map (kbd "C-S-p")   'helm-projectile-switch-project)
       (evil-define-key 'normal global-map (kbd "\\ \\")   'tiny-menu)
       (evil-define-key 'normal global-map (kbd "\\ a")    (tiny-menu-run-item "org-agendas"))
       (evil-define-key 'normal global-map (kbd "\\ f")    (tiny-menu-run-item "org-files"))
@@ -301,8 +303,6 @@ user with the UI, I add the generated code in a separate file.
 
 ** Set default font and configure font resizing
 
-I'm partial to Inconsolata.
-
 The standard =text-scale-= functions just resize the text in the current buffer;
 I'd generally like to resize the text in /every/ buffer, and I usually want to
 change the size of the modeline, too (this is especially helpful when
@@ -313,7 +313,7 @@ Note that this overrides the default font-related keybindings from
 
 #+BEGIN_SRC emacs-lisp
   (setq kwamedat--default-font "SF Mono")
-  (setq kwamedat--default-font-size 15)
+  (setq kwamedat--default-font-size 14)
   (setq kwamedat--current-font-size kwamedat--default-font-size)
 
   (setq kwamedat--font-change-increment 1.1)
@@ -1006,13 +1006,9 @@ I use =multi-term= to manage my shell sessions. It's bound to =C-c t=.
 #+BEGIN_SRC emacs-lisp
   (use-package multi-term)
   (global-set-key (kbd "C-c t") 'multi-term)
+  (setq multi-term-program "/bin/zsh")
 #+END_SRC
 
-Use a login shell:
-
-#+BEGIN_SRC emacs-lisp
-  (setq multi-term-program-switches "--login")
-#+END_SRC
 
 I'd rather not use Evil in the terminal. It's not especially useful (I don't use
 vi bindings in xterm) and it shadows useful keybindings (=C-d= for EOF, for
@@ -1020,6 +1016,13 @@ example).
 
 #+BEGIN_SRC emacs-lisp
   (evil-set-initial-state 'term-mode 'emacs)
+#+END_SRC
+
+Increase default terminal history.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'term-mode-hook
+            (lambda ()
+              (setq term-buffer-maximum-size 10000)))
 #+END_SRC
 
 I add a bunch of hooks to =term-mode=:
@@ -1045,6 +1048,40 @@ I add a bunch of hooks to =term-mode=:
               (define-key term-raw-map (kbd "<mouse-2>") 'kwamedat--term-paste)
               (define-key term-raw-map (kbd "M-o") 'other-window)
               (setq yas-dont-activate t)))
+
+  (defcustom term-unbind-key-list
+    '("C-z" "C-x" "C-c" "C-h" "C-y" "<ESC>")
+    "The key list that will need to be unbind."
+    :type 'list
+    :group 'multi-term)
+
+  (defcustom term-bind-key-alist
+    '(
+      ("C-c C-c" . term-interrupt-subjob)
+      ("C-p" . previous-line)
+      ("C-n" . next-line)
+      ("C-s" . isearch-forward)
+      ("C-r" . isearch-backward)
+      ("C-m" . term-send-raw)
+      ("M-f" . term-send-forward-word)
+      ("M-b" . term-send-backward-word)
+      ("M-o" . term-send-backspace)
+      ("M-p" . term-send-up)
+      ("M-n" . term-send-down)
+      ("M-M" . term-send-forward-kill-word)
+      ("M-N" . term-send-backward-kill-word)
+      ("M-r" . term-send-reverse-search-history)
+      ("M-," . term-send-input)
+      ("M-." . comint-dynamic-complete))
+    "The key alist that will need to be bind.
+    If you do not like default setup, modify it, with (KEY . COMMAND) format."
+    :type 'alist
+    :group 'multi-term)
+
+  (add-hook 'term-mode-hook
+            (lambda ()
+              (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
+              (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))))
 #+END_SRC
 
 * Publishing and task management with Org-mode
