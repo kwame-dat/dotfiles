@@ -131,6 +131,8 @@ user with the UI, I add the generated code in a separate file.
         "R"  (lambda () (interactive) (font-lock-fontify-buffer) (redraw-display))
         "S"  'delete-trailing-whitespace
         "t"  'helm-projectile
+        "]" 'ac-php-find-symbol-at-point
+        "[" 'ac-php-location-stack-back
         "w"  'save-buffer
         "x"  'helm-M-x
         "d"  'docker
@@ -296,9 +298,9 @@ user with the UI, I add the generated code in a separate file.
 
 ** Use =doom-modeline=
 #+BEGIN_SRC emacs-lisp
-  (use-package doom-modeline
-        :ensure t
-        :hook (after-init . doom-modeline-mode))
+  ;; (use-package doom-modeline
+  ;;       :ensure t
+  ;;       :hook (after-init . doom-modeline-mode))
 #+END_SRC
 
 ** Set default font and configure font resizing
@@ -391,6 +393,44 @@ pkwamedating or presenting code.
        (setq-default highlight-symbol-idle-delay 1.5))
    #+END_SRC
 
+** =spaceline=
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package spaceline :ensure t
+       :config
+       (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main)))))
+
+
+     (use-package spaceline-config :ensure spaceline
+       :config
+       (spaceline-helm-mode 1)
+       (spaceline-install
+        'main
+        '((buffer-modified)
+          ((remote-host buffer-id) :face highlight-face)
+          (process :when active))
+        '((selection-info :face 'region :when mark-active)
+          ((flycheck-error flycheck-warning flycheck-info) :when active)
+          (which-function)
+          (version-control :when active)
+          (line-column)
+          (global :when active)
+          (major-mode))))
+
+     (setq-default
+      powerline-height 24
+      powerline-default-separator 'wave
+      spaceline-flycheck-bullet "❖ %s"
+      spaceline-separator-dir-left '(right . right)
+      spaceline-separator-dir-right '(left . left))
+   #+END_SRC
+
+
+*** =spaceline-all-the-icons=
+    #+BEGIN_SRC emacs-lisp
+(use-package spaceline-all-the-icons)
+    #+END_SRC
+
 * Project management
 
 I use a few packages in virtually every programming or writing environment to
@@ -428,26 +468,7 @@ Use =company-mode= everywhere.
   :init
   (global-company-mode)
   :config
-
-  (defun org-keyword-backend (command &optional arg &rest ignored)
-    "Company backend for org keywords.
-
-COMMAND, ARG, IGNORED are the arguments required by the variable
-`company-backends', which see."
-    (interactive (list 'interactive))
-    (cl-case command
-      (interactive (company-begin-backend 'org-keyword-backend))
-      (prefix (and (eq major-mode 'org-mode)
-                   (let ((p (company-grab-line "^#\\+\\(\\w*\\)" 1)))
-                     (if p (cons p t)))))
-      (candidates (mapcar #'upcase
-                          (cl-remove-if-not
-                           (lambda (c) (string-prefix-p arg c))
-                           (pcomplete-completions))))
-      (ignore-case t)
-      (duplicates t)))
   (add-to-list 'company-backends 'org-keyword-backend)
-
   (setq company-idle-delay 0.4)
   (setq company-selection-wrap-around t)
   (define-key company-active-map (kbd "ESC") 'company-abort)
@@ -576,16 +597,17 @@ I like tree-based undo management. I only rarely need it, but when I do, oh boy.
          (find-alternate-file "..")
          (dired-goto-file current-dir)))
 
-          (define-key dired-mode-map "j" 'dired-next-line)
-          (define-key dired-mode-map "k" 'dired-previous-line)
-          (define-key dired-mode-map (kbd "C-.")     'dired-omit-mode)
-          (define-key dired-mode-map (kbd "c")       'find-file)
-          (define-key dired-mode-map (kbd "/")       'counsel-grep-or-swiper)
-          (define-key dired-mode-map (kbd "?")       'evil-search-backward)
-          (define-key dired-mode-map (kbd "RET")     'dired-find-alternate-file)
+     (define-key dired-mode-map "j" 'dired-next-line)
+     (define-key dired-mode-map "k" 'dired-previous-line)
+     (define-key dired-mode-map (kbd "C-.")     'dired-omit-mode)
+     (define-key dired-mode-map (kbd "c")       'find-file)
+     (define-key dired-mode-map (kbd "/")       'counsel-grep-or-swiper)
+     (define-key dired-mode-map (kbd "?")       'evil-search-backward)
+     (define-key dired-mode-map (kbd "RET")     'dired-find-alternate-file)
 
-          (eval-after-load 'wdired
-            (add-hook 'wdired-mode-hook 'evil-normal-state))
+     (eval-after-load 'wdired
+       (add-hook 'wdired-mode-hook 'evil-normal-state))
+     (define-key dired-mode-map "c" 'find-file)
    #+END_SRC
 
  Hide dotfiles by default, but toggle their visibility with =.=.
@@ -728,24 +750,22 @@ harder for me, so I like to turn off =subword-mode= everywhere.
 *** =php-mode=
     #+BEGIN_SRC emacs-lisp
       (defun kwamedat--configure-php-mode ()
-        "Set up all of my PHP mode preferences."
         (require 'newcomment)
         (setq auto-fill-function 'do-auto-fill)
 
-        (when (boundp 'company-backends)
-          (setq-local company-backends
-                      '((company-dabbrev-code php-extras-company))))
+        ;; (when (boundp 'company-backends)
+        ;;   (setq-local company-backends
+        ;;               '((company-dabbrev-code php-extras-company))))
 
-        (when (fboundp 'php-extras-eldoc-documentation-function)
-          (add-function :before-until (local 'eldoc-documentation-function)
-                        'php-extras-eldoc-documentation-function))
+        ;; (when (fboundp 'php-extras-eldoc-documentation-function)
+        ;;   (add-function :before-until (local 'eldoc-documentation-function)
+        ;;                 'php-extras-eldoc-documentation-function))
 
         (eldoc-mode t)
         (highlight-symbol-mode)
         (turn-on-auto-fill)
         (flycheck-mode)
-        (yas-minor-mode t)
-        (gtags-mode t))
+        (yas-minor-mode t))
 
       (use-package php-mode
         :mode "\\.php\\'"
@@ -764,18 +784,18 @@ harder for me, so I like to turn off =subword-mode= everywhere.
  #+END_SRC
 
 *** =ac-php=
-#+BEGIN_SRC emacs-lisp
-  (use-package ac-php)
-  (add-hook 'php-mode-hook
-            '(lambda ()
-               (require 'company-php)
-               (company-mode t)
-               (ac-php-core-eldoc-setup) ;; enable eldoc
-               (make-local-variable 'company-backends)
-               (define-key php-mode-map  ("C-]") 'ac-php-find-symbol-at-point)   ;goto define
-               (define-key php-mode-map  (kbd "C-t") 'ac-php-location-stack-back)    ;go back
-               (add-to-list 'company-backends 'company-ac-php-backend)))
-#+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package ac-php)
+      (add-hook 'php-mode-hook
+                '(lambda ()
+                   (auto-complete-mode t)
+                   (require 'ac-php)
+                   (setq ac-sources  '(ac-source-php ) )
+                   (yas-global-mode 1)
+                   (setq indent-tabs-mode nil)
+                   (setq php-template-compatibility nil)
+                   (ac-php-core-eldoc-setup )))
+    #+END_SRC
 
 *** =company-php=
     #+BEGIN_SRC emacs-lisp
@@ -789,14 +809,14 @@ harder for me, so I like to turn off =subword-mode= everywhere.
 
 *** =flycheck-phpstan=
     #+BEGIN_SRC emacs-lisp
-      ;; (use-package flycheck-phpstan)
-      ;; (defun my-php-mode-hook ()
-      ;;   "My PHP-mode hook."
-      ;;   (require 'flycheck-phpstan)
-      ;;   (flycheck-mode t)
-      ;;   (flycheck-select-checker 'phpstan))
+      (use-package flycheck-phpstan)
+      (defun my-php-mode-hook ()
+        "My PHP-mode hook."
+        (require 'flycheck-phpstan)
+        (flycheck-mode t)
+        (flycheck-select-checker 'phpstan))
 
-      ;; (add-hook 'php-mode-hook 'my-php-mode-hook)
+      (add-hook 'php-mode-hook 'my-php-mode-hook)
     #+END_SRC
 
 ** CSS, Sass, and Less
