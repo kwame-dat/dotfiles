@@ -219,6 +219,7 @@ user with the UI, I add the generated code in a separate file.
 
       (use-package evil-indent-textobject
         :ensure t))
+    (setq evil-vsplit-window-right t)
   #+END_SRC
 
 * Tiny Menu
