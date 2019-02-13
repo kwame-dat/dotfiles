@@ -17,3 +17,20 @@ type = IMAP
 remotehost = imap.zoho.com
 remoteuser = tony@arksolutions.it
 sslcacertfile = /usr/local/etc/openssl/cert.pem
+
+[Account tampomah@emporium.co.uk]
+localrepository = tampomah@emporium.co.uk-local
+remoterepository = tampomah@emporium.co.uk-remote
+autorefresh = 5
+quick = 10
+postsynchook = mu index --maildir ~/Maildir
+
+[Repository tampomah@emporium.co.uk-local]
+type = Maildir
+localfolders = ~/Maildir/tampomah@emporium.co.uk
+
+[Repository tampomah@emporium.co.uk-remote]
+type = IMAP
+remotehost =
+remoteuser = tampomah@emporium.co.uk
+sslcacertfile = /usr/local/etc/openssl/cert.pem

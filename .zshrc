@@ -11,7 +11,7 @@ alias o="open ."
 alias desk="cd ~/Desktop"
 alias db="cd ~/Databases"
 alias down="cd ~/Downloads"
-alias rr="source ~/.zshrc"
+alias rr="source $ZSH/oh-my-zsh.sh"
 alias r="cd ~/Repositories"
 alias ckh="rm -rf ~/.ssh/known_hosts"
 alias getKey="pbcopy < ~/.ssh/id_rsa.pub"
@@ -23,13 +23,6 @@ alias cu="composer update"
 alias ci="composer install"
 alias cda="composer dump-autoload"
 
-# Tmux & Tmuxinator
-alias s="tmuxinator start "
-alias sm="tmuxinator start elico-module"
-alias ss="tmuxinator start elico-service"
-alias mux="tmuxinator"
-alias ta="tmux attach"
-
 # Docker
 alias ds="docker ps"
 
@@ -39,7 +32,6 @@ alias tc="bin/phpunit --coverage-html='tests/coverage/html'"
 alias tf="bin/phpunit --filter"
 alias tp="vendor/bin/phpunit"
 alias tpc="vendor/bin/phpunit --coverage-html='tests/coverage/html'"
-
 
 # Laraval
 alias art="php artisan"
