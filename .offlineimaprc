@@ -1,5 +1,6 @@
 [general]
-accounts = tony@arksolutions.it
+accounts = tony@arksolutions.it, tampomah@emporium.co.uk
+maxsyncaccounts = 2
 
 [Account tony@arksolutions.it]
 localrepository = tony@arksolutions.it-local
@@ -31,6 +32,6 @@ localfolders = ~/Maildir/tampomah@emporium.co.uk
 
 [Repository tampomah@emporium.co.uk-remote]
 type = IMAP
-remotehost =
-remoteuser = tampomah@emporium.co.uk
+remotehost = exchange.eandl.co.uk
+remoteuser = tampomah@eandl.co.uk
 sslcacertfile = /usr/local/etc/openssl/cert.pem
