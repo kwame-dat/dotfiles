@@ -141,7 +141,6 @@
 
 
     (defun kwamedat--config-evil ()
-      "Configure evil mode."
 
       ;; Use Emacs state in these additional modes.
       (dolist (mode '(ag-mode
@@ -172,7 +171,7 @@
       (evil-define-key 'normal global-map (kbd "C-`")     (lambda ()
                                                             (interactive)
                                                             (dired (expand-file-name "~"))))
-      (evil-define-key 'normal global-map (kbd "C-]")     'gtags-find-tag-from-here)
+      (evil-define-key 'normal global-map (kbd "C-]")     'ac-php-find-symbol-at-point)
       (evil-define-key 'normal global-map (kbd "g/")      'occur-last-search)
       (evil-define-key 'normal global-map (kbd "[i")      'show-first-occurrence)
       (evil-define-key 'normal global-map (kbd "S-SPC")   'kwamedat-pop-to-org-agenda-default)
@@ -196,10 +195,17 @@
 
     (use-package evil
       :ensure t
+      :init
+      (setq evil-want-integration t)
+      (setq evil-want-keybinding nil)
       :commands (evil-mode evil-define-key)
       :config
       (add-hook 'evil-mode-hook 'kwamedat--config-evil)
       (evil-mode 1)
+
+      (use-package evil-collection
+        :after evil
+        :ensure t)
 
       (use-package evil-leader
         :ensure t
@@ -212,6 +218,9 @@
         :config
         (global-evil-surround-mode))
 
+      (use-package evil-tabs)
+      (use-package evil-easymotion)
+
       (use-package evil-commentary
         :ensure t
         :config
@@ -220,13 +229,7 @@
       (use-package evil-indent-textobject
         :ensure t))
 
-        ;; (use-package evil-collection
-        ;; :after evil
-        ;; :ensure t
-        ;; :config
-        ;; (evil-collection-init))
-
-        (setq evil-vsplit-window-right t)
+    (setq evil-vsplit-window-right t)
   #+END_SRC
 
 * Tiny Menu
@@ -295,7 +298,7 @@
      (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
            doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
-     (load-theme 'doom-molokai t)
+     (load-theme 'doom-one-light t)
 
      ;; Enable flashing mode-line on errors
      (doom-themes-visual-bell-config)
@@ -329,13 +332,9 @@
      (setq kwamedat--font-change-increment 1.1)
 
      (defun kwamedat--font-code ()
-       "Return a string representing the current font (like \"Inconsolata-14\")."
        (concat kwamedat--default-font "-" (number-to-string kwamedat--current-font-size)))
 
      (defun kwamedat--set-font-size ()
-       "Set the font to `kwamedat--default-font' at `kwamedat--current-font-size'.
-     Set that for the current frame, and also make it the default for
-     other, future frames."
        (let ((font-code (kwamedat--font-code)))
          (add-to-list 'default-frame-alist (cons 'font font-code))
          (set-frame-font font-code)))
@@ -347,14 +346,12 @@
        (kwamedat--set-font-size))
 
      (defun kwamedat--increase-font-size ()
-       "Increase current font size by a factor of `kwamedat--font-change-increment'."
        (interactive)
        (setq kwamedat--current-font-size
              (ceiling (* kwamedat--current-font-size kwamedat--font-change-increment)))
        (kwamedat--set-font-size))
 
      (defun kwamedat--decrease-font-size ()
-       "Decrease current font size by a factor of `kwamedat--font-change-increment', down to a minimum size of 1."
        (interactive)
        (setq kwamedat--current-font-size
              (max 1
@@ -503,12 +500,11 @@
    - I'd like to start in the insert state when writing a commit message.
 
    #+BEGIN_SRC emacs-lisp
-
+     (use-package evil-magit)
+     (use-package with-editor)
      (use-package magit
        :bind
        ("C-x g" . magit-status)
-       (use-package evil-magit)
-       (use-package with-editor)
        :config
        (setq magit-push-always-verify nil)
        (setq git-commit-summary-max-length 50)
@@ -519,7 +515,6 @@
            'magit-push-implicitly ?p t))
 
        (add-hook 'with-editor-mode-hook 'evil-insert-state))
-
    #+END_SRC
 
 ** =projectile=
@@ -1533,4 +1528,9 @@
                    account-vars)
            (error "No email account found"))))
      (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
+   #+END_SRC
+
+** Integration with =evil-mode=
+   #+BEGIN_SRC emacs-lisp
+     (evil-collection-init 'mu4e)
    #+END_SRC
