@@ -216,11 +216,36 @@
    #+BEGIN_SRC emacs-lisp
      (defun kwamedat--config-evil-leader ()
        "Configure evil leader mode."
-       (evil-leader/set-leader ",")
+       (evil-leader/set-leader "SPC")
        (evil-leader/set-key
+         "pb" 'projectile-switch-to-buffer
+         "pd" 'projectile-find-dir
+         "pf" 'projectile-find-file
+         "pF" 'projectile-find-file-dwim
+         "ph" 'helm-projectile
+         "pr" 'projectile-recentf
+         "pp" 'projectile-switch-project
+         "pv" 'projectile-vc
+         "p!" 'projectile-run-shell-command-in-root
+         "p&" 'projectile-run-async-shell-command-in-root
+         "p%" 'projectile-replace-regexp
+         "pa" 'projectile-toggle-between-implementation-and-test
+         "pc" 'projectile-compile-project
+         "pD" 'projectile-dired
+         "pg" 'projectile-find-tag
+         "pG" 'projectile-regenerate-tags
+         "pI" 'projectile-invalidate-cache
+         "pk" 'projectile-kill-buffers
+         "pR" 'projectile-replace
+         "pT" 'projectile-test-project
+         "bB" 'ibuffer
+         "ase" 'eshell
+         "asi" 'shell
+         "asm" 'multi-term
+         "ast" 'ansi-term
+         "asT" 'term
          ","  'other-window
          "."  'mode-line-other-buffer
-         "b"  'helm-mini             ;; Switch to another buffer
          "q"  'kill-this-buffer
          "r"  'helm-imenu            ;; Jump to function in buffer
          "g"  'magit-status
@@ -231,11 +256,10 @@
          "f"  'ag-project            ;; Ag search from project's root
          "R"  (lambda () (interactive) (font-lock-fontify-buffer) (redraw-display))
          "S"  'delete-trailing-whitespace
-         "t"  'helm-projectile
          "]" 'ac-php-find-symbol-at-point
          "[" 'ac-php-location-stack-back
          "w"  'save-buffer
-         "x"  'helm-M-x
+         "SPC"  'helm-M-x
          "d"  'docker
          "ev" 'kwamedat--visit-emacs-config
          "y"  'yank-to-x-clipboard))
@@ -276,6 +300,118 @@
    #+BEGIN_SRC emacs-lisp
      (use-package ibuffer-projectile)
    #+END_SRC
+* Tools
+** Terminal
+
+   I want to execute from shell to keep the same shell instance.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package exec-path-from-shell
+       :ensure t
+       :defer t
+       :config
+       (when (memq window-system '(mac ns))
+         (exec-path-from-shell-initialize)))
+     (add-to-list 'exec-path "/usr/local/bin")
+
+     (use-package exec-path-from-shell
+       :ensure t
+       :config
+       (exec-path-from-shell-initialize)
+       (exec-path-from-shell-copy-env "GOPATH"))
+   #+END_SRC
+
+   I use =multi-term= to manage my shell sessions. It's bound to =C-c t=.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package multi-term)
+     (global-set-key (kbd "C-c t") 'multi-term)
+     (setq multi-term-program "/bin/zsh")
+   #+END_SRC
+
+
+   I'd rather not use Evil in the terminal. It's not especially useful (I don't use
+   vi bindings in xterm) and it shadows useful keybindings (=C-d= for EOF, for
+   example).
+
+   Increase default terminal history.
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'term-mode-hook
+               (lambda ()
+                 (setq term-buffer-maximum-size 10000)))
+   #+END_SRC
+
+   I add a bunch of hooks to =term-mode=:
+
+   - I'd like links (URLs, etc) to be clickable.
+   - Yanking in =term-mode= doesn't quite work. The text from the paste appears in
+     the buffer but isn't sent to the shell process. This correctly binds =C-y= and
+     middle-click to yank the way we'd expect.
+   - I bind =M-o= to quickly change windows. I'd like that in terminals, too.
+   - I don't want to perform =yasnippet= expansion when tab-completing.
+
+   #+BEGIN_SRC emacs-lisp
+     (defun kwamedat--term-paste (&optional string)
+       (interactive)
+       (process-send-string
+        (get-buffer-process (current-buffer))
+        (if string string (current-kill 0))))
+
+     (add-hook 'term-mode-hook
+               (lambda ()
+                 (goto-address-mode)
+                 (define-key term-raw-map (kbd "C-y") 'kwamedat--term-paste)
+                 (define-key term-raw-map (kbd "<mouse-2>") 'kwamedat--term-paste)
+                 (define-key term-raw-map (kbd "M-o") 'other-window)
+                 (setq yas-dont-activate t)))
+
+     (defcustom term-unbind-key-list
+       '("C-z" "C-x" "C-c" "C-h" "C-y" "<ESC>")
+       "The key list that will need to be unbind."
+       :type 'list
+       :group 'multi-term)
+
+     (defcustom term-bind-key-alist
+       '(
+         ("C-c C-c" . term-interrupt-subjob)
+         ("C-p" . previous-line)
+         ("C-n" . next-line)
+         ("C-s" . isearch-forward)
+         ("C-r" . isearch-backward)
+         ("C-m" . term-send-raw)
+         ("M-f" . term-send-forward-word)
+         ("M-b" . term-send-backward-word)
+         ("M-o" . term-send-backspace)
+         ("M-p" . term-send-up)
+         ("M-n" . term-send-down)
+         ("M-M" . term-send-forward-kill-word)
+         ("M-N" . term-send-backward-kill-word)
+         ("M-r" . term-send-reverse-search-history)
+         ("M-," . term-send-input)
+         ("M-." . comint-dynamic-complete))
+       "The key alist that will need to be bind.
+       If you do not like default setup, modify it, with (KEY . COMMAND) format."
+       :type 'alist
+       :group 'multi-term)
+
+     (add-hook 'term-mode-hook
+               (lambda ()
+                 (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
+                 (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))))
+   #+END_SRC
+
+** Docker
+*** =docker=
+    #+BEGIN_SRC emacs-lisp
+      (use-package docker
+        :ensure t)
+    #+END_SRC
+
+*** =dockerfile-mode=
+    #+BEGIN_SRC emacs-lisp
+      (use-package dockerfile-mode)
+      (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+    #+END_SRC
 
 * Tiny Menu
   #+BEGIN_SRC emacs-lisp
@@ -319,19 +455,6 @@
 
               )))
   #+END_SRC
-
-* Docker
-** =docker=
-   #+BEGIN_SRC emacs-lisp
-     (use-package docker
-       :ensure t)
-   #+END_SRC
-
-** =dockerfile-mode=
-   #+BEGIN_SRC emacs-lisp
-     (use-package dockerfile-mode)
-     (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
-   #+END_SRC
 
 * UI preferences
 ** Load up a theme
@@ -835,6 +958,22 @@
         :mode "\\.php\\'"
         :config
         (add-hook 'php-mode-hook 'kwamedat--configure-php-mode))
+
+      (defun kwamedat--php-use-class (classname)
+        "Insert CLASSNAME after the last use statement at the top of this file."
+        (interactive)
+        (save-excursion
+          (goto-char (point-max))
+          (if (not (re-search-backward "^use" nil t))
+              (progn
+                (goto-char (point-min))
+                (if (not (re-search-forward "^namespace" nil t))
+                    (error "Namespace declaration not found."))
+                (end-of-line)
+                (newline)))
+          (end-of-line)
+          (newline)
+          (insert (concat "use " classname ";"))))
     #+END_SRC
 
 *** =phpunit=
@@ -872,109 +1011,6 @@
 #+BEGIN_SRC emacs-lisp
 (use-package phpactor)
 #+END_SRC
-
-* Terminal
-
-  I want to execute from shell to keep the same shell instance.
-
-  #+BEGIN_SRC emacs-lisp
-    (use-package exec-path-from-shell
-      :ensure t
-      :defer t
-      :config
-      (when (memq window-system '(mac ns))
-        (exec-path-from-shell-initialize)))
-    (add-to-list 'exec-path "/usr/local/bin")
-
-    (use-package exec-path-from-shell
-      :ensure t
-      :config
-      (exec-path-from-shell-initialize)
-      (exec-path-from-shell-copy-env "GOPATH"))
-  #+END_SRC
-
-  I use =multi-term= to manage my shell sessions. It's bound to =C-c t=.
-
-  #+BEGIN_SRC emacs-lisp
-    (use-package multi-term)
-    (global-set-key (kbd "C-c t") 'multi-term)
-    (setq multi-term-program "/bin/zsh")
-  #+END_SRC
-
-
-  I'd rather not use Evil in the terminal. It's not especially useful (I don't use
-  vi bindings in xterm) and it shadows useful keybindings (=C-d= for EOF, for
-  example).
-
-  #+BEGIN_SRC emacs-lisp
-    (evil-set-initial-state 'term-mode 'emacs)
-  #+END_SRC
-
-  Increase default terminal history.
-  #+BEGIN_SRC emacs-lisp
-    (add-hook 'term-mode-hook
-              (lambda ()
-                (setq term-buffer-maximum-size 10000)))
-  #+END_SRC
-
-  I add a bunch of hooks to =term-mode=:
-
-  - I'd like links (URLs, etc) to be clickable.
-  - Yanking in =term-mode= doesn't quite work. The text from the paste appears in
-    the buffer but isn't sent to the shell process. This correctly binds =C-y= and
-    middle-click to yank the way we'd expect.
-  - I bind =M-o= to quickly change windows. I'd like that in terminals, too.
-  - I don't want to perform =yasnippet= expansion when tab-completing.
-
-  #+BEGIN_SRC emacs-lisp
-    (defun kwamedat--term-paste (&optional string)
-      (interactive)
-      (process-send-string
-       (get-buffer-process (current-buffer))
-       (if string string (current-kill 0))))
-
-    (add-hook 'term-mode-hook
-              (lambda ()
-                (goto-address-mode)
-                (define-key term-raw-map (kbd "C-y") 'kwamedat--term-paste)
-                (define-key term-raw-map (kbd "<mouse-2>") 'kwamedat--term-paste)
-                (define-key term-raw-map (kbd "M-o") 'other-window)
-                (setq yas-dont-activate t)))
-
-    (defcustom term-unbind-key-list
-      '("C-z" "C-x" "C-c" "C-h" "C-y" "<ESC>")
-      "The key list that will need to be unbind."
-      :type 'list
-      :group 'multi-term)
-
-    (defcustom term-bind-key-alist
-      '(
-        ("C-c C-c" . term-interrupt-subjob)
-        ("C-p" . previous-line)
-        ("C-n" . next-line)
-        ("C-s" . isearch-forward)
-        ("C-r" . isearch-backward)
-        ("C-m" . term-send-raw)
-        ("M-f" . term-send-forward-word)
-        ("M-b" . term-send-backward-word)
-        ("M-o" . term-send-backspace)
-        ("M-p" . term-send-up)
-        ("M-n" . term-send-down)
-        ("M-M" . term-send-forward-kill-word)
-        ("M-N" . term-send-backward-kill-word)
-        ("M-r" . term-send-reverse-search-history)
-        ("M-," . term-send-input)
-        ("M-." . comint-dynamic-complete))
-      "The key alist that will need to be bind.
-      If you do not like default setup, modify it, with (KEY . COMMAND) format."
-      :type 'alist
-      :group 'multi-term)
-
-    (add-hook 'term-mode-hook
-              (lambda ()
-                (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
-                (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))))
-  #+END_SRC
 
 * Publishing and task management with Org-mode
   #+BEGIN_SRC emacs-lisp
