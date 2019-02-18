@@ -298,7 +298,7 @@
      (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
            doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
-     (load-theme 'doom-one-light t)
+     (load-theme 'doom-one t)
 
      ;; Enable flashing mode-line on errors
      (doom-themes-visual-bell-config)
@@ -326,7 +326,7 @@
 
    #+BEGIN_SRC emacs-lisp
      (setq kwamedat--default-font "SF Mono")
-     (setq kwamedat--default-font-size 14)
+     (setq kwamedat--default-font-size 15)
      (setq kwamedat--current-font-size kwamedat--default-font-size)
 
      (setq kwamedat--font-change-increment 1.1)
@@ -473,7 +473,23 @@
        :init
        (global-company-mode)
        :config
+
+       (defun org-keyword-backend (command &optional arg &rest ignored)
+
+         (interactive (list 'interactive))
+         (cl-case command
+           (interactive (company-begin-backend 'org-keyword-backend))
+           (prefix (and (eq major-mode 'org-mode)
+                        (let ((p (company-grab-line "^#\\+\\(\\w*\\)" 1)))
+                          (if p (cons p t)))))
+           (candidates (mapcar #'upcase
+                               (cl-remove-if-not
+                                (lambda (c) (string-prefix-p arg c))
+                                (pcomplete-completions))))
+           (ignore-case t)
+           (duplicates t)))
        (add-to-list 'company-backends 'org-keyword-backend)
+
        (setq company-idle-delay 0.4)
        (setq company-selection-wrap-around t)
        (define-key company-active-map (kbd "ESC") 'company-abort)
