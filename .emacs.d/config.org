@@ -239,6 +239,9 @@
          "pR" 'projectile-replace
          "pT" 'projectile-test-project
          "bB" 'ibuffer
+         "'" 'eshell
+         "p'" 'projectile-run-shell
+         "p$t" 'projectile-run-term
          "ase" 'eshell
          "asi" 'shell
          "asm" 'multi-term
@@ -1012,6 +1015,11 @@
 (use-package phpactor)
 #+END_SRC
 
+** YAML
+
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode)
+#+END_SRC
 * Publishing and task management with Org-mode
   #+BEGIN_SRC emacs-lisp
     (use-package org)
