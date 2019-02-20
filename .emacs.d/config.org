@@ -114,7 +114,7 @@
 * VIM
 ** =evil=
    #+BEGIN_SRC emacs-lisp
-     (defun kwamedat--config-evil ()
+     (defun kwamedat/config-evil ()
        ;; Use Emacs state in these additional modes.
        (dolist (mode '(ag-mode
                        custom-mode
@@ -173,7 +173,7 @@
        (setq evil-want-keybinding nil)
        :commands (evil-mode evil-define-key)
        :config
-       (add-hook 'evil-mode-hook 'kwamedat--config-evil)
+       (add-hook 'evil-mode-hook 'kwamedat/config-evil)
        (evil-mode 1)
 
      (setq evil-vsplit-window-right t)
@@ -214,64 +214,98 @@
    #+END_SRC
 ** =evil-leader=
    #+BEGIN_SRC emacs-lisp
-     (defun kwamedat--config-evil-leader ()
-       "Configure evil leader mode."
-       (evil-leader/set-leader "SPC")
-       (evil-leader/set-key
-         "pb" 'projectile-switch-to-buffer
-         "pd" 'projectile-find-dir
-         "pf" 'projectile-find-file
-         "pF" 'projectile-find-file-dwim
-         "ph" 'helm-projectile
-         "pr" 'projectile-recentf
-         "pp" 'projectile-switch-project
-         "pv" 'projectile-vc
-         "p!" 'projectile-run-shell-command-in-root
-         "p&" 'projectile-run-async-shell-command-in-root
-         "p%" 'projectile-replace-regexp
-         "pa" 'projectile-toggle-between-implementation-and-test
-         "pc" 'projectile-compile-project
-         "pD" 'projectile-dired
-         "pg" 'projectile-find-tag
-         "pG" 'projectile-regenerate-tags
-         "pI" 'projectile-invalidate-cache
-         "pk" 'projectile-kill-buffers
-         "pR" 'projectile-replace
-         "pT" 'projectile-test-project
-         "bB" 'ibuffer
-         "'" 'eshell
-         "p'" 'projectile-run-shell
-         "p$t" 'projectile-run-term
-         "ase" 'eshell
-         "asi" 'shell
-         "asm" 'multi-term
-         "ast" 'ansi-term
-         "asT" 'term
-         ","  'other-window
-         "."  'mode-line-other-buffer
-         "q"  'kill-this-buffer
-         "r"  'helm-imenu            ;; Jump to function in buffer
-         "g"  'magit-status
-         "l"  'whitespace-mode       ;; Show invisible characters
-         "o"  'delete-other-windows  ;; C-w o
-         "i"  'php-use-class'
-         "sp"  'helm-projectile-switch-project
-         "f"  'ag-project            ;; Ag search from project's root
-         "R"  (lambda () (interactive) (font-lock-fontify-buffer) (redraw-display))
-         "S"  'delete-trailing-whitespace
-         "]" 'ac-php-find-symbol-at-point
-         "[" 'ac-php-location-stack-back
-         "w"  'save-buffer
-         "SPC"  'helm-M-x
-         "d"  'docker
-         "ev" 'kwamedat--visit-emacs-config
-         "y"  'yank-to-x-clipboard))
+        (defun kwamedat/config-evil-leader ()
+          "Configure evil leader mode."
+          (evil-leader/set-leader "SPC")
+          (evil-leader/set-key
+            "pb" 'projectile-switch-to-buffer
+            "pd" 'projectile-find-dir
+            "pf" 'projectile-find-file
+            "pF" 'projectile-find-file-dwim
+            "ph" 'helm-projectile
+            "pr" 'projectile-recentf
+            "pp" 'projectile-switch-project
+            "pv" 'projectile-vc
+            "p!" 'projectile-run-shell-command-in-root
+            "p&" 'projectile-run-async-shell-command-in-root
+            "p%" 'projectile-replace-regexp
+            "pa" 'projectile-toggle-between-implementation-and-test
+            "pc" 'projectile-compile-project
+            "pD" 'projectile-dired
+            "pg" 'projectile-find-tag
+            "pG" 'projectile-regenerate-tags
+            "pI" 'projectile-invalidate-cache
+            "pk" 'projectile-kill-buffers
+            "pR" 'projectile-replace
+            "pT" 'projectile-test-project
+            "bB" 'ibuffer
+            "'" 'eshell
+            "p'" 'projectile-run-shell
+            "p$t" 'projectile-run-term
+            "ase" 'eshell
+            "asi" 'shell
+            "asm" 'multi-term
+            "ast" 'ansi-term
+            "asT" 'term
+            ","  'other-window
+            "."  'mode-line-other-buffer
+            "q"  'kill-this-buffer
+            "r"  'helm-imenu            ;; Jump to function in buffer
+            "g"  'magit-status
+            "l"  'whitespace-mode       ;; Show invisible characters
+            "o"  'delete-other-windows  ;; C-w o
+            "i"  'php-use-class'
+            "sp"  'helm-projectile-switch-project
+            "f"  'ag-project            ;; Ag search from project's root
+            "R"  (lambda () (interactive) (font-lock-fontify-buffer) (redraw-display))
+            "S"  'delete-trailing-whitespace
+            "]" 'ac-php-find-symbol-at-point
+            "[" 'ac-php-location-stack-back
+            "TAB"   'alternate-buffer
+            "bd"    'kill-this-buffer
+            "be"    'safe-erase-buffer
+            "bh"    'home
+            "b C-d" 'kill-matching-buffers-rudely
+            "bn"    'next-buffer
+            "bm"    'kill-other-buffers
+            "bN"    'new-empty-buffer
+            "bP"    'copy-clipboard-to-whole-buffer
+            "bp"    'previous-buffer
+            "bR"    'safe-revert-buffer
+            "bs"    'switch-to-scratch-buffer
+            "bY"    'copy-whole-buffer-to-clipboard
+            "bw"    'read-only-mode
+            "fc" 'copy-file
+            "fD" 'delete-current-buffer-file
+            "fei" 'find-user-init-file
+            "fed" 'find-dotfile
+            "feD" 'ediff-dotfile-and-template
+            "feR" 'dotspacemacs/sync-configuration-layers
+            "fev" 'display-and-copy-version
+            "fCd" 'unix2dos
+            "fCu" 'dos2unix
+            "fg" 'rgrep
+            "fl" 'find-file-literally
+            "fE" 'sudo-edit
+            "fo" 'open-file-or-directory-in-external-app
+            "fR" 'rename-current-buffer-file
+            "fS" 'evil-write-all
+            "fs" 'save-buffer
+            "fvd" 'add-dir-local-variable
+            "fvf" 'add-file-local-variable
+            "fvp" 'add-file-local-variable-prop-line
+            "fy" 'show-and-copy-buffer-filename
+            "w"  'save-buffer
+            "SPC"  'helm-M-x
+            "d"  'docker
+            "ev" 'kwamedat/visit-emacs-config
+            "y"  'yank-to-x-clipboard))
 
-     (use-package evil-leader
-       :ensure t
-       :config
-       (global-evil-leader-mode)
-       (kwamedat--config-evil-leader))
+        (use-package evil-leader
+          :ensure t
+          :config
+          (global-evil-leader-mode)
+          (kwamedat/config-evil-leader))
    #+END_SRC
 ** =evil-indent-textobject=
    #+BEGIN_SRC emacs-lisp
@@ -354,7 +388,7 @@
    - I don't want to perform =yasnippet= expansion when tab-completing.
 
    #+BEGIN_SRC emacs-lisp
-     (defun kwamedat--term-paste (&optional string)
+     (defun kwamedat/term-paste (&optional string)
        (interactive)
        (process-send-string
         (get-buffer-process (current-buffer))
@@ -363,8 +397,8 @@
      (add-hook 'term-mode-hook
                (lambda ()
                  (goto-address-mode)
-                 (define-key term-raw-map (kbd "C-y") 'kwamedat--term-paste)
-                 (define-key term-raw-map (kbd "<mouse-2>") 'kwamedat--term-paste)
+                 (define-key term-raw-map (kbd "C-y") 'kwamedat/term-paste)
+                 (define-key term-raw-map (kbd "<mouse-2>") 'kwamedat/term-paste)
                  (define-key term-raw-map (kbd "M-o") 'other-window)
                  (setq yas-dont-activate t)))
 
@@ -496,46 +530,46 @@
    =sensible-defaults=.
 
    #+BEGIN_SRC emacs-lisp
-     (setq kwamedat--default-font "SF Mono")
-     (setq kwamedat--default-font-size 15)
-     (setq kwamedat--current-font-size kwamedat--default-font-size)
+     (setq kwamedat/default-font "SF Mono")
+     (setq kwamedat/default-font-size 15)
+     (setq kwamedat/current-font-size kwamedat--default-font-size)
 
-     (setq kwamedat--font-change-increment 1.1)
+     (setq kwamedat/font-change-increment 1.1)
 
-     (defun kwamedat--font-code ()
-       (concat kwamedat--default-font "-" (number-to-string kwamedat--current-font-size)))
+     (defun kwamedat/font-code ()
+       (concat kwamedat/default-font "-" (number-to-string kwamedat--current-font-size)))
 
-     (defun kwamedat--set-font-size ()
-       (let ((font-code (kwamedat--font-code)))
+     (defun kwamedat/set-font-size ()
+       (let ((font-code (kwamedat/font-code)))
          (add-to-list 'default-frame-alist (cons 'font font-code))
          (set-frame-font font-code)))
 
-     (defun kwamedat--reset-font-size ()
-       "Change font size back to `kwamedat--default-font-size'."
+     (defun kwamedat/reset-font-size ()
+       "Change font size back to `kwamedat/default-font-size'."
        (interactive)
-       (setq kwamedat--current-font-size kwamedat--default-font-size)
-       (kwamedat--set-font-size))
+       (setq kwamedat/current-font-size kwamedat--default-font-size)
+       (kwamedat/set-font-size))
 
-     (defun kwamedat--increase-font-size ()
+     (defun kwamedat/increase-font-size ()
        (interactive)
-       (setq kwamedat--current-font-size
-             (ceiling (* kwamedat--current-font-size kwamedat--font-change-increment)))
-       (kwamedat--set-font-size))
+       (setq kwamedat/current-font-size
+             (ceiling (* kwamedat/current-font-size kwamedat--font-change-increment)))
+       (kwamedat/set-font-size))
 
-     (defun kwamedat--decrease-font-size ()
+     (defun kwamedat/decrease-font-size ()
        (interactive)
-       (setq kwamedat--current-font-size
+       (setq kwamedat/current-font-size
              (max 1
-                  (floor (/ kwamedat--current-font-size kwamedat--font-change-increment))))
-       (kwamedat--set-font-size))
+                  (floor (/ kwamedat/current-font-size kwamedat--font-change-increment))))
+       (kwamedat/set-font-size))
 
-     (define-key global-map (kbd "C-)") 'kwamedat--reset-font-size)
-     (define-key global-map (kbd "C-+") 'kwamedat--increase-font-size)
-     (define-key global-map (kbd "C-=") 'kwamedat--increase-font-size)
-     (define-key global-map (kbd "C-_") 'kwamedat--decrease-font-size)
-     (define-key global-map (kbd "C--") 'kwamedat--decrease-font-size)
+     (define-key global-map (kbd "C-)") 'kwamedat/reset-font-size)
+     (define-key global-map (kbd "C-+") 'kwamedat/increase-font-size)
+     (define-key global-map (kbd "C-=") 'kwamedat/increase-font-size)
+     (define-key global-map (kbd "C-_") 'kwamedat/decrease-font-size)
+     (define-key global-map (kbd "C--") 'kwamedat/decrease-font-size)
 
-     (kwamedat--reset-font-size)
+     (kwamedat/reset-font-size)
    #+END_SRC
 
 ** Highlight the current line
@@ -780,7 +814,7 @@
 
 ** =dired=
    #+BEGIN_SRC emacs-lisp
-     (defun kwamedat--dired-up-dir ()
+     (defun kwamedat/dired-up-dir ()
        "Go up a directory."
        (interactive)
        (let ((current-dir (dired-current-directory)))
@@ -939,7 +973,7 @@
 ** PHP
 *** =php-mode=
     #+BEGIN_SRC emacs-lisp
-      (defun kwamedat--configure-php-mode ()
+      (defun kwamedat/configure-php-mode ()
         (require 'newcomment)
         (setq auto-fill-function 'do-auto-fill)
 
@@ -960,9 +994,9 @@
       (use-package php-mode
         :mode "\\.php\\'"
         :config
-        (add-hook 'php-mode-hook 'kwamedat--configure-php-mode))
+        (add-hook 'php-mode-hook 'kwamedat/configure-php-mode))
 
-      (defun kwamedat--php-use-class (classname)
+      (defun kwamedat/php-use-class (classname)
         "Insert CLASSNAME after the last use statement at the top of this file."
         (interactive)
         (save-excursion
@@ -1105,7 +1139,7 @@
    them easily from that inbox file to my index.
 
    #+BEGIN_SRC emacs-lisp
-     (defun kwamedat--copy-tasks-from-inbox ()
+     (defun kwamedat/copy-tasks-from-inbox ()
        (when (file-exists-p org-inbox-file)
          (save-excursion
            (find-file org-index-file)
@@ -1125,13 +1159,13 @@
    place in the archive.
 
    #+BEGIN_SRC emacs-lisp
-     (defun kwamedat--mark-done-and-archive ()
+     (defun kwamedat/mark-done-and-archive ()
        "Mark the state of an org-mode item as DONE and archive it."
        (interactive)
        (org-todo 'done)
        (org-archive-subtree))
 
-     (define-key org-mode-map (kbd "C-c C-x C-s") 'kwamedat--mark-done-and-archive)
+     (define-key org-mode-map (kbd "C-c C-x C-s") 'kwamedat/mark-done-and-archive)
    #+END_SRC
 
    Record the time that a todo was archived.
@@ -1186,15 +1220,15 @@
      Hit =C-c i= to quickly open up my todo list.
 
      #+BEGIN_SRC emacs-lisp
-       (defun kwamedat--open-index-file ()
+       (defun kwamedat/open-index-file ()
          "Open the master org TODO list."
          (interactive)
-         (kwamedat--copy-tasks-from-inbox)
+         (kwamedat/copy-tasks-from-inbox)
          (find-file org-index-file)
          (flycheck-mode -1)
          (end-of-buffer))
 
-       (global-set-key (kbd "C-c i") 'kwamedat--open-index-file)
+       (global-set-key (kbd "C-c i") 'kwamedat/open-index-file)
      #+END_SRC
 
      Hit =M-n= to quickly open up a capture template for a new todo.
@@ -1427,7 +1461,7 @@
    Emacs configuration file.
 
    #+BEGIN_SRC emacs-lisp
-     (defun kwamedat--visit-emacs-config ()
+     (defun kwamedat/visit-emacs-config ()
        (interactive)
        (find-file "~/.emacs.d/config.org"))
    #+END_SRC
@@ -1467,7 +1501,7 @@
 
 ** Add a bunch of engines for =engine-mode=
 
-   Enable [[https://github.com/kwamedat--engine-mode][engine-mode]] and define a few useful engines.
+   Enable [[https://github.com/kwamedat/engine-mode][engine-mode]] and define a few useful engines.
 
    #+BEGIN_SRC emacs-lisp
      (use-package engine-mode)
