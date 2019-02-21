@@ -113,7 +113,7 @@
 * Helpers
 ** =kwamedat/edit-emacs-config-file=
     #+BEGIN_SRC emacs-lisp
-      (defun kwamedat/visit-emacs-config ()
+      (defun kwamedat/edit-emacs-config-file ()
         (interactive)
         (find-file "~/.emacs.d/config.org"))
     #+END_SRC
@@ -293,7 +293,7 @@
           "fc" 'copy-file
           "feD" 'ediff-dotfile-and-template
           "feR" 'dotspacemacs/sync-configuration-layers
-          "fed" 'kwamedat/find-dotfile
+          "fee" 'kwamedat/edit-emacs-config-file
           "fei" 'find-user-init-file
           "fev" 'display-and-copy-version
           "fg" 'rgrep
@@ -320,6 +320,69 @@
           )
         )
     #+END_SRC
+*** =leader-help-keybindings=
+    #+BEGIN_SRC emacs-lisp
+      (defun kwamedat/leader-help-keybindings()
+        (evil-leader/set-key
+          "hdb" 'describe-bindings
+          "hdc" 'describe-char
+          "hdf" 'describe-function
+          "hdk" 'describe-key
+          "hdl" 'kwamedat/describe-last-keys
+          "hdp" 'describe-package
+          "hdP" 'configuration-layer/describe-package
+          "hds" 'kwamedat/describe-system-info
+          "hdt" 'describe-theme
+          "hdv" 'describe-variable
+          "hI"  'kwamedat/report-issue
+          "hn"  'view-emacs-news
+          )
+        )
+    #+END_SRC
+*** =leader-insert-keybindings=
+    #+BEGIN_SRC emacs-lisp
+      (defun kwamedat/leader-insert-keybindings()
+        (evil-leader/set-key
+          "iJ" 'kwamedat/insert-line-below-no-indent
+          "iK" 'kwamedat/insert-line-above-no-indent
+          "ik" 'kwamedat/evil-insert-line-above
+          "ij" 'kwamedat/evil-insert-line-below
+          )
+        )
+    #+END_SRC
+*** =leader-jump-keybindings=
+    #+BEGIN_SRC emacs-lisp
+      (defun kwamedat/leader-jump-keybindings()
+        (evil-leader/set-key
+          "j0" 'kwamedat/push-mark-and-goto-beginning-of-line
+          "j$" 'kwamedat/push-mark-and-goto-end-of-line
+          "jf" 'find-function
+          "jv" 'find-variable
+          )
+        )
+    #+END_SRC
+*** =leader-compilation-keybindings=
+    #+BEGIN_SRC emacs-lisp
+      (defun kwamedat/leader-compilation-keybindings()
+        (evil-leader/set-key
+          "cC" 'compile
+          "ck" 'kill-compilation
+          "cr" 'recompile
+          "cd" 'spacemacs/close-compilation-window
+          )
+        )
+    #+END_SRC
+*** =leader-narrow-keybindings=
+    #+BEGIN_SRC emacs-lisp
+      (defun kwamedat/leader-narrow-keybindings()
+        (evil-leader/set-key
+          "nr" 'narrow-to-region
+          "np" 'narrow-to-page
+          "nf" 'narrow-to-defun
+          "nw" 'widen
+          )
+        )
+    #+END_SRC
 *** installation and configuration
     #+BEGIN_SRC emacs-lisp
       (defun kwamedat/config-evil-leader ()
@@ -343,7 +406,12 @@
         (kwamedat/leader-projectile-keybindings)
         (kwamedat/leader-buffer-keybindings)
         (kwamedat/leader-files-keybindings)
-        (kwamedat/leader-shell-keybindings))
+        (kwamedat/leader-shell-keybindings)
+        (kwamedat/leader-help-keybindings)
+        (kwamedat/leader-insert-keybindings)
+        (kwamedat/leader-jump-keybindings)
+        (kwamedat/leader-compilation-keybindings)
+        (kwamedat/leader-narrow-keybindings))
     #+END_SRC
 ** =evil-indent-textobject=
    #+BEGIN_SRC emacs-lisp
@@ -1475,6 +1543,27 @@
        (setq markdown-command "pandoc --standalone --mathjax --from=markdown")
        (custom-set-faces
         '(markdown-code-face ((t nil)))))
+   #+END_SRC
+
+** =web-mode=
+   #+BEGIN_SRC emacs-lisp
+     (use-package web-mode)
+     (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.blade.php\\'" . web-mode))
+
+     (setq web-mode-engines-alist
+           '(("php"    . "\\.phtml\\'")
+             ("blade"  . "\\.blade\\."))
+           )
+     (setq web-mode-markup-indent-offset 2)
+     (setq web-mode-css-indent-offset 2)
+     (setq web-mode-code-indent-offset 2)
    #+END_SRC
 
 * Email
