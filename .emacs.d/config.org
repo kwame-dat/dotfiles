@@ -1238,7 +1238,7 @@
        :config
        (setq projectile-completion-system 'ivy)
        (setq projectile-require-project-root nil))
-     (setq projectile-project-search-path '("~/Repositories/"))
+     (setq projectile-project-search-path '("~/Repositories/" "~/Documents"))
      (projectile-global-mode)
    #+END_SRC
 
@@ -1565,6 +1565,11 @@
      (setq web-mode-css-indent-offset 2)
      (setq web-mode-code-indent-offset 2)
    #+END_SRC
+
+** =csv-mode=
+#+BEGIN_SRC emacs-lisp
+  (use-package csv-mode)
+#+END_SRC
 
 * Email
 ** Receiving emails
