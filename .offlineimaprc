@@ -1,6 +1,6 @@
 [general]
-accounts = tony@arksolutions.it
-maxsyncaccounts = 1
+accounts = tony@arksolutions.it, tampomah@emporium.co.uk
+maxsyncaccounts = 2
 
 ## Personal (tony@arksolutions.it)
 [Account tony@arksolutions.it]

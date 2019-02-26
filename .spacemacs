@@ -83,6 +83,7 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(ac-php
                                       company-php
+                                      dotenv-mode
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -156,7 +157,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(doom-tomorrow-night)
+   dotspacemacs-themes '(doom-one)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -165,7 +166,7 @@ values."
                                :size 16
                                :weight normal
                                :width normal
-                               :powerline-scale 1.4)
+                               :powerline-scale 1.0)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -388,30 +389,24 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (add-hook 'php-mode-hook
             '(lambda ()
-               (require 'ac-php)
-               (setq ac-sources  '(ac-source-php ) )
                (require 'company-php)
                (company-mode t)
-               (yas-global-mode 1)
-               (ac-php-core-eldoc-setup ) ;; enable eldoc
+               (ac-php-core-eldoc-setup) ;; enable eldoc
                (make-local-variable 'company-backends)
-               (define-key php-mode-map  (kbd "]") 'ac-php-find-symbol-at-point)   ;goto define
-               (define-key php-mode-map  (kbd "[") 'ac-php-location-stack-back)    ;go back
                (add-to-list 'company-backends 'company-ac-php-backend)))
 
   (add-hook 'php-mode-hook
             (lambda()
               (spacemacs/set-leader-keys-for-major-mode 'php-mode
                 "]" 'ac-php-find-symbol-at-point ;go to definition
-                "[" 'ac-php-location-stack-back  ;go back
+                "o" 'ac-php-location-stack-back  ;go back
+                "tt" 'phpunit-current-test
+                "tc" 'phpunit-current-class
+                "tp" 'phpunit-current-project
                 )))
 
-  ;; (spacemacs|use-package-add-hook php
-  ;;   :post-config
-  ;;   (spacemacs/set-leader-keys-for-major-mode 'php-mode
-  ;;     "]" 'ac-php-find-symbol-at-point ;go to definition
-  ;;     "[" 'ac-php-location-stack-back  ;go back
-  ;;     ))
+  (setq phpunit-configuration-file "phpunit.xml")
+  (setq phpunit-root-directory "./")
 
   (with-eval-after-load 'org
     (setq spaceline-org-clock-p t)
@@ -431,11 +426,11 @@ before packages are loaded. If you are unsure, you should try in setting them in
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("8aca557e9a17174d8f847fb02870cb2bb67f3b6e808e46c0e54a44e3e18e1020" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" "100e7c5956d7bb3fd0eebff57fde6de8f3b9fafa056a2519f169f85199cc1c96" "bf5bdab33a008333648512df0d2b9d9710bdfba12f6a768c7d2c438e1092b633" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+    ("93a0885d5f46d2aeac12bf6be1754faa7d5e28b27926b8aa812840fe7d0b7983" "d1b4990bd599f5e2186c3f75769a2c5334063e9e541e37514942c27975700370" "8aca557e9a17174d8f847fb02870cb2bb67f3b6e808e46c0e54a44e3e18e1020" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" "100e7c5956d7bb3fd0eebff57fde6de8f3b9fafa056a2519f169f85199cc1c96" "bf5bdab33a008333648512df0d2b9d9710bdfba12f6a768c7d2c438e1092b633" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (ac-php-core xcscope edit-indirect company-php ac-php restclient-helm pandoc-mode ox-pandoc ob-restclient ob-http nginx-mode ledger-mode helm-dash gmail-message-mode ham-mode html-to-markdown flymd flycheck-ledger edit-server dockerfile-mode docker tablist docker-tramp dash-at-point company-restclient restclient know-your-http-well tide typescript-mode swift-mode sql-indent reveal-in-osx-finder pbcopy osx-trash osx-dictionary launchctl helm-gtags ggtags csv-mode spotify helm-spotify-plus multi emoji-cheat-sheet-plus company-emoji slack emojify circe oauth2 websocket engine-mode doom-themes atom-one-dark-theme powerline spinner hydra parent-mode projectile pkg-info epl flx highlight smartparens iedit anzu evil goto-chg undo-tree bind-map bind-key packed f dash s helm avy helm-core async popup web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data yaml-mode web-beautify phpunit phpcbf php-extras php-auto-yasnippets livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc jinja2-mode drupal-mode php-mode company-tern dash-functional tern company-ansible coffee-mode ansible-doc ansible xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro org-mime org-download mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit-popup magit transient git-commit with-editor lv eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
+    (dotenv-mode ac-php-core xcscope edit-indirect company-php ac-php restclient-helm pandoc-mode ox-pandoc ob-restclient ob-http nginx-mode ledger-mode helm-dash gmail-message-mode ham-mode html-to-markdown flymd flycheck-ledger edit-server dockerfile-mode docker tablist docker-tramp dash-at-point company-restclient restclient know-your-http-well tide typescript-mode swift-mode sql-indent reveal-in-osx-finder pbcopy osx-trash osx-dictionary launchctl helm-gtags ggtags csv-mode spotify helm-spotify-plus multi emoji-cheat-sheet-plus company-emoji slack emojify circe oauth2 websocket engine-mode doom-themes atom-one-dark-theme powerline spinner hydra parent-mode projectile pkg-info epl flx highlight smartparens iedit anzu evil goto-chg undo-tree bind-map bind-key packed f dash s helm avy helm-core async popup web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data yaml-mode web-beautify phpunit phpcbf php-extras php-auto-yasnippets livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc jinja2-mode drupal-mode php-mode company-tern dash-functional tern company-ansible coffee-mode ansible-doc ansible xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro org-mime org-download mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit-popup magit transient git-commit with-editor lv eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.zoho.com")
  '(smtpmail-smtp-service 587))
