@@ -36,7 +36,6 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ansible
      auto-completion
      better-defaults
      chrome
@@ -44,16 +43,13 @@ values."
      dash
      docker
      emacs-lisp
-     emacs-lisp
      emoji
      finance
      git
-     gtags
      helm
      html
      javascript
      markdown
-     ;; mu4e
      nginx
      org
      osx
@@ -157,16 +153,16 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(doom-one)
+   dotspacemacs-themes '(doom-molokai)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("SF Mono"
-                               :size 16
+                               :size 15
                                :weight normal
                                :width normal
-                               :powerline-scale 1.0)
+                               :powerline-scale 1.25)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -281,7 +277,7 @@ values."
    ;; `text-mode' derivatives. If set to `relative', line numbers are relative.
    ;; This variable can also be set to a property list for finer control:
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers 'relative
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -326,6 +322,10 @@ before packages are loaded. If you are unsure, you should try in setting them in
   )
 
 (defun dotspacemacs/user-config ()
+
+  (setq evil-vsplit-window-right t)
+
+  (global-company-mode -1)
 
   (setq mu4e-account-alist
         '(
@@ -387,13 +387,15 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq-default js2-basic-offset 2
                 js-indent-level 2)
 
+
   (add-hook 'php-mode-hook
             '(lambda ()
-               (require 'company-php)
-               (company-mode t)
-               (ac-php-core-eldoc-setup) ;; enable eldoc
-               (make-local-variable 'company-backends)
-               (add-to-list 'company-backends 'company-ac-php-backend)))
+               (auto-complete-mode t)
+               (company-mode -1)
+               (require 'ac-php)
+               (setq ac-sources  '(ac-source-php ) )
+               (yas-global-mode 1)
+               ))
 
   (add-hook 'php-mode-hook
             (lambda()
@@ -405,15 +407,21 @@ before packages are loaded. If you are unsure, you should try in setting them in
                 "tp" 'phpunit-current-project
                 )))
 
+  (setq default-text-properties '(line-spacing 0.25 line-height 1.25))
+  (defun set-bigger-spacing ()
+    (setq-local default-text-properties '(line-spacing 0.25 line-height 1.25)))
+  (add-hook 'text-mode-hook 'set-bigger-spacing)
+  (add-hook 'prog-mode-hook 'set-bigger-spacing)
+
   (setq phpunit-configuration-file "phpunit.xml")
   (setq phpunit-root-directory "./")
 
-  (with-eval-after-load 'org
-    (setq spaceline-org-clock-p t)
-    (setq org-inbox-file "~/Repositories/Notes/TODOs.org")
-    (setq org-index-file "~/Repositories/Notes/TODOs.org")
-    (setq org-agenda-files (list "~/Repositories/Notes/TODOs.org"))
-    )
+  (setq org-inbox-file "~/Repositories/Notes/TODOs.org")
+  (setq org-index-file "~/Repositories/Notes/TODOs.org")
+  (setq org-agenda-files (list "~/Repositories/Notes/TODOs.org"))
+  ;; (with-eval-after-load 'org
+  ;;   (setq org-agenda-files (list "~/Repositories/Notes/TODOs.org"))
+  ;;   )
 
   )
 
