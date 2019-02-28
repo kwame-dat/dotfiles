@@ -329,18 +329,17 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (setq mu4e-account-alist
         '(
-          ("tony@arksolutions.it"
-           (mu4e-sent-messages-behavior sent)
-           (mu4e-sent-folder "/tony@arksolutions.it/Sent")
-           (mu4e-drafts-folder "/tony@arksolutions.it/Drafts")
-           (user-mail-address "tony@arksolutions.it")
-           (user-full-name "Tony Ampomah"))
-
           ("tampomah@emporium.co.uk"
            (mu4e-sent-messages-behavior delete)
            (mu4e-sent-folder "/tampomah@emporium.co.uk/Sent Items")
            (mu4e-drafts-folder "/tampomah@emporium.co.uk/Drafts")
            (user-mail-address "tampomah@emporium.co.uk")
+           (user-full-name "Tony Ampomah"))
+          ("tony@arksolutions.it"
+           (mu4e-sent-messages-behavior sent)
+           (mu4e-sent-folder "/tony@arksolutions.it/Sent")
+           (mu4e-drafts-folder "/tony@arksolutions.it/Drafts")
+           (user-mail-address "tony@arksolutions.it")
            (user-full-name "Tony Ampomah"))
           ))
   (mu4e/mail-account-reset)
@@ -374,11 +373,9 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (setq mu4e-enable-notifications t)
   (setq mu4e-enable-mode-line t)
-
   (with-eval-after-load 'mu4e-alert
-    ;; Enable Desktop notifications
-  ;; (mu4e-alert-set-default-style 'libnotify))  ; Alternative for linux
-  (mu4e-alert-set-default-style 'notifier))   ; For Mac OSX (through the
+  (mu4e-alert-set-default-style 'growl))
+
 
   (setq projectile-project-search-path '("~/Repositories/" "~/Documents"))
   (setq-default flycheck-phpcs-standard "PSR2")
@@ -407,9 +404,20 @@ before packages are loaded. If you are unsure, you should try in setting them in
                 "tp" 'phpunit-current-project
                 )))
 
-  (setq default-text-properties '(line-spacing 0.25 line-height 1.25))
+  (add-to-list 'auto-mode-alist '("\\.blade.php\\'" . web-mode))
+
+  (setq web-mode-engines-alist
+        '(("php"    . "\\.phtml\\'")
+          ("blade"  . "\\.blade\\."))
+        )
+
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+
+  (setq default-text-properties '(line-spacing 0.45 line-height 1.45))
   (defun set-bigger-spacing ()
-    (setq-local default-text-properties '(line-spacing 0.25 line-height 1.25)))
+    (setq-local default-text-properties '(line-spacing 0.45 line-height 1.45)))
   (add-hook 'text-mode-hook 'set-bigger-spacing)
   (add-hook 'prog-mode-hook 'set-bigger-spacing)
 
@@ -419,9 +427,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq org-inbox-file "~/Repositories/Notes/TODOs.org")
   (setq org-index-file "~/Repositories/Notes/TODOs.org")
   (setq org-agenda-files (list "~/Repositories/Notes/TODOs.org"))
-  ;; (with-eval-after-load 'org
-  ;;   (setq org-agenda-files (list "~/Repositories/Notes/TODOs.org"))
-  ;;   )
 
   )
 
@@ -434,7 +439,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("93a0885d5f46d2aeac12bf6be1754faa7d5e28b27926b8aa812840fe7d0b7983" "d1b4990bd599f5e2186c3f75769a2c5334063e9e541e37514942c27975700370" "8aca557e9a17174d8f847fb02870cb2bb67f3b6e808e46c0e54a44e3e18e1020" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" "100e7c5956d7bb3fd0eebff57fde6de8f3b9fafa056a2519f169f85199cc1c96" "bf5bdab33a008333648512df0d2b9d9710bdfba12f6a768c7d2c438e1092b633" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+    ("cd736a63aa586be066d5a1f0e51179239fe70e16a9f18991f6f5d99732cabb32" "d2e9c7e31e574bf38f4b0fb927aaff20c1e5f92f72001102758005e53d77b8c9" "fe666e5ac37c2dfcf80074e88b9252c71a22b6f5d2f566df9a7aa4f9bea55ef8" "b54826e5d9978d59f9e0a169bbd4739dd927eead3ef65f56786621b53c031a7c" "93a0885d5f46d2aeac12bf6be1754faa7d5e28b27926b8aa812840fe7d0b7983" "d1b4990bd599f5e2186c3f75769a2c5334063e9e541e37514942c27975700370" "8aca557e9a17174d8f847fb02870cb2bb67f3b6e808e46c0e54a44e3e18e1020" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" "100e7c5956d7bb3fd0eebff57fde6de8f3b9fafa056a2519f169f85199cc1c96" "bf5bdab33a008333648512df0d2b9d9710bdfba12f6a768c7d2c438e1092b633" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
