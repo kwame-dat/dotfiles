@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     ansible
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -154,7 +155,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(doom-molokai)
+   dotspacemacs-themes '(doom-one-light)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -163,7 +164,7 @@ values."
                                :size 15
                                :weight normal
                                :width normal
-                               :powerline-scale 1.25)
+                               :powerline-scale 1.50)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -254,7 +255,7 @@ values."
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup t
+   dotspacemacs-maximized-at-startup nil
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
@@ -278,7 +279,14 @@ values."
    ;; `text-mode' derivatives. If set to `relative', line numbers are relative.
    ;; This variable can also be set to a property list for finer control:
    ;; (default nil)
-   dotspacemacs-line-numbers 'relative
+   dotspacemacs-line-numbers '(:relative nil
+     :disabled-for-modes dired-mode
+                         doc-view-mode
+                         markdown-mode
+                         org-mode
+                         pdf-view-mode
+                         text-mode
+     :size-limit-kb 1000)
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -325,12 +333,10 @@ before packages are loaded. If you are unsure, you should try in setting them in
 (defun dotspacemacs/user-config ()
 
   (setq evil-vsplit-window-right t)
-
   (global-company-mode -1)
 
   (setq mu4e-account-alist
-        '(
-          ("tampomah@emporium.co.uk"
+        '(("tampomah@emporium.co.uk"
            (mu4e-sent-messages-behavior delete)
            (mu4e-sent-folder "/tampomah@emporium.co.uk/Sent Items")
            (mu4e-drafts-folder "/tampomah@emporium.co.uk/Drafts")
@@ -377,14 +383,12 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (with-eval-after-load 'mu4e-alert
   (mu4e-alert-set-default-style 'growl))
 
-
   (setq projectile-project-search-path '("~/Repositories/" "~/Documents"))
   (setq-default flycheck-phpcs-standard "PSR2")
   (setq ispell-program-name "/usr/local/bin/aspell")
 
   (setq-default js2-basic-offset 2
                 js-indent-level 2)
-
 
   (add-hook 'php-mode-hook
             '(lambda ()
@@ -403,6 +407,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
                 "tt" 'phpunit-current-test
                 "tc" 'phpunit-current-class
                 "tp" 'phpunit-current-project
+                "r"  'helm-imenu            ;; Jump to function in buffer
                 )))
 
   (add-to-list 'auto-mode-alist '("\\.blade.php\\'" . web-mode))
@@ -422,13 +427,11 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (add-hook 'text-mode-hook 'set-bigger-spacing)
   (add-hook 'prog-mode-hook 'set-bigger-spacing)
 
-  (setq phpunit-configuration-file "phpunit.xml")
-  (setq phpunit-root-directory "./")
-
   (setq org-inbox-file "~/Repositories/Notes/TODOs.org")
   (setq org-index-file "~/Repositories/Notes/TODOs.org")
   (setq org-agenda-files (list "~/Repositories/Notes/TODOs.org"))
 
+  (setq vc-follow-symlinks t)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -440,11 +443,11 @@ before packages are loaded. If you are unsure, you should try in setting them in
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("cd736a63aa586be066d5a1f0e51179239fe70e16a9f18991f6f5d99732cabb32" "d2e9c7e31e574bf38f4b0fb927aaff20c1e5f92f72001102758005e53d77b8c9" "fe666e5ac37c2dfcf80074e88b9252c71a22b6f5d2f566df9a7aa4f9bea55ef8" "b54826e5d9978d59f9e0a169bbd4739dd927eead3ef65f56786621b53c031a7c" "93a0885d5f46d2aeac12bf6be1754faa7d5e28b27926b8aa812840fe7d0b7983" "d1b4990bd599f5e2186c3f75769a2c5334063e9e541e37514942c27975700370" "8aca557e9a17174d8f847fb02870cb2bb67f3b6e808e46c0e54a44e3e18e1020" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" "100e7c5956d7bb3fd0eebff57fde6de8f3b9fafa056a2519f169f85199cc1c96" "bf5bdab33a008333648512df0d2b9d9710bdfba12f6a768c7d2c438e1092b633" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+    ("10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "6b289bab28a7e511f9c54496be647dc60f5bd8f9917c9495978762b99d8c96a0" "5057614f7e14de98bbc02200e2fe827ad897696bfd222d1bcab42ad8ff313e20" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "cd736a63aa586be066d5a1f0e51179239fe70e16a9f18991f6f5d99732cabb32" "d2e9c7e31e574bf38f4b0fb927aaff20c1e5f92f72001102758005e53d77b8c9" "fe666e5ac37c2dfcf80074e88b9252c71a22b6f5d2f566df9a7aa4f9bea55ef8" "b54826e5d9978d59f9e0a169bbd4739dd927eead3ef65f56786621b53c031a7c" "93a0885d5f46d2aeac12bf6be1754faa7d5e28b27926b8aa812840fe7d0b7983" "d1b4990bd599f5e2186c3f75769a2c5334063e9e541e37514942c27975700370" "8aca557e9a17174d8f847fb02870cb2bb67f3b6e808e46c0e54a44e3e18e1020" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" "100e7c5956d7bb3fd0eebff57fde6de8f3b9fafa056a2519f169f85199cc1c96" "bf5bdab33a008333648512df0d2b9d9710bdfba12f6a768c7d2c438e1092b633" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (composer php-runtime dotenv-mode ac-php-core xcscope edit-indirect company-php ac-php restclient-helm pandoc-mode ox-pandoc ob-restclient ob-http nginx-mode ledger-mode helm-dash gmail-message-mode ham-mode html-to-markdown flymd flycheck-ledger edit-server dockerfile-mode docker tablist docker-tramp dash-at-point company-restclient restclient know-your-http-well tide typescript-mode swift-mode sql-indent reveal-in-osx-finder pbcopy osx-trash osx-dictionary launchctl helm-gtags ggtags csv-mode spotify helm-spotify-plus multi emoji-cheat-sheet-plus company-emoji slack emojify circe oauth2 websocket engine-mode doom-themes atom-one-dark-theme powerline spinner hydra parent-mode projectile pkg-info epl flx highlight smartparens iedit anzu evil goto-chg undo-tree bind-map bind-key packed f dash s helm avy helm-core async popup web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data yaml-mode web-beautify phpunit phpcbf php-extras php-auto-yasnippets livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc jinja2-mode drupal-mode php-mode company-tern dash-functional tern company-ansible coffee-mode ansible-doc ansible xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro org-mime org-download mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit-popup magit transient git-commit with-editor lv eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
+    (composer php-runtime dotenv-mode ac-php-core xcscope edit-indirect company-php ac-php restclient-helm pandoc-mode ox-pandoc ob-restclient ob-http nginx-mode ledger-mode helm-dash gmail-message-mode ham-mode html-to-markdown flymd flycheck-ledger edit-server dockerfile-mode docker tablist docker-tramp dash-at-point company-restclient restclient know-your-http-well tide typescript-mode swift-mode sql-indent reveal-in-osx-finder pbcopy osx-trash osx-dictionary launchctl helm-gtags ggtags csv-mode spotify helm-spotify-plus multi emoji-cheat-sheet-plus company-emoji slack emojify circe oauth2 websocket engine-mode doom-themes powerline spinner hydra parent-mode projectile pkg-info epl flx highlight smartparens iedit anzu evil goto-chg undo-tree bind-map bind-key packed f dash s helm avy helm-core async popup web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data yaml-mode web-beautify phpunit phpcbf php-extras php-auto-yasnippets livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc jinja2-mode drupal-mode php-mode company-tern dash-functional tern company-ansible coffee-mode ansible-doc ansible xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro org-mime org-download mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit-popup magit transient git-commit with-editor lv eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.zoho.com")
  '(smtpmail-smtp-service 587))
