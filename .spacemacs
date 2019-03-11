@@ -71,7 +71,7 @@ values."
      (mu4e :variables
            mu4e-installation-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
      (shell :variables
-            shell-default-height 30
+            shell-default-height 45
             shell-default-position 'bottom)
      )
    ;; List of additional packages that will be installed without being
@@ -426,9 +426,15 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (add-hook 'text-mode-hook 'set-bigger-spacing)
   (add-hook 'prog-mode-hook 'set-bigger-spacing)
 
-  (setq org-inbox-file "~/Repositories/Notes/TODOs.org")
-  (setq org-index-file "~/Repositories/Notes/TODOs.org")
-  (setq org-agenda-files (list "~/Repositories/Notes/TODOs.org"))
+  (setq org-inbox-file "~/Repositories/Notes/inbox.org")
+  (setq org-index-file "~/Repositories/Notes/inbox.org")
+  (setq org-agenda-files (list
+                          "~/Repositories/Notes/work.org"
+                          "~/Repositories/Notes/family.org"
+                          "~/Repositories/Notes/personal.org"
+                          "~/Repositories/Notes/spiritual.org"
+                          "~/Repositories/Notes/social.org"
+                          ))
 
   (setq vc-follow-symlinks t)
   )
