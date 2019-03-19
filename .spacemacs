@@ -333,23 +333,31 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (setq mu4e-account-alist
         '(("tampomah@emporium.co.uk"
-           (mu4e-sent-messages-behavior delete)
+           (mu4e-sent-messages-behavior sent)
            (mu4e-sent-folder "/tampomah@emporium.co.uk/Sent Items")
            (mu4e-drafts-folder "/tampomah@emporium.co.uk/Drafts")
+           (mu4e-trash-folder "/tampomah@emporium.co.uk/Deleted Items")
            (user-mail-address "tampomah@emporium.co.uk")
+           (smtpmail-local-domain "eandl.co.uk")
+           (smtpmail-default-smtp-server "smtp.eandl.co.uk")
+           (smtpmail-smtp-server "smtp.eandl.co.uk")
+           (smtpmail-smtp-service 587)
            (user-full-name "Tony Ampomah"))
           ("tony@arksolutions.it"
            (mu4e-sent-messages-behavior sent)
            (mu4e-sent-folder "/tony@arksolutions.it/Sent")
            (mu4e-drafts-folder "/tony@arksolutions.it/Drafts")
+           (mu4e-trash-folder "/tony@arksoultions.it/Trash")
            (user-mail-address "tony@arksolutions.it")
+           (smtpmail-local-domain "zoho.com")
+           (smtpmail-default-smtp-server "smtp.zoho.com")
+           (smtpmail-smtp-server "smtp.zoho.com")
+           (smtpmail-smtp-service 587)
            (user-full-name "Tony Ampomah"))
           ))
   (mu4e/mail-account-reset)
 
   (setq mu4e-maildir "~/Maildir"
-        mu4e-trash-folder "/Trash"
-        mu4e-refile-folder "/Archive"
         mu4e-get-mail-command "mbsync -a"
         mu4e-update-interval nil
         mu4e-compose-signature-auto-include nil
@@ -361,23 +369,11 @@ before packages are loaded. If you are unsure, you should try in setting them in
         '(("/tampomah@emporium.co.uk/INBOX" . ?w)
           ("/tony@arksolutions.it/INBOX" . ?p)))
 
-;;; Bookmarks
-  (setq mu4e-bookmarks
-        `(("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
-          ("date:today..now" "Today's messages" ?t)
-          ("date:7d..now" "Last 7 days" ?w)
-          ("mime:image/*" "Messages with images" ?p)
-          (,(mapconcat 'identity
-                       (mapcar
-                        (lambda (maildir)
-                          (concat "maildir:" (car maildir)))
-                        mu4e-maildir-shortcuts) " OR ")
-           "All inboxes" ?i)))
-
+  (with-eval-after-load 'mu4e-alert
+    ;; Enable Desktop notifications
+    (mu4e-alert-set-default-style 'notifications))
   (setq mu4e-enable-notifications t)
   (setq mu4e-enable-mode-line t)
-  (with-eval-after-load 'mu4e-alert
-  (mu4e-alert-set-default-style 'growl))
 
   (setq projectile-project-search-path '("~/Repositories/" "~/Documents"))
   (setq-default flycheck-phpcs-standard "PSR2")
@@ -385,6 +381,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (setq-default js2-basic-offset 2
                 js-indent-level 2)
+  (setq-default restclient-inhibit-cookies t)
 
   (add-hook 'php-mode-hook
             '(lambda ()
@@ -447,7 +444,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (tide typescript-mode swift-mode sql-indent spotify slack emojify circe oauth2 websocket nginx-mode macrostep helm-spotify-plus multi helm-dash gmail-message-mode ham-mode html-to-markdown git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter flymd emoji-cheat-sheet-plus elisp-slime-nav edit-server diff-hl dash-at-point company-emoji auto-compile packed yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode reveal-in-osx-finder restclient-helm restart-emacs rainbow-delimiters pug-mode popwin phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox pandoc-mode ox-pandoc osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file ob-restclient ob-http neotree mwim multi-term mu4e-maildirs-extension mu4e-alert move-text mmm-mode markdown-toc magit-gitflow lorem-ipsum livid-mode linum-relative link-hint ledger-mode launchctl lastpass js2-refactor js-doc jinja2-mode indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flycheck-ledger flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode dumb-jump drupal-mode dotenv-mode doom-themes dockerfile-mode docker diminish csv-mode composer company-web company-tern company-statistics company-restclient company-php company-ansible column-enforce-mode coffee-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary ansible-doc ansible aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-php ac-ispell))))
+    (tide typescript-mode swift-mode sql-indent spotify slack emojify circe oauth2 websocket nginx-mode macrostep helm-spotify-plus multi helm-dash gmail-message-mode ham-mode html-to-markdown git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter flymd emoji-cheat-sheet-plus elisp-slime-nav edit-server diff-hl dash-at-point company-emoji auto-compile packed yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode reveal-in-osx-finder restclient-helm restart-emacs rainbow-delimiters pug-mode popwin phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox pandoc-mode ox-pandoc osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file ob-restclient ob-http neotree mwim multi-term mu4e-maildirs-extension mu4e-alert move-text mmm-mode markdown-toc magit-gitflow lorem-ipsum livid-mode linum-relative link-hint ledger-mode launchctl lastpass js2-refactor js-doc jinja2-mode indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flycheck-ledger flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode dumb-jump drupal-mode dotenv-mode doom-themes dockerfile-mode docker diminish csv-mode composer company-web company-tern company-statistics company-restclient company-php company-ansible column-enforce-mode coffee-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary ansible-doc ansible aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-php ac-ispell)))
+ '(send-mail-function (quote smtpmail-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
