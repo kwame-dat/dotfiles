@@ -66,7 +66,7 @@ values."
      (mu4e :variables
            mu4e-installation-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
      (shell :variables
-            shell-default-height 45
+            shell-default-height 50
             shell-default-position 'bottom)
      )
    ;; List of additional packages that will be installed without being
@@ -77,6 +77,7 @@ values."
                                       company-php
                                       dotenv-mode
                                       composer
+                                      redis
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -329,7 +330,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
 (defun dotspacemacs/user-config ()
 
   (setq evil-vsplit-window-right t)
-  (global-company-mode -1)
 
   (setq mu4e-account-alist
         '(("tampomah@emporium.co.uk"
@@ -364,7 +364,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
         mu4e-view-show-images t
         mu4e-view-show-addresses t)
 
-;;; Mail directory shortcuts
+  ;;; Mail directory shortcuts
   (setq mu4e-maildir-shortcuts
         '(("/tampomah@emporium.co.uk/INBOX" . ?w)
           ("/tony@arksolutions.it/INBOX" . ?p)))
@@ -428,6 +428,9 @@ before packages are loaded. If you are unsure, you should try in setting them in
                             "~/Repositories/Notes/social.org"
                             ))
     )
+  (setq ido-virtual-buffers '())
+  (setq recentf-list '())
+  (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 
   (setq vc-follow-symlinks t)
   )
@@ -443,7 +446,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (tide typescript-mode swift-mode sql-indent spotify slack emojify circe oauth2 websocket nginx-mode macrostep helm-spotify-plus multi helm-dash gmail-message-mode ham-mode html-to-markdown git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter flymd emoji-cheat-sheet-plus elisp-slime-nav edit-server diff-hl dash-at-point company-emoji auto-compile packed yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode reveal-in-osx-finder restclient-helm restart-emacs rainbow-delimiters pug-mode popwin phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox pandoc-mode ox-pandoc osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file ob-restclient ob-http neotree mwim multi-term mu4e-maildirs-extension mu4e-alert move-text mmm-mode markdown-toc magit-gitflow lorem-ipsum livid-mode linum-relative link-hint ledger-mode launchctl lastpass js2-refactor js-doc jinja2-mode indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flycheck-ledger flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode dumb-jump drupal-mode dotenv-mode doom-themes dockerfile-mode docker diminish csv-mode composer company-web company-tern company-statistics company-restclient company-php company-ansible column-enforce-mode coffee-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary ansible-doc ansible aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-php ac-ispell)))
+    (redis inf-mongo tide typescript-mode swift-mode sql-indent spotify slack emojify circe oauth2 websocket nginx-mode macrostep helm-spotify-plus multi helm-dash gmail-message-mode ham-mode html-to-markdown git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter flymd emoji-cheat-sheet-plus elisp-slime-nav edit-server diff-hl dash-at-point company-emoji auto-compile packed yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode reveal-in-osx-finder restclient-helm restart-emacs rainbow-delimiters pug-mode popwin phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox pandoc-mode ox-pandoc osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file ob-restclient ob-http neotree mwim multi-term mu4e-maildirs-extension mu4e-alert move-text mmm-mode markdown-toc magit-gitflow lorem-ipsum livid-mode linum-relative link-hint ledger-mode launchctl lastpass js2-refactor js-doc jinja2-mode indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flycheck-ledger flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode dumb-jump drupal-mode dotenv-mode doom-themes dockerfile-mode docker diminish csv-mode composer company-web company-tern company-statistics company-restclient company-php company-ansible column-enforce-mode coffee-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary ansible-doc ansible aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-php ac-ispell)))
  '(send-mail-function (quote smtpmail-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
