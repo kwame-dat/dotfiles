@@ -370,7 +370,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
           ("/tony@arksolutions.it/INBOX" . ?p)))
 
   (with-eval-after-load 'mu4e-alert
-    ;; Enable Desktop notifications
     (mu4e-alert-set-default-style 'notifications))
   (setq mu4e-enable-notifications t)
   (setq mu4e-enable-mode-line t)
@@ -382,14 +381,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq-default js2-basic-offset 2
                 js-indent-level 2)
   (setq-default restclient-inhibit-cookies t)
-
-  (add-hook 'php-mode-hook
-            '(lambda ()
-               (company-mode t)
-               (require 'ac-php)
-               (setq ac-sources  '(ac-source-php ) )
-               (yas-global-mode 1)
-               ))
 
   (add-hook 'php-mode-hook
             (lambda()
@@ -419,16 +410,24 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (add-hook 'text-mode-hook 'set-bigger-spacing)
   (add-hook 'prog-mode-hook 'set-bigger-spacing)
 
-  (setq org-inbox-file "~/Repositories/Notes/inbox.org")
-  (setq org-index-file "~/Repositories/Notes/inbox.org")
-  (setq org-agenda-files (list
-                          "~/Repositories/Notes/elico.org"
-                          "~/Repositories/Notes/arksolutions.it.org"
-                          "~/Repositories/Notes/family.org"
-                          "~/Repositories/Notes/personal.org"
-                          "~/Repositories/Notes/spiritual.org"
-                          "~/Repositories/Notes/social.org"
-                          ))
+  (with-eval-after-load 'ox-reveal
+    (setq org-reveal-note-key-char nil)
+    )
+  (when (version<= "9.2" (org-version))
+    (require 'org-tempo))
+
+  (with-eval-after-load 'org
+    (setq org-inbox-file "~/Repositories/Notes/inbox.org")
+    (setq org-index-file "~/Repositories/Notes/inbox.org")
+    (setq org-agenda-files (list
+                            "~/Repositories/Notes/elico.org"
+                            "~/Repositories/Notes/arksolutions.it.org"
+                            "~/Repositories/Notes/family.org"
+                            "~/Repositories/Notes/personal.org"
+                            "~/Repositories/Notes/spiritual.org"
+                            "~/Repositories/Notes/social.org"
+                            ))
+    )
 
   (setq vc-follow-symlinks t)
   )
