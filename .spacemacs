@@ -420,8 +420,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
     (setq org-inbox-file "~/Repositories/Notes/inbox.org")
     (setq org-index-file "~/Repositories/Notes/inbox.org")
     (setq org-agenda-files (list
-                            "~/Repositories/Notes/elico.org"
-                            "~/Repositories/Notes/arksolutions.it.org"
+                            "~/Repositories/Notes/work.org"
                             "~/Repositories/Notes/family.org"
                             "~/Repositories/Notes/personal.org"
                             "~/Repositories/Notes/spiritual.org"
@@ -442,7 +441,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("6b289bab28a7e511f9c54496be647dc60f5bd8f9917c9495978762b99d8c96a0" "49ec957b508c7d64708b40b0273697a84d3fee4f15dd9fc4a9588016adee3dad" "100e7c5956d7bb3fd0eebff57fde6de8f3b9fafa056a2519f169f85199cc1c96" default)))
+    ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "6b289bab28a7e511f9c54496be647dc60f5bd8f9917c9495978762b99d8c96a0" "49ec957b508c7d64708b40b0273697a84d3fee4f15dd9fc4a9588016adee3dad" "100e7c5956d7bb3fd0eebff57fde6de8f3b9fafa056a2519f169f85199cc1c96" default)))
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
