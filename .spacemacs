@@ -79,6 +79,7 @@ values."
                                       dotenv-mode
                                       composer
                                       redis
+                                      speed-type
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -142,18 +143,15 @@ values."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((agenda)
-                                (projects . 10)
-                                (bookmarks))
+   dotspacemacs-startup-lists nil
    ;; True if the home buffer should respond to resize events.
-   dotspacemacs-startup-buffer-responsive t
+   dotspacemacs-startup-buffer-responsive nil
    ;; Default major mode of the scratch buffer (default `text-mode')
    dotspacemacs-scratch-mode 'text-mode
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(doom-one-light
-                         doom-one)
+   dotspacemacs-themes '(doom-tomorrow-night)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -332,6 +330,64 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (setq evil-vsplit-window-right t)
 
+
+  (setq projectile-project-search-path '("~/Repositories/" "~/Documents"))
+  (setq-default flycheck-phpcs-standard "PSR2")
+  (setq ispell-program-name "/usr/local/bin/aspell")
+
+  (setq-default js2-basic-offset 2
+                js-indent-level 2)
+  (setq-default restclient-inhibit-cookies t)
+
+  (add-hook 'php-mode-hook
+            (lambda()
+              (spacemacs/set-leader-keys-for-major-mode 'php-mode
+                "]" 'ac-php-find-symbol-at-point ;go to definition
+                "o" 'ac-php-location-stack-back  ;go back
+                "tt" 'phpunit-current-test
+                "tc" 'phpunit-current-class
+                "tp" 'phpunit-current-project
+                )))
+
+  (add-to-list 'auto-mode-alist '("\\.blade.php\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.xsd\\'" . nxml-mode))
+
+  (setq web-mode-engines-alist
+        '(("php"    . "\\.phtml\\'")
+          ("blade"  . "\\.blade\\."))
+        )
+
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+
+  (setq default-text-properties '(line-spacing 0.45 line-height 1.45))
+  (defun set-bigger-spacing ()
+    (setq-local default-text-properties '(line-spacing 0.45 line-height 1.45)))
+  (add-hook 'text-mode-hook 'set-bigger-spacing)
+  (add-hook 'prog-mode-hook 'set-bigger-spacing)
+
+  (with-eval-after-load 'ox-reveal
+    (setq org-reveal-note-key-char nil)
+    )
+  (when (version<= "9.2" (org-version))
+    (require 'org-tempo))
+
+  (with-eval-after-load 'org
+    (setq org-inbox-file "~/Repositories/Notes/inbox.org")
+    (setq org-index-file "~/Repositories/Notes/inbox.org")
+    (setq org-agenda-files (list
+                            "~/Repositories/Notes/work.org"
+                            "~/Repositories/Notes/family.org"
+                            "~/Repositories/Notes/personal.org"
+                            "~/Repositories/Notes/spiritual.org"
+                            "~/Repositories/Notes/social.org"
+                            ))
+    )
+  (setq ido-virtual-buffers '())
+  (setq recentf-list '())
+  (setq vc-follow-symlinks t)
+
   (setq mu4e-account-alist
         '(("tampomah@emporium.co.uk"
            (mu4e-sent-messages-behavior sent)
@@ -375,65 +431,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq mu4e-enable-notifications t)
   (setq mu4e-enable-mode-line t)
 
-  (setq projectile-project-search-path '("~/Repositories/" "~/Documents"))
-  (setq-default flycheck-phpcs-standard "PSR2")
-  (setq ispell-program-name "/usr/local/bin/aspell")
-
-  (setq-default js2-basic-offset 2
-                js-indent-level 2)
-  (setq-default restclient-inhibit-cookies t)
-
-  (add-hook 'php-mode-hook
-            (lambda()
-              (spacemacs/set-leader-keys-for-major-mode 'php-mode
-                "]" 'ac-php-find-symbol-at-point ;go to definition
-                "o" 'ac-php-location-stack-back  ;go back
-                "tt" 'phpunit-current-test
-                "tc" 'phpunit-current-class
-                "tp" 'phpunit-current-project
-                "r"  'helm-imenu            ;; Jump to function in buffer
-                )))
-
-  (add-to-list 'auto-mode-alist '("\\.blade.php\\'" . web-mode))
-
-  (setq web-mode-engines-alist
-        '(("php"    . "\\.phtml\\'")
-          ("blade"  . "\\.blade\\."))
-        )
-
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-code-indent-offset 2)
-
-  (setq default-text-properties '(line-spacing 0.45 line-height 1.45))
-  (defun set-bigger-spacing ()
-    (setq-local default-text-properties '(line-spacing 0.45 line-height 1.45)))
-  (add-hook 'text-mode-hook 'set-bigger-spacing)
-  (add-hook 'prog-mode-hook 'set-bigger-spacing)
-
-  (with-eval-after-load 'ox-reveal
-    (setq org-reveal-note-key-char nil)
-    )
-  (when (version<= "9.2" (org-version))
-    (require 'org-tempo))
-
-  (with-eval-after-load 'org
-    (setq org-inbox-file "~/Repositories/Notes/inbox.org")
-    (setq org-index-file "~/Repositories/Notes/inbox.org")
-    (setq org-agenda-files (list
-                            "~/Repositories/Notes/work.org"
-                            "~/Repositories/Notes/family.org"
-                            "~/Repositories/Notes/personal.org"
-                            "~/Repositories/Notes/spiritual.org"
-                            "~/Repositories/Notes/social.org"
-                            ))
-    )
-  (setq ido-virtual-buffers '())
-  (setq recentf-list '())
-
-  (setq vc-follow-symlinks t)
   )
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -441,12 +439,10 @@ before packages are loaded. If you are unsure, you should try in setting them in
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "6b289bab28a7e511f9c54496be647dc60f5bd8f9917c9495978762b99d8c96a0" "49ec957b508c7d64708b40b0273697a84d3fee4f15dd9fc4a9588016adee3dad" "100e7c5956d7bb3fd0eebff57fde6de8f3b9fafa056a2519f169f85199cc1c96" default)))
- '(evil-want-Y-yank-to-eol nil)
+    ("8aca557e9a17174d8f847fb02870cb2bb67f3b6e808e46c0e54a44e3e18e1020" default)))
  '(package-selected-packages
    (quote
-    (imenu-list vmd-mode powerline spinner org-category-capture org-plus-contrib ht skewer-mode simple-httpd multiple-cursors js2-mode hydra parent-mode projectile haml-mode markdown-mode gitignore-mode flyspell-correct pos-tip flycheck pkg-info epl flx highlight magit transient git-commit with-editor smartparens iedit anzu evil goto-chg undo-tree json-mode tablist magit-popup docker-tramp json-snatcher json-reformat php-runtime request web-completion-data dash-functional tern restclient know-your-http-well company bind-map bind-key alert log4e gntp helm avy helm-core async yasnippet ac-php-core f xcscope php-mode dash s auto-complete popup redis inf-mongo tide typescript-mode swift-mode sql-indent spotify slack emojify circe oauth2 websocket nginx-mode macrostep helm-spotify-plus multi helm-dash gmail-message-mode ham-mode html-to-markdown git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter flymd emoji-cheat-sheet-plus elisp-slime-nav edit-server diff-hl dash-at-point company-emoji auto-compile packed yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode reveal-in-osx-finder restclient-helm restart-emacs rainbow-delimiters pug-mode popwin phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox pandoc-mode ox-pandoc osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file ob-restclient ob-http neotree mwim multi-term mu4e-maildirs-extension mu4e-alert move-text mmm-mode markdown-toc magit-gitflow lorem-ipsum livid-mode linum-relative link-hint ledger-mode launchctl lastpass js2-refactor js-doc jinja2-mode indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flycheck-ledger flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode dumb-jump drupal-mode dotenv-mode doom-themes dockerfile-mode docker diminish csv-mode composer company-web company-tern company-statistics company-restclient company-php company-ansible column-enforce-mode coffee-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary ansible-doc ansible aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-php ac-ispell)))
- '(send-mail-function (quote smtpmail-send-it)))
+    (yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package unfill toc-org tide typescript-mode tagedit swift-mode sql-indent spotify speed-type spaceline powerline smeargle slim-mode slack emojify circe oauth2 websocket shell-pop scss-mode sass-mode reveal-in-osx-finder restclient-helm restart-emacs redis rainbow-delimiters pug-mode popwin phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox spinner pandoc-mode ox-pandoc osx-trash osx-dictionary orgit org-projectile org-category-capture org-present org-pomodoro org-plus-contrib org-mime org-download org-bullets open-junk-file ob-restclient ob-http nginx-mode neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode skewer-mode simple-httpd linum-relative link-hint ledger-mode launchctl js2-refactor multiple-cursors js2-mode js-doc jinja2-mode indent-guide imenu-list hydra hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-spotify-plus multi helm-projectile projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag haml-mode google-translate golden-ratio gnuplot gmail-message-mode ham-mode markdown-mode html-to-markdown gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flymd flycheck-pos-tip pos-tip flycheck-ledger flycheck pkg-info epl flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit transient git-commit with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu eshell-z eshell-prompt-extras esh-help engine-mode emoji-cheat-sheet-plus emmet-mode elisp-slime-nav edit-server dumb-jump drupal-mode dotenv-mode dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat diminish diff-hl dash-at-point csv-mode composer php-runtime request company-web web-completion-data company-tern dash-functional tern company-statistics company-restclient restclient know-your-http-well company-php company-emoji company-ansible company column-enforce-mode coffee-mode clean-aindent-mode bind-map bind-key auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile packed ansible-doc ansible alert log4e gntp aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-php yasnippet ac-php-core f xcscope php-mode dash s ac-ispell auto-complete popup doom-themes))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
