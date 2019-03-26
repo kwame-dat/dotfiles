@@ -42,6 +42,7 @@ values."
      emoji
      finance
      git
+     gtags
      helm
      html
      javascript
@@ -74,10 +75,10 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(ac-php
-                                      company-php
-                                      dotenv-mode
+   dotspacemacs-additional-packages '(
                                       composer
+                                      dotenv-mode
+                                      psysh
                                       redis
                                       speed-type
                                       )
@@ -342,8 +343,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (add-hook 'php-mode-hook
             (lambda()
               (spacemacs/set-leader-keys-for-major-mode 'php-mode
-                "]" 'ac-php-find-symbol-at-point ;go to definition
-                "o" 'ac-php-location-stack-back  ;go back
+                ;; "]" 'ac-php-find-symbol-at-point ;go to definition
+                ;; "o" 'ac-php-location-stack-back  ;go back
                 "tt" 'phpunit-current-test
                 "tc" 'phpunit-current-class
                 "tp" 'phpunit-current-project
@@ -431,6 +432,13 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq mu4e-enable-notifications t)
   (setq mu4e-enable-mode-line t)
 
+  (defun markdown-convert-buffer-to-org ()
+    "Convert the current buffer's content from markdown to orgmode format and save it with the current buffer's file name but with .org extension."
+    (interactive)
+    (shell-command-on-region (point-min) (point-max)
+                             (format "pandoc -f markdown -t org -o %s"
+                                     (concat (file-name-sans-extension (buffer-file-name)) ".org"))))
+
   )
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -442,7 +450,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
     ("8aca557e9a17174d8f847fb02870cb2bb67f3b6e808e46c0e54a44e3e18e1020" default)))
  '(package-selected-packages
    (quote
-    (yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package unfill toc-org tide typescript-mode tagedit swift-mode sql-indent spotify speed-type spaceline powerline smeargle slim-mode slack emojify circe oauth2 websocket shell-pop scss-mode sass-mode reveal-in-osx-finder restclient-helm restart-emacs redis rainbow-delimiters pug-mode popwin phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox spinner pandoc-mode ox-pandoc osx-trash osx-dictionary orgit org-projectile org-category-capture org-present org-pomodoro org-plus-contrib org-mime org-download org-bullets open-junk-file ob-restclient ob-http nginx-mode neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode skewer-mode simple-httpd linum-relative link-hint ledger-mode launchctl js2-refactor multiple-cursors js2-mode js-doc jinja2-mode indent-guide imenu-list hydra hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-spotify-plus multi helm-projectile projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag haml-mode google-translate golden-ratio gnuplot gmail-message-mode ham-mode markdown-mode html-to-markdown gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flymd flycheck-pos-tip pos-tip flycheck-ledger flycheck pkg-info epl flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit transient git-commit with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu eshell-z eshell-prompt-extras esh-help engine-mode emoji-cheat-sheet-plus emmet-mode elisp-slime-nav edit-server dumb-jump drupal-mode dotenv-mode dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat diminish diff-hl dash-at-point csv-mode composer php-runtime request company-web web-completion-data company-tern dash-functional tern company-statistics company-restclient restclient know-your-http-well company-php company-emoji company-ansible company column-enforce-mode coffee-mode clean-aindent-mode bind-map bind-key auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile packed ansible-doc ansible alert log4e gntp aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-php yasnippet ac-php-core f xcscope php-mode dash s ac-ispell auto-complete popup doom-themes))))
+    (ox-gfm edit-indirect helm-gtags ggtags psysh yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package unfill toc-org tide typescript-mode tagedit swift-mode sql-indent spotify speed-type spaceline powerline smeargle slim-mode slack emojify circe oauth2 websocket shell-pop scss-mode sass-mode reveal-in-osx-finder restclient-helm restart-emacs redis rainbow-delimiters pug-mode popwin phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox spinner pandoc-mode ox-pandoc osx-trash osx-dictionary orgit org-projectile org-category-capture org-present org-pomodoro org-plus-contrib org-mime org-download org-bullets open-junk-file ob-restclient ob-http nginx-mode neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode skewer-mode simple-httpd linum-relative link-hint ledger-mode launchctl js2-refactor multiple-cursors js2-mode js-doc jinja2-mode indent-guide imenu-list hydra hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-spotify-plus multi helm-projectile projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag haml-mode google-translate golden-ratio gnuplot gmail-message-mode ham-mode markdown-mode html-to-markdown gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flymd flycheck-pos-tip pos-tip flycheck-ledger flycheck pkg-info epl flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit transient git-commit with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu eshell-z eshell-prompt-extras esh-help engine-mode emoji-cheat-sheet-plus emmet-mode elisp-slime-nav edit-server dumb-jump drupal-mode dotenv-mode dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat diminish diff-hl dash-at-point csv-mode composer php-runtime request company-web web-completion-data company-tern dash-functional tern company-statistics company-restclient restclient know-your-http-well company-php company-emoji company-ansible company column-enforce-mode coffee-mode clean-aindent-mode bind-map bind-key auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile packed ansible-doc ansible alert log4e gntp aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-php yasnippet ac-php-core f xcscope php-mode dash s ac-ispell auto-complete popup doom-themes))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
