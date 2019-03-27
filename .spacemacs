@@ -144,9 +144,10 @@ values."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists nil
+   dotspacemacs-startup-lists '((agenda . 5)
+                                (bookmarks . 5))
    ;; True if the home buffer should respond to resize events.
-   dotspacemacs-startup-buffer-responsive nil
+   dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
    dotspacemacs-scratch-mode 'text-mode
    ;; List of themes, the first of the list is loaded when spacemacs starts.
@@ -158,10 +159,10 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("SF Mono"
-                               :size 18
+                               :size 14
                                :weight normal
                                :width normal
-                               :powerline-scale 1.00)
+                               :powerline-scale 1.1)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -375,14 +376,14 @@ before packages are loaded. If you are unsure, you should try in setting them in
     (require 'org-tempo))
 
   (with-eval-after-load 'org
-    (setq org-inbox-file "~/Repositories/Notes/inbox.org")
-    (setq org-index-file "~/Repositories/Notes/inbox.org")
+    (setq org-inbox-file "~/Repositories/org/inbox.org")
+    (setq org-index-file "~/Repositories/org/inbox.org")
     (setq org-agenda-files (list
-                            "~/Repositories/Notes/work.org"
-                            "~/Repositories/Notes/family.org"
-                            "~/Repositories/Notes/personal.org"
-                            "~/Repositories/Notes/spiritual.org"
-                            "~/Repositories/Notes/social.org"
+                            "~/Repositories/org/work.org"
+                            "~/Repositories/org/family.org"
+                            "~/Repositories/org/personal.org"
+                            "~/Repositories/org/spiritual.org"
+                            "~/Repositories/org/social.org"
                             ))
     )
   (setq ido-virtual-buffers '())
