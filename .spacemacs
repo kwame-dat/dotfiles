@@ -68,6 +68,7 @@ values."
      (mu4e :variables
            mu4e-installation-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
      (shell :variables
+            shell-default-term-shell "/bin/zsh"
             shell-default-height 50
             shell-default-position 'bottom)
      )
