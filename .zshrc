@@ -37,3 +37,9 @@ alias tpc="vendor/bin/phpunit --coverage-html='tests/coverage/html'"
 alias art="php artisan"
 alias tinker="php artisan tinker"
 alias migrate="php artisan migrate"
+
+# Ledger
+alias balance="cd /Users/tonyampomah/Documents/Finance && ledger -f index.ledger balance checking -R"
+alias income='cd /Users/tonyampomah/Documents/Finance && ledger -f index.ledger balance income deductions -p "last month"'
+alias expenses='cd /Users/tonyampomah/Documents/Finance && ledger -f index.ledger balance expenses -p "this month"'
+alias budget='cd /Users/tonyampomah/Documents/Finance && ledger --empty -S -T -f index.ledger balance ^assets:budget'
