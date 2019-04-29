@@ -163,14 +163,23 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
+<<<<<<< HEAD
    dotspacemacs-themes '(doom-one)
+=======
+   dotspacemacs-themes '(doom-tomorrow-night)
+>>>>>>> c677d1f9abd37fa9e2a2f06b3ff72b5934f45c11
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("SF Mono"
+<<<<<<< HEAD
                                :size 14
                                :weight normal
+=======
+                               :size 12
+                               :weight bold
+>>>>>>> c677d1f9abd37fa9e2a2f06b3ff72b5934f45c11
                                :width normal
                                :powerline-scale 1.1)
    ;; The leader key
