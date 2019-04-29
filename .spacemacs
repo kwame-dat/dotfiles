@@ -32,6 +32,9 @@ values."
    dotspacemacs-configuration-layers
    '(
      ansible
+     colors
+     theming
+     themes-megapack
      auto-completion
      better-defaults
      chrome
@@ -68,6 +71,7 @@ values."
      (mu4e :variables
            mu4e-installation-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
      (shell :variables
+            shell-default-term-shell "/bin/zsh"
             shell-default-height 50
             shell-default-position 'bottom)
      )
@@ -81,6 +85,10 @@ values."
                                       psysh
                                       redis
                                       speed-type
+                                      org-gcal
+                                      inf-mongo
+                                      lastpass
+                                      nov
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -150,17 +158,19 @@ values."
    dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
    dotspacemacs-scratch-mode 'text-mode
+
+   dotspacemacs-mode-line-theme 'all-the-icons
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(doom-tomorrow-day)
+   dotspacemacs-themes '(doom-one)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("SF Mono"
-                               :size 18
-                               :weight bold
+                               :size 14
+                               :weight normal
                                :width normal
                                :powerline-scale 1.1)
    ;; The leader key
@@ -249,7 +259,7 @@ values."
    dotspacemacs-fullscreen-at-startup nil
    ;; If non nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
-   dotspacemacs-fullscreen-use-non-native t
+   dotspacemacs-fullscreen-use-non-native nil
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
@@ -277,14 +287,7 @@ values."
    ;; `text-mode' derivatives. If set to `relative', line numbers are relative.
    ;; This variable can also be set to a property list for finer control:
    ;; (default nil)
-   dotspacemacs-line-numbers '(:relative t
-     :disabled-for-modes dired-mode
-                         doc-view-mode
-                         markdown-mode
-                         org-mode
-                         pdf-view-mode
-                         text-mode
-     :size-limit-kb 1000)
+   dotspacemacs-line-numbers 'relative
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -331,11 +334,12 @@ before packages are loaded. If you are unsure, you should try in setting them in
 (defun dotspacemacs/user-config ()
 
   (setq evil-vsplit-window-right t)
-
+  (setq spaceline-org-clock-p t)
+  (setq calendar-week-start-day 1)
 
   (setq projectile-project-search-path '("~/Repositories/" "~/Documents"))
   (setq-default flycheck-phpcs-standard "PSR2")
-  (setq ispell-program-name "/usr/local/bin/aspell")
+  ;; (setq ispell-program-name "/usr/local/bin/aspell")
 
   (setq-default js2-basic-offset 2
                 js-indent-level 2)
@@ -344,8 +348,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (add-hook 'php-mode-hook
             (lambda()
               (spacemacs/set-leader-keys-for-major-mode 'php-mode
-                ;; "]" 'ac-php-find-symbol-at-point ;go to definition
-                ;; "o" 'ac-php-location-stack-back  ;go back
                 "tt" 'phpunit-current-test
                 "tc" 'phpunit-current-class
                 "tp" 'phpunit-current-project
@@ -353,6 +355,13 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (add-to-list 'auto-mode-alist '("\\.blade.php\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.xsd\\'" . nxml-mode))
+  (add-to-list 'auto-mode-alist '("\\.env.example\\'" . dotenv-mode))
+  (add-to-list 'auto-mode-alist '("\\.env.docker\\'" . dotenv-mode))
+  (add-to-list 'auto-mode-alist '("\\.env.uat\\'" . dotenv-mode))
+  (add-to-list 'auto-mode-alist '("\\.env.test\\'" . dotenv-mode))
+  (add-to-list 'auto-mode-alist '("\\.env.production\\'" . dotenv-mode))
+  (add-to-list 'auto-mode-alist '("\\.env.staging\\'" . dotenv-mode))
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
   (setq web-mode-engines-alist
         '(("php"    . "\\.phtml\\'")
@@ -363,75 +372,15 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2)
 
-  (setq default-text-properties '(line-spacing 0.45 line-height 1.45))
+  (setq default-text-properties '(line-spacing 0.30 line-height 1.50))
   (defun set-bigger-spacing ()
-    (setq-local default-text-properties '(line-spacing 0.45 line-height 1.45)))
+    (setq-local default-text-properties '(line-spacing 0.30 line-height 1.50)))
   (add-hook 'text-mode-hook 'set-bigger-spacing)
   (add-hook 'prog-mode-hook 'set-bigger-spacing)
 
-  (with-eval-after-load 'ox-reveal
-    (setq org-reveal-note-key-char nil)
-    )
-  (when (version<= "9.2" (org-version))
-    (require 'org-tempo))
-
-  (with-eval-after-load 'org
-    (setq org-inbox-file "~/Repositories/org/inbox.org")
-    (setq org-index-file "~/Repositories/org/inbox.org")
-    (setq org-agenda-files (list
-                            "~/Repositories/org/work.org"
-                            "~/Repositories/org/family.org"
-                            "~/Repositories/org/personal.org"
-                            "~/Repositories/org/spiritual.org"
-                            "~/Repositories/org/social.org"
-                            ))
-    )
-  (setq ido-virtual-buffers '())
-  (setq recentf-list '())
   (setq vc-follow-symlinks t)
 
-  (setq mu4e-account-alist
-        '(("tampomah@emporium.co.uk"
-           (mu4e-sent-messages-behavior sent)
-           (mu4e-sent-folder "/tampomah@emporium.co.uk/Sent Items")
-           (mu4e-drafts-folder "/tampomah@emporium.co.uk/Drafts")
-           (mu4e-trash-folder "/tampomah@emporium.co.uk/Deleted Items")
-           (user-mail-address "tampomah@emporium.co.uk")
-           (smtpmail-local-domain "eandl.co.uk")
-           (smtpmail-default-smtp-server "smtp.eandl.co.uk")
-           (smtpmail-smtp-server "smtp.eandl.co.uk")
-           (smtpmail-smtp-service 587)
-           (user-full-name "Tony Ampomah"))
-          ("tony@arksolutions.it"
-           (mu4e-sent-messages-behavior sent)
-           (mu4e-sent-folder "/tony@arksolutions.it/Sent")
-           (mu4e-drafts-folder "/tony@arksolutions.it/Drafts")
-           (mu4e-trash-folder "/tony@arksoultions.it/Trash")
-           (user-mail-address "tony@arksolutions.it")
-           (smtpmail-local-domain "zoho.com")
-           (smtpmail-default-smtp-server "smtp.zoho.com")
-           (smtpmail-smtp-server "smtp.zoho.com")
-           (smtpmail-smtp-service 587)
-           (user-full-name "Tony Ampomah"))
-          ))
-  (mu4e/mail-account-reset)
-
-  (setq mu4e-maildir "~/Maildir"
-        mu4e-get-mail-command "mbsync -a"
-        mu4e-update-interval nil
-        mu4e-compose-signature-auto-include nil
-        mu4e-view-show-images t
-        mu4e-view-show-addresses t)
-
-  ;;; Mail directory shortcuts
-  (setq mu4e-maildir-shortcuts
-        '(("/tampomah@emporium.co.uk/INBOX" . ?w)
-          ("/tony@arksolutions.it/INBOX" . ?p)))
-
-  (with-eval-after-load 'mu4e-alert
-    (mu4e-alert-set-default-style 'notifications))
-  (setq mu4e-enable-notifications t)
-  (setq mu4e-enable-mode-line t)
+  (require '~/Documents/.secrets.lisp)
 
   (defun markdown-convert-buffer-to-org ()
     "Convert the current buffer's content from markdown to orgmode format and save it with the current buffer's file name but with .org extension."
@@ -439,19 +388,15 @@ before packages are loaded. If you are unsure, you should try in setting them in
     (shell-command-on-region (point-min) (point-max)
                              (format "pandoc -f markdown -t org -o %s"
                                      (concat (file-name-sans-extension (buffer-file-name)) ".org"))))
-
   )
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("49ec957b508c7d64708b40b0273697a84d3fee4f15dd9fc4a9588016adee3dad" "6b289bab28a7e511f9c54496be647dc60f5bd8f9917c9495978762b99d8c96a0" "8aca557e9a17174d8f847fb02870cb2bb67f3b6e808e46c0e54a44e3e18e1020" default)))
  '(package-selected-packages
    (quote
-    (ox-gfm edit-indirect helm-gtags ggtags psysh yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package unfill toc-org tide typescript-mode tagedit swift-mode sql-indent spotify speed-type spaceline powerline smeargle slim-mode slack emojify circe oauth2 websocket shell-pop scss-mode sass-mode reveal-in-osx-finder restclient-helm restart-emacs redis rainbow-delimiters pug-mode popwin phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox spinner pandoc-mode ox-pandoc osx-trash osx-dictionary orgit org-projectile org-category-capture org-present org-pomodoro org-plus-contrib org-mime org-download org-bullets open-junk-file ob-restclient ob-http nginx-mode neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode skewer-mode simple-httpd linum-relative link-hint ledger-mode launchctl js2-refactor multiple-cursors js2-mode js-doc jinja2-mode indent-guide imenu-list hydra hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-spotify-plus multi helm-projectile projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag haml-mode google-translate golden-ratio gnuplot gmail-message-mode ham-mode markdown-mode html-to-markdown gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flymd flycheck-pos-tip pos-tip flycheck-ledger flycheck pkg-info epl flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit transient git-commit with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu eshell-z eshell-prompt-extras esh-help engine-mode emoji-cheat-sheet-plus emmet-mode elisp-slime-nav edit-server dumb-jump drupal-mode dotenv-mode dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat diminish diff-hl dash-at-point csv-mode composer php-runtime request company-web web-completion-data company-tern dash-functional tern company-statistics company-restclient restclient know-your-http-well company-php company-emoji company-ansible company column-enforce-mode coffee-mode clean-aindent-mode bind-map bind-key auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile packed ansible-doc ansible alert log4e gntp aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-php yasnippet ac-php-core f xcscope php-mode dash s ac-ispell auto-complete popup doom-themes))))
+    (zenburn-theme zen-and-art-theme yaml-mode xterm-color ws-butler winum white-sand-theme which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package unfill underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toc-org tide typescript-mode tao-theme tangotango-theme tango-2-theme tagedit swift-mode sunny-day-theme sublime-themes subatomic256-theme subatomic-theme sql-indent spotify speed-type spaceline powerline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode slack emojify circe oauth2 websocket shell-pop seti-theme scss-mode sass-mode reverse-theme reveal-in-osx-finder restclient-helm restart-emacs redis rebecca-theme rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme purple-haze-theme pug-mode psysh professional-theme popwin planet-theme phpunit phpcbf php-extras php-auto-yasnippets phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el pbcopy paradox spinner pandoc-mode ox-pandoc osx-trash osx-dictionary orgit organic-green-theme org-projectile org-category-capture org-present org-pomodoro org-mime org-gcal request-deferred deferred org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-restclient ob-http nov esxml noctilux-theme nginx-mode neotree naquadah-theme mwim mustang-theme multi-term mu4e-maildirs-extension mu4e-alert ht move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme macrostep lush-theme lorem-ipsum livid-mode skewer-mode simple-httpd linum-relative link-hint light-soap-theme ledger-mode launchctl lastpass js2-refactor multiple-cursors js2-mode js-doc jinja2-mode jbeans-theme jazz-theme ir-black-theme inkpot-theme inf-mongo indent-guide imenu-list hydra lv hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation heroku-theme hemisu-theme helm-themes helm-swoop helm-spotify-plus multi helm-projectile projectile helm-mode-manager helm-make helm-gtags helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haml-mode gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gmail-message-mode ham-mode markdown-mode html-to-markdown gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md ggtags gandalf-theme fuzzy flyspell-correct-helm flyspell-correct flymd flycheck-pos-tip pos-tip flycheck-ledger flycheck pkg-info epl flx-ido flx flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit transient git-commit with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help engine-mode emoji-cheat-sheet-plus emmet-mode elisp-slime-nav edit-server dumb-jump drupal-mode php-mode dracula-theme dotenv-mode dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat django-theme diminish diff-hl dash-at-point darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme csv-mode composer php-runtime request company-web web-completion-data company-tern dash-functional tern company-statistics company-restclient restclient know-your-http-well company-emoji company-ansible company column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode clues-theme clean-aindent-mode cherry-blossom-theme calfw busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map bind-key badwolf-theme auto-yasnippet yasnippet auto-highlight-symbol auto-dictionary auto-compile packed apropospriate-theme anti-zenburn-theme ansible-doc ansible f dash s ample-zen-theme ample-theme alert log4e gntp alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-ispell auto-complete popup tango-plus-theme))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
