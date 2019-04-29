@@ -1,7 +1,7 @@
-export ZSH="/Users/tonyampomah/.oh-my-zsh"
-ZSH_THEME="robbyrussell"
-plugins=(git)
-source $ZSH/oh-my-zsh.sh
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
 
 # General
 alias e="exit"
@@ -33,7 +33,7 @@ alias tf="bin/phpunit --filter"
 alias tp="vendor/bin/phpunit"
 alias tpc="vendor/bin/phpunit --coverage-html='tests/coverage/html'"
 
-# Laraval
+# Laravel
 alias art="php artisan"
 alias tinker="php artisan tinker"
 alias migrate="php artisan migrate"
