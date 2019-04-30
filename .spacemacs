@@ -71,7 +71,7 @@ values."
      (mu4e :variables
            mu4e-installation-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
      (shell :variables
-            shell-default-term-shell "/bin/zsh"
+            ;; shell-default-term-shell "/bin/zsh"
             shell-default-height 50
             shell-default-position 'bottom)
      )
@@ -163,23 +163,14 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-<<<<<<< HEAD
    dotspacemacs-themes '(doom-one)
-=======
-   dotspacemacs-themes '(doom-tomorrow-night)
->>>>>>> c677d1f9abd37fa9e2a2f06b3ff72b5934f45c11
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("SF Mono"
-<<<<<<< HEAD
-                               :size 14
-                               :weight normal
-=======
                                :size 12
-                               :weight bold
->>>>>>> c677d1f9abd37fa9e2a2f06b3ff72b5934f45c11
+                               :weight normal
                                :width normal
                                :powerline-scale 1.1)
    ;; The leader key
@@ -388,6 +379,11 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (add-hook 'prog-mode-hook 'set-bigger-spacing)
 
   (setq vc-follow-symlinks t)
+
+  (with-eval-after-load 'mu4e-alert
+    (mu4e-alert-set-default-style 'libnotify))
+  (setq mu4e-enable-notifications t)
+  (setq mu4e-enable-mode-line t)
 
   (require '~/Documents/.secrets.lisp)
 

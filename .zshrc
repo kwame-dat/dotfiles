@@ -1,10 +1,6 @@
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-<<<<<<< HEAD
     source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-=======
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
->>>>>>> c677d1f9abd37fa9e2a2f06b3ff72b5934f45c11
 fi
 
 # General
