@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     vimscript
      ansible
      colors
      theming
@@ -67,11 +68,12 @@ values."
      version-control
      imenu-list
      yaml
+     org-jira
      (markdown :variables markdown-live-preview-engine 'vmd)
      (mu4e :variables
            mu4e-installation-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
      (shell :variables
-            ;; shell-default-term-shell "/bin/zsh"
+            shell-default-term-shell "/bin/zsh"
             shell-default-height 50
             shell-default-position 'bottom)
      )
@@ -339,7 +341,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (setq projectile-project-search-path '("~/Repositories/" "~/Documents"))
   (setq-default flycheck-phpcs-standard "PSR2")
-  ;; (setq ispell-program-name "/usr/local/bin/aspell")
+  (setq ispell-program-name "/usr/local/bin/aspell")
 
   (setq-default js2-basic-offset 2
                 js-indent-level 2)
@@ -372,9 +374,9 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2)
 
-  (setq default-text-properties '(line-spacing 0.30 line-height 1.50))
+  (setq default-text-properties '(line-spacing 1.00 line-height 2.00))
   (defun set-bigger-spacing ()
-    (setq-local default-text-properties '(line-spacing 0.30 line-height 1.50)))
+    (setq-local default-text-properties '(line-spacing 1.00 line-height 2.00)))
   (add-hook 'text-mode-hook 'set-bigger-spacing)
   (add-hook 'prog-mode-hook 'set-bigger-spacing)
 
@@ -388,7 +390,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (require '~/Documents/.secrets.lisp)
 
   (defun markdown-convert-buffer-to-org ()
-    "Convert the current buffer's content from markdown to orgmode format and save it with the current buffer's file name but with .org extension."
     (interactive)
     (shell-command-on-region (point-min) (point-max)
                              (format "pandoc -f markdown -t org -o %s"
@@ -401,7 +402,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (zenburn-theme zen-and-art-theme yaml-mode xterm-color ws-butler winum white-sand-theme which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package unfill underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toc-org tide typescript-mode tao-theme tangotango-theme tango-2-theme tagedit swift-mode sunny-day-theme sublime-themes subatomic256-theme subatomic-theme sql-indent spotify speed-type spaceline powerline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode slack emojify circe oauth2 websocket shell-pop seti-theme scss-mode sass-mode reverse-theme reveal-in-osx-finder restclient-helm restart-emacs redis rebecca-theme rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme purple-haze-theme pug-mode psysh professional-theme popwin planet-theme phpunit phpcbf php-extras php-auto-yasnippets phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el pbcopy paradox spinner pandoc-mode ox-pandoc osx-trash osx-dictionary orgit organic-green-theme org-projectile org-category-capture org-present org-pomodoro org-mime org-gcal request-deferred deferred org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-restclient ob-http nov esxml noctilux-theme nginx-mode neotree naquadah-theme mwim mustang-theme multi-term mu4e-maildirs-extension mu4e-alert ht move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme macrostep lush-theme lorem-ipsum livid-mode skewer-mode simple-httpd linum-relative link-hint light-soap-theme ledger-mode launchctl lastpass js2-refactor multiple-cursors js2-mode js-doc jinja2-mode jbeans-theme jazz-theme ir-black-theme inkpot-theme inf-mongo indent-guide imenu-list hydra lv hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation heroku-theme hemisu-theme helm-themes helm-swoop helm-spotify-plus multi helm-projectile projectile helm-mode-manager helm-make helm-gtags helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haml-mode gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gmail-message-mode ham-mode markdown-mode html-to-markdown gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md ggtags gandalf-theme fuzzy flyspell-correct-helm flyspell-correct flymd flycheck-pos-tip pos-tip flycheck-ledger flycheck pkg-info epl flx-ido flx flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit transient git-commit with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help engine-mode emoji-cheat-sheet-plus emmet-mode elisp-slime-nav edit-server dumb-jump drupal-mode php-mode dracula-theme dotenv-mode dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat django-theme diminish diff-hl dash-at-point darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme csv-mode composer php-runtime request company-web web-completion-data company-tern dash-functional tern company-statistics company-restclient restclient know-your-http-well company-emoji company-ansible company column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode clues-theme clean-aindent-mode cherry-blossom-theme calfw busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map bind-key badwolf-theme auto-yasnippet yasnippet auto-highlight-symbol auto-dictionary auto-compile packed apropospriate-theme anti-zenburn-theme ansible-doc ansible f dash s ample-zen-theme ample-theme alert log4e gntp alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-ispell auto-complete popup tango-plus-theme))))
+    (helm-phpunit typescript-mode powerline emojify circe oauth2 websocket spinner org-category-capture request-deferred deferred esxml ht skewer-mode simple-httpd multiple-cursors js2-mode hydra lv parent-mode multi projectile dash-docs haml-mode ham-mode markdown-mode html-to-markdown gitignore-mode fringe-helper git-gutter+ git-gutter flyspell-correct pos-tip flycheck pkg-info epl flx highlight magit transient git-commit with-editor smartparens iedit anzu evil goto-chg undo-tree php-mode json-mode tablist magit-popup docker-tramp json-snatcher json-reformat autothemer php-runtime request web-completion-data dash-functional tern restclient know-your-http-well company bind-map bind-key yasnippet packed f s alert log4e gntp helm avy helm-core async auto-complete popup vimrc-mode dactyl-mode zenburn-theme zen-and-art-theme yaml-mode xterm-color ws-butler winum white-sand-theme which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package unfill underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toc-org tide tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit swift-mode sunny-day-theme sublime-themes subatomic256-theme subatomic-theme sql-indent spotify speed-type spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode slack shell-pop seti-theme scss-mode sass-mode reverse-theme reveal-in-osx-finder restclient-helm restart-emacs redis rebecca-theme rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme purple-haze-theme pug-mode psysh professional-theme popwin planet-theme phpunit phpcbf php-extras php-auto-yasnippets phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el pbcopy paradox pandoc-mode ox-pandoc osx-trash osx-dictionary orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-jira org-gcal org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-restclient ob-http nov noctilux-theme nginx-mode neotree naquadah-theme mwim mustang-theme multi-term mu4e-maildirs-extension mu4e-alert move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme macrostep lush-theme lorem-ipsum livid-mode linum-relative link-hint light-soap-theme ledger-mode launchctl lastpass js2-refactor js-doc jinja2-mode jbeans-theme jazz-theme ir-black-theme inkpot-theme inf-mongo indent-guide imenu-list hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-themes helm-swoop helm-spotify-plus helm-projectile helm-mode-manager helm-make helm-gtags helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gmail-message-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md ggtags gandalf-theme fuzzy flyspell-correct-helm flymd flycheck-pos-tip flycheck-ledger flx-ido flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help engine-mode emoji-cheat-sheet-plus emmet-mode elisp-slime-nav edit-server dumb-jump drupal-mode dracula-theme dotenv-mode doom-themes dockerfile-mode docker django-theme diminish diff-hl dash-at-point darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme csv-mode composer company-web company-tern company-statistics company-restclient company-emoji company-ansible column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode clues-theme clean-aindent-mode cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile apropospriate-theme anti-zenburn-theme ansible-doc ansible ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
