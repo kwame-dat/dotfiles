@@ -4,7 +4,7 @@
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Input Mono" :size 14)
+      doom-font (font-spec :family "Fira Code" :size 14)
       doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14)
 
       which-key-idle-delay 0.30
