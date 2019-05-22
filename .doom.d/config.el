@@ -125,11 +125,11 @@
 (setq projectile-project-search-path '("~/Repositories/" "~/Documents"))
 
 ;; UI settings
-(setq default-text-properties '(line-spacing 0.50 line-height 1.50))
-(defun set-bigger-spacing ()
-  (setq-local default-text-properties '(line-spacing 0.50 line-height 1.50)))
-(add-hook 'text-mode-hook 'set-bigger-spacing)
-(add-hook 'prog-mode-hook 'set-bigger-spacing)
+;; (setq default-text-properties '(line-spacing 0.50 line-height 1.50))
+;; (defun set-bigger-spacing ()
+;;   (setq-local default-text-properties '(line-spacing 0.50 line-height 1.50)))
+;; (add-hook 'text-mode-hook 'set-bigger-spacing)
+;; (add-hook 'prog-mode-hook 'set-bigger-spacing)
 
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
