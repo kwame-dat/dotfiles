@@ -4,7 +4,7 @@
 (package! emacs-snippets :disable t)
 
 ;; I never use it.
-;; (package! which-key :disable t)
+(package! which-key :disable t)
 
 ;;
 ;; (package! persp-mode :ignore t)
