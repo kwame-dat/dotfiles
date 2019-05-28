@@ -4,7 +4,7 @@
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Fira Code" :size 12)
+      doom-font (font-spec :family "Fira Code" :size 14)
       doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14)
 
       which-key-idle-delay 0.30
@@ -86,11 +86,7 @@
   (add-to-list 'org-modules 'org-habit t))
 (setq org-directory "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org"
       org-agenda-files (list org-directory)
-      org-ellipsis " ▼ "
-
-      ;; The standard unicode characters are usually misaligned depending on the
-      ;; font. This bugs me. Markdown #-marks for headlines are more elegant.
-      org-bullets-bullet-list '("#"))
+      org-ellipsis " ▼ ")
 
 ;; lang/php
   (map! :localleader
