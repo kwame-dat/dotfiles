@@ -4,7 +4,7 @@
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Fira Code" :size 14)
+      doom-font (font-spec :family "Fira Code" :size 12)
       doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14)
 
       which-key-idle-delay 0.30
@@ -26,7 +26,10 @@
 ;;
 ;;; Keybinds
 
-(map! ;; Easier window movement
+(map! :m "M-j" #'multi-next-line
+      :m "M-k" #'multi-previous-line
+
+      ;; Easier window movement
       :n "C-h" #'evil-window-left
       :n "C-j" #'evil-window-down
       :n "C-k" #'evil-window-up
