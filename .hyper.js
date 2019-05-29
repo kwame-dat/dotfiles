@@ -12,7 +12,7 @@ module.exports = {
     fontSize: 14,
 
     // font family with optional fallbacks
-    fontFamily: 'SF Mono, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
+    fontFamily: 'Office Code Pro, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
 
     // default font weight: 'normal' or 'bold'
     fontWeight: 'normal',
@@ -21,7 +21,7 @@ module.exports = {
     fontWeightBold: 'bold',
 
     // line height as a relative unit
-    lineHeight: 3,
+    lineHeight: 2,
 
     // letter spacing as a relative unit
     letterSpacing: 0,
@@ -138,7 +138,7 @@ module.exports = {
   //   `@company/project`
   //   `project#1.0.1`
   plugins: [
-    'hyper-one-dark'
+    'hyper-one-light'
   ],
 
   // in development, you can create a directory under
