@@ -4,7 +4,7 @@
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Fira Code" :size 14)
+      doom-font (font-spec :family "Fira Code" :size 13)
       doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14)
 
       which-key-idle-delay 0.30
@@ -95,6 +95,10 @@
         "p" #'phpunit-current-project
         "c" #'phpunit-current-class
         "t" #'phpunit-current-test)
+
+(map! php-mode-map
+      "C-]" #'phpactor-goto-definition)
+
 (setq-default flycheck-phpcs-standard "PSR2")
 
 

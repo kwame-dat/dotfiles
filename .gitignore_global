@@ -11,9 +11,6 @@ GTAGS
 Icon?
 Thumbs.db
 package-lock.json
-runscope-aggregators-dev.yml
-runscope-api-dev.yml
-runscope-dev.yml
 tags
 tags.lock
 tags.temp
