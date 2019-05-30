@@ -96,6 +96,9 @@
         "i" #'phpactor-import-class
         "]" #'phpactor-goto-definition
         "fr" #'phpactor-find-reference
+        :prefix "r"
+        "cn" #'phpactor-create-new-class
+        "ci" #'phpactor-implement-contracts
         :prefix "t"
         "p" #'phpunit-current-project
         "c" #'phpunit-current-class
