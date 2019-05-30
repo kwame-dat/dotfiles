@@ -1,5 +1,5 @@
 (setq doom-localleader-key ",")
-(setq doom-line-numbers-style 'relative)
+(setq display-line-numbers-type 'relative)
 (setq doom-theme 'doom-nord)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
