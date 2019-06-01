@@ -39,5 +39,5 @@ alias savings="cd ~/Documents/Finance && ledger -f index.ledger balance savings 
 alias balance="cd ~/Documents/Finance && ledger -f index.ledger balance checking -R"
 alias income='cd ~/Documents/Finance && ledger -f index.ledger balance income deductions -p "last month"'
 alias expenses='cd ~/Documents/Finance && ledger -f index.ledger balance expenses -p "this month"'
-alias budget='cd ~/Documents/Finance && ledger -f index.ledger bal assets:budget'
+alias budget='cd ~/Documents/Finance && ledger -f index.ledger bal assets:budget -p "this month"'
 export PATH="/usr/local/opt/php@7.2/bin:$PATH"
