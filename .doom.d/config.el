@@ -1,12 +1,13 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
 (setq doom-theme 'doom-nord)
+(blink-cursor-mode 1)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Office Code Pro" :size 14)
+      doom-font (font-spec :family "Office Code Pro" :size 13)
       doom-variable-pitch-font (font-spec :family "Office Code Pro" :size 14)
 
       which-key-idle-delay 0.30
@@ -86,7 +87,7 @@
 ;; lang/org
 (after! org
   (add-to-list 'org-modules 'org-habit t))
-(setq org-directory "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org"
+(setq org-directory "~/Repositories/Org"
       org-agenda-files (list org-directory)
       org-ellipsis " ▼ ")
 
@@ -95,7 +96,7 @@
         :map php-mode-map
         "i" #'phpactor-import-class
         "]" #'phpactor-goto-definition
-        "fr" #'phpactor-find-reference
+        "fr" #'phpactor-find-references
         :prefix "r"
         "cn" #'phpactor-create-new-class
         "ci" #'phpactor-implement-contracts
@@ -133,11 +134,11 @@
 (setq projectile-project-search-path '("~/Repositories/" "~/Documents"))
 
 ;; UI settings
-;; (setq default-text-properties '(line-spacing 0.50 line-height 1.50))
-;; (defun set-bigger-spacing ()
-;;   (setq-local default-text-properties '(line-spacing 0.50 line-height 1.50)))
-;; (add-hook 'text-mode-hook 'set-bigger-spacing)
-;; (add-hook 'prog-mode-hook 'set-bigger-spacing)
+(setq default-text-properties '(line-spacing 0.50 line-height 1.50))
+(defun set-bigger-spacing ()
+  (setq-local default-text-properties '(line-spacing 0.50 line-height 1.50)))
+(add-hook 'text-mode-hook 'set-bigger-spacing)
+(add-hook 'prog-mode-hook 'set-bigger-spacing)
 
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
