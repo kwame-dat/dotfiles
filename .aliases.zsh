@@ -34,9 +34,10 @@ alias tinker="php artisan tinker"
 alias migrate="php artisan migrate"
 
 # Ledger
-alias balance="cd /Users/tonyampomah/Documents/Finance && ledger -f index.ledger balance checking -R"
-alias income='cd /Users/tonyampomah/Documents/Finance && ledger -f index.ledger balance income deductions -p "last month"'
-alias expenses='cd /Users/tonyampomah/Documents/Finance && ledger -f index.ledger balance expenses -p "this month"'
-alias budget='cd /Users/tonyampomah/Documents/Finance && ledger --empty -S -T -f index.ledger balance ^assets:budget'
+alias checking="cd ~/Documents/Finance && ledger -f index.ledger balance checking -R"
+alias savings="cd ~/Documents/Finance && ledger -f index.ledger balance savings -R"
+alias balance="cd ~/Documents/Finance && ledger -f index.ledger balance checking -R"
+alias income='cd ~/Documents/Finance && ledger -f index.ledger balance income deductions -p "last month"'
+alias expenses='cd ~/Documents/Finance && ledger -f index.ledger balance expenses -p "this month"'
+alias budget='cd ~/Documents/Finance && ledger -f index.ledger bal assets:budget -p "this month"'
 export PATH="/usr/local/opt/php@7.2/bin:$PATH"
-export PATH="/usr/local/opt/php@7.2/sbin:$PATH"
