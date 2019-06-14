@@ -8,9 +8,9 @@
       user-mail-address "tony@arksolutions.it"
 
       doom-font (font-spec :family "Office Code Pro" :size 14)
-      doom-variable-pitch-font (font-spec :family "Office Code Pro" :size 13)
+      doom-variable-pitch-font (font-spec :family "Office Code Pro" :size 14)
 
-      which-key-idle-delay 0.30
+      which-key-idle-delay 0.50
       lsp-ui-sideline-enable nil
       lsp-ui-doc-enable nil)
 
@@ -126,7 +126,7 @@
 ;;   (set-face-background 'mode-line-success-highlight (doom-color 'green)))
 
 ;; Projectile
-(setq projectile-project-search-path '("~/Repositories/" "~/Documents"))
+(setq projectile-project-search-path '("~/Repositories/"))
 
 ;; UI settings
 ;; (setq default-text-properties '(line-spacing 0.50 line-height 1.50))
