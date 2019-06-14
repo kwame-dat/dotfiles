@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: test-method
+# key: tmet
+# --
+
+public function test${1:Name}()
+{
+  $0
+}
