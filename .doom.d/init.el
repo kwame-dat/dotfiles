@@ -7,7 +7,7 @@
        :ui
        doom
        doom-dashboard
-       ;;doom-quit
+       doom-quit
        hl-todo
        modeline
        nav-flash
@@ -24,40 +24,37 @@
        :editor
        (evil +everywhere)
        file-templates
-       fold              ; (nigh) universal code folding
-       format            ; automated prettiness
-       multiple-cursors  ; editing in many places at once
-       rotate-text       ; cycle region at point between text candidates
+       fold
+       format
+       multiple-cursors
+       rotate-text
        snippets
 
        :emacs
-       dired             ; making dired pretty [functional]
-       electric          ; smarter, keyword-based electric-indent
-       eshell            ; a consistent, cross-platform shell (WIP)
-       imenu             ; an imenu sidebar and searchable code index
-       term              ; terminals in Emacs
+       dired
+       electric
        vc
+
+       :term
+       eshell
+       term
+       vterm
 
        :tools
        ansible
        debugger
        docker
-       editorconfig      ; let someone else argue about tabs vs spaces
-       ;;ein               ; tame Jupyter notebooks with emacs
+       editorconfig
        eval
        (flycheck +childframe)
        flyspell
-       ;;gist              ; interacting with github gists
+       gist
        (lookup +docsets)
        lsp
        macos             ; MacOS-specific commands
        magit             ;
-       ;;make              ; run make tasks from Emacs
-       ;;password-store    ; password manager for nerds
-       ;;pdf               ; pdf enhancements
-       ;;prodigy           ; FIXME managing external services & code builders
-       ;;rgb               ; creating color strings
-       ;;terraform         ; infrastructure as code
+       make              ; run make tasks from Emacs
+       pdf               ; pdf enhancements
        tmux              ; an API for interacting with tmux
        ;;upload            ; map local to remote projects via ssh/ftp
        ;;wakatime
@@ -82,7 +79,7 @@
        ;;(java +lsp)
        (javascript +lsp)
        ;;julia
-       latex
+       ;; latex
        ledger
        ;; lua
        markdown
@@ -105,18 +102,9 @@
 
        :email
        (mu4e +gmail)       ; WIP
-       ;;notmuch             ; WIP
-       ;;(wanderlust +gmail) ; WIP
 
        :app
        calendar
-       ;;irc
-       ;;(rss +org)
-       twitter
-       ;;(write
-       ;; ;; +wordnut
-       ;; ;; +langtool
-       ;; )
 
        :config
        (default +bindings +smartparens))

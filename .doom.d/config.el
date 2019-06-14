@@ -1,20 +1,16 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-nord)
+(setq doom-theme 'doom-molokai)
 (blink-cursor-mode 1)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Office Code Pro" :size 13)
-      doom-variable-pitch-font (font-spec :family "Office Code Pro" :size 14)
+      doom-font (font-spec :family "Office Code Pro" :size 14)
+      doom-variable-pitch-font (font-spec :family "Office Code Pro" :size 13)
 
       which-key-idle-delay 0.30
-      company-idle-delay nil
-
-      ;; This functionality is already provided by the lookup module and
-      ;; eldoc, on demand, so we disable them by default.
       lsp-ui-sideline-enable nil
       lsp-ui-doc-enable nil)
 
@@ -92,6 +88,8 @@
       org-ellipsis " ▼ ")
 
 ;; lang/php
+;; (map! :php-mode-map
+;;   "C-]" #'phpactor-find-references)
   (map! :localleader
         :map php-mode-map
         "i" #'phpactor-import-class
@@ -118,27 +116,24 @@
   :on-load (load! "lisp/screeps"))
 
 ;;; Modeline
-(defface mode-line-success-highlight '((t (:inherit mode-line-highlight)))
-  "TODO")
+;; (defface mode-line-success-highlight '((t (:inherit mode-line-highlight)))
+;;   "TODO")
 
-(load! "lisp/modeline")
-(add-hook! 'doom-load-theme-hook
-  (set-face-foreground 'mode-line (doom-color 'blue))
-  (set-face-foreground 'mode-line-buffer-id (doom-color 'fg))
-  (set-face-background 'mode-line-success-highlight (doom-color 'green)))
-
-;;; Keycast
-(load! "lisp/keycast")
+;; (load! "lisp/modeline")
+;; (add-hook! 'doom-load-theme-hook
+;;   (set-face-foreground 'mode-line (doom-color 'blue))
+;;   (set-face-foreground 'mode-line-buffer-id (doom-color 'fg))
+;;   (set-face-background 'mode-line-success-highlight (doom-color 'green)))
 
 ;; Projectile
 (setq projectile-project-search-path '("~/Repositories/" "~/Documents"))
 
 ;; UI settings
-(setq default-text-properties '(line-spacing 0.50 line-height 1.50))
-(defun set-bigger-spacing ()
-  (setq-local default-text-properties '(line-spacing 0.50 line-height 1.50)))
-(add-hook 'text-mode-hook 'set-bigger-spacing)
-(add-hook 'prog-mode-hook 'set-bigger-spacing)
+;; (setq default-text-properties '(line-spacing 0.50 line-height 1.50))
+;; (defun set-bigger-spacing ()
+;;   (setq-local default-text-properties '(line-spacing 0.50 line-height 1.50)))
+;; (add-hook 'text-mode-hook 'set-bigger-spacing)
+;; (add-hook 'prog-mode-hook 'set-bigger-spacing)
 
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
