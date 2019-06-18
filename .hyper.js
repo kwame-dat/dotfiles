@@ -7,7 +7,6 @@ module.exports = {
     fontWeightBold: 'bold',
     lineHeight: 2,
     letterSpacing: 0,
-    cursorColor: 'rgba(248,28,229,0.8)',
     cursorAccentColor: '#000',
     cursorShape: 'BLOCK',
     cursorBlink: false,
@@ -46,7 +45,7 @@ module.exports = {
     defaultSSHApp: true,
   },
   plugins: [
-    'nord-hyper'
+    'hyperterm-base16-tomorrow-dark'
   ],
   localPlugins: [],
   keymaps: {
