@@ -54,7 +54,7 @@
        macos             ; MacOS-specific commands
        magit             ;
        make              ; run make tasks from Emacs
-       pdf               ; pdf enhancements
+       ;; pdf               ; pdf enhancements
        tmux              ; an API for interacting with tmux
        ;;upload            ; map local to remote projects via ssh/ftp
        ;;wakatime
