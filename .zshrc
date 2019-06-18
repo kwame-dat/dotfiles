@@ -26,7 +26,10 @@ plugins=(
   node
   osx
   symfony
+  tmux
   vagrant
+  wp-cli
+  xcode
   yarn
 )
 
