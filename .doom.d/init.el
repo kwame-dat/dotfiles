@@ -34,13 +34,14 @@
        snippets
 
        :emacs
-       dired
+       (dired +ranger
+              +icons)
        electric
        vc
 
        :term
        eshell
-       term
+       ;; term
        vterm
 
        :tools
@@ -56,11 +57,10 @@
        lsp
        macos             ; MacOS-specific commands
        magit             ;
-       ;; make              ; run make tasks from Emacs
+       make              ; run make tasks from Emacs
        tmux              ; an API for interacting with tmux
        ;;upload            ; map local to remote projects via ssh/ftp
        ;;wakatime
-       ;; vterm
 
        :lang
        ;;assembly

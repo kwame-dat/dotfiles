@@ -8,11 +8,22 @@
       user-mail-address "tony@arksolutions.it"
 
       doom-font (font-spec :family "Office Code Pro" :size 16)
-      doom-variable-pitch-font (font-spec :family "Office Code Pro" :size 16)
+      doom-big-font (font-spec :family "Office Code Pro" :size 36)
+      doom-variable-pitch-font (font-spec :family "Avenir Next" :size 18)
 
       which-key-idle-delay 0.50
       lsp-ui-sideline-enable nil
-      lsp-ui-doc-enable nil)
+      lsp-ui-doc-enable nil
+      dart-format-on-save t
+      web-mode-markup-indent-offset 2
+      web-mode-code-indent-offset 2
+      web-mode-css-indent-offset 2
+      js-indent-level 2
+      typescript-indent-level 2
+      json-reformat:indent-width 2
+      prettier-js-args '("--single-quote")
+      dired-dwim-target t
+      css-indent-offset 2)
 
 
 (when IS-LINUX
