@@ -1,8 +1,10 @@
 ;;; ~/.doom.d/init.el -*- lexical-binding: t; -*-
 
 (doom! :completion
-       company
-       ivy
+       (company          ; the ultimate code completion backend
+        +auto            ; as-you-type code completion
+        +childframe)
+       (ivy +childframe)
 
        :ui
        doom
@@ -39,7 +41,7 @@
        :term
        eshell
        term
-       ;; vterm
+       vterm
 
        :tools
        ansible
@@ -54,12 +56,11 @@
        lsp
        macos             ; MacOS-specific commands
        magit             ;
-       make              ; run make tasks from Emacs
-       ;; pdf               ; pdf enhancements
+       ;; make              ; run make tasks from Emacs
        tmux              ; an API for interacting with tmux
        ;;upload            ; map local to remote projects via ssh/ftp
        ;;wakatime
-       ;;vterm
+       ;; vterm
 
        :lang
        ;;assembly
