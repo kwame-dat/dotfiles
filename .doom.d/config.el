@@ -115,16 +115,6 @@
   :add-hooks (+javascript|init-screeps-mode)
   :on-load (load! "lisp/screeps"))
 
-;;; Modeline
-;; (defface mode-line-success-highlight '((t (:inherit mode-line-highlight)))
-;;   "TODO")
-
-;; (load! "lisp/modeline")
-;; (add-hook! 'doom-load-theme-hook
-;;   (set-face-foreground 'mode-line (doom-color 'blue))
-;;   (set-face-foreground 'mode-line-buffer-id (doom-color 'fg))
-;;   (set-face-background 'mode-line-success-highlight (doom-color 'green)))
-
 ;; Projectile
 (setq projectile-project-search-path '("~/Repositories/"))
 
