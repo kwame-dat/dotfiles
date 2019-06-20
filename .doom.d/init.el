@@ -90,7 +90,7 @@
        ;;ocaml
        (org +attach +babel +capture +export +present +protocol)
        ;;perl
-       php
+       (php +php-laravel-mode +php-composer-mode)
        ;;plantuml
        ;;purescript
        ;; (python +pyenv +lsp)
