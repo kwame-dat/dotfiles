@@ -34,8 +34,7 @@
        snippets
 
        :emacs
-       (dired +ranger
-              +icons)
+       (dired +icons)
        electric
        vc
 
