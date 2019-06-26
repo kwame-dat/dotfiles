@@ -13,7 +13,6 @@
        hl-todo
        modeline
        nav-flash
-       indent-guides
        ophints
        (popup +all +defaults)
        treemacs
