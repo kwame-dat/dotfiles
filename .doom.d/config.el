@@ -83,10 +83,9 @@
         "p" #'+tonyampomah/find-notes-for-project))
 
 
-;;
 ;;; Modules
-
 (setq +pretty-code-enabled-modes '(emacs-lisp-mode org-mode))
+(setq org-startup-folded fold)
 
 ;; app/rss
 (add-hook! 'elfeed-show-mode-hook (text-scale-set 2))
