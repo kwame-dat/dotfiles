@@ -115,9 +115,13 @@
 
 
 ;; Projectile
-(setq projectile-project-search-path '("~/Repositories"))
+(setq projectile-project-search-path '("~/Repositories"
+                                       "~/Downloads"
+                                       "~/Desktop"
+                                       "~/Documents"))
 
 ;; app email settings
+;; (setq +mu4e-backend 'offlineimap)
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
 ;; (set! :email "tony@arksolutions.it"
 ;;     '((mu4e-sent-folder       . "/tony@arksolutions.it/Sent Mail")
