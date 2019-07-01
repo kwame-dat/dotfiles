@@ -88,6 +88,7 @@
 (setq org-directory "~/Repositories/Org"
       org-agenda-files (list org-directory)
       org-ellipsis " ▼ ")
+(setq org-startup-folded fold)
 
 ;; lang/php
   (map! :localleader
