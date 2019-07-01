@@ -1,15 +1,15 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-tomorrow-night)
+(setq doom-theme 'doom-one)
 (blink-cursor-mode 1)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Input Mono" :size 14)
-      doom-big-font (font-spec :family "Input Mono" :size 12)
-      doom-variable-pitch-font (font-spec :family "Input Mono" :size 12)
+      doom-font (font-spec :family "Input Mono" :size 15)
+      doom-big-font (font-spec :family "Input Mono" :size 13)
+      doom-variable-pitch-font (font-spec :family "Input Mono" :size 13)
 
       which-key-idle-delay 0.50
       lsp-ui-sideline-enable nil
@@ -82,15 +82,6 @@
         "m" #'+tonyampomah/find-notes-for-major-mode
         "p" #'+tonyampomah/find-notes-for-project))
 
-
-;;
-;;; Modules
-
-(setq +pretty-code-enabled-modes '(emacs-lisp-mode org-mode))
-
-;; app/rss
-(add-hook! 'elfeed-show-mode-hook (text-scale-set 2))
-
 ;; lang/org
 (after! org
   (add-to-list 'org-modules 'org-habit t))
@@ -99,8 +90,6 @@
       org-ellipsis " ▼ ")
 
 ;; lang/php
-;; (map! :php-mode-map
-;;   "C-]" #'phpactor-find-references)
   (map! :localleader
         :map php-mode-map
         "i" #'phpactor-import-class
@@ -115,19 +104,17 @@
         "t" #'phpunit-current-test)
 
 (setq-default flycheck-phpcs-standard "PSR2")
+(defun my-php-mode-setup ()
+  "My PHP-mode hook."
+  (require 'flycheck-phpstan)
+  (flycheck-mode t))
+(add-hook 'php-mode-hook 'my-php-mode-setup)
+(setq-default phpstan-config-file "/phpstan.neon")
 
 
-
-;;
-;;; Custom
-(def-project-mode! +javascript-screeps-mode
-  :match "/screeps\\(?:-ai\\)?/.+$"
-  :modes (+javascript-npm-mode)
-  :add-hooks (+javascript|init-screeps-mode)
-  :on-load (load! "lisp/screeps"))
 
 ;; Projectile
-(setq projectile-project-search-path '("~/Repositories/"))
+(setq projectile-project-search-path '("~/Repositories"))
 
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
