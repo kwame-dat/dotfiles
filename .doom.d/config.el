@@ -1,6 +1,6 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-one-light)
 (blink-cursor-mode 1)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
@@ -121,8 +121,8 @@
                                        "~/Documents"))
 
 ;; app email settings
-;; (setq +mu4e-backend 'offlineimap)
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
+;; (setq +mu4e-backend 'offlineimap)
 ;; (set! :email "tony@arksolutions.it"
 ;;     '((mu4e-sent-folder       . "/tony@arksolutions.it/Sent Mail")
 ;;       (mu4e-drafts-folder     . "/tony@arksolutions.it/Drafts")
