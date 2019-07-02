@@ -7,7 +7,7 @@
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Input Mono" :size 15)
+      doom-font (font-spec :family "Input Mono" :size 14)
       doom-big-font (font-spec :family "Input Mono" :size 13)
       doom-variable-pitch-font (font-spec :family "Input Mono" :size 13)
 
