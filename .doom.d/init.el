@@ -57,47 +57,24 @@
        magit             ;
        make              ; run make tasks from Emacs
        tmux              ; an API for interacting with tmux
-       ;;upload            ; map local to remote projects via ssh/ftp
-       ;;wakatime
 
        :lang
-       ;;assembly
        (cc +lsp)
-       ;;crystal
-       ;;clojure
-       ;; (csharp +unity)
-       ;;common-lisp
+       (csharp +unity)
+       common-lisp
        data
-       ;;erlang
-       ;;elixir
-       ;;elm
        emacs-lisp
-       ;;ess
-       ;;go
-       ;; (haskell +intero)
-       ;;hy
-       ;;(java +lsp)
+       (java +lsp)
        (javascript +lsp)
-       ;;julia
-       ;; latex
        ledger
-       ;; lua
        markdown
-       ;;nim
-       ;;nix
-       ;;ocaml
        (org +attach +babel +capture +export +present +protocol)
-       ;;perl
        (php +php-laravel-mode +php-composer-mode)
-       ;;plantuml
-       ;;purescript
-       ;; (python +pyenv +lsp)
+       (python +pyenv +lsp)
        rest
-       ;;ruby
-       ;; (rust +lsp)
-       ;;scala
+       ruby
        sh
-       ;;swift
+       swift
        web
 
        :email
