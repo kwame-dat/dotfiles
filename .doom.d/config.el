@@ -7,9 +7,9 @@
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Input Mono" :size 14)
-      doom-big-font (font-spec :family "Input Mono" :size 13)
-      doom-variable-pitch-font (font-spec :family "Input Mono" :size 13)
+      doom-font (font-spec :family "Office Code Pro" :size 18)
+      doom-big-font (font-spec :family "Office Code Pro" :size 16)
+      doom-variable-pitch-font (font-spec :family "Office Code Pro" :size 16)
 
       which-key-idle-delay 0.50
       lsp-ui-sideline-enable nil
@@ -105,12 +105,13 @@
         "t" #'phpunit-current-test)
 
 (setq-default flycheck-phpcs-standard "PSR2")
-(defun my-php-mode-setup ()
-  "My PHP-mode hook."
-  (require 'flycheck-phpstan)
-  (flycheck-mode t))
-(add-hook 'php-mode-hook 'my-php-mode-setup)
-(setq-default phpstan-config-file "/phpstan.neon")
+
+;; (defun my-php-mode-setup ()
+;;   "My PHP-mode hook."
+;;   (require 'flycheck-phpstan)
+;;   (flycheck-mode t))
+;; (add-hook 'php-mode-hook 'my-php-mode-setup)
+;; (setq-default phpstan-config-file "/phpstan.neon")
 
 
 
