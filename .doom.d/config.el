@@ -7,9 +7,9 @@
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Office Code Pro" :size 18)
-      doom-big-font (font-spec :family "Office Code Pro" :size 16)
-      doom-variable-pitch-font (font-spec :family "Office Code Pro" :size 16)
+      doom-font (font-spec :family "Office Code Pro" :size 16 :weight 'light)
+      doom-big-font (font-spec :family "Office Code Pro" :size 14 :weight 'light)
+      doom-variable-pitch-font (font-spec :family "Office Code Pro" :size 14 :weight 'light)
 
       which-key-idle-delay 0.50
       lsp-ui-sideline-enable nil
@@ -82,6 +82,7 @@
         "m" #'+tonyampomah/find-notes-for-major-mode
         "p" #'+tonyampomah/find-notes-for-project))
 
+
 ;; lang/org
 (after! org
   (add-to-list 'org-modules 'org-habit t))
@@ -113,14 +114,11 @@
 ;; (add-hook 'php-mode-hook 'my-php-mode-setup)
 ;; (setq-default phpstan-config-file "/phpstan.neon")
 
-
-
 ;; Projectile
 (setq projectile-project-search-path '("~/Repositories"
                                        "~/Downloads"
                                        "~/Desktop"
                                        "~/Documents"))
-
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
 ;; (setq +mu4e-backend 'offlineimap)
