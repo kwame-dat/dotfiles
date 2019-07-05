@@ -1,0 +1,50 @@
+[general]
+accounts = Arksolutions, Emporium
+maxsyncaccounts = 2
+pythonfile = ~/Repositories/.dotfiles/shell/+mu/lib.py
+
+[DEFAULT]
+
+[Account Arksolutions]
+localrepository = LocalArksolutions
+remoterepository = RepositoryArksolutions
+synclabels = yes
+labelsheader = X-Keywords
+maxconnections = 2
+
+[Repository LocalArksolutions]
+type = ArksolutionsMaildir
+localfolders = ~/.mail/arksolutions.it
+
+[Repository RepositoryArksolutions]
+type = IMAP
+remotehost = imap.zoho.com
+remoteuser = tony@arksolutions.it
+remoteusereval = get_pass("arksolutions.it")["user"]
+remotepasseval = get_pass("arksolutions.it")["password"]
+realdelete=no
+ssl = true
+sslcacertfile = /usr/local/etc/openssl/cert.pem  # This will only work for macOS
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+###
+[Account Emporium]
+localrepository = LocalEmporium
+remoterepository = RepositoryEmporium
+synclabels = yes
+labelsheader = X-Keywords
+maxconnections = 2
+
+[Repository LocalEmporium]
+type = GmailMaildir
+localfolders = ~/.mail/emporium.co.uk
+
+[Repository RepositoryEmporium]
+type = IMAP
+remotehost = exchange.eandl.co.uk
+remoteusereval = get_pass("emporium.co.uk")["user"]
+remotepasseval = get_pass("emporium.co.uk")["password"]
+realdelete=no
+ssl = true
+sslcacertfile = /usr/local/etc/openssl/cert.pem  # This will only work for macOS
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
