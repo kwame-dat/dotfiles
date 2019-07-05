@@ -121,13 +121,13 @@
                                        "~/Documents"))
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
-;; (setq +mu4e-backend 'offlineimap)
-;; (set! :email "tony@arksolutions.it"
-;;     '((mu4e-sent-folder       . "/tony@arksolutions.it/Sent Mail")
-;;       (mu4e-drafts-folder     . "/tony@arksolutions.it/Drafts")
-;;       (mu4e-trash-folder      . "/tony@arksolutions.it/Trash")
-;;       (mu4e-refile-folder     . "/tony@arksolutions.it/All Mail")
-;;       (smtpmail-smtp-user     . "tony@arksolutions.it")
-;;       (user-mail-address      . "tony@arksolutions.it")
-;;       (mu4e-compose-signature . "---\nTony Ampomah"))
-;;     t)
+(setq +mu4e-backend 'offlineimap)
+(set-email-account! :email "arksolutions.it"
+    '((mu4e-sent-folder       . "/arksolutions.it/Sent Mail")
+      (mu4e-drafts-folder     . "/arksolutions.it/Drafts")
+      (mu4e-trash-folder      . "/arksolutions.it/Trash")
+      (mu4e-refile-folder     . "/arksolutions.it/All Mail")
+      (smtpmail-smtp-user     . "tony@arksolutions.it")
+      (user-mail-address      . "tony@arksolutions.it")
+      (mu4e-compose-signature . "---\nTony Ampomah"))
+    t)
