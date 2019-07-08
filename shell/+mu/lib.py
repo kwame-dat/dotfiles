@@ -4,7 +4,7 @@ from subprocess import check_output
 from re import sub
 
 def get_pass(account):
-    data = check_output("/usr/bin/pass email/" + account, shell=True).splitlines()
+    data = check_output("/usr/local/bin/pass email/" + account, shell=True).splitlines()
     password = data[0]
     tmp = [x for x in data if x.startswith('address:')]
     user = ""

@@ -19,13 +19,11 @@ localfolders = ~/.mail/arksolutions.it
 [Repository RepositoryArksolutions]
 type = IMAP
 remotehost = imap.zoho.com
-remoteuser = tony@arksolutions.it
 remoteusereval = get_pass("arksolutions.it")["user"]
 remotepasseval = get_pass("arksolutions.it")["password"]
 realdelete=no
 ssl = true
-sslcacertfile = /usr/local/etc/openssl/cert.pem  # This will only work for macOS
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+sslcacertfile = /usr/local/etc/openssl/cert.pem
 
 ###
 [Account Emporium]
@@ -46,5 +44,4 @@ remoteusereval = get_pass("emporium.co.uk")["user"]
 remotepasseval = get_pass("emporium.co.uk")["password"]
 realdelete=no
 ssl = true
-sslcacertfile = /usr/local/etc/openssl/cert.pem  # This will only work for macOS
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+sslcacertfile = /usr/local/etc/openssl/cert.pem
