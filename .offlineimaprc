@@ -1,7 +1,7 @@
 [general]
 accounts = Arksolutions, Emporium
 maxsyncaccounts = 2
-pythonfile = ~/Repositories/.dotfiles/shell/+mu/lib.py
+pythonfile = ~/Repositories/dotfiles/shell/+mu/lib.py
 
 [DEFAULT]
 

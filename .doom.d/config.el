@@ -121,8 +121,9 @@
                                        "~/Documents"))
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
 (setq +mu4e-backend 'offlineimap)
-(set-email-account! :email "arksolutions.it"
+(set-email-account! "arksolutions.it"
     '((mu4e-sent-folder       . "/arksolutions.it/Sent Mail")
       (mu4e-drafts-folder     . "/arksolutions.it/Drafts")
       (mu4e-trash-folder      . "/arksolutions.it/Trash")
