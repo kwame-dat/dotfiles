@@ -6,3 +6,4 @@
 (package! phpstan)
 (package! flycheck-phpstan)
 (package! ox-twbs)
+(package! org-jira)

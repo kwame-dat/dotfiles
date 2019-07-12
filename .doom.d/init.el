@@ -39,7 +39,7 @@
 
        :term
        eshell
-       ;; term
+       term
        vterm
 
        :tools
@@ -57,6 +57,7 @@
        magit             ;
        make              ; run make tasks from Emacs
        tmux              ; an API for interacting with tmux
+       pass
 
        :lang
        (cc +lsp)

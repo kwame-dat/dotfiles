@@ -89,7 +89,10 @@
 (setq org-directory "~/Repositories/Org"
       org-agenda-files (list org-directory)
       org-ellipsis " ▼ ")
-(setq org-startup-folded 'fold)
+(setq org-startup 'overview)
+
+;; org-jira
+(setq jiralib-url "https://jira.eandl.co.uk")
 
 ;; lang/php
   (map! :localleader
