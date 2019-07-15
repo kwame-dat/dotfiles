@@ -7,3 +7,4 @@
 (package! flycheck-phpstan)
 (package! ox-twbs)
 (package! org-jira)
+(package! ox-slack)

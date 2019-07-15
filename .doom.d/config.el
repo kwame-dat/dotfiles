@@ -1,15 +1,15 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-one-light)
+(setq doom-theme 'doom-vibrant)
 (blink-cursor-mode 1)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Office Code Pro" :size 16)
-      doom-big-font (font-spec :family "Office Code Pro" :size 14)
-      doom-variable-pitch-font (font-spec :family "Office Code Pro" :size 14)
+      doom-font (font-spec :family "Dank Mono" :size 16)
+      doom-big-font (font-spec :family "Dank Mono" :size 14)
+      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 14)
 
       which-key-idle-delay 0.50
       lsp-ui-sideline-enable nil
@@ -93,6 +93,7 @@
 
 ;; org-jira
 (setq jiralib-url "https://jira.eandl.co.uk")
+(setq org-jira-working-dir "~/Repositories/jira")
 
 ;; lang/php
   (map! :localleader
@@ -135,3 +136,14 @@
       (user-mail-address      . "tony@arksolutions.it")
       (mu4e-compose-signature . "---\nTony Ampomah"))
     t)
+
+
+(defun xah-toggle-line-spacing ()
+  "Toggle line spacing between no extra space to extra half line height.
+URL `http://ergoemacs.org/emacs/emacs_toggle_line_spacing.html'
+Version 2017-06-02"
+  (interactive)
+  (if line-spacing
+      (setq line-spacing nil)
+    (setq line-spacing 0.5))
+  (redraw-frame (selected-frame)))
