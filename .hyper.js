@@ -1,11 +1,11 @@
 module.exports = {
   config: {
     updateChannel: 'stable',
-    fontSize: 18,
-    fontFamily: 'Office Code Pro, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
+    fontSize: 16,
+    fontFamily: 'Dank Mono, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
     fontWeight: 'normal',
     fontWeightBold: 'bold',
-    lineHeight: 1,
+    lineHeight: 1.3,
     letterSpacing: 0,
     cursorAccentColor: '#000',
     cursorShape: 'BLOCK',
@@ -45,7 +45,7 @@ module.exports = {
     defaultSSHApp: true,
   },
   plugins: [
-    'hyperterm-one-light'
+    'hyperterm-material'
   ],
   localPlugins: [],
   keymaps: {
