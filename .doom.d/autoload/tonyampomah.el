@@ -16,7 +16,7 @@
 (defun +tonyampomah/find-notes-for-major-mode (&optional arg)
   "TODO"
   (interactive "P")
-  (let ((default-directory (expand-file-name "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org" org-directory)))
+  (let ((default-directory (expand-file-name "~/Google Drive/Org-mode" org-directory)))
     (if arg
         (call-interactively #'find-file)
       (find-file

@@ -7,7 +7,7 @@
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Dank Mono" :size 16)
+      doom-font (font-spec :family "Dank Mono" :size 18)
       doom-big-font (font-spec :family "Dank Mono" :size 14)
       doom-variable-pitch-font (font-spec :family "Dank Mono" :size 14)
 
@@ -86,14 +86,14 @@
 ;; lang/org
 (after! org
   (add-to-list 'org-modules 'org-habit t))
-(setq org-directory "~/Repositories/Org"
+(setq org-directory "~/Google Drive/Org-mode"
       org-agenda-files (list org-directory)
       org-ellipsis " ▼ ")
 (setq org-startup 'overview)
 
 ;; org-jira
 (setq jiralib-url "https://jira.eandl.co.uk")
-(setq org-jira-working-dir "~/Repositories/jira")
+(setq org-jira-working-dir "~/Repo/jira")
 
 ;; lang/php
   (map! :localleader
@@ -120,9 +120,10 @@
 
 ;; Projectile
 (setq projectile-project-search-path '("~/Repo"
-                                       "~/Downloads"
-                                       "~/Desktop"
-                                       "~/Documents"))
+                                       "~/Google Drive/1 Projects"
+                                       "~/Google Drive/2 Areas"
+                                       "~/Google Drive/3 Resources"
+                                       "~/Google Drive/4 Archives"))
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
