@@ -119,7 +119,7 @@
 ;; (setq-default phpstan-config-file "/phpstan.neon")
 
 ;; Projectile
-(setq projectile-project-search-path '("~/Repositories"
+(setq projectile-project-search-path '("~/Repo"
                                        "~/Downloads"
                                        "~/Desktop"
                                        "~/Documents"))
@@ -136,14 +136,3 @@
       (user-mail-address      . "tony@arksolutions.it")
       (mu4e-compose-signature . "---\nTony Ampomah"))
     t)
-
-
-(defun +tonyampomah-toggle-line-spacing ()
-  "Toggle line spacing between no extra space to extra half line height.
-URL `http://ergoemacs.org/emacs/emacs_toggle_line_spacing.html'
-Version 2017-06-02"
-  (interactive)
-  (if line-spacing
-      (setq line-spacing nil)
-    (setq line-spacing 0.5))
-  (redraw-frame (selected-frame)))

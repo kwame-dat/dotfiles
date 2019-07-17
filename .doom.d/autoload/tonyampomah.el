@@ -32,3 +32,14 @@
         (call-interactively #'find-file)
       (find-file
        (expand-file-name (concat project-root ".org"))))))
+
+;;;###autoload
+(defun +tonyampomah-toggle-line-spacing ()
+  "Toggle line spacing between no extra space to extra half line height.
+URL `http://ergoemacs.org/emacs/emacs_toggle_line_spacing.html'
+Version 2017-06-02"
+  (interactive)
+  (if line-spacing
+      (setq line-spacing nil)
+    (setq line-spacing 0.5))
+  (redraw-frame (selected-frame)))
