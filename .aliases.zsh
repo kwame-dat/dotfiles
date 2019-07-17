@@ -7,7 +7,7 @@ alias desk="cd ~/Desktop"
 alias db="cd ~/Databases"
 alias down="cd ~/Downloads"
 alias rr="source $ZSH/oh-my-zsh.sh"
-alias r="cd ~/Repositories"
+alias r="cd ~/Repo"
 alias ckh="rm -rf ~/.ssh/known_hosts"
 alias getKey="pbcopy < ~/.ssh/id_rsa.pub"
 alias flushdns="dscacheutil -flushcache;sudo killall -HUP mDNSResponder;say flushed"
@@ -34,10 +34,4 @@ alias tinker="php artisan tinker"
 alias migrate="php artisan migrate"
 
 # Ledger
-alias checking="cd ~/Documents/Finance && ledger -f index.ledger balance checking -R"
-alias savings="cd ~/Documents/Finance && ledger -f index.ledger balance savings -R"
-alias balance="cd ~/Documents/Finance && ledger -f index.ledger balance checking -R"
-alias income='cd ~/Documents/Finance && ledger -f index.ledger balance income deductions -p "last month"'
-alias expenses='cd ~/Documents/Finance && ledger -f index.ledger balance expenses -p "this month"'
-alias budget='cd ~/Documents/Finance && ledger -f index.ledger bal assets:budget -p "this month"'
 export PATH="/usr/local/opt/php@7.2/bin:$PATH"
