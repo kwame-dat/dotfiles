@@ -69,7 +69,7 @@
        (javascript +lsp)
        ledger
        markdown
-       (org +attach +babel +capture +export +present +protocol)
+       (org +attach +babel +capture +export +present +protocol +dragndrop +ipython +pandoc +gnuplot +present)
        (php +php-laravel-mode +php-composer-mode)
        (python +pyenv +lsp)
        rest
