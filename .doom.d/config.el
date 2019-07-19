@@ -86,7 +86,7 @@
 ;; lang/org
 (after! org
   (add-to-list 'org-modules 'org-habit t))
-(setq org-directory "~/Google Drive/Org-mode"
+(setq org-directory "~/GTD"
       org-agenda-files (list org-directory)
       org-ellipsis " ▼ ")
 (setq org-startup 'overview)
@@ -120,10 +120,9 @@
 
 ;; Projectile
 (setq projectile-project-search-path '("~/Repo"
-                                       "~/Google Drive/1 Projects"
-                                       "~/Google Drive/2 Areas"
-                                       "~/Google Drive/3 Resources"
-                                       "~/Google Drive/4 Archives"))
+                                       "~/Documents"
+                                       "~/Notes"
+                                       ))
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")

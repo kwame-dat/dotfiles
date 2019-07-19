@@ -16,7 +16,7 @@
 (defun +tonyampomah/find-notes-for-major-mode (&optional arg)
   "TODO"
   (interactive "P")
-  (let ((default-directory (expand-file-name "~/Google Drive/Org-mode" org-directory)))
+  (let ((default-directory (expand-file-name "~/Notes" org-directory)))
     (if arg
         (call-interactively #'find-file)
       (find-file
@@ -43,3 +43,50 @@ Version 2017-06-02"
       (setq line-spacing nil)
     (setq line-spacing 0.5))
   (redraw-frame (selected-frame)))
+
+;;;###autoload
+(defun +tonyampomah-go-to-projects ()
+  (interactive)
+  (find-file "~/GTD/todo.org")
+  (widen)
+  (beginning-of-buffer)
+  (re-search-forward "* Projects")
+  (beginning-of-line))
+
+;;;###autoload
+(defun +tonyampomah-project-overview ()
+  (interactive)
+  (go-to-projects)
+  (org-narrow-to-subtree)
+  (org-sort-entries t ?p)
+  (org-columns))
+
+;;;###autoload
+(defun +tonyampomah-project-deadline-overview ()
+  (interactive)
+  (go-to-projects)
+  (org-narrow-to-subtree)
+  (org-sort-entries t ?d)
+  (org-columns))
+
+;;;###autoload
+(defun +tonyampomah-agenda-list-stuck-projects ()
+  (interactive)
+  (go-to-projects)
+  (org-agenda nil "#" 'subtree))
+
+;;;###autoload
+(defun +tonyampomah-go-to-areas ()
+    (interactive)
+    (find-file "~/GTD/todo.org")
+    (widen)
+    (beginning-of-buffer)
+    (re-search-forward "* Areas")
+    (beginning-of-line))
+
+;;;###autoload
+(defun +tonyampomah-areas-overview ()
+    (interactive)
+    (go-to-areas)
+    (org-narrow-to-subtree)
+    (org-columns))
