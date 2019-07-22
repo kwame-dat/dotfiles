@@ -121,7 +121,6 @@
 ;; Projectile
 (setq projectile-project-search-path '("~/Repo"
                                        "~/Documents"
-                                       "~/Notes"
                                        ))
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
