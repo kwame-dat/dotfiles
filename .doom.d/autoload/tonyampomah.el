@@ -56,15 +56,15 @@ Version 2017-06-02"
 ;;;###autoload
 (defun +tonyampomah-project-overview ()
   (interactive)
-  (go-to-projects)
+  (+tonyampomah-go-to-projects)
   (org-narrow-to-subtree)
   (org-sort-entries t ?p)
   (org-columns))
 
 ;;;###autoload
-(defun +tonyampomah-project-deadline-overview ()
+(defun +tonyampomjh-project-deadline-overview ()
   (interactive)
-  (go-to-projects)
+  (+tonyampomah-go-to-projects)
   (org-narrow-to-subtree)
   (org-sort-entries t ?d)
   (org-columns))
@@ -72,7 +72,7 @@ Version 2017-06-02"
 ;;;###autoload
 (defun +tonyampomah-agenda-list-stuck-projects ()
   (interactive)
-  (go-to-projects)
+  (+tonyampomah-go-to-projects)
   (org-agenda nil "#" 'subtree))
 
 ;;;###autoload
@@ -87,6 +87,6 @@ Version 2017-06-02"
 ;;;###autoload
 (defun +tonyampomah-areas-overview ()
     (interactive)
-    (go-to-areas)
+    (+tonyampomah-go-to-areas)
     (org-narrow-to-subtree)
     (org-columns))
