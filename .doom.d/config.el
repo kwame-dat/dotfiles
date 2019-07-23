@@ -7,7 +7,7 @@
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Dank Mono" :size 18)
+      doom-font (font-spec :family "Dank Mono" :size 16)
       doom-big-font (font-spec :family "Dank Mono" :size 14)
       doom-variable-pitch-font (font-spec :family "Dank Mono" :size 14)
 
@@ -95,6 +95,19 @@
 (setq jiralib-url "https://jira.eandl.co.uk")
 (setq org-jira-working-dir "~/Repo/jira")
 
+;; org capture templates
+(setq org-capture-templates
+      '(("t" "Task" entry (file "~/GTD/inbox.org")
+         "* TODO %?\n")
+        ("p" "Project" entry (file+headline "~/GTD/todo.org" "Projects")
+         (file "~/GTD/templates/newprojecttemplate.org"))
+        ("s" "Someday" entry (file+headline "~/GTD/somedaymaybe.org" "Someday / Maybe")
+         "* SOMEDAY %?\n")
+        ("m" "Maybe" entry (file+headline "~/GTD/somedaymaybe.org" "Someday / Maybe")
+         "* MAYBE %?\n")
+        ("l" "Log" entry (file+olp+datetree "~/GTD/log.org" "Log")
+         (file "~/GTD/templates/logtemplate.org"))))
+
 ;; lang/php
   (map! :localleader
         :map php-mode-map
@@ -120,9 +133,7 @@
 
 ;; Projectile
 (setq projectile-project-search-path '("~/Repo"
-                                       "~/Documents"
-                                       "~/Notes"
-                                       ))
+                                       "~/Documents"))
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
