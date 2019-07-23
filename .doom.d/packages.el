@@ -8,3 +8,4 @@
 (package! ox-twbs)
 (package! org-jira)
 (package! ox-slack)
+(package! confluence)
