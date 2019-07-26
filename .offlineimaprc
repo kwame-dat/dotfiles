@@ -1,7 +1,7 @@
 [general]
 accounts = Arksolutions, Emporium
 maxsyncaccounts = 2
-pythonfile = ~/Repositories/dotfiles/shell/+mu/lib.py
+pythonfile = ~/Dotfiles/shell/+mu/lib.py
 
 [DEFAULT]
 
@@ -18,9 +18,9 @@ localfolders = ~/.mail/arksolutions.it
 
 [Repository RepositoryArksolutions]
 type = IMAP
-remotehost = imap.zoho.com
-remoteusereval = get_pass("arksolutions.it")["user"]
-remotepasseval = get_pass("arksolutions.it")["password"]
+remotehost = get_pass("2 Areas/Personal/Emails/arksolutions.it")["remotehost"]
+remoteusereval = get_pass("2 Areas/Personal/Emails/arksolutions.it")["user"]
+remotepasseval = get_pass("2 Areas/Personal/Emails/arksolutions.it")["password"]
 realdelete=no
 ssl = true
 sslcacertfile = /usr/local/etc/openssl/cert.pem
@@ -39,9 +39,9 @@ localfolders = ~/.mail/emporium.co.uk
 
 [Repository RepositoryEmporium]
 type = IMAP
-remotehost = exchange.eandl.co.uk
-remoteusereval = get_pass("emporium.co.uk")["user"]
-remotepasseval = get_pass("emporium.co.uk")["password"]
+remotehost = get_pass("2 Areas/Work/email")["remotehost"]
+remoteusereval = get_pass("2 Areas/Work/email")["user"]
+remotepasseval = get_pass("2 Areas/Work/email")["password"]
 realdelete=no
 ssl = true
 sslcacertfile = /usr/local/etc/openssl/cert.pem
