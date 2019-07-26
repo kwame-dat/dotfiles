@@ -1,6 +1,6 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-vibrant)
+(setq doom-theme 'doom-one-light)
 (blink-cursor-mode 1)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
