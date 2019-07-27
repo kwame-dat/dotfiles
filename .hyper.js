@@ -1,7 +1,7 @@
 module.exports = {
   config: {
     updateChannel: 'stable',
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: 'Dank Mono, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
     fontWeight: 'normal',
     fontWeightBold: 'bold',

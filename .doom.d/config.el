@@ -7,9 +7,9 @@
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Dank Mono" :size 16)
-      doom-big-font (font-spec :family "Dank Mono" :size 14)
-      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 14)
+      doom-font (font-spec :family "Dank Mono" :size 18)
+      doom-big-font (font-spec :family "Dank Mono" :size 15)
+      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 15)
 
       which-key-idle-delay 0.50
       lsp-ui-sideline-enable nil
@@ -139,10 +139,10 @@
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
 (setq +mu4e-backend 'offlineimap)
 (set-email-account! "arksolutions.it"
-    '((mu4e-sent-folder       . "/arksolutions.it/Sent Mail")
+    '((mu4e-sent-folder       . "/arksolutions.it/Sent")
       (mu4e-drafts-folder     . "/arksolutions.it/Drafts")
       (mu4e-trash-folder      . "/arksolutions.it/Trash")
-      (mu4e-refile-folder     . "/arksolutions.it/All Mail")
+      (mu4e-refile-folder     . "/arksolutions.it/INBOX")
       (smtpmail-smtp-user     . "tony@arksolutions.it")
       (user-mail-address      . "tony@arksolutions.it")
       (mu4e-compose-signature . "---\nTony Ampomah"))
