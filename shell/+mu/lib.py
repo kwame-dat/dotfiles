@@ -4,11 +4,9 @@ from subprocess import check_output
 from re import sub
 
 def get_pass(account):
-    data = check_output("/usr/local/bin/pass email/" + account, shell=True).splitlines()
+    data = check_output("/usr/local/bin/pass 2\ Areas/" + account, shell=True).splitlines()
     password = data[0]
-    tmp = [x for x in data if x.startswith('address:')]
-    user = ""
-    if len(tmp) > 0:
-        user = tmp[0].split(":", 1)[1]
+    user = data[1]
+    remotehost = data[2]
 
-    return {"password": password, "user": user}
+    return {"password": password, "user": user, "remotehost": remotehost}

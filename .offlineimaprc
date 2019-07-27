@@ -8,40 +8,34 @@ pythonfile = ~/Dotfiles/shell/+mu/lib.py
 [Account Arksolutions]
 localrepository = LocalArksolutions
 remoterepository = RepositoryArksolutions
-synclabels = yes
-labelsheader = X-Keywords
-maxconnections = 2
 
 [Repository LocalArksolutions]
-type = ArksolutionsMaildir
+type = Maildir
 localfolders = ~/.mail/arksolutions.it
 
 [Repository RepositoryArksolutions]
 type = IMAP
-remotehost = get_pass("2 Areas/Personal/Emails/arksolutions.it")["remotehost"]
-remoteusereval = get_pass("2 Areas/Personal/Emails/arksolutions.it")["user"]
-remotepasseval = get_pass("2 Areas/Personal/Emails/arksolutions.it")["password"]
-realdelete=no
+remotehosteval = get_pass("Personal/Emails/arksolutions.it")["remotehost"]
+remoteusereval = get_pass("Personal/Emails/arksolutions.it")["user"]
+remotepasseval = get_pass("Personal/Emails/arksolutions.it")["password"]
 ssl = true
+maxconnections = 1
 sslcacertfile = /usr/local/etc/openssl/cert.pem
 
-###
+
 [Account Emporium]
 localrepository = LocalEmporium
 remoterepository = RepositoryEmporium
-synclabels = yes
-labelsheader = X-Keywords
-maxconnections = 2
 
 [Repository LocalEmporium]
-type = GmailMaildir
+type = Maildir
 localfolders = ~/.mail/emporium.co.uk
 
 [Repository RepositoryEmporium]
 type = IMAP
-remotehost = get_pass("2 Areas/Work/email")["remotehost"]
-remoteusereval = get_pass("2 Areas/Work/email")["user"]
-remotepasseval = get_pass("2 Areas/Work/email")["password"]
-realdelete=no
+remotehost = get_pass("Work/Emails/emporium.co.uk")["remotehost"]
+remoteusereval = get_pass("Work/Emails/emporium.co.uk")["user"]
+remotepasseval = get_pass("Work/Emails/emporium.co.uk")["password"]
 ssl = true
+maxconnections = 1
 sslcacertfile = /usr/local/etc/openssl/cert.pem
