@@ -33,7 +33,7 @@ localfolders = ~/.mail/emporium.co.uk
 
 [Repository RepositoryEmporium]
 type = IMAP
-remotehost = get_pass("Work/Emails/emporium.co.uk")["remotehost"]
+remotehosteval = get_pass("Work/Emails/emporium.co.uk")["remotehost"]
 remoteusereval = get_pass("Work/Emails/emporium.co.uk")["user"]
 remotepasseval = get_pass("Work/Emails/emporium.co.uk")["password"]
 ssl = true
