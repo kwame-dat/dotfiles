@@ -4,7 +4,7 @@
        (company          ; the ultimate code completion backend
         +auto            ; as-you-type code completion
         +childframe)
-       (ivy +childframe)
+       (ivy)
 
        :ui
        doom
