@@ -90,3 +90,54 @@ Version 2017-06-02"
     (+tonyampomah-go-to-areas)
     (org-narrow-to-subtree)
     (org-columns))
+
+;;;###autoload
+(defun my-org-super-agenda ()
+  (interactive)
+  (let ((org-super-agenda-groups
+         '((:name "Schedule"
+                  :time-grid t)
+           (:name "MAPLE" ;; monastery work
+                  :tag "maple")
+           ;; After the last group, the agenda will display items that didn't
+           ;; match any of these groups, with the default order position of 99
+           ;; To prevent this, add this code:
+           ;; (:discard (:anything t))
+           )))
+    (org-agenda nil "a")))
+
+;;;###autoload
+(defun my-org-super-agenda-today ()
+  (interactive)
+  (progn
+    (my-org-super-agenda)
+    (org-agenda-day-view)))
+
+;;;###autoload
+(defun my-personal-agenda ()
+  (interactive)
+  (let ((org-super-agenda-groups
+         '(;; After the last group, the agenda will display items that didn't
+           ;; match any of these groups, with the default order position of 99
+           ;; To prevent this, add this code:
+           (:discard (:tag ("maple"))))))
+    (org-agenda nil "a")
+    (org-agenda-day-view)))
+
+(defun open-agenda ()
+  "Opens the org-agenda."
+  (interactive)
+  (let ((agenda "*Org Agenda*"))
+    (if (equal (get-buffer agenda) nil)
+        (org-agenda-list)
+      (unless (equal (buffer-name (current-buffer)) agenda)
+        (switch-to-buffer agenda))
+      (org-agenda-redo t)
+      (beginning-of-buffer))))
+
+(bind-key "<f5>" 'open-agenda)
+(add-hook 'org-agenda-finalize-hook (lambda () (delete-other-windows)))
+
+(bind-keys ("C-c `" . my-org-super-agenda-today)
+           ("C-c 1" . my-personal-agenda)
+           ("C-c 0" . my-org-super-agenda))

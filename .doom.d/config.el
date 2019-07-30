@@ -7,9 +7,9 @@
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Dank Mono" :size 18)
-      doom-big-font (font-spec :family "Dank Mono" :size 15)
-      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 15)
+      doom-font (font-spec :family "Dank Mono" :size 16)
+      doom-big-font (font-spec :family "Dank Mono" :size 14)
+      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 14)
 
       which-key-idle-delay 0.50
       lsp-ui-sideline-enable nil
@@ -107,6 +107,12 @@
          "* MAYBE %?\n")
         ("l" "Log" entry (file+olp+datetree "~/GTD/log.org" "Log")
          (file "~/GTD/templates/logtemplate.org"))))
+
+(setq org-agenda-inhibit-startup nil
+      org-agenda-show-future-repeats nil
+      org-agenda-start-on-weekday nil
+      org-agenda-skip-deadline-if-done t
+      org-agenda-skip-scheduled-if-done t)
 
 ;; lang/php
   (map! :localleader

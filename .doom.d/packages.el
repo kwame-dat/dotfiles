@@ -9,3 +9,4 @@
 (package! org-jira)
 (package! ox-slack)
 (package! confluence)
+(package! org-super-agenda)
