@@ -16,7 +16,7 @@
 (defun +tonyampomah/find-notes-for-major-mode (&optional arg)
   "TODO"
   (interactive "P")
-  (let ((default-directory (expand-file-name "~/Notes" org-directory)))
+  (let ((default-directory (expand-file-name "~/org" org-directory)))
     (if arg
         (call-interactively #'find-file)
       (find-file
@@ -47,7 +47,7 @@ Version 2017-06-02"
 ;;;###autoload
 (defun +tonyampomah-go-to-projects ()
   (interactive)
-  (find-file "~/GTD/todo.org")
+  (find-file "~/org/todo.org")
   (widen)
   (beginning-of-buffer)
   (re-search-forward "* Projects")
@@ -78,7 +78,7 @@ Version 2017-06-02"
 ;;;###autoload
 (defun +tonyampomah-go-to-areas ()
     (interactive)
-    (find-file "~/GTD/todo.org")
+    (find-file "~/org/todo.org")
     (widen)
     (beginning-of-buffer)
     (re-search-forward "* Areas")
@@ -124,6 +124,7 @@ Version 2017-06-02"
     (org-agenda nil "a")
     (org-agenda-day-view)))
 
+;;;###autoload
 (defun open-agenda ()
   "Opens the org-agenda."
   (interactive)
@@ -134,10 +135,3 @@ Version 2017-06-02"
         (switch-to-buffer agenda))
       (org-agenda-redo t)
       (beginning-of-buffer))))
-
-(bind-key "<f5>" 'open-agenda)
-(add-hook 'org-agenda-finalize-hook (lambda () (delete-other-windows)))
-
-(bind-keys ("C-c `" . my-org-super-agenda-today)
-           ("C-c 1" . my-personal-agenda)
-           ("C-c 0" . my-org-super-agenda))

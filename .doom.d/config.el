@@ -1,6 +1,6 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-one-light)
+(setq doom-theme 'doom-city-lights)
 (blink-cursor-mode 1)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
@@ -38,6 +38,8 @@
 
 (map! :m "M-j" #'multi-next-line
       :m "M-k" #'multi-previous-line
+      :m "<f5>" #'open-agenda
+      :m "§" #'my-org-super-agenda-today
 
       ;; Easier window movement
       :n "C-h" #'evil-window-left
@@ -86,10 +88,12 @@
 ;; lang/org
 (after! org
   (add-to-list 'org-modules 'org-habit t))
-(setq org-directory "~/GTD"
-      org-agenda-files (list org-directory)
-      org-ellipsis " ▼ ")
-(setq org-startup 'overview)
+(setq org-agenda-files (quote ("~/org/todo.org"
+                               "~/org/agendas.org"
+                               "~/org/inbox.org"
+                               "~/org/calendar/gcal.org"
+                               "~/org/calendar/tcal.org"
+                               "~/org/somedaymaybe.org")))
 
 ;; org-jira
 (setq jiralib-url "https://jira.eandl.co.uk")
@@ -97,16 +101,16 @@
 
 ;; org capture templates
 (setq org-capture-templates
-      '(("t" "Task" entry (file "~/GTD/inbox.org")
+      '(("t" "Task" entry (file "~/org/inbox.org")
          "* TODO %?\n")
-        ("p" "Project" entry (file+headline "~/GTD/todo.org" "Projects")
-         (file "~/GTD/templates/newprojecttemplate.org"))
-        ("s" "Someday" entry (file+headline "~/GTD/somedaymaybe.org" "Someday / Maybe")
+        ("p" "Project" entry (file+headline "~/org/todo.org" "Projects")
+         (file "~/org/templates/newprojecttemplate.org"))
+        ("s" "Someday" entry (file+headline "~/org/somedaymaybe.org" "Someday / Maybe")
          "* SOMEDAY %?\n")
-        ("m" "Maybe" entry (file+headline "~/GTD/somedaymaybe.org" "Someday / Maybe")
+        ("m" "Maybe" entry (file+headline "~/org/somedaymaybe.org" "Someday / Maybe")
          "* MAYBE %?\n")
-        ("l" "Log" entry (file+olp+datetree "~/GTD/log.org" "Log")
-         (file "~/GTD/templates/logtemplate.org"))))
+        ("l" "Log" entry (file+olp+datetree "~/org/log.org" "Log")
+         (file "~/org/templates/logtemplate.org"))))
 
 (setq org-agenda-inhibit-startup nil
       org-agenda-show-future-repeats nil
@@ -153,3 +157,15 @@
       (user-mail-address      . "tony@arksolutions.it")
       (mu4e-compose-signature . "---\nTony Ampomah"))
     t)
+
+(setq org-log-done 'time
+      org-clock-idle-time nil
+      org-clock-continuously nil
+      org-clock-persist t
+      org-clock-in-switch-to-state "STARTED"
+      org-clock-in-resume nil
+      org-clock-report-include-clocking-task t
+      org-clock-out-remove-zero-time-clocks t
+      ;; Too many clock entries clutter up a heading
+      org-log-into-drawer t
+      org-clock-into-drawer 1)
