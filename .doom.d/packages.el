@@ -10,3 +10,4 @@
 (package! ox-slack)
 (package! confluence)
 (package! org-super-agenda)
+(package! speed-type)
