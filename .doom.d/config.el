@@ -1,15 +1,15 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-city-lights)
+(setq doom-theme 'doom-one-light)
 (blink-cursor-mode 1)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Dank Mono" :size 16)
-      doom-big-font (font-spec :family "Dank Mono" :size 14)
-      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 14)
+      doom-font (font-spec :family "Dank Mono" :size 18)
+      doom-big-font (font-spec :family "Dank Mono" :size 16)
+      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 16)
 
       which-key-idle-delay 0.50
       lsp-ui-sideline-enable nil
@@ -157,15 +157,3 @@
       (user-mail-address      . "tony@arksolutions.it")
       (mu4e-compose-signature . "---\nTony Ampomah"))
     t)
-
-(setq org-log-done 'time
-      org-clock-idle-time nil
-      org-clock-continuously nil
-      org-clock-persist t
-      org-clock-in-switch-to-state "STARTED"
-      org-clock-in-resume nil
-      org-clock-report-include-clocking-task t
-      org-clock-out-remove-zero-time-clocks t
-      ;; Too many clock entries clutter up a heading
-      org-log-into-drawer t
-      org-clock-into-drawer 1)
