@@ -11,3 +11,4 @@
 (package! confluence)
 (package! org-super-agenda)
 (package! speed-type)
+(package! ejc-sql)
