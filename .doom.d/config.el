@@ -1,25 +1,8 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-one-light)
+(setq doom-theme 'doom-nord-light)
 (blink-cursor-mode 1)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
-
-(defvar line-padding 3)
-(defun add-line-padding ()
-  (let ((overlays (overlays-at (point-min))))
-    (while overlays
-      (let ((overlay (car overlays)))
-        (if (overlay-get overlay 'is-padding-overlay)
-            (delete-overlay overlay)))
-      (setq overlays (cdr overlays))))
-
-  (let ((padding-overlay (make-overlay (point-min) (point-max))))
-    (overlay-put padding-overlay 'is-padding-overlay t)
-    (overlay-put padding-overlay 'line-spacing (* .1 line-padding))
-    (overlay-put padding-overlay 'line-height (+ 1 (* .1 line-padding))))
-  (setq mark-active nil))
-
-(add-hook 'buffer-list-update-hook 'add-line-padding)
 
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
@@ -150,13 +133,6 @@
         "t" #'phpunit-current-test)
 
 (setq-default flycheck-phpcs-standard "PSR2")
-
-;; (defun my-php-mode-setup ()
-;;   "My PHP-mode hook."
-;;   (require 'flycheck-phpstan)
-;;   (flycheck-mode t))
-;; (add-hook 'php-mode-hook 'my-php-mode-setup)
-;; (setq-default phpstan-config-file "/phpstan.neon")
 
 ;; Projectile
 (setq projectile-project-search-path '("~/Repo"
