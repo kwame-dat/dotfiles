@@ -27,7 +27,7 @@ module.exports = {
     defaultSSHApp: true,
   },
   plugins: [
-    'hyper-one-light'
+    'nord-light'
   ],
   localPlugins: [],
   keymaps: {
