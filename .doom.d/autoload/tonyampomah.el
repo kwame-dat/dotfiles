@@ -2,15 +2,15 @@
 
 ;;;###autoload
 (defun +tonyampomah/find-in-dotfiles ()
-  "Open a file somewhere in ~/.dotfiles via a fuzzy filename search."
+  "Open a file somewhere in ~/Repo/Dotfiles via a fuzzy filename search."
   (interactive)
-  (doom-project-find-file (expand-file-name "~/Dotfiles")))
+  (doom-project-find-file (expand-file-name "~/Repo/Dotfiles")))
 
 ;;;###autoload
 (defun +tonyampomah/browse-dotfiles ()
-  "Browse the files in ~/.dotfiles."
+  "Browse the files in ~/Repo/Dotfiles"
   (interactive)
-  (doom-project-browse (expand-file-name "~/Dotfiles")))
+  (doom-project-browse (expand-file-name "~/Repo/Dotfiles")))
 
 ;;;###autoload
 (defun +tonyampomah/find-notes-for-major-mode (&optional arg)
