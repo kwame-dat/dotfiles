@@ -135,21 +135,20 @@
 (setq-default flycheck-phpcs-standard "PSR2")
 
 ;; Projectile
-(setq projectile-project-search-path '("~/Repo"
+(setq projectile-project-search-path '("~/Desktop"
                                        "~/Downloads"
-                                       "~/Desktop"
-                                       "~/Documents/1 Projects"
-                                       "~/Documents/2 Areas/Computing"
-                                       "~/Documents/2 Areas/Finance"
-                                       "~/Documents/2 Areas/Home"
-                                       "~/Documents/2 Areas/Personal"
+                                       "~/Documents/5 Inbox"
+                                       "~/Documents/4 Archives"
+                                       "~/Documents/3 Resources"
                                        "~/Documents/2 Areas/Side Projects"
+                                       "~/Documents/2 Areas/Personal"
+                                       "~/Documents/2 Areas/Home"
+                                       "~/Documents/2 Areas/Finance"
+                                       "~/Documents/2 Areas/Computing"
                                        "~/Documents/2 Areas/Spiritual"
                                        "~/Documents/2 Areas/Work"
-                                       "~/Documents/3 Resources"
-                                       "~/Documents/4 Archives"
-                                       "~/Documents/5 Inbox"
-                                       ))
+                                       "~/Documents/1 Projects"
+                                       "~/Repo"))
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
