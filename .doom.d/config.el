@@ -137,16 +137,8 @@
 ;; Projectile
 (setq projectile-project-search-path '("~/Desktop"
                                        "~/Downloads"
-                                       "~/Documents/5 Inbox"
-                                       "~/Documents/4 Archives"
                                        "~/Documents/3 Resources"
-                                       "~/Documents/2 Areas/Side Projects"
-                                       "~/Documents/2 Areas/Personal"
-                                       "~/Documents/2 Areas/Home"
-                                       "~/Documents/2 Areas/Finance"
-                                       "~/Documents/2 Areas/Computing"
-                                       "~/Documents/2 Areas/Spiritual"
-                                       "~/Documents/2 Areas/Work"
+                                       "~/Documents/2 Areas"
                                        "~/Documents/1 Projects"
                                        "~/Repo"))
 ;; app email settings
