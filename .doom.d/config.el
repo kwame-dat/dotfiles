@@ -1,15 +1,15 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-nord)
+(setq doom-theme 'doom-molokai)
 (blink-cursor-mode 1)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Dank Mono" :size 18)
-      doom-big-font (font-spec :family "Dank Mono" :size 16)
-      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 16)
+      doom-font (font-spec :family "Dank Mono" :size 14)
+      doom-big-font (font-spec :family "Dank Mono" :size 14)
+      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 14)
 
       which-key-idle-delay 0.50
       lsp-ui-sideline-enable nil
@@ -80,6 +80,8 @@
       (:prefix "f"
         "t" #'+tonyampomah/find-in-dotfiles
         "T" #'+tonyampomah/browse-dotfiles)
+      (:prefix "o"
+        "." #'ivy-pass)
       (:prefix "n"
         "m" #'+tonyampomah/find-notes-for-major-mode
         "p" #'+tonyampomah/find-notes-for-project))
@@ -154,3 +156,5 @@
       (user-mail-address      . "tony@arksolutions.it")
       (mu4e-compose-signature . "---\nTony Ampomah"))
     t)
+(setq lastpass-user (+pass-get-field "2 Areas/Work/Emails/emporium.co.uk" "user"))
+(setq lastpass-multifactor-use-passcode t)

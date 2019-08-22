@@ -12,3 +12,5 @@
 (package! org-super-agenda)
 (package! speed-type)
 (package! lastpass)
+(package! apache-mode)
+(package! nginx-mode)
