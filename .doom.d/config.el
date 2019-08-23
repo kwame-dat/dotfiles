@@ -158,3 +158,8 @@
     t)
 (setq lastpass-user (+pass-get-field "2 Areas/Work/Emails/emporium.co.uk" "user"))
 (setq lastpass-multifactor-use-passcode t)
+
+(setq org-gcal-client-id (+pass-get-field "2 Areas/Personal/Emails/gmail.com" "client_id")
+      org-gcal-client-secret (+pass-get-field "2 Areas/Personal/Emails/gmail.com" "client_secret")
+      org-gcal-file-alist '(((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "tcal").  "~/org/calendar/tcal.org")
+                            ((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "gcal").  "~/org/calendar/gcal.org")))
