@@ -1,33 +1,11 @@
 module.exports = {
   config: {
     updateChannel: 'stable',
-    fontSize: 18,
+    fontSize: 14,
     fontFamily: 'Dank Mono, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
-    fontWeight: 'normal',
-    fontWeightBold: 'bold',
-    lineHeight: 1.5,
-    letterSpacing: 0,
-    cursorAccentColor: '#000',
-    cursorShape: 'BLOCK',
-    cursorBlink: false,
-    foregroundColor: '#fff',
-    backgroundColor: '#000',
-    selectionColor: 'rgba(248,28,229,0.3)',
-    borderColor: '#333',
-    css: '',
-    termCSS: '',
-    showHamburgerMenu: '',
-    showWindowControls: '',
-    padding: '12px 14px',
-    shell: '',
-    shellArgs: ['--login'],
-    env: {},
-    bell: 'SOUND',
-    copyOnSelect: false,
-    defaultSSHApp: true,
   },
   plugins: [
-    'nord-light'
+    'hyper-tomorrow-night'
   ],
   localPlugins: [],
   keymaps: {
