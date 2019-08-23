@@ -1,10 +1,8 @@
 ;;; ~/.doom.d/init.el -*- lexical-binding: t; -*-
 
 (doom! :completion
-       (company          ; the ultimate code completion backend
-        +auto            ; as-you-type code completion
-        +childframe)
-       (ivy)
+       company
+       ivy
 
        :ui
        doom

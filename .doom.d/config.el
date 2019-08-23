@@ -1,6 +1,6 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-molokai)
+(setq doom-theme 'doom-tomorrow-night)
 (blink-cursor-mode 1)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
@@ -81,6 +81,7 @@
         "t" #'+tonyampomah/find-in-dotfiles
         "T" #'+tonyampomah/browse-dotfiles)
       (:prefix "o"
+        "m" #'mu4e
         "." #'ivy-pass)
       (:prefix "n"
         "m" #'+tonyampomah/find-notes-for-major-mode
