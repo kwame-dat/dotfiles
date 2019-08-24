@@ -1,8 +1,8 @@
 ;;; ~/.doom.d/init.el -*- lexical-binding: t; -*-
 
 (doom! :completion
-       company
-       ivy
+       (company +childframe)
+       (ivy +fuzzy +presclient +icons)
 
        :ui
        doom
