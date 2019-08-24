@@ -24,7 +24,8 @@
        (evil +everywhere)
        file-templates
        fold
-       format
+       (format +onsave)
+       lispy
        multiple-cursors
        rotate-text
        snippets
@@ -66,7 +67,7 @@
        ledger
        markdown
        (org +attach +babel +capture +export +present +protocol +dragndrop +ipython +pandoc +gnuplot +present)
-       (php +php-laravel-mode +php-composer-mode)
+       (php +lsp +php-laravel-mode +php-composer-mode)
        (python +pyenv +lsp)
        rest
        ruby
