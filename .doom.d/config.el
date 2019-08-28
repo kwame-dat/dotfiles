@@ -1,6 +1,6 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-tomorrow-night)
+(setq doom-theme 'adwaita)
 (blink-cursor-mode 1)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
@@ -164,3 +164,5 @@
       org-gcal-client-secret (+pass-get-field "2 Areas/Personal/Emails/gmail.com" "client_secret")
       org-gcal-file-alist '(((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "tcal").  "~/org/calendar/tcal.org")
                             ((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "gcal").  "~/org/calendar/gcal.org")))
+;; Automatically switch to ledger mode for .dat files
+(add-to-list 'auto-mode-alist '("\\.dat\\'" . ledger-mode))
