@@ -87,9 +87,5 @@
        +wordnut         ; wordnet (wn) search
        +langtool)       ; a proofreader (grammar/style check) for Emacs
 
-       :collab
-       floobits          ; peer programming for a price
-       impatient-mode    ; show off code over HTTP
-
        :config
        (default +bindings +smartparens))
