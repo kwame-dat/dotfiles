@@ -3,7 +3,6 @@
 (package! apache-mode)
 (package! company-phpactor)
 (package! confluence)
-(package! lastpass)
 (package! mu4e-alert)
 (package! nginx-mode)
 (package! org-jira)

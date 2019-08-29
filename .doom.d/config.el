@@ -156,8 +156,6 @@
       (user-mail-address      . "tony@arksolutions.it")
       (mu4e-compose-signature . "---\nTony Ampomah"))
     t)
-(setq lastpass-user (+pass-get-field "2 Areas/Work/Emails/emporium.co.uk" "user"))
-(setq lastpass-multifactor-use-passcode t)
 
 (setq org-gcal-client-id (+pass-get-field "2 Areas/Personal/Emails/gmail.com" "client_id")
       org-gcal-client-secret (+pass-get-field "2 Areas/Personal/Emails/gmail.com" "client_secret")
