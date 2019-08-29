@@ -1,7 +1,6 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'adwaita)
-(blink-cursor-mode 1)
+(setq doom-theme 'doom-one-light)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq user-full-name "Tony Ampomah"
