@@ -6,9 +6,9 @@
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Dank Mono" :size 14)
-      doom-big-font (font-spec :family "Dank Mono" :size 14)
-      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 14)
+      doom-font (font-spec :family "SF Mono" :size 14)
+      doom-big-font (font-spec :family "SF Mono" :size 14)
+      doom-variable-pitch-font (font-spec :family "SF Mono" :size 14)
 
       which-key-idle-delay 0.50
       lsp-ui-sideline-enable nil
@@ -163,3 +163,17 @@
                             ((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "gcal").  "~/org/calendar/gcal.org")))
 ;; Automatically switch to ledger mode for .dat files
 (add-to-list 'auto-mode-alist '("\\.dat\\'" . ledger-mode))
+
+(setq sql-connection-alist
+      '((localhost (sql-product 'mysql)
+                  (sql-port 3306)
+                  (sql-server "127.0.0.1")
+                  (sql-user "root")
+                  (sql-password "root")
+                  (sql-database ""))
+        (elico-docker (sql-product 'mysql)
+                  (sql-port 33060)
+                  (sql-server "127.0.0.1")
+                  (sql-user "root")
+                  (sql-password "root")
+                  (sql-database ""))))
