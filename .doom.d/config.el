@@ -1,16 +1,16 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-one-light)
+(setq doom-theme 'doom-tomorrow-night)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "SF Mono" :size 14)
-      doom-big-font (font-spec :family "SF Mono" :size 14)
-      doom-variable-pitch-font (font-spec :family "SF Mono" :size 14)
+      doom-font (font-spec :family "Dank Mono" :size 13)
+      doom-big-font (font-spec :family "Dank Mono" :size 13)
+      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 13)
 
-      which-key-idle-delay 0.50
+      which-key-idle-delay 0.30
       lsp-ui-sideline-enable nil
       lsp-ui-doc-enable nil
       dart-format-on-save t
@@ -142,6 +142,9 @@
                                        "~/Documents/3 Resources"
                                        "~/Documents/2 Areas"
                                        "~/Documents/1 Projects"
+                                       "~/Work Documents/3 Resources"
+                                       "~/Work Documents/2 Areas"
+                                       "~/Work Documents/1 Projects"
                                        "~/Repo"))
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
