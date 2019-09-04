@@ -47,7 +47,7 @@ Version 2017-06-02"
 ;;;###autoload
 (defun +tonyampomah-go-to-projects ()
   (interactive)
-  (find-file "~/org/todo.org")
+  (find-file "~/org/Todo.org")
   (widen)
   (beginning-of-buffer)
   (re-search-forward "* Projects")
@@ -78,7 +78,7 @@ Version 2017-06-02"
 ;;;###autoload
 (defun +tonyampomah-go-to-areas ()
     (interactive)
-    (find-file "~/org/todo.org")
+    (find-file "~/org/Todo.org")
     (widen)
     (beginning-of-buffer)
     (re-search-forward "* Areas")

@@ -90,12 +90,14 @@
 ;; lang/org
 (after! org
   (add-to-list 'org-modules 'org-habit t))
-(setq org-agenda-files (quote ("~/org/todo.org"
-                               "~/org/agendas.org"
-                               "~/org/inbox.org"
-                               "~/org/calendar/gcal.org"
-                               "~/org/calendar/tcal.org"
-                               "~/org/somedaymaybe.org")))
+(setq org-agenda-files (quote ("~/org/Todo.org"
+                               "~/org/Inbox.org"
+                               "~/org/Someday.org"
+                               "~/org/Work-todo.org"
+                               "~/org/Work-inbox.org"
+                               "~/org/Work-someday.org"
+                               "~/org/calendar/Gcal.org"
+                               "~/org/calendar/Tcal.org")))
 
 ;; org-jira
 (setq jiralib-url "https://jira.eandl.co.uk")
@@ -162,8 +164,8 @@
 
 (setq org-gcal-client-id (+pass-get-field "2 Areas/Personal/Emails/gmail.com" "client_id")
       org-gcal-client-secret (+pass-get-field "2 Areas/Personal/Emails/gmail.com" "client_secret")
-      org-gcal-file-alist '(((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "tcal").  "~/org/calendar/tcal.org")
-                            ((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "gcal").  "~/org/calendar/gcal.org")))
+      org-gcal-file-alist '(((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "tcal").  "~/org/calendar/Tcal.org")
+                            ((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "gcal").  "~/org/calendar/Gcal.org")))
 ;; Automatically switch to ledger mode for .dat files
 (add-to-list 'auto-mode-alist '("\\.dat\\'" . ledger-mode))
 
