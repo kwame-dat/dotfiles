@@ -1,9 +1,8 @@
 # -*- mode: snippet -*-
-# name: public method
-# key: pub
+# name: public_method
+# key: pub    
 # --
-
-public function ${1:name}(): ${2:type}
+public function $1($2)$3
 {
   $0
 }
