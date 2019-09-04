@@ -24,7 +24,7 @@
        (evil +everywhere)
        file-templates
        fold
-       (format +onsave)
+       (format)
        lispy
        multiple-cursors
        rotate-text
@@ -89,17 +89,3 @@
 
        :config
        (default +bindings +smartparens))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("cb477d192ee6456dc2eb5ca5a0b7bd16bdb26514be8f8512b937291317c7b166" "f5568ed375abea716d1bdfae0316d1d179f69972eaccd1f331b3e9863d7e174a" "06e4b3fdcbadc29ff95a7146dee846cd027cfefca871b2e9142b54ad5de4832f" "ab9456aaeab81ba46a815c00930345ada223e1e7c7ab839659b382b52437b9ea" "e3c87e869f94af65d358aa279945a3daf46f8185f1a5756ca1c90759024593dd" "155a5de9192c2f6d53efcc9c554892a0d87d87f99ad8cc14b330f4f4be204445" default))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
