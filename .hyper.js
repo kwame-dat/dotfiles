@@ -9,7 +9,7 @@ module.exports = {
     updateChannel: 'stable',
 
     // default font size in pixels for all tabs
-    fontSize: 14,
+    fontSize: 13,
 
     // font family with optional fallbacks
     fontFamily: 'Dank Mono, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
@@ -147,7 +147,7 @@ module.exports = {
   //   `@company/project`
   //   `project#1.0.1`
   plugins: [
-    'hyper-one-light'
+    'hyper-tomorrow-night'
   ],
 
   // in development, you can create a directory under
