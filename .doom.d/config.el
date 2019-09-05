@@ -92,6 +92,7 @@
   (add-to-list 'org-modules 'org-habit t))
 (setq org-agenda-files (quote ("~/org/Todo.org"
                                "~/org/Inbox.org"
+                               "~/org/Habits.org"
                                "~/org/Someday.org"
                                "~/org/Work-todo.org"
                                "~/org/Work-inbox.org"
