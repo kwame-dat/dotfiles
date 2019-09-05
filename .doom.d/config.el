@@ -105,14 +105,12 @@
 
 ;; org capture templates
 (setq org-capture-templates
-      '(("t" "Task" entry (file "~/org/inbox.org")
+      '(("t" "Task" entry (file "~/org/Inbox.org")
          "* TODO %?\n")
-        ("p" "Project" entry (file+headline "~/org/todo.org" "Projects")
+        ("p" "Project" entry (file+headline "~/org/Todo.org" "Projects")
          (file "~/org/templates/newprojecttemplate.org"))
-        ("s" "Someday" entry (file+headline "~/org/somedaymaybe.org" "Someday / Maybe")
+        ("s" "Someday" entry (file+headline "~/org/Someday.org" "Someday")
          "* SOMEDAY %?\n")
-        ("m" "Maybe" entry (file+headline "~/org/somedaymaybe.org" "Someday / Maybe")
-         "* MAYBE %?\n")
         ("l" "Log" entry (file+olp+datetree "~/org/log.org" "Log")
          (file "~/org/templates/logtemplate.org"))))
 
