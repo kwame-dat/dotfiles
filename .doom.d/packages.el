@@ -6,6 +6,7 @@
 (package! mu4e-alert)
 (package! nginx-mode)
 (package! org-jira)
+(package! org-pomodoro)
 (package! org-super-agenda)
 (package! ox-slack)
 (package! ox-twbs)
