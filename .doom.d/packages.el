@@ -1,8 +1,8 @@
 ;;; ~/.config/doom/packages.el
 
 (package! apache-mode)
-(package! company-phpactor)
 (package! confluence)
+(package! kaolin-themes)
 (package! mu4e-alert)
 (package! nginx-mode)
 (package! org-jira)
