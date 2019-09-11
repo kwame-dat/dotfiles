@@ -1,6 +1,6 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'kaolin-galaxy)
+(setq doom-theme 'doom-one-light)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq user-full-name "Tony Ampomah"
@@ -10,7 +10,7 @@
       doom-big-font (font-spec :family "Dank Mono" :size 13)
       doom-variable-pitch-font (font-spec :family "Dank Mono" :size 13)
 
-      which-key-idle-delay 0.30
+      which-key-idle-delay 0.40
       lsp-ui-sideline-enable nil
       lsp-ui-doc-enable nil
       dart-format-on-save t
@@ -165,8 +165,6 @@
       org-gcal-client-secret (+pass-get-field "2 Areas/Personal/Emails/gmail.com" "client_secret")
       org-gcal-file-alist '(((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "tcal").  "~/org/calendar/Tcal.org")
                             ((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "gcal").  "~/org/calendar/Gcal.org")))
-;; Automatically switch to ledger mode for .dat files
-(add-to-list 'auto-mode-alist '("\\.dat\\'" . ledger-mode))
 
 (setq sql-connection-alist
       '((localhost (sql-product 'mysql)
