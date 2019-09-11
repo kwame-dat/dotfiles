@@ -1,8 +1,6 @@
 ;;; ~/.config/doom/packages.el
 
 (package! apache-mode)
-(package! confluence)
-(package! kaolin-themes)
 (package! mu4e-alert)
 (package! nginx-mode)
 (package! org-jira)
@@ -10,7 +8,6 @@
 (package! org-super-agenda)
 (package! ox-slack)
 (package! ox-twbs)
-(package! phpactor)
 (package! slack)
 (package! speed-type)
 (package! uuidgen)
