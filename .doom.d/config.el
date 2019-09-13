@@ -165,17 +165,3 @@
       org-gcal-client-secret (+pass-get-field "2 Areas/Personal/Emails/gmail.com" "client_secret")
       org-gcal-file-alist '(((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "tcal").  "~/org/calendar/Tcal.org")
                             ((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "gcal").  "~/org/calendar/Gcal.org")))
-
-(setq sql-connection-alist
-      '((localhost (sql-product 'mysql)
-                  (sql-port 3306)
-                  (sql-server "127.0.0.1")
-                  (sql-user "root")
-                  (sql-password "root")
-                  (sql-database ""))
-        (elico-docker (sql-product 'mysql)
-                  (sql-port 33060)
-                  (sql-server "127.0.0.1")
-                  (sql-user "root")
-                  (sql-password "root")
-                  (sql-database ""))))
