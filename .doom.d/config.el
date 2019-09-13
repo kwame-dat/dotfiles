@@ -6,9 +6,9 @@
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Dank Mono" :size 13)
-      doom-big-font (font-spec :family "Dank Mono" :size 13)
-      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 13)
+      doom-font (font-spec :family "SF Mono" :size 14)
+      doom-big-font (font-spec :family "SF Mono" :size 14)
+      doom-variable-pitch-font (font-spec :family "SF Mono" :size 14)
 
       which-key-idle-delay 0.40
       lsp-ui-sideline-enable nil
