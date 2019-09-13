@@ -51,38 +51,36 @@
        gist
        (lookup +docsets)
        lsp
-       macos             ; MacOS-specific commands
-       magit             ;
-       make              ; run make tasks from Emacs
-       tmux              ; an API for interacting with tmux
+       macos
+       magit
+       make
+       tmux
        pass
 
        :lang
        (cc +lsp)
-       common-lisp
-       data
-       emacs-lisp
        (java +lsp)
        (javascript +lsp)
+       (php +lsp)
+       (python +pyenv +lsp)
+       (org +attach +babel +capture +export +present +protocol +dragndrop +ipython +pandoc +gnuplot +present)
+       (sh +lsp)
+       (web +lsp)
+       (ruby +lsp)
        ledger
        markdown
-       (org +attach +babel +capture +export +present +protocol +dragndrop +ipython +pandoc +gnuplot +present)
-       (php +lsp +php-laravel-mode +php-composer-mode)
-       (python +pyenv +lsp)
+       data
+       emacs-lisp
        rest
-       ruby
-       sh
        swift
-       web
 
        :email
-       (mu4e +gmail)       ; WIP
+       (mu4e +gmail)
 
        :app
        calendar
-       irc              ; how neckbeards socialize
-       (rss +org)        ; emacs as an RSS reader
-       twitter           ; twitter client https://twitter.com/vnought
+       (rss +org)
+       twitter
 
        :config
        (default +bindings +smartparens))
