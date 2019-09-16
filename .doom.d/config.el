@@ -1,7 +1,6 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
 (setq doom-theme 'doom-one-light)
-(setq ispell-dictionary "british")
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq user-full-name "Tony Ampomah"
@@ -125,16 +124,13 @@
 ;; lang/php
   (map! :localleader
         :map php-mode-map
-        "i" #'phpactor-import-class
-        "]" #'phpactor-goto-definition
-        "fr" #'phpactor-find-references
-        :prefix "r"
-        "cn" #'phpactor-create-new-class
-        "ci" #'phpactor-implement-contracts
+        "f" #'lsp-find-references
+        "d" #'lsp-describe-thing-at-point
         :prefix "t"
         "p" #'phpunit-current-project
         "c" #'phpunit-current-class
         "t" #'phpunit-current-test)
+(map! :n "C-]" #'lsp-find-definition)
 
 (setq-default flycheck-phpcs-standard "PSR2")
 
