@@ -81,7 +81,7 @@
         "T" #'+tonyampomah/browse-dotfiles)
       (:prefix "o"
         "m" #'mu4e
-        "." #'ivy-pass)
+        "." #'+pass/edit-entry)
       (:prefix "n"
         "m" #'+tonyampomah/find-notes-for-major-mode
         "p" #'+tonyampomah/find-notes-for-project))
