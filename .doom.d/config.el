@@ -162,3 +162,5 @@
       org-gcal-client-secret (+pass-get-field "2 Areas/Personal/Emails/gmail.com" "client_secret")
       org-gcal-file-alist '(((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "tcal").  "~/org/calendar/Tcal.org")
                             ((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "gcal").  "~/org/calendar/Gcal.org")))
+
+(setq lsp-enable-file-watchers nil)
