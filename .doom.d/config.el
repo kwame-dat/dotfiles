@@ -93,10 +93,13 @@
 (setq org-agenda-files (quote ("~/org/Todo.org"
                                "~/org/Inbox.org"
                                "~/org/Habits.org"
-                               "~/org/Someday.org"
-                               "~/org/Work-todo.org"
-                               "~/org/Work-inbox.org"
-                               "~/org/Work-someday.org"
+                               "~/org/Goals.org"
+                               "~/org/Work Goals.org"
+                               "~/org/Work Habits.org"
+                               "~/org/Work Todo.org"
+                               "~/org/Spiritual Goals.org"
+                               "~/org/Spiritual Habits.org"
+                               "~/org/Spiritual Todo.org"
                                "~/org/calendar/Gcal.org"
                                "~/org/calendar/Tcal.org")))
 
@@ -110,7 +113,7 @@
          "* TODO %?\n")
         ("p" "Project" entry (file+headline "~/org/Todo.org" "Projects")
          (file "~/org/templates/newprojecttemplate.org"))
-        ("s" "Someday" entry (file+headline "~/org/Someday.org" "Someday")
+        ("s" "Goals" entry (file+headline "~/org/Goals.org" "Goals")
          "* SOMEDAY %?\n")
         ("l" "Log" entry (file+olp+datetree "~/org/log.org" "Log")
          (file "~/org/templates/logtemplate.org"))))
