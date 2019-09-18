@@ -140,12 +140,15 @@
 ;; Projectile
 (setq projectile-project-search-path '("~/Desktop"
                                        "~/Downloads"
-                                       "~/Documents/3 Resources"
-                                       "~/Documents/2 Areas"
-                                       "~/Documents/1 Projects"
-                                       "~/Work Documents/3 Resources"
-                                       "~/Work Documents/2 Areas"
-                                       "~/Work Documents/1 Projects"
+                                       "~/Documents/Personal/3 Resources"
+                                       "~/Documents/Personal/2 Areas"
+                                       "~/Documents/Personal/1 Projects"
+                                       "~/Documents/Spiritual/3 Resources"
+                                       "~/Documents/Spiritual/2 Areas"
+                                       "~/Documents/Spiritual/1 Projects"
+                                       "~/Documents/Work/3 Resources"
+                                       "~/Documents/Work/2 Areas"
+                                       "~/Documents/Work/1 Projects"
                                        "~/Repo"))
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
