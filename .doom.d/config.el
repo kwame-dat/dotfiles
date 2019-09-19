@@ -143,7 +143,7 @@
                                        "~/Documents/Personal/1 Projects"
                                        "~/Documents/Personal/2 Areas"
                                        "~/Documents/Personal/3 Resources"
-                                       "~/Documents/Personal/4 Resources"
+                                       "~/Documents/Personal/4 Archives"
                                        "~/Documents/Spiritual/1 Projects"
                                        "~/Documents/Spiritual/2 Areas"
                                        "~/Documents/Spiritual/3 Resources"
