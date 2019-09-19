@@ -1,6 +1,6 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-one-light)
+(setq doom-theme 'doom-one)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq user-full-name "Tony Ampomah"
@@ -140,15 +140,18 @@
 ;; Projectile
 (setq projectile-project-search-path '("~/Desktop"
                                        "~/Downloads"
-                                       "~/Documents/Personal/3 Resources"
-                                       "~/Documents/Personal/2 Areas"
                                        "~/Documents/Personal/1 Projects"
-                                       "~/Documents/Spiritual/3 Resources"
-                                       "~/Documents/Spiritual/2 Areas"
+                                       "~/Documents/Personal/2 Areas"
+                                       "~/Documents/Personal/3 Resources"
+                                       "~/Documents/Personal/4 Resources"
                                        "~/Documents/Spiritual/1 Projects"
-                                       "~/Documents/Work/3 Resources"
-                                       "~/Documents/Work/2 Areas"
+                                       "~/Documents/Spiritual/2 Areas"
+                                       "~/Documents/Spiritual/3 Resources"
+                                       "~/Documents/Spiritual/4 Archives"
                                        "~/Documents/Work/1 Projects"
+                                       "~/Documents/Work/2 Areas"
+                                       "~/Documents/Work/3 Resources"
+                                       "~/Documents/Work/4 Archives"
                                        "~/Repo"))
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
