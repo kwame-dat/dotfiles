@@ -24,11 +24,12 @@
        (evil +everywhere)
        file-templates
        fold
-       (format)
+       format
        lispy
        multiple-cursors
        rotate-text
        snippets
+       word-wrap
 
        :emacs
        (dired +icons)
@@ -61,7 +62,7 @@
        (cc +lsp)
        (java +lsp)
        (javascript +lsp)
-       (php +lsp)
+       (php +lsp +php-laravel-mode +php-composer-mode)
        (python +pyenv +lsp)
        (org +attach +babel +capture +export +present +protocol +dragndrop +ipython +pandoc +gnuplot +present)
        (sh +lsp)
@@ -79,7 +80,6 @@
 
        :app
        calendar
-       (rss +org)
        twitter
 
        :config
