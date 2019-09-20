@@ -1,6 +1,6 @@
 [general]
-accounts = Arksolutions
-maxsyncaccounts = 1
+accounts = Arksolutions, Emporium
+maxsyncaccounts = 2
 pythonfile = ~/Repo/Dotfiles/shell/+mu/lib.py
 
 [DEFAULT]
@@ -20,4 +20,21 @@ remoteusereval = get_pass("Personal/Emails/arksolutions.it")["user"]
 remotepasseval = get_pass("Personal/Emails/arksolutions.it")["password"]
 ssl = true
 maxconnections = 1
+sslcacertfile = /usr/local/etc/openssl/cert.pem
+
+[Account Emporium]
+localrepository = LocalEmporium
+remoterepository = RepositoryEmporium
+
+[Repository LocalEmporium]
+type = Maildir
+localfolders = ~/.mail/emporium.co.uk
+
+[Repository RepositoryEmporium]
+type = IMAP
+remotehosteval = get_pass("Personal/Emails/arksolutions.it")["remotehost"]
+remoteusereval = get_pass("Personal/Emails/arksolutions.it")["user"]
+remotepasseval = get_pass("Personal/Emails/arksolutions.it")["password"]
+maxconnections = 1
+ssl = true
 sslcacertfile = /usr/local/etc/openssl/cert.pem
