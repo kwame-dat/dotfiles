@@ -57,6 +57,7 @@
        make
        tmux
        pass
+       pdf
 
        :lang
        (cc +lsp)
