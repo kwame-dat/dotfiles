@@ -1,14 +1,14 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-tomorrow-night)
+(setq doom-theme 'doom-one)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "SF Mono" :size 13)
-      doom-big-font (font-spec :family "SF Mono" :size 13)
-      doom-variable-pitch-font (font-spec :family "SF Mono" :size 13)
+      doom-font (font-spec :family "SF Mono" :size 14)
+      doom-big-font (font-spec :family "SF Mono" :size 14)
+      doom-variable-pitch-font (font-spec :family "SF Mono" :size 14)
 
       which-key-idle-delay 0.40
       lsp-ui-sideline-enable nil
@@ -105,7 +105,7 @@
 
 ;; org-jira
 (setq jiralib-url "https://jira.eandl.co.uk")
-(setq org-jira-working-dir "~/Repo/jira")
+(setq org-jira-working-dir "~/org/jira")
 
 ;; org capture templates
 (setq org-capture-templates
@@ -166,25 +166,7 @@
       (user-mail-address      . "tony@arksolutions.it")
       (mu4e-compose-signature . "---\nTony Ampomah"))
     t)
-(setq org-gcal-client-id (+pass-get-field "2 Areas/Personal/Emails/gmail.com" "client_id")
-      org-gcal-client-secret (+pass-get-field "2 Areas/Personal/Emails/gmail.com" "client_secret")
-      org-gcal-file-alist '(((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "tcal").  "~/org/Tcal.org")
-                            ((+pass-get-field "2 Areas/Personal/Emails/gmail.com" "gcal").  "~/org/Gcal.org")))
 
+(auth-source-pass-enable)
+(setq auth-sources '(password-store))
 (setq lsp-enable-file-watchers nil)
-
-(slack-register-team
- :name "emacs-slack"
- :default t
- :client-id (+pass-get-field "2 Areas/Social/slack" "client_id")
- :client-secret (+pass-get-field "2 Areas/Social/slack" "client_secret")
- :token (+pass-get-field "2 Areas/Social/slack" "token")
- :subscribed-channels '(general slackbot))
-
-(slack-register-team
- :name "t-squared"
- :default t
- :client-id (+pass-get-field "2 Areas/Personal/slack" "client_id")
- :client-secret (+pass-get-field "2 Areas/Personal/slack" "client_secret")
- :token (+pass-get-field "2 Areas/Personal/slack" "token")
- :subscribed-channels '(general slackbot))

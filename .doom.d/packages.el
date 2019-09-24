@@ -11,4 +11,4 @@
 (package! slack)
 (package! speed-type)
 (package! uuidgen)
-(package! ox-jira)
+(package! phpactor)
