@@ -25,7 +25,6 @@
        file-templates
        fold
        format
-       lispy
        multiple-cursors
        rotate-text
        snippets
