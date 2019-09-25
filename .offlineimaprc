@@ -32,9 +32,9 @@ localfolders = ~/.mail/emporium.co.uk
 
 [Repository RepositoryEmporium]
 type = IMAP
-remotehosteval = get_pass("Personal/Emails/arksolutions.it")["remotehost"]
-remoteusereval = get_pass("Personal/Emails/arksolutions.it")["user"]
-remotepasseval = get_pass("Personal/Emails/arksolutions.it")["password"]
+remotehosteval = get_pass("Work/Emails/emporium.co.uk")["remotehost"]
+remoteusereval = get_pass("Work/Emails/emporium.co.uk")["user"]
+remotepasseval = get_pass("Work/Emails/emporium.co.uk")["password"]
 maxconnections = 1
 ssl = true
 sslcacertfile = /usr/local/etc/openssl/cert.pem

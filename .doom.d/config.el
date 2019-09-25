@@ -1,14 +1,14 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-spacegrey)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "SF Mono" :size 14)
-      doom-big-font (font-spec :family "SF Mono" :size 14)
-      doom-variable-pitch-font (font-spec :family "SF Mono" :size 14)
+      doom-font (font-spec :family "Dank Mono" :size 14)
+      doom-big-font (font-spec :family "Dank Mono" :size 14)
+      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 14)
 
       which-key-idle-delay 0.40
       lsp-ui-sideline-enable nil
@@ -168,5 +168,25 @@
     t)
 
 (auth-source-pass-enable)
-(setq auth-sources '(password-store))
+(setq auth-sources '((:source "~/.authinfo.gpg")))
 (setq lsp-enable-file-watchers nil)
+
+(slack-register-team
+ :name "emacs-slack"
+ :default t
+ :client-id (+pass-get-field "2 Areas/Social/slack" "client_id")
+ :client-secret (+pass-get-field "2 Areas/Social/slack" "client_secret")
+ :token (+pass-get-field "2 Areas/Social/slack" "token")
+ :subscribed-channels '(bitbucket
+                        deployments
+                        elico
+                        elico-frontend-team
+                        functional-testing
+                        general
+                        kibana
+                        qa
+                        rollbar
+                        slackbot
+                        sys-ops))
+
+(slack-start)
