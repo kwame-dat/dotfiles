@@ -31,6 +31,8 @@
   (setq ns-use-thin-smoothing t)
   (add-hook 'window-setup-hook #'toggle-frame-maximized))
 
+;;; Custom modeline
+(load! "lisp/modeline")
 
 ;;
 ;;; Keybinds
@@ -170,22 +172,12 @@
 (auth-source-pass-enable)
 (setq auth-sources '((:source "~/.authinfo.gpg")))
 (setq lsp-enable-file-watchers nil)
+
 (slack-register-team
  :name "emacs-slack"
  :default t
  :client-id (+pass-get-field "2 Areas/Social/slack" "client_id")
  :client-secret (+pass-get-field "2 Areas/Social/slack" "client_secret")
- :token (+pass-get-field "2 Areas/Social/slack" "token")
- :subscribed-channels '(bitbucket
-                        deployments
-                        elico
-                        elico-frontend-team
-                        functional-testing
-                        general
-                        kibana
-                        qa
-                        rollbar
-                        slackbot
-                        sys-ops))
+ :token (+pass-get-field "2 Areas/Social/slack" "token"))
 
 (slack-start)
