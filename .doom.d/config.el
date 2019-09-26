@@ -6,9 +6,9 @@
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Dank Mono" :size 14)
-      doom-big-font (font-spec :family "Dank Mono" :size 14)
-      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 14)
+      doom-font (font-spec :family "Dank Mono" :size 12)
+      doom-big-font (font-spec :family "Dank Mono" :size 12)
+      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 12)
 
       which-key-idle-delay 0.40
       lsp-ui-sideline-enable nil
@@ -170,7 +170,6 @@
 (auth-source-pass-enable)
 (setq auth-sources '((:source "~/.authinfo.gpg")))
 (setq lsp-enable-file-watchers nil)
-
 (slack-register-team
  :name "emacs-slack"
  :default t
