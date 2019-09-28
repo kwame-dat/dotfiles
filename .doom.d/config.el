@@ -172,12 +172,3 @@
 (auth-source-pass-enable)
 (setq auth-sources '((:source "~/.authinfo.gpg")))
 (setq lsp-enable-file-watchers nil)
-
-(slack-register-team
- :name "emacs-slack"
- :default t
- :client-id (+pass-get-field "2 Areas/Social/slack" "client_id")
- :client-secret (+pass-get-field "2 Areas/Social/slack" "client_secret")
- :token (+pass-get-field "2 Areas/Social/slack" "token"))
-
-(slack-start)
