@@ -1,14 +1,14 @@
 (setq doom-localleader-key ",")
 (setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-spacegrey)
+(setq doom-theme 'doom-molokai)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Dank Mono" :size 12)
-      doom-big-font (font-spec :family "Dank Mono" :size 12)
-      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 12)
+      doom-font (font-spec :family "Dank Mono" :size 16)
+      doom-big-font (font-spec :family "Dank Mono" :size 16)
+      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 16)
 
       which-key-idle-delay 0.40
       lsp-ui-sideline-enable nil
