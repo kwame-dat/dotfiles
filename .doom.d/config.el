@@ -129,12 +129,21 @@
 ;; lang/php
   (map! :localleader
         :map php-mode-map
-        "f" #'lsp-find-references
+        "i" #'phpactor-import-class
+
+        :prefix "f"
+        "r" #'lsp-find-references
         "d" #'lsp-describe-thing-at-point
+
+        :prefix "g"
+        "d" #'phpactor-goto-definition
+        "i" #'phpactor-find-references
+
         :prefix "t"
         "p" #'phpunit-current-project
         "c" #'phpunit-current-class
         "t" #'phpunit-current-test)
+
 (map! :n "C-]" #'lsp-find-definition)
 
 (setq-default flycheck-phpcs-standard "PSR2")
@@ -172,12 +181,3 @@
 (auth-source-pass-enable)
 (setq auth-sources '((:source "~/.authinfo.gpg")))
 (setq lsp-enable-file-watchers nil)
-
-(slack-register-team
- :name "emacs-slack"
- :default t
- :client-id (+pass-get-field "2 Areas/Social/slack" "client_id")
- :client-secret (+pass-get-field "2 Areas/Social/slack" "client_secret")
- :token (+pass-get-field "2 Areas/Social/slack" "token"))
-
-(slack-start)
