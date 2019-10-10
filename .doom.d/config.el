@@ -1,6 +1,10 @@
 (setq doom-localleader-key ",")
-(setq display-line-numbers-type 'relative)
-(setq doom-theme 'tsdh-light)
+(setq doom-theme 'adwaita)
+(setq display-line-numbers-type nil)
+(setq doom-modeline-height 0)
+(setq doom-modeline-bar-width 10)
+
+
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq user-full-name "Tony Ampomah"
@@ -31,12 +35,7 @@
   (setq ns-use-thin-smoothing t)
   (add-hook 'window-setup-hook #'toggle-frame-maximized))
 
-;;; Custom modeline
-(load! "lisp/modeline")
-
-;;
 ;;; Keybinds
-
 (map! :m "M-j" #'multi-next-line
       :m "M-k" #'multi-previous-line
       :m "<f5>" #'open-agenda
@@ -47,6 +46,10 @@
       :n "C-j" #'evil-window-down
       :n "C-k" #'evil-window-up
       :n "C-l" #'evil-window-right
+      "s-r" #'counsel-imenu
+      "s-p" #'+ivy/projectile-find-file
+      "s-S-p" #'counsel-projectile-switch-project
+      "s-S-f" #'+default/search-project
 
       (:map evil-treemacs-state-map
         "C-h" #'evil-window-left
@@ -149,21 +152,7 @@
 (setq-default flycheck-phpcs-standard "PSR2")
 
 ;; Projectile
-(setq projectile-project-search-path '("~/Desktop"
-                                       "~/Downloads"
-                                       "~/Documents/Personal/1 Projects"
-                                       "~/Documents/Personal/2 Areas"
-                                       "~/Documents/Personal/3 Resources"
-                                       "~/Documents/Personal/4 Archives"
-                                       "~/Documents/Spiritual/1 Projects"
-                                       "~/Documents/Spiritual/2 Areas"
-                                       "~/Documents/Spiritual/3 Resources"
-                                       "~/Documents/Spiritual/4 Archives"
-                                       "~/Documents/Work/1 Projects"
-                                       "~/Documents/Work/2 Areas"
-                                       "~/Documents/Work/3 Resources"
-                                       "~/Documents/Work/4 Archives"
-                                       "~/Repo"))
+(setq projectile-project-search-path '("~/Repo"))
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")

@@ -5,18 +5,12 @@
        (ivy +fuzzy +presclient +icons)
 
        :ui
-       doom
-       doom-quit
        hl-todo
        modeline
-       nav-flash
-       ophints
        (popup +all +defaults)
        treemacs
-       pretty-code
-       unicode
        vc-gutter
-       vi-tilde-fringe
+       ;; vi-tilde-fringe
        window-select
        workspaces
 
@@ -59,28 +53,23 @@
        pdf
 
        :lang
-       (cc +lsp)
-       (java +lsp)
        (javascript +lsp)
        (php +lsp +php-laravel-mode +php-composer-mode)
        (python +pyenv +lsp)
        (org +attach +babel +capture +export +present +protocol +dragndrop +ipython +pandoc +gnuplot +present)
        (sh +lsp)
        (web +lsp)
-       (ruby +lsp)
        ledger
        markdown
        data
        emacs-lisp
        rest
-       swift
 
        :email
        (mu4e +gmail)
 
        :app
        calendar
-       twitter
 
        :config
        (default +bindings +smartparens))
