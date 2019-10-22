@@ -32,6 +32,3 @@ alias tpc="vendor/bin/phpunit --coverage-html='tests/coverage/html'"
 alias art="php artisan"
 alias tinker="php artisan tinker"
 alias migrate="php artisan migrate"
-
-# Ledger
-export PATH="/usr/local/opt/php@7.2/bin:$PATH"
