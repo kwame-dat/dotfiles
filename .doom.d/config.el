@@ -3,6 +3,9 @@
 (setq doom-theme 'doom-one)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
+(setq company-idle-delay 0.1)
+(setq company-minimum-prefix-length 1)
+
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
