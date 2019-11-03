@@ -6,13 +6,16 @@
 
        :ui
        hl-todo
+       doom
        modeline
        (popup +all +defaults)
        treemacs
        vc-gutter
-       ;; vi-tilde-fringe
+       vi-tilde-fringe
        window-select
        workspaces
+       nav-flash
+       ophints
 
        :editor
        (evil +everywhere)

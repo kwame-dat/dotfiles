@@ -1,18 +1,14 @@
 (setq doom-localleader-key ",")
-(setq doom-theme 'adwaita)
-(setq display-line-numbers-type nil)
-(setq doom-modeline-height 0)
-(setq doom-modeline-bar-width 10)
-
-
+(setq display-line-numbers-type 'relative)
+(setq doom-theme 'doom-one)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Dank Mono" :size 16)
-      doom-big-font (font-spec :family "Dank Mono" :size 16)
-      doom-variable-pitch-font (font-spec :family "Dank Mono" :size 16)
+      doom-font (font-spec :family "Oxygen Mono" :size 16)
+      doom-big-font (font-spec :family "Oxygen Mono" :size 16)
+      doom-variable-pitch-font (font-spec :family "Oxygen Mono" :size 16)
 
       which-key-idle-delay 0.40
       lsp-ui-sideline-enable nil
@@ -97,20 +93,9 @@
   (add-to-list 'org-modules 'org-habit t))
 (setq org-agenda-files (quote ("~/org/Todo.org"
                                "~/org/Inbox.org"
-                               "~/org/Habits.org"
                                "~/org/Goals.org"
-                               "~/org/Work Goals.org"
-                               "~/org/Work Habits.org"
-                               "~/org/Work Todo.org"
-                               "~/org/Spiritual Goals.org"
-                               "~/org/Spiritual Habits.org"
-                               "~/org/Spiritual Todo.org"
                                "~/org/calendar/Gcal.org"
                                "~/org/calendar/Tcal.org")))
-
-;; org-jira
-(setq jiralib-url "https://jira.eandl.co.uk")
-(setq org-jira-working-dir "~/org/jira")
 
 ;; org capture templates
 (setq org-capture-templates
@@ -152,7 +137,12 @@
 (setq-default flycheck-phpcs-standard "PSR2")
 
 ;; Projectile
-(setq projectile-project-search-path '("~/Repo"))
+(setq projectile-project-search-path '("~/Desktop"
+                                       "~/Downloads"
+                                       "~/Documents/3 Resources"
+                                       "~/Documents/2 Areas"
+                                       "~/Documents/1 Projects"
+                                       "~/Repo"))
 ;; app email settings
 ;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
