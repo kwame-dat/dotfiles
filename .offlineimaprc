@@ -1,6 +1,6 @@
 [general]
-accounts = Arksolutions, DigitalVelocity
-maxsyncaccounts = 2
+accounts = Arksolutions
+maxsyncaccounts = 1
 pythonfile = ~/Repo/Dotfiles/shell/+mu/lib.py
 
 [Account Arksolutions]
@@ -16,23 +16,6 @@ type = IMAP
 remotehosteval = get_pass("Emails/arksolutions.it")["remotehost"]
 remoteusereval = get_pass("Emails/arksolutions.it")["user"]
 remotepasseval = get_pass("Emails/arksolutions.it")["password"]
-ssl = true
-maxconnections = 1
-sslcacertfile = /usr/local/etc/openssl/cert.pem
-
-[Account DigitalVelocity]
-localrepository = LocalDigitalVelocity
-remoterepository = RepositoryDigitalVelocity
-
-[Repository LocalDigitalVelocity]
-type = Maildir
-localfolders = ~/.mail/digital-velocity.co.uk
-
-[Repository RepositoryDigitalVelocity]
-type = IMAP
-remotehosteval = get_pass("Emails/digital-velocity.co.uk")["remotehost"]
-remoteusereval = get_pass("Emails/digital-velocity.co.uk")["user"]
-remotepasseval = get_pass("Emails/digital-velocity.co.uk")["password"]
 ssl = true
 maxconnections = 1
 sslcacertfile = /usr/local/etc/openssl/cert.pem
