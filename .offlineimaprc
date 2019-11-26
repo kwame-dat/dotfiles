@@ -13,9 +13,9 @@ localfolders = ~/.mail/arksolutions.it
 
 [Repository RepositoryArksolutions]
 type = IMAP
-remotehosteval = get_pass("Emails/arksolutions.it")["remotehost"]
-remoteusereval = get_pass("Emails/arksolutions.it")["user"]
-remotepasseval = get_pass("Emails/arksolutions.it")["password"]
+remotehosteval = get_pass("emails/arksolutions.it")["remotehost"]
+remoteusereval = get_pass("emails/arksolutions.it")["user"]
+remotepasseval = get_pass("emails/arksolutions.it")["password"]
 ssl = true
 maxconnections = 1
 sslcacertfile = /usr/local/etc/openssl/cert.pem
