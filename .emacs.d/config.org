@@ -1,0 +1,1018 @@
+#+TITLE: Emacs Configuration
+#+OPTIONS: toc:nil author:nil num:nil
+* Sane defaults
+  #+BEGIN_SRC emacs-lisp
+    (load-file "~/.emacs.d/sensible-defaults.el")
+    (sensible-defaults/use-all-settings)
+    (sensible-defaults/use-all-keybindings)
+    (sensible-defaults/backup-to-temp-directory)
+    (setq custom-file "~/.emacs.d/custom.el")
+    (load custom-file 'noerror)
+    (setq delete-by-moving-to-trash t)
+    (defun system-move-file-to-trash (file)
+      "Use \"trash\" to move FILE to the system trash.
+    When using Homebrew, install it using \"brew install trash\"."
+      (call-process (executable-find "trash")
+                    nil 0 nil
+                    file))
+
+    (setq make-backup-files nil) ; stop creating backup~ files
+    (setq auto-save-default nil) ; stop creating #autosave# files
+    (setq create-lockfiles nil)  ; stop creating .# files
+
+
+    (global-auto-revert-mode t)
+
+    (setq
+     inhibit-startup-message t         ; Don't show the startup message
+     inhibit-startup-screen t          ; or screen
+     cursor-in-non-selected-windows t  ; Hide the cursor in inactive windows
+
+     echo-keystrokes 0.1               ; Show keystrokes right away, don't show the message in the scratch buffer
+     initial-scratch-message nil       ; Empty scratch buffer
+     sentence-end-double-space nil     ; Sentences should end in one space, come on!
+     confirm-kill-emacs 'y-or-n-p      ; y and n instead of yes and no when quitting
+     )
+
+    (fset 'yes-or-no-p 'y-or-n-p)      ; y and n instead of yes and no everywhere else
+    ;; (delete-selection-mode 1)
+    (global-unset-key (kbd "s-p"))
+
+    (electric-pair-mode 1)
+
+
+    (setq user-full-name "Tony Ampomah"
+          user-mail-address "tony@arksolutions.it")
+
+    (save-place-mode t)
+    (setq column-number-mode t) ;; show columns in addition to rows in mode line
+    (global-visual-line-mode t)
+    (setq-default indent-tabs-mode nil)
+  #+END_SRC
+
+* Utility functions
+  #+BEGIN_SRC emacs-lisp
+    (defun kwamedat/visit-emacs-config ()
+      (interactive)
+      (find-file "~/.emacs.d/config.org"))
+
+    (defun kwamedat/visit-host-file ()
+      (interactive)
+      (find-file "/etc/hosts"))
+
+    (defun kwamedat/find-in-notes ()
+      (interactive)
+      (counsel-find-file "~/Dropbox/GTD"))
+
+    (defun kwamedat/find-in-documents ()
+      (interactive)
+      (counsel-find-file "~/Documents"))
+
+    (defun kwamedat/find-projects-in-documents ()
+      (interactive)
+      (counsel-find-file "~/Documents/1Projects"))
+
+    (defun kwamedat/find-areas-in-documents ()
+      (interactive)
+      (counsel-find-file "~/Documents/2Areas"))
+
+    (defun kwamedat/find-resources-in-documents ()
+      (interactive)
+      (counsel-find-file "~/Documents/3Resources"))
+
+    (defun kwamedat/visit-todo-list-file ()
+      (interactive)
+      (find-file "~/Dropbox/GTD/todo.org"))
+
+    (defun kwamedat/visit-inbox ()
+      (interactive)
+      (find-file "~/Dropbox/GTD/inbox.org"))
+
+  #+END_SRC
+
+* Leader key bindings
+  #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+
+* Global key bindings
+  #+BEGIN_SRC emacs-lisp
+    (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
+    (global-set-key (kbd "s-o") (kbd "C-x o"))
+    (global-set-key (kbd "<escape>")      'keyboard-escape-quit) ;; use escape to quit
+    (global-set-key (kbd "s-w") (kbd "C-x 0")) ;; just like close tab in a web browser
+    (global-set-key (kbd "s-p") 'projectile-find-file)
+    (global-set-key (kbd "s-P") 'projectile-switch-project)
+    (define-key global-map (kbd "s-)") 'sensible-defaults/reset-text-size)
+    (define-key global-map (kbd "s-+") 'text-scale-increase)
+    (define-key global-map (kbd "s-=") 'text-scale-increase)
+    (define-key global-map (kbd "s-_") 'text-scale-decrease)
+    (define-key global-map (kbd "s--") 'text-scale-decrease)
+  #+END_SRC
+
+* Programming tweaks
+  #+BEGIN_SRC emacs-lisp
+    (setq-default indent-tabs-mode nil)
+    (setq tab-width 2)
+    (setq js-indent-level 2)
+    (setq css-indent-offset 2)
+    (setq-default c-basic-offset 2)
+    (setq c-basic-offset 2)
+    (setq-default tab-width 2)
+    (setq-default c-basic-indent 2)
+  #+END_SRC
+
+* Linting =flycheck=
+  #+BEGIN_SRC emacs-lisp
+    (use-package flycheck
+      :ensure t
+      :diminish flycheck-mode
+      :config
+      (progn
+        (setq-local flycheck-phpcs-standard "PSR2")
+        (global-flycheck-mode)))
+  #+END_SRC
+
+* =php=
+** =php-mode=
+   #+BEGIN_SRC emacs-lisp
+    (setq-default phpstan-executable 'phpstan)
+    (setq-default php-mode-coding-style 'psr2)
+    (setq-default flycheck-phpcs-standard "PSR2")
+    (defun my-php-mode-setup ()
+      "My PHP-mode hook."
+      (require 'flycheck-phpstan)
+      (flycheck-mode t))
+
+    (add-hook 'php-mode-hook 'my-php-mode-setup)
+    (use-package php-mode :ensure t)
+   #+END_SRC
+
+** =phpunit=
+   #+BEGIN_SRC emacs-lisp
+    (use-package phpunit :ensure t)
+   #+END_SRC
+
+** =phpactor= and =flycheck-phpactor=
+   #+BEGIN_SRC emacs-lisp
+    (use-package phpactor :ensure t)
+    (use-package flycheck-phpstan :ensure t)
+   #+END_SRC
+
+* =web-mode=
+  #+BEGIN_SRC emacs-lisp
+    (use-package web-mode)
+  #+END_SRC
+
+* =scss-mode=
+  #+BEGIN_SRC emacs-lisp
+    (use-package scss-mode
+      :config
+      (setq scss-compile-at-save nil))
+  #+END_SRC
+
+* =less-css-mode=
+  #+BEGIN_SRC emacs-lisp
+    (use-package less-css-mode)
+  #+END_SRC
+
+* =css-mode=
+  #+BEGIN_SRC emacs-lisp
+    (use-package css-mode
+      :config
+      (setq css-indent-offset 2))
+  #+END_SRC
+
+* =yaml-mode=
+  #+BEGIN_SRC emacs-lisp
+    (use-package yaml-mode)
+  #+END_SRC
+
+* =restclient=
+  #+BEGIN_SRC emacs-lisp
+    (use-package restclient)
+  #+END_SRC
+
+* =javascript=
+  #+BEGIN_SRC emacs-lisp
+    (use-package coffee-mode)
+    (setq js-indent-level 2)
+    (add-hook 'coffee-mode-hook
+              (lambda ()
+                (yas-minor-mode 1)
+                (setq coffee-tab-width 2)))
+  #+END_SRC
+
+* =json-mode=
+  #+BEGIN_SRC emacs-lisp
+    (use-package json-mode)
+  #+END_SRC
+
+* =markdown-mode=
+  #+BEGIN_SRC emacs-lisp
+    (use-package markdown-mode
+      :commands (markdown-mode gfm-mode)
+      :mode (("README\\.md\\'" . gfm-mode)
+             ("\\.md\\'" . markdown-mode)
+             ("\\.markdown\\'" . markdown-mode))
+      :init (setq markdown-command "pandoc --no-highlight"))
+  #+END_SRC
+
+* Git =magit=
+  #+BEGIN_SRC emacs-lisp
+    (use-package magit
+      :config
+      (use-package evil-magit)
+      (use-package with-editor)
+      (setq magit-push-always-verify nil)
+      (setq git-commit-summary-max-length 50)
+      (add-hook 'with-editor-mode-hook 'evil-insert-state))
+  #+END_SRC
+
+* =ag=
+  #+BEGIN_SRC emacs-lisp
+    (use-package ag)
+  #+END_SRC
+
+* =wgrep=
+  #+BEGIN_SRC emacs-lisp
+    (use-package wgrep)
+    (eval-after-load 'grep
+      '(define-key grep-mode-map
+         (kbd "C-x C-q") 'wgrep-change-to-wgrep-mode))
+
+    (eval-after-load 'wgrep
+      '(define-key grep-mode-map
+         (kbd "C-c C-c") 'wgrep-finish-edit))
+    (setq wgrep-auto-save-buffer t)
+  #+END_SRC
+
+* Debugging =dap-mode=
+  #+BEGIN_SRC emacs-lisp
+    (use-package dap-mode
+      :ensure t
+      :commands dap-mode
+      :config
+      (dap-mode 1)
+      (require 'dap-ui)
+      (dap-ui-mode 1)
+      (require 'dap-lldb))
+  #+END_SRC
+
+* Managing Projects =projectile=
+  #+BEGIN_SRC emacs-lisp
+    (setq projectile-project-search-path '("~/Repo/2Areas"
+                                           "~/Repo/1Projects"))
+    (setq projectile-completion-system 'ivy)
+    (setq projectile-switch-project-action 'projectile-dired)
+    (setq projectile-enable-caching t)
+    (use-package projectile)
+    (projectile-mode +1)
+  #+END_SRC
+
+* =dump-jump=
+  #+BEGIN_SRC emacs-lisp
+    (use-package dumb-jump
+      :config
+      (define-key evil-normal-state-map (kbd "M-.") 'dumb-jump-go)
+      (setq dumb-jump-selector 'ivy))
+  #+END_SRC
+
+* =which-key=
+  #+BEGIN_SRC emacs-lisp
+    (use-package which-key
+      :config (which-key-mode))
+  #+END_SRC
+
+* =undo-tree=
+  #+BEGIN_SRC emacs-lisp
+    (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+    (use-package undo-tree
+      :ensure t
+      :config
+      (progn
+        (global-undo-tree-mode)))
+  #+END_SRC
+
+* Snippets =yasnippet=
+  #+BEGIN_SRC emacs-lisp
+    (use-package yasnippet
+      :ensure t
+      :config
+      (setq yas-snippet-dirs
+            '("~/.emacs.d/snippets"))
+
+      (yas-global-mode 1))
+  #+END_SRC
+
+* Multiple cursors =multiple-cursors=
+  #+BEGIN_SRC emacs-lisp
+    (use-package multiple-cursors
+      :config
+      (setq mc/always-run-for-all 1)
+      (global-set-key (kbd "s-d") 'mc/mark-next-like-this)
+      (global-set-key (kbd "s-D") 'mc/mark-all-dwim)
+      (define-key mc/keymap (kbd "<return>") nil))
+  #+END_SRC
+
+* Sidebar =neotree=
+  #+BEGIN_SRC emacs-lisp
+    (use-package neotree
+      :config
+      (setq neo-window-width 32
+            neo-create-file-auto-open t
+            neo-banner-message nil
+            neo-mode-line-type 'neotree
+            neo-smart-open t
+            neo-show-hidden-files t
+            neo-mode-line-type 'none
+            neo-auto-indent-point t)
+      (setq neo-theme (if (display-graphic-p) 'nerd 'arrow))
+      (global-set-key (kbd "s-1") 'neotree-toggle))
+  #+END_SRC
+
+* File manager =dired=
+  #+BEGIN_SRC emacs-lisp
+    (defun itechytony-dired-mode-setup ()
+      "to be run as hook for `dired-mode'."
+      (dired-hide-details-mode 1)
+      (dired-hide-dotfiles-mode 1))
+    (add-hook 'dired-mode-hook 'itechytony-dired-mode-setup)
+
+    (setq dired-dwim-target t)
+
+    (use-package dired-narrow
+      :ensure t
+      :config
+      (bind-key "C-c C-n" #'dired-narrow)
+      (bind-key "C-c C-f" #'dired-narrow-fuzzy)
+      (bind-key "C-x C-N" #'dired-narrow-regexp))
+
+    (use-package dired-subtree :ensure t
+      :after dired
+      :config
+      (bind-key "<tab>" #'dired-subtree-toggle dired-mode-map)
+      (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
+
+    (use-package dired-hide-dotfiles
+      :config
+      (dired-hide-dotfiles-mode)
+      (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
+
+    (setq dired-hide-details-mode t)
+
+    (use-package dired-open
+      :config
+      (setq dired-open-extensions
+            '(("pdf" . "zathura")
+              ("xlsx" . "gnumeric")
+              ("mkv" . "mpv")
+              ("mp3" . "mpv")
+              ("mp4" . "mpv")
+              ("avi" . "mpv"))))
+
+    ;;(setq-default dired-listing-switches "-lhvA")
+
+    (evil-define-key 'normal global-map (kbd "-")       'dired-jump)
+    (evil-define-key 'normal dired-mode-map (kbd "j") 'dired-next-line)
+    (evil-define-key 'normal dired-mode-map (kbd "k") 'dired-previous-line)
+
+    (setq dired-clean-up-buffers-too t)
+
+    (setq dired-recursive-copies 'always)
+
+    (setq dired-recursive-deletes 'top)
+  #+END_SRC
+
+* UI preferences
+  I don’t usually use the menu or scroll bar, and they take up useful space.
+  #+BEGIN_SRC emacs-lisp
+    (tool-bar-mode 0)
+    (menu-bar-mode 0)
+    (scroll-bar-mode -1)
+  #+END_SRC
+
+  There’s a tiny scroll bar that appears in the minibuffer window. This disables that:
+  #+BEGIN_SRC emacs-lisp
+  (set-window-scroll-bars (minibuffer-window) nil nil)
+  #+END_SRC
+
+  #+BEGIN_SRC emacs-lisp
+  (add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/themes/"))
+    (global-prettify-symbols-mode t)
+    (setq ring-bell-function 'ignore)
+    (setq split-height-threshold 0)
+    (setq split-width-threshold nil)
+    (winner-mode 1)
+  #+END_SRC
+
+** Font
+   #+BEGIN_SRC emacs-lisp
+    (set-frame-font "Fira Code 14" nil t)
+   #+END_SRC
+
+** Theme =kaolin-themes=
+   #+BEGIN_SRC emacs-lisp
+    (use-package kaolin-themes)
+    (load-theme 'kaolin-aurora t)
+   #+END_SRC
+
+** =diff-hl=
+   #+BEGIN_SRC emacs-lisp
+    (use-package diff-hl
+      :config
+      (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
+      (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
+
+   #+END_SRC
+
+** =powerline=
+   #+BEGIN_SRC emacs-lisp
+    (use-package powerline
+      :ensure t
+      :config
+      (powerline-default-theme)
+      (defpowerline powerline-minor-modes ""))
+    (use-package powerline-evil
+      :ensure t)
+   #+END_SRC
+
+* Publishing and Task Management =org-mode=
+  #+BEGIN_SRC emacs-lisp
+    ;; (setq org-startup-truncated nil)
+    (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
+
+    (use-package org :ensure t)
+
+    (setq org-ellipsis "⤵")
+
+    (setq org-src-fontify-natively t)
+
+    (setq org-directory "~/Dropbox/GTD")
+    (setq org-inbox-file "~/Dropbox/GTD/inbox.org")
+    (setq org-agenda-files (quote ("~/Dropbox/GTD/todo.org"
+                                   "~/Dropbox/GTD/inbox.org"
+                                   "~/Dropbox/GTD/inbox.org"
+                                   "~/Dropbox/GTD/goals.org")))
+
+    (setq org-capture-templates
+          '(("t" "Task" entry (file "~/Dropbox/GTD/inbox.org")
+             "* TODO %?\n")
+            ("p" "Project" entry (file+headline "~/Dropbox/GTD/todo.org" "Projects")
+             (file "~/Dropbox/GTD/templates/newprojecttemplate.org"))
+            ("g" "Goals" entry (file+headline "~/Dropbox/GTD/goals.org" "Goals")
+             "* SOMEDAY %?\n")
+            ("l" "Log" entry (file+olp+datetree "~/Dropbox/GTD/log.org" "Log")
+             (file "~/Dropbox/GTD/templates/logtemplate.org"))))
+
+    (setq org-agenda-inhibit-startup nil
+          org-agenda-skip-deadline-if-done t
+          org-agenda-skip-scheduled-if-done t)
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((R . t)
+       (emacs-lisp . t)
+       (latex . t)
+       (ledger . t)
+       (python . t)
+       (ruby . t)
+       (sqlite . t)))
+
+    (setq org-confirm-babel-evaluate nil)
+
+    (setq initial-major-mode 'org-mode)
+
+    (use-package org-bullets
+      :init
+      (add-hook 'org-mode-hook 'org-bullets-mode))
+
+    (use-package ox-pandoc)
+
+    (use-package ox-jira)
+
+    (use-package ox-slack)
+
+    (use-package org-pomodoro)
+
+    (use-package evil-org
+      :after org
+      :config
+      (add-hook 'org-mode-hook 'evil-org-mode)
+      (add-hook 'evil-org-mode-hook
+                (lambda () (evil-org-set-key-theme)))
+      (require 'evil-org-agenda)
+      (evil-org-agenda-set-keys))
+  #+END_SRC
+
+* Calendar
+** =calfw=
+** =org-gcal=
+   #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+
+* Spelling
+  #+BEGIN_SRC emacs-lisp
+    (setq ispell-program-name "aspell")
+    (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+    (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
+    (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
+
+    (add-hook 'text-mode-hook 'flyspell-mode)
+
+    (global-set-key (kbd "s-\\") 'ispell-word)
+
+    (use-package synosaurus
+      :config
+      (global-set-key (kbd "s-|") 'powerthesaurus-lookup-word-dwim))
+
+    (use-package define-word
+      :config
+      (global-set-key (kbd "M-\\") 'define-word-at-point))
+  #+END_SRC
+
+* Completion framework =ivy= and =counsel=
+  #+BEGIN_SRC emacs-lisp
+    (use-package ivy
+      :config
+      (ivy-mode 1)
+      (setq ivy-use-virtual-buffers t)
+      (setq ivy-count-format "(%d/%d) ")
+      (setq enable-recursive-minibuffers t)
+      (setq ivy-initial-inputs-alist nil)
+      (setq ivy-re-builders-alist
+            '((swiper . ivy--regex-plus)
+              (swiper-isearch . ivy--regex-plus)
+              (counsel-ag . ivy--regex-plus)
+              (counsel-rg . ivy--regex-plus)
+              (t      . ivy--regex-fuzzy)))   ;; enable fuzzy searching everywhere except for Swiper and ag
+
+      (global-set-key (kbd "s-b") 'ivy-switch-buffer))
+
+    (use-package swiper
+      :config
+      (global-set-key (kbd "s-f") 'swiper-isearch))
+
+    (use-package counsel
+      :config
+      (global-set-key (kbd "M-x") 'counsel-M-x)
+      (global-set-key (kbd "s-y") 'counsel-yank-pop)
+      (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+      (global-set-key (kbd "s-r") 'counsel-imenu)
+      (global-set-key (kbd "s-b") 'counsel-switch-buffer)
+      (global-set-key (kbd "s-/") 'comment-line)
+      (global-set-key (kbd "s-F") 'counsel-rg)
+      (global-set-key (kbd "s-f") 'swiper-isearch)
+      (global-set-key (kbd "s-p") 'counsel-git))
+
+    ;; When using git ls (via counsel-git), include unstaged files
+    (setq counsel-git-cmd "git ls-files --full-name --exclude-standard --others --cached --")
+
+    (use-package smex)
+    (use-package flx)
+
+    (define-key ivy-minibuffer-map (kbd "C-c C-e") 'ivy-occur)
+
+  #+END_SRC
+
+* Auto completion
+** =company=
+   #+BEGIN_SRC emacs-lisp
+    (use-package company
+      :ensure t
+      :config
+      (setq company-idle-delay 0.1)
+      (setq company-global-modes '(not org-mode markdown-mode))
+      (setq company-minimum-prefix-length 1)
+      (setq company-idle-delay 0.1)
+      (define-key company-active-map (kbd "ESC") 'company-abort)
+      (define-key company-active-map (kbd "[tab]") 'company-complete)
+      (define-key company-active-map (kbd "C-n") 'company-select-next)
+      (define-key company-active-map (kbd "C-p") 'company-select-previous)
+      (add-hook 'after-init-hook 'global-company-mode))
+   #+END_SRC
+
+** =company-lsp=
+   #+BEGIN_SRC emacs-lisp
+     (use-package company-lsp
+      :commands company-lsp)
+   #+END_SRC
+
+** =lsp-mode=
+   #+BEGIN_SRC emacs-lisp
+    (use-package lsp-mode
+      :config
+      (setq lsp-prefer-flymake nil)
+      (setq lsp-auto-guess-root t)
+      (setq lsp-enable-file-watchers nil)
+      :hook (php-mode . lsp)
+      :commands lsp)
+
+   #+END_SRC
+
+** =lsp-ui=
+   #+BEGIN_SRC emacs-lisp
+    (use-package lsp-ui
+      :requires lsp-mode flycheck)
+   #+END_SRC
+
+* Terminal =vterm=
+  #+BEGIN_SRC emacs-lisp
+    (use-package vterm
+      :config
+      (add-hook 'vterm-mode-hook
+                (lambda ()
+                  (setq-local evil-insert-state-cursor 'box)
+                  (evil-insert-state)))
+      (define-key vterm-mode-map [return]                      #'vterm-send-return)
+
+      (setq vterm-keymap-exceptions nil)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-e")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-f")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-a")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-v")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-b")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-w")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-u")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-n")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-m")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-p")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-j")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-k")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-r")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-t")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-g")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-c")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-SPC")    #'vterm--self-insert)
+      (evil-define-key 'normal vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
+      (evil-define-key 'normal vterm-mode-map (kbd ",c")       #'multi-libvterm)
+      (evil-define-key 'normal vterm-mode-map (kbd ",n")       #'multi-libvterm-next)
+      (evil-define-key 'normal vterm-mode-map (kbd ",p")       #'multi-libvterm-prev)
+      (evil-define-key 'normal vterm-mode-map (kbd "i")        #'evil-insert-resume)
+      (evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
+      (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume))
+
+    (use-package vterm-toggle)
+
+    ;; (use-package multi-libvterm)
+    ;; (use-package multi-libvterm
+    ;;   :load-path "/path/to/multi-libvterm")
+    ;; ;; (use-package vterm)
+
+    (use-package shell-pop
+      :config
+      (defun shell-pop--set-exit-action ()
+        (if (string= shell-pop-internal-mode "eshell")
+            (add-hook 'eshell-exit-hook 'shell-pop--kill-and-delete-window nil t)
+          (let ((process (get-buffer-process (current-buffer))))
+            (when process
+              (set-process-sentinel
+               process
+               (lambda (_proc change)
+                 (when (string-match-p "\\(?:finished\\|exited\\)" change)
+                   (if (one-window-p)
+                       (switch-to-buffer shell-pop-last-buffer)
+                     (kill-buffer-and-window)))))))))
+
+      (custom-set-variables
+       '(shell-pop-shell-type (quote ("vterm" "*vterm*" (lambda nil (vterm)))))
+       '(shell-pop-term-shell "/usr/bin/zsh")
+       '(shell-pop-window-position "bottom")))
+
+  #+END_SRC
+
+** =exec-path-from-shell=
+   #+BEGIN_SRC emacs-lisp
+    (use-package exec-path-from-shell)
+    (setq exec-path-from-shell-check-startup-files nil)
+    (when (memq window-system '(mac ns))
+      (exec-path-from-shell-initialize))
+   #+END_SRC
+
+* VIM =evil-mode=
+  #+BEGIN_SRC emacs-lisp
+    (setq evil-want-C-u-scroll t)
+    (setq evil-want-C-u-scroll t)
+    (setq evil-vsplit-window-right t) ;split to right always
+    (setq evil-split-window-below t) ; split below always
+
+    (setq evil-want-abbrev-expand-on-insert-exit nil)
+
+    (defun kwamedat/config-evil-leader ()
+      (evil-leader/set-leader "<SPC>")
+      (evil-leader/set-key
+        ;; files
+        "fR"  'projectile-recentf
+        "fdd" 'kwamedat/find-in-documents
+        "fdp" 'kwamedat/find-projects-in-documents
+        "fda" 'kwamedat/find-areas-in-documents
+        "fdr" 'kwamedat/find-resources-in-documents
+        "ff"  'find-file
+        "fh"  'kwamedat/visit-host-file
+        "fl"  'locate
+        "fp"  'kwamedat/visit-emacs-config
+        "fr"  'recentf-open-files
+        "fs"  'save-buffer
+        "fS"  'write-file
+        "fs"  'swiper-isearch
+        "ft"  'kwamedat/visit-todo-list-file
+        ;; buffers
+        "bb"  'counsel-switch-buffer
+        "bk"  'kill-buffer
+        ;; git
+        "gR"  'vc-revert
+        "gg"  'magit-status
+        "gb"  'magit-branch-checkout
+        "gR"  'vc-revert
+        "g/"  'magit-dispatch
+        "gD"  'magit-file-delete
+        "gB"  'magit-blame-addition
+        "gC"  'magit-clone
+        "gF"  'magit-fetch
+        "gL"  'magit-log
+        "gS"  'magit-stage-file
+        "gU"  'magit-unstage-file
+        ;; toggle
+        "ts"  'shell-pop
+        ;; projects
+        "pp"  'projectile-switch-project
+        "pi"  'projectile-invalidate-cache
+        "pt"  'projectile-run-term
+        ;; notes
+        "nn" 'kwamedat/find-in-notes
+        "na" 'org-agenda
+        "nc" 'org-capture
+        "nt" 'org-todo-list
+        "nv" 'org-search-view
+        ":"  'eval-expression
+        "cc"  'compile
+        "<SPC>"  'projectile-find-file
+        "/r"  'counsel-imenu
+        "/sp"  'counsel-rg
+        ;; open application
+        "o-" 'dired-jump
+        "opp"  'password-store-copy
+        "opf"  'password-store-copy-field
+        "opi"  'password-store-insert
+        "opg"  'password-store-generate
+        "opd"  'password-store-remove
+        "opr"  'password-store-rename
+        "ope"  'password-store-edit
+        "om"  'mu4e
+        "ot"  'shell-pop
+        "w"  'save-buffer
+        "x"  'counsel-M-x))
+
+
+    (defun kwamedat/apply-evil-other-package-configs ()
+      "Apply evil-dependent settings specific to other packages."
+      ;; PHP
+      (evil-define-key 'normal php-mode-map (kbd ", tt") 'phpunit-current-test)
+      (evil-define-key 'normal php-mode-map (kbd ", tp") 'phpunit-current-project)
+      (evil-define-key 'normal php-mode-map (kbd ", tc") 'phpunit-current-class)
+      (evil-define-key 'normal php-mode-map (kbd ", n") 'phpactor-create-new-class)
+      (evil-define-key 'normal php-mode-map (kbd ", m") 'phpactor-move-class)
+      (evil-define-key 'normal php-mode-map (kbd ", i") 'phpactor-import-class)
+      (evil-define-key 'normal php-mode-map (kbd ", f") 'php-search-documentation)
+
+      ;; Org Mode
+      (evil-define-key 'normal org-mode-map (kbd ", t") 'org-todo)
+      (evil-define-key 'normal org-mode-map (kbd ", s") 'org-schedule)
+      (evil-define-key 'normal org-mode-map (kbd ", d") 'org-deadline)
+      (evil-define-key 'normal org-mode-map (kbd ", a") 'org-agenda)
+      (evil-define-key 'normal org-mode-map (kbd ", e") 'org-export-dispatch)
+      (evil-define-key 'normal org-mode-map (kbd ", n") 'org-narrow-to-element)
+      (evil-define-key 'normal org-mode-map (kbd ", w") 'widen)
+      (evil-define-key 'normal org-mode-map (kbd ", r") 'org-refile)
+      (evil-define-key 'normal org-mode-map (kbd ", '") 'org-edit-special)
+      (evil-define-key 'normal org-mode-map (kbd ", p") 'org-pomodoro)
+
+      ;; Ledger Mode
+      (evil-define-key 'normal ledger-mode-map (kbd ", a") 'ledger-add-transaction)
+
+      ;; Easy window movement
+      (evil-define-key 'normal global-map (kbd "C-j") 'evil-window-down)
+      (evil-define-key 'normal global-map (kbd "C-h") 'evil-window-left)
+      (evil-define-key 'normal global-map (kbd "C-k") 'evil-window-up)
+      (evil-define-key 'normal global-map (kbd "C-l") 'evil-window-right)
+
+      ;; PDF Tools Keybindings
+      (evil-define-key 'normal pdf-annot-minor-mode-map (kbd "s-0") 'pdf-view-scale-reset)
+      (evil-define-key 'normal pdf-annot-minor-mode-map (kbd "s--") 'pdf-view-shrink)
+      (evil-define-key 'normal pdf-annot-minor-mode-map (kbd "s-+") 'pdf-view-enlarge)
+
+      ;; Dired
+      (evil-define-key 'normal dired-mode-map (kbd "C-e") 'dired-toggle-read-only))
+
+
+    (defun kwamedat/config-evil ()
+      "Configure evil mode."
+      (evil-add-hjkl-bindings occur-mode-map 'emacs
+        (kbd "/")       'evil-search-forward
+        (kbd "n")       'evil-search-next
+        (kbd "N")       'evil-search-previous
+        (kbd "C-d")     'evil-scroll-down
+        (kbd "C-u")     'evil-scroll-up
+        (kbd "C-w C-w") 'other-window)
+
+      (define-key evil-visual-state-map [escape] 'keyboard-quit)
+      (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+      (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+      (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+      (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+      (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit))
+
+    (defmacro define-evil-or-global-key (key def &optional state)
+      "Define a key KEY with DEF in an Evil map, or in the global map.
+
+               If the Evil map for STATE is defined (or `normal' if STATE is not
+               provided) the key will be defined in that map.  Failing that, it will
+               be defined globally.
+
+               Note that STATE should be provided as an unquoted symbol.
+
+               This macro provides a way to override Evil mappings in the appropriate
+               Evil map in a manner that is compatible with environments where Evil
+               is not used."
+      (let* ((evil-map-name (if state
+                                (concat "evil-" (symbol-name state) "-state-map")
+                              "evil-normal-state-map"))
+             (map (if (boundp (intern evil-map-name))
+                      (intern evil-map-name)
+                    global-map)))
+        `(define-key ,map ,key ,def)))
+
+    (use-package evil
+      :ensure t
+      :commands (evil-mode evil-define-key)
+      :config
+      (setq evil-want-C-u-scroll t)
+      (add-hook 'evil-mode-hook 'kwamedat/config-evil)
+      (evil-mode 1)
+
+      (use-package evil-leader
+        :ensure t
+        :config
+        (global-evil-leader-mode)
+        (kwamedat/config-evil-leader))
+
+      (use-package evil-surround
+        :ensure t
+        :config
+        (global-evil-surround-mode))
+
+      (use-package evil-indent-textobject
+        :ensure t)
+
+      (kwamedat/apply-evil-other-package-configs))
+
+    ;; (use-package evil-collection
+    ;;   :after evil
+    ;;   :ensure t)
+  #+END_SRC
+** Relative numbers =nlium-relative=
+   #+BEGIN_SRC emacs-lisp
+    (use-package nlinum-relative
+      :config
+      (nlinum-relative-setup-evil)
+      (add-hook 'prog-mode-hook 'nlinum-relative-mode))
+
+    (setq nlinum-relative-redisplay-delay 0)
+    (setq nlinum-relative-current-symbol "->")
+    (setq nlinum-relative-offset 0)
+   #+END_SRC
+
+* Finance =ledger=
+  #+BEGIN_SRC emacs-lisp
+    (setq ledger-post-amount-alignment-column 70)
+    (use-package ledger-mode)
+    (use-package flycheck-ledger)
+    (use-package evil-ledger)
+  #+END_SRC
+
+* Passwords =pass=
+  #+BEGIN_SRC emacs-lisp
+    (use-package pass)
+    (use-package ivy-pass)
+  #+END_SRC
+
+* Emails =mu4e=
+  #+BEGIN_SRC emacs-lisp
+    (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
+    (use-package evil-mu4e)
+    (use-package mu4e-alert)
+    (mu4e-alert-set-default-style 'libnotify)
+    (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
+
+    (setq mu4e-maildir "~/.mail")
+
+    (setq mu4e-headers-include-related nil)
+
+    (setq mu4e-confirm-quit nil)
+
+    ;; (setq mu4e-compose-context-policy 'pick-first)
+
+    (setq mail-user-agent 'mu4e-user-agent)
+
+    (add-hook 'message-mode-hook 'turn-on-orgtbl)
+    (add-hook 'message-mode-hook 'turn-on-orgstruct++)
+
+    (setq message-kill-buffer-on-exit t)
+
+    (setq mu4e-view-show-addresses t)
+
+    (setq mu4e-attachment-dir "~/downloads")
+
+    (define-key mu4e-view-mode-map (kbd "C-c C-o") 'mu4e~view-browse-url-from-binding)
+
+    (require 'mu4e-contrib)
+    (setq mu4e-html2text-command 'mu4e-shr2text
+          shr-color-visible-luminance-min 60
+          shr-color-visible-distance-min 5
+          shr-use-fonts nil
+          shr-use-colors nil)
+    (advice-add #'shr-colorize-region
+                :around (defun shr-no-colourise-region (&rest ignore)))
+
+    (add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+
+    (require 'starttls)
+    (require 'smtpmail)
+
+    (use-package smtpmail-multi)
+    (setq smtpmail-multi-accounts
+          (quote
+           ((personal . ("tony@arksolutions.it"
+                         "smtp.zoho.com"
+                         587
+                         "tony@arksolutions.it"
+                         nil nil nil nil))
+            (work . ("tony.ampomah@netsells.co.uk"
+                     "smtp.gmail.com"
+                     587
+                     "tony.ampomah@netsells.co.uk"
+                     starttls
+                     nil nil nil)))))
+
+    (setq smtpmail-multi-associations
+          (quote
+           (("tony.ampomah@netsells.co.uk" work)
+            ("tony@arksolutions.co.uk" personal))))
+
+    (setq smtpmail-multi-default-account (quote work))
+    (setq message-send-mail-function 'smtpmail-multi-send-it)
+
+    (setq smtpmail-debug-info t)
+    (setq smtpmail-debug-verbose t)
+
+    (setq
+     mu4e-maildir       "~/.mail"   ;; top-level Maildir
+     mu4e-sent-folder   "/sent"       ;; folder for sent messages
+     mu4e-drafts-folder "/drafts"     ;; unfinished messages
+     mu4e-trash-folder  "/trash"      ;; trashed messages
+     mu4e-refile-folder "/archive")   ;; saved messages
+
+    (setq
+     mu4e-get-mail-command "offlineimap"
+     mu4e-update-interval nil)             ;; 300 to update every 5 minutes
+
+    (setq mu4e-bookmarks
+          '( ("flag:unread AND NOT flag:trashed"                "Unread messages"        ?u)
+             ("date:today..now"                                 "Today's messages"       ?t)
+             ("date:7d..now"                                    "Last 7 days"            ?w)
+             ("maildir:/sent"                                   "sent"                   ?s)
+             ("maildir:/arksolutions.it/INBOX AND date:7d..now" "Personal Last 7 days"   ?p)
+             ("maildir:/netsells.co.uk/INBOX AND date:7d..now"  "Work Last 7 days"       ?n)
+             ("mime:image/*"                                    "Messages with images"   ?i)))
+
+    (setq mu4e-maildir-shortcuts
+          '( ("/netsells.co.uk/INBOX" . ?w)
+             ("/arksolutions.it/INBOX"       . ?p)
+             ("/sent"            . ?s)))
+
+    (setq mu4e-user-mail-address-list (list "tony@arksolutions.it" "tony.ampomah@netsells.co.uk"))
+
+    (setq message-kill-buffer-on-exit t)
+
+    (setq
+     mu4e-view-show-images t
+     mu4e-view-image-max-width 800)
+
+    (require 'org-mu4e)
+
+    (setq org-mu4e-link-query-in-headers-mode nil)
+
+  #+END_SRC
+
+* Reading PDF =pdf-tools=
+  #+BEGIN_SRC emacs-lisp
+    (use-package pdf-tools
+      :ensure t
+      :config (pdf-tools-install))
+    (use-package org-pdfview :ensure t)
+  #+END_SRC
+
+* Reading books =nov=
+  #+BEGIN_SRC emacs-lisp
+    (use-package nov)
+    (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+  #+END_SRC

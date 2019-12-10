@@ -1,6 +1,6 @@
 [general]
-accounts = Arksolutions
-maxsyncaccounts = 1
+accounts = Netsells, Arksolutions
+maxsyncaccounts = 2
 pythonfile = ~/Repo/2Areas/Dotfiles/shell/+mu/lib.py
 
 [Account Arksolutions]
@@ -16,6 +16,23 @@ type = IMAP
 remotehosteval = get_pass("emails/arksolutions.it")["remotehost"]
 remoteusereval = get_pass("emails/arksolutions.it")["user"]
 remotepasseval = get_pass("emails/arksolutions.it")["password"]
+ssl = true
+maxconnections = 1
+sslcacertfile = /usr/local/etc/openssl/cert.pem
+
+[Account Netsells]
+localrepository = LocalNetsells
+remoterepository = RepositoryNetsells
+
+[Repository LocalNetsells]
+type = Maildir
+localfolders = ~/.mail/netsells.co.uk
+
+[Repository RepositoryNetsells]
+type = IMAP
+remotehosteval = get_pass("emails/netsells.co.uk")["remotehost"]
+remoteusereval = get_pass("emails/netsells.co.uk")["user"]
+remotepasseval = get_pass("emails/netsells.co.uk")["password"]
 ssl = true
 maxconnections = 1
 sslcacertfile = /usr/local/etc/openssl/cert.pem
