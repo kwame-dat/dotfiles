@@ -1,5 +1,6 @@
 #+TITLE: Emacs Configuration
 #+OPTIONS: toc:nil author:nil num:nil
+
 * Sane defaults
   #+BEGIN_SRC emacs-lisp
     (load-file "~/.emacs.d/sensible-defaults.el")
@@ -50,6 +51,18 @@
     (setq-default indent-tabs-mode nil)
   #+END_SRC
 
+  Use spaces instead of tabs
+  #+BEGIN_SRC emacs-lisp
+    (setq-default indent-tabs-mode nil)
+    (setq tab-width 2)
+    (setq js-indent-level 2)
+    (setq css-indent-offset 2)
+    (setq-default c-basic-offset 2)
+    (setq c-basic-offset 2)
+    (setq-default tab-width 2)
+    (setq-default c-basic-indent 2)
+  #+END_SRC
+
 * Utility functions
   #+BEGIN_SRC emacs-lisp
     (defun kwamedat/visit-emacs-config ()
@@ -62,32 +75,31 @@
 
     (defun kwamedat/find-in-notes ()
       (interactive)
-      (counsel-find-file "~/Dropbox/GTD"))
+      (counsel-find-file "~/Dropbox/org"))
 
     (defun kwamedat/find-in-documents ()
       (interactive)
-      (counsel-find-file "~/Documents"))
+      (counsel-find-file "~/Dropbox/Documents"))
 
     (defun kwamedat/find-projects-in-documents ()
       (interactive)
-      (counsel-find-file "~/Documents/1Projects"))
+      (counsel-find-file "~/Dropbox/Documents/1Projects"))
 
     (defun kwamedat/find-areas-in-documents ()
       (interactive)
-      (counsel-find-file "~/Documents/2Areas"))
+      (counsel-find-file "~/Dropbox/Documents/2Areas"))
 
     (defun kwamedat/find-resources-in-documents ()
       (interactive)
-      (counsel-find-file "~/Documents/3Resources"))
+      (counsel-find-file "~/Dropbox/Documents/3Resources"))
 
     (defun kwamedat/visit-todo-list-file ()
       (interactive)
-      (find-file "~/Dropbox/GTD/todo.org"))
+      (find-file "~/Dropbox/org/todo.org"))
 
     (defun kwamedat/visit-inbox ()
       (interactive)
-      (find-file "~/Dropbox/GTD/inbox.org"))
-
+      (find-file "~/Dropbox/org/inbox.org"))
   #+END_SRC
 
 * Leader key bindings
@@ -109,16 +121,12 @@
     (define-key global-map (kbd "s--") 'text-scale-decrease)
   #+END_SRC
 
-* Programming tweaks
+* =exec-path-from-shell=
   #+BEGIN_SRC emacs-lisp
-    (setq-default indent-tabs-mode nil)
-    (setq tab-width 2)
-    (setq js-indent-level 2)
-    (setq css-indent-offset 2)
-    (setq-default c-basic-offset 2)
-    (setq c-basic-offset 2)
-    (setq-default tab-width 2)
-    (setq-default c-basic-indent 2)
+   (use-package exec-path-from-shell)
+   (setq exec-path-from-shell-check-startup-files nil)
+   (when (memq window-system '(mac ns))
+     (exec-path-from-shell-initialize))
   #+END_SRC
 
 * Linting =flycheck=
@@ -435,7 +443,6 @@
     (use-package powerline-evil
       :ensure t)
    #+END_SRC
-
 * Publishing and Task Management =org-mode=
   #+BEGIN_SRC emacs-lisp
     ;; (setq org-startup-truncated nil)
@@ -447,22 +454,22 @@
 
     (setq org-src-fontify-natively t)
 
-    (setq org-directory "~/Dropbox/GTD")
-    (setq org-inbox-file "~/Dropbox/GTD/inbox.org")
-    (setq org-agenda-files (quote ("~/Dropbox/GTD/todo.org"
-                                   "~/Dropbox/GTD/inbox.org"
-                                   "~/Dropbox/GTD/inbox.org"
-                                   "~/Dropbox/GTD/goals.org")))
+    (setq org-directory "~/Dropbox/org")
+    (setq org-inbox-file "~/Dropbox/org/inbox.org")
+    (setq org-agenda-files (quote ("~/Dropbox/org/todo.org"
+                                   "~/Dropbox/org/inbox.org"
+                                   "~/Dropbox/org/inbox.org"
+                                   "~/Dropbox/org/goals.org")))
 
     (setq org-capture-templates
-          '(("t" "Task" entry (file "~/Dropbox/GTD/inbox.org")
+          '(("t" "Task" entry (file "~/Dropbox/org/inbox.org")
              "* TODO %?\n")
-            ("p" "Project" entry (file+headline "~/Dropbox/GTD/todo.org" "Projects")
-             (file "~/Dropbox/GTD/templates/newprojecttemplate.org"))
-            ("g" "Goals" entry (file+headline "~/Dropbox/GTD/goals.org" "Goals")
+            ("p" "Project" entry (file+headline "~/Dropbox/org/todo.org" "Projects")
+             (file "~/Dropbox/org/templates/newprojecttemplate.org"))
+            ("g" "Goals" entry (file+headline "~/Dropbox/org/goals.org" "Goals")
              "* SOMEDAY %?\n")
-            ("l" "Log" entry (file+olp+datetree "~/Dropbox/GTD/log.org" "Log")
-             (file "~/Dropbox/GTD/templates/logtemplate.org"))))
+            ("l" "Log" entry (file+olp+datetree "~/Dropbox/org/log.org" "Log")
+             (file "~/Dropbox/org/templates/logtemplate.org"))))
 
     (setq org-agenda-inhibit-startup nil
           org-agenda-skip-deadline-if-done t
@@ -505,8 +512,14 @@
 
 * Calendar
 ** =calfw=
+   #+BEGIN_SRC emacs-lisp
+     (use-package calfw)
+     (use-package calfw-gcal)
+     (use-package calfw-ical)
+   #+END_SRC
 ** =org-gcal=
    #+BEGIN_SRC emacs-lisp
+     (use-package org-gcal)
    #+END_SRC
 
 * Spelling
@@ -613,81 +626,6 @@
     (use-package lsp-ui
       :requires lsp-mode flycheck)
    #+END_SRC
-
-* Terminal =vterm=
-  #+BEGIN_SRC emacs-lisp
-    (use-package vterm
-      :config
-      (add-hook 'vterm-mode-hook
-                (lambda ()
-                  (setq-local evil-insert-state-cursor 'box)
-                  (evil-insert-state)))
-      (define-key vterm-mode-map [return]                      #'vterm-send-return)
-
-      (setq vterm-keymap-exceptions nil)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-e")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-f")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-a")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-v")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-b")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-w")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-u")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-n")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-m")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-p")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-j")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-k")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-r")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-t")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-g")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-c")      #'vterm--self-insert)
-      (evil-define-key 'insert vterm-mode-map (kbd "C-SPC")    #'vterm--self-insert)
-      (evil-define-key 'normal vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
-      (evil-define-key 'normal vterm-mode-map (kbd ",c")       #'multi-libvterm)
-      (evil-define-key 'normal vterm-mode-map (kbd ",n")       #'multi-libvterm-next)
-      (evil-define-key 'normal vterm-mode-map (kbd ",p")       #'multi-libvterm-prev)
-      (evil-define-key 'normal vterm-mode-map (kbd "i")        #'evil-insert-resume)
-      (evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
-      (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume))
-
-    (use-package vterm-toggle)
-
-    ;; (use-package multi-libvterm)
-    ;; (use-package multi-libvterm
-    ;;   :load-path "/path/to/multi-libvterm")
-    ;; ;; (use-package vterm)
-
-    (use-package shell-pop
-      :config
-      (defun shell-pop--set-exit-action ()
-        (if (string= shell-pop-internal-mode "eshell")
-            (add-hook 'eshell-exit-hook 'shell-pop--kill-and-delete-window nil t)
-          (let ((process (get-buffer-process (current-buffer))))
-            (when process
-              (set-process-sentinel
-               process
-               (lambda (_proc change)
-                 (when (string-match-p "\\(?:finished\\|exited\\)" change)
-                   (if (one-window-p)
-                       (switch-to-buffer shell-pop-last-buffer)
-                     (kill-buffer-and-window)))))))))
-
-      (custom-set-variables
-       '(shell-pop-shell-type (quote ("vterm" "*vterm*" (lambda nil (vterm)))))
-       '(shell-pop-term-shell "/usr/bin/zsh")
-       '(shell-pop-window-position "bottom")))
-
-  #+END_SRC
-
-** =exec-path-from-shell=
-   #+BEGIN_SRC emacs-lisp
-    (use-package exec-path-from-shell)
-    (setq exec-path-from-shell-check-startup-files nil)
-    (when (memq window-system '(mac ns))
-      (exec-path-from-shell-initialize))
-   #+END_SRC
-
 * VIM =evil-mode=
   #+BEGIN_SRC emacs-lisp
     (setq evil-want-C-u-scroll t)
@@ -880,7 +818,6 @@
     (setq nlinum-relative-current-symbol "->")
     (setq nlinum-relative-offset 0)
    #+END_SRC
-
 * Finance =ledger=
   #+BEGIN_SRC emacs-lisp
     (setq ledger-post-amount-alignment-column 70)
@@ -1000,6 +937,72 @@
     (require 'org-mu4e)
 
     (setq org-mu4e-link-query-in-headers-mode nil)
+
+  #+END_SRC
+
+* Terminal =vterm=
+  #+BEGIN_SRC emacs-lisp
+    (use-package vterm
+      :config
+      (add-hook 'vterm-mode-hook
+                (lambda ()
+                  (setq-local evil-insert-state-cursor 'box)
+                  (evil-insert-state)))
+      (define-key vterm-mode-map [return]                      #'vterm-send-return)
+
+      (setq vterm-keymap-exceptions nil)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-e")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-f")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-a")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-v")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-b")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-w")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-u")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-n")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-m")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-p")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-j")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-k")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-r")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-t")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-g")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-c")      #'vterm--self-insert)
+      (evil-define-key 'insert vterm-mode-map (kbd "C-SPC")    #'vterm--self-insert)
+      (evil-define-key 'normal vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
+      (evil-define-key 'normal vterm-mode-map (kbd ",c")       #'multi-libvterm)
+      (evil-define-key 'normal vterm-mode-map (kbd ",n")       #'multi-libvterm-next)
+      (evil-define-key 'normal vterm-mode-map (kbd ",p")       #'multi-libvterm-prev)
+      (evil-define-key 'normal vterm-mode-map (kbd "i")        #'evil-insert-resume)
+      (evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
+      (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume))
+
+    (use-package vterm-toggle)
+
+    ;; (use-package multi-libvterm)
+    ;; (use-package multi-libvterm
+    ;;   :load-path "/path/to/multi-libvterm")
+    ;; ;; (use-package vterm)
+
+    (use-package shell-pop
+      :config
+      (defun shell-pop--set-exit-action ()
+        (if (string= shell-pop-internal-mode "eshell")
+            (add-hook 'eshell-exit-hook 'shell-pop--kill-and-delete-window nil t)
+          (let ((process (get-buffer-process (current-buffer))))
+            (when process
+              (set-process-sentinel
+               process
+               (lambda (_proc change)
+                 (when (string-match-p "\\(?:finished\\|exited\\)" change)
+                   (if (one-window-p)
+                       (switch-to-buffer shell-pop-last-buffer)
+                     (kill-buffer-and-window)))))))))
+
+      (custom-set-variables
+       '(shell-pop-shell-type (quote ("vterm" "*vterm*" (lambda nil (vterm)))))
+       '(shell-pop-term-shell "/usr/bin/zsh")
+       '(shell-pop-window-position "bottom")))
 
   #+END_SRC
 
