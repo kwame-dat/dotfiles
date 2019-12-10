@@ -1,3 +1,4 @@
+*.pyc
 .doom.d/eshell/history
 .doom.d/eshell/lastdir
 .doom.d/flycheck_config.el
