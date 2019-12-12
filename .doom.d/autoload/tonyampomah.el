@@ -2,21 +2,21 @@
 
 ;;;###autoload
 (defun +tonyampomah/find-in-dotfiles ()
-  "Open a file somewhere in ~/Repo/Dotfiles via a fuzzy filename search."
+  "Open a file somewhere in ~/Repo/2Areas/Dotfiles via a fuzzy filename search."
   (interactive)
-  (doom-project-find-file (expand-file-name "~/Repo/Dotfiles")))
+  (doom-project-find-file (expand-file-name "~/Repo/2Areas/Dotfiles")))
 
 ;;;###autoload
 (defun +tonyampomah/browse-dotfiles ()
-  "Browse the files in ~/Repo/Dotfiles"
+  "Browse the files in ~/Repo/2Areas/Dotfiles"
   (interactive)
-  (doom-project-browse (expand-file-name "~/Repo/Dotfiles")))
+  (doom-project-browse (expand-file-name "~/Repo/2Areas/Dotfiles")))
 
 ;;;###autoload
 (defun +tonyampomah/find-notes-for-major-mode (&optional arg)
   "TODO"
   (interactive "P")
-  (let ((default-directory (expand-file-name "~/org" org-directory)))
+  (let ((default-directory (expand-file-name "~/Dropbox/org" org-directory)))
     (if arg
         (call-interactively #'find-file)
       (find-file
@@ -47,7 +47,7 @@ Version 2017-06-02"
 ;;;###autoload
 (defun +tonyampomah-go-to-projects ()
   (interactive)
-  (find-file "~/org/Todo.org")
+  (find-file "~/Dropbox/org/todo.org")
   (widen)
   (beginning-of-buffer)
   (re-search-forward "* Projects")
@@ -78,7 +78,7 @@ Version 2017-06-02"
 ;;;###autoload
 (defun +tonyampomah-go-to-areas ()
     (interactive)
-    (find-file "~/org/Todo.org")
+    (find-file "~/Dropbox/org/todo.org")
     (widen)
     (beginning-of-buffer)
     (re-search-forward "* Areas")

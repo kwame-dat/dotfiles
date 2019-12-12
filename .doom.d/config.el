@@ -4,14 +4,14 @@
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (setq company-idle-delay 0.1)
-(setq company-minimum-prefix-length 1)
+(setq company-minimum-prefix-length 3)
 
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Oxygen Mono" :size 16)
-      doom-big-font (font-spec :family "Oxygen Mono" :size 16)
-      doom-variable-pitch-font (font-spec :family "Oxygen Mono" :size 16)
+      doom-font (font-spec :family "Fira Code" :size 14)
+      doom-big-font (font-spec :family "Fira Code" :size 14)
+      doom-variable-pitch-font (font-spec :family "Fira Code" :size 14)
 
       which-key-idle-delay 0.40
       lsp-ui-sideline-enable nil
@@ -27,6 +27,9 @@
       dired-dwim-target t
       css-indent-offset 2)
 
+(auth-source-pass-enable)
+(setq auth-sources '((:source "~/.authinfo.gpg")))
+(setq lsp-enable-file-watchers nil)
 
 (when IS-LINUX
   (font-put doom-font :weight 'semi-light))
@@ -34,7 +37,7 @@
   (setq ns-use-thin-smoothing t)
   (add-hook 'window-setup-hook #'toggle-frame-maximized))
 
-;;; Keybinds
+;; keybindings
 (map! :m "M-j" #'multi-next-line
       :m "M-k" #'multi-previous-line
       :m "<f5>" #'open-agenda
@@ -90,76 +93,105 @@
         "m" #'+tonyampomah/find-notes-for-major-mode
         "p" #'+tonyampomah/find-notes-for-project))
 
+;; lang/php keybinding
+(map! :localleader
+      :map php-mode-map
+      "i" #'phpactor-import-class
+      "m" #'phpactor-move-class
 
-;; lang/org
+      :prefix "f"
+      "r" #'lsp-find-references
+      "d" #'lsp-describe-thing-at-point
+
+      :prefix "g"
+      "d" #'phpactor-goto-definition
+      "i" #'phpactor-find-references
+
+      :prefix "t"
+      "p" #'phpunit-current-project
+      "c" #'phpunit-current-class
+      "t" #'phpunit-current-test)
+(map! :n "C-]" #'lsp-find-definition)
+(global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
+
+;; Org Mode Configuration
 (after! org
   (add-to-list 'org-modules 'org-habit t))
-(setq org-agenda-files (quote ("~/org/Todo.org"
-                               "~/org/Inbox.org"
-                               "~/org/Goals.org"
-                               "~/org/calendar/Gcal.org"
-                               "~/org/calendar/Tcal.org")))
-
+(setq org-directory "~/Dropbox/org")
+(setq org-agenda-files (quote ("~/Dropbox/org/todo.org"
+                               "~/Dropbox/org/inbox.org"
+                               "~/Dropbox/org/goals.org"
+                               "~/Dropbox/org/calendar/gcal.org")))
 ;; org capture templates
 (setq org-capture-templates
-      '(("t" "Task" entry (file "~/org/Inbox.org")
+      '(("t" "Task" entry (file "~/Dropbox/org/inbox.org")
          "* TODO %?\n")
-        ("p" "Project" entry (file+headline "~/org/Todo.org" "Projects")
-         (file "~/org/templates/newprojecttemplate.org"))
-        ("s" "Goals" entry (file+headline "~/org/Goals.org" "Goals")
+        ("p" "Project" entry (file+headline "~/Dropbox/org/todo.org" "Projects")
+         (file "~/Dropbox/org/templates/newprojecttemplate.org"))
+        ("s" "Goals" entry (file+headline "~/Dropbox/org/goals.org" "Goals")
          "* SOMEDAY %?\n")
-        ("l" "Log" entry (file+olp+datetree "~/org/log.org" "Log")
-         (file "~/org/templates/logtemplate.org"))))
+        ("l" "Log" entry (file+olp+datetree "~/Dropbox/org/log.org" "Log")
+         (file "~/Dropbox/org/templates/logtemplate.org"))))
 
 (setq org-agenda-inhibit-startup nil
-      org-agenda-show-future-repeats nil
       org-agenda-start-on-weekday nil
       org-agenda-skip-deadline-if-done t
       org-agenda-skip-scheduled-if-done t)
 
-;; lang/php
-  (map! :localleader
-        :map php-mode-map
-        "i" #'phpactor-import-class
-
-        :prefix "f"
-        "r" #'lsp-find-references
-        "d" #'lsp-describe-thing-at-point
-
-        :prefix "g"
-        "d" #'phpactor-goto-definition
-        "i" #'phpactor-find-references
-
-        :prefix "t"
-        "p" #'phpunit-current-project
-        "c" #'phpunit-current-class
-        "t" #'phpunit-current-test)
-
-(map! :n "C-]" #'lsp-find-definition)
-
 (setq-default flycheck-phpcs-standard "PSR2")
 
-;; Projectile
+;; projectile
 (setq projectile-project-search-path '("~/Desktop"
                                        "~/Downloads"
-                                       "~/Documents/3 Resources"
-                                       "~/Documents/2 Areas"
-                                       "~/Documents/1 Projects"
-                                       "~/Repo"))
-;; app email settings
-;; Each path is relative to `+email-mu4e-mail-path', which is ~/.mail by default
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
-(setq +mu4e-backend 'offlineimap)
-(set-email-account! "arksolutions.it"
-    '((mu4e-sent-folder       . "/arksolutions.it/Sent")
-      (mu4e-drafts-folder     . "/arksolutions.it/Drafts")
-      (mu4e-trash-folder      . "/arksolutions.it/Trash")
-      (mu4e-refile-folder     . "/arksolutions.it/INBOX")
-      (smtpmail-smtp-user     . "tony@arksolutions.it")
-      (user-mail-address      . "tony@arksolutions.it")
-      (mu4e-compose-signature . "---\nTony Ampomah"))
-    t)
+                                       "~/Repo/2Areas"
+                                       "~/Repo/1Projects"))
 
-(auth-source-pass-enable)
-(setq auth-sources '((:source "~/.authinfo.gpg")))
-(setq lsp-enable-file-watchers nil)
+;; ledger
+(setq ledger-post-amount-alignment-column 70)
+
+;; configure email
+(setq +mu4e-backend 'offlineimap)
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
+(set-email-account! "arksolutions.it"
+                    '((mu4e-sent-folder       . "/arksolutions.it/Sent")
+                      (mu4e-drafts-folder     . "/arksolutions.it/Drafts")
+                      (mu4e-trash-folder      . "/arksolutions.it/Trash")
+                      (mu4e-refile-folder     . "/arksolutions.it/INBOX")
+                      (smtpmail-smtp-user     . "tony@arksolutions.it")
+                      (user-mail-address      . "tony@arksolutions.it")
+                      (mu4e-compose-signature . "---\nTony Ampomah"))
+                    t)
+(after! mu4e
+  ;; load package to be able to capture emails for GTD
+  (require 'org-mu4e)
+  ;; do not use rich text emails
+  (remove-hook! 'mu4e-compose-mode-hook #'org-mu4e-compose-org-mode)
+
+  ;; configure mu4e options
+  (setq mu4e-confirm-quit nil ; quit without asking
+        mu4e-attachment-dir "~/Downloads"
+        mu4e-get-mail-command "offlineimap"
+        mu4e-user-mail-address-list (list "tony@arksolutions.it" "tony.ampomah@netsells.co.uk"))
+
+  (setq mu4e-bookmarks
+        '( ("flag:unread AND NOT flag:trashed"                "Unread messages"        ?u)
+           ("date:today..now"                                 "Today's messages"       ?t)
+           ("date:7d..now"                                    "Last 7 days"            ?w)
+           ("maildir:/sent"                                   "sent"                   ?s)
+           ("maildir:/arksolutions.it/INBOX AND date:7d..now" "Personal Last 7 days"   ?p)
+           ("maildir:/netsells.co.uk/INBOX AND date:7d..now"  "Work Last 7 days"       ?n)
+           ("mime:image/*"                                    "Messages with images"   ?i)))
+
+  (setq mu4e-maildir-shortcuts
+        '( ("/netsells.co.uk/INBOX" . ?w)
+           ("/arksolutions.it/INBOX"       . ?p)
+           ("/sent"            . ?s)))
+
+  (setq message-send-mail-function 'smtpmail-send-it
+        smtpmail-stream-type 'starttls
+        smtpmail-default-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-service 587)
+  ;; add custom actions for messages
+  (add-to-list 'mu4e-view-actions
+	             '("View in browser" . mu4e-action-view-in-browser) t))
