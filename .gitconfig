@@ -2,7 +2,7 @@
 	excludesfile = ~/.gitignore_global
 [user]
 	name = Tony Ampomah
-	email = tampomah@emporium.co.uk
+	email = tony.ampomah@netsells.co.uk
 [alias]
 	co = checkout
 	br = branch
