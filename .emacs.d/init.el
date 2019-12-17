@@ -1,12 +1,10 @@
 (require 'package)
 
 (setq package-enable-at-startup nil)
-(add-to-list 'package-archives
-	     '("melpa" . "https://melpa.org/packages/"))
- (add-to-list 'package-archives
- 	     '("gnu" . "https://elpa.gnu.org/packages/"))
-;; (add-to-list 'package-archives
-;;	     '("melpa3" . "http://www.mirrorservice.org/sites/stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("elpy" . "https://jorgenschaefer.github.io/packages/"))
 (package-initialize)
 
 ;; Bootstrap `use-package'
@@ -14,5 +12,8 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (setq use-package-always-ensure t)
+
+(setq package-pinned-packages '((php-extras . "marmalade")))
+
 
 (org-babel-load-file "~/.emacs.d/config.org")

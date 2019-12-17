@@ -3,6 +3,14 @@
 
 * Sane defaults
   #+BEGIN_SRC emacs-lisp
+    (setq evil-want-integration t)
+    (setq display-time-day-and-date t)
+    (setq display-time-format "%e %b %y  %H:%M")
+    (setq display-time-default-load-average nil)
+    (setq pdf-view-use-scaling t)
+    (setq-default buffer-file-coding-system 'utf-8-unix)
+    (display-time-mode 1) ;; add time
+    (setq evil-want-keybinding nil)
     (setq evil-want-C-u-scroll t)
     (load-file "~/.emacs.d/sensible-defaults.el")
     (sensible-defaults/use-all-settings)
@@ -48,7 +56,7 @@
 
     (save-place-mode t)
     (setq column-number-mode t) ;; show columns in addition to rows in mode line
-    (global-visual-line-mode t)
+    ;; (global-visual-line-mode t)
     (setq-default indent-tabs-mode nil)
   #+END_SRC
 
@@ -189,134 +197,119 @@
       (progn
         (setq-local flycheck-phpcs-standard "PSR2")
         (global-flycheck-mode)))
+
+    (flycheck-define-checker proselint
+      "A linter for prose."
+      :command ("proselint" source-inplace)
+      :error-patterns
+      ((warning line-start (file-name) ":" line ":" column ": "
+                (id (one-or-more (not (any " "))))
+                (message) line-end))
+      :modes (gfm-mode
+              markdown-mode
+              ;; org-mode
+              text-mode))
+
+    (add-to-list 'flycheck-checkers 'proselint)
   #+END_SRC
 
-* =php=
-** =php-mode=
-   #+BEGIN_SRC emacs-lisp
-    (setq-default phpstan-executable 'phpstan)
-    (setq-default php-mode-coding-style 'psr2)
-    (setq-default flycheck-phpcs-standard "PSR2")
-    (defun my-php-mode-setup ()
-      "My PHP-mode hook."
-      (require 'flycheck-phpstan)
-      (flycheck-mode t))
+* Programming
+** =php=
+*** =php-mode=
+    #+BEGIN_SRC emacs-lisp
+      (defun my-php-mode-setup ()
+        "My PHP-mode hook."
+        (require 'flycheck-phpstan)
+        (flycheck-mode t))
+      (add-hook 'php-mode-hook 'my-php-mode-setup)
 
-    (add-hook 'php-mode-hook 'my-php-mode-setup)
-    (use-package php-mode :ensure t)
+      (use-package php-mode
+        :ensure t
+        :config
+        (setq-default phpstan-executable 'phpstan)
+        (setq-default php-mode-coding-style 'psr2)
+        (setq-default flycheck-phpcs-standard "PSR2")
+        (setq php-template-compatibility nil))
+
+      (use-package php-extras :ensure t)
+    #+END_SRC
+*** =phpunit=
+    #+BEGIN_SRC emacs-lisp
+     (use-package phpunit :ensure t)
+    #+END_SRC
+
+*** =phpactor= and =flycheck-phpactor=
+    #+BEGIN_SRC emacs-lisp
+     (use-package phpactor :ensure t)
+     (use-package flycheck-phpstan :ensure t)
+    #+END_SRC
+
+*** =php-doc-block=
+    #+BEGIN_SRC emacs-lisp
+      ;; (add-to-list 'load-path "~/.emacs.d/php-doc-block")
+      ;; (require 'php-doc-block)
+      ;; (add-hook 'php-mode-hook
+      ;;           (lambda ()
+      ;;               (local-set-key (kbd "<C-tab>") 'php-doc-block)))
+    #+END_SRC
+** =web-mode=
+   #+BEGIN_SRC emacs-lisp
+     (use-package web-mode)
    #+END_SRC
 
-** =phpunit=
+** =scss-mode=
    #+BEGIN_SRC emacs-lisp
-    (use-package phpunit :ensure t)
+     (use-package scss-mode
+       :config
+       (setq scss-compile-at-save nil))
    #+END_SRC
 
-** =phpactor= and =flycheck-phpactor=
+** =less-css-mode=
    #+BEGIN_SRC emacs-lisp
-    (use-package phpactor :ensure t)
-    (use-package flycheck-phpstan :ensure t)
+     (use-package less-css-mode)
    #+END_SRC
 
-* =web-mode=
-  #+BEGIN_SRC emacs-lisp
-    (use-package web-mode)
-  #+END_SRC
+** =css-mode=
+   #+BEGIN_SRC emacs-lisp
+     (use-package css-mode
+       :config
+       (setq css-indent-offset 2))
+   #+END_SRC
 
-* =scss-mode=
-  #+BEGIN_SRC emacs-lisp
-    (use-package scss-mode
-      :config
-      (setq scss-compile-at-save nil))
-  #+END_SRC
+** =yaml-mode=
+   #+BEGIN_SRC emacs-lisp
+     (use-package yaml-mode)
+   #+END_SRC
 
-* =less-css-mode=
-  #+BEGIN_SRC emacs-lisp
-    (use-package less-css-mode)
-  #+END_SRC
+** =restclient=
+   #+BEGIN_SRC emacs-lisp
+     (use-package restclient)
+   #+END_SRC
 
-* =css-mode=
-  #+BEGIN_SRC emacs-lisp
-    (use-package css-mode
-      :config
-      (setq css-indent-offset 2))
-  #+END_SRC
+** =javascript=
+   #+BEGIN_SRC emacs-lisp
+     (use-package coffee-mode)
+     (setq js-indent-level 2)
+     (add-hook 'coffee-mode-hook
+               (lambda ()
+                 (yas-minor-mode 1)
+                 (setq coffee-tab-width 2)))
+   #+END_SRC
 
-* =yaml-mode=
-  #+BEGIN_SRC emacs-lisp
-    (use-package yaml-mode)
-  #+END_SRC
+** =json-mode=
+   #+BEGIN_SRC emacs-lisp
+     (use-package json-mode)
+   #+END_SRC
 
-* =restclient=
-  #+BEGIN_SRC emacs-lisp
-    (use-package restclient)
-  #+END_SRC
-
-* =javascript=
-  #+BEGIN_SRC emacs-lisp
-    (use-package coffee-mode)
-    (setq js-indent-level 2)
-    (add-hook 'coffee-mode-hook
-              (lambda ()
-                (yas-minor-mode 1)
-                (setq coffee-tab-width 2)))
-  #+END_SRC
-
-* =json-mode=
-  #+BEGIN_SRC emacs-lisp
-    (use-package json-mode)
-  #+END_SRC
-
-* =markdown-mode=
-  #+BEGIN_SRC emacs-lisp
-    (use-package markdown-mode
-      :commands (markdown-mode gfm-mode)
-      :mode (("README\\.md\\'" . gfm-mode)
-             ("\\.md\\'" . markdown-mode)
-             ("\\.markdown\\'" . markdown-mode))
-      :init (setq markdown-command "pandoc --no-highlight"))
-  #+END_SRC
-
-* =magit=
-  #+BEGIN_SRC emacs-lisp
-    (use-package magit
-      :config
-      (use-package evil-magit)
-      (use-package with-editor)
-      (setq magit-push-always-verify nil)
-      (setq git-commit-summary-max-length 50)
-      (add-hook 'with-editor-mode-hook 'evil-insert-state))
-  #+END_SRC
-
-* =ag=
-  #+BEGIN_SRC emacs-lisp
-    (use-package ag)
-  #+END_SRC
-
-* =wgrep=
-  #+BEGIN_SRC emacs-lisp
-    (use-package wgrep)
-    (eval-after-load 'grep
-      '(define-key grep-mode-map
-         (kbd "C-x C-q") 'wgrep-change-to-wgrep-mode))
-
-    (eval-after-load 'wgrep
-      '(define-key grep-mode-map
-         (kbd "C-c C-c") 'wgrep-finish-edit))
-    (setq wgrep-auto-save-buffer t)
-  #+END_SRC
-
-* Debugging =dap-mode=
-  #+BEGIN_SRC emacs-lisp
-    (use-package dap-mode
-      :ensure t
-      :commands dap-mode
-      :config
-      (dap-mode 1)
-      (require 'dap-ui)
-      (dap-ui-mode 1)
-      (require 'dap-lldb))
-  #+END_SRC
-
+** =markdown-mode=
+   #+BEGIN_SRC emacs-lisp
+     (use-package markdown-mode
+       :commands (markdown-mode gfm-mode)
+       :mode (("README\\.md\\'" . gfm-mode)
+              ("\\.md\\'" . markdown-mode)
+              ("\\.markdown\\'" . markdown-mode))
+       :init (setq markdown-command "pandoc --no-highlight"))
+   #+END_SRC
 * Managing Projects =projectile=
   #+BEGIN_SRC emacs-lisp
     (setq projectile-project-search-path '("~/Repo/2Areas"
@@ -327,6 +320,40 @@
     (use-package projectile)
     (projectile-mode +1)
   #+END_SRC
+
+* =magit=
+  #+BEGIN_SRC emacs-lisp
+    (use-package magit
+      :config
+      (use-package evil-magit)
+      (use-package with-editor)
+      (setq magit-status-buffer-switch-function 'switch-to-buffer)
+      (setq magit-push-always-verify nil)
+      (setq git-commit-summary-max-length 50)
+      (add-hook 'with-editor-mode-hook 'evil-insert-state))
+  #+END_SRC
+
+** =ag=
+   #+BEGIN_SRC emacs-lisp
+     (use-package ag)
+   #+END_SRC
+
+** =dotenv-mode=
+   #+BEGIN_SRC emacs-lisp
+     (use-package dotenv-mode)
+   #+END_SRC
+
+** Debugging =dap-mode=
+   #+BEGIN_SRC emacs-lisp
+     (use-package dap-mode
+       :ensure t
+       :commands dap-mode
+       :config
+       (dap-mode 1)
+       (require 'dap-ui)
+       (dap-ui-mode 1)
+       (require 'dap-lldb))
+   #+END_SRC
 
 * =dump-jump=
   #+BEGIN_SRC emacs-lisp
@@ -351,7 +378,6 @@
       (progn
         (global-undo-tree-mode)))
   #+END_SRC
-
 * Snippets =yasnippet=
   #+BEGIN_SRC emacs-lisp
     (use-package yasnippet
@@ -373,20 +399,106 @@
       (define-key mc/keymap (kbd "<return>") nil))
   #+END_SRC
 
-* Sidebar =neotree=
+* Sidebar =treemacs=
   #+BEGIN_SRC emacs-lisp
-    (use-package neotree
+    (use-package treemacs
+      :ensure t
+      :defer t
+      :init
+      (with-eval-after-load 'winum
+        (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
       :config
-      (setq neo-window-width 32
-            neo-create-file-auto-open t
-            neo-banner-message nil
-            neo-mode-line-type 'neotree
-            neo-smart-open t
-            neo-show-hidden-files t
-            neo-mode-line-type 'none
-            neo-auto-indent-point t)
-      (setq neo-theme (if (display-graphic-p) 'nerd 'arrow))
-      (global-set-key (kbd "s-1") 'neotree-toggle))
+      (progn
+        (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
+              treemacs-deferred-git-apply-delay      0.5
+              treemacs-display-in-side-window        t
+              treemacs-eldoc-display                 t
+              treemacs-file-event-delay              5000
+              treemacs-file-extension-regex          treemacs-last-period-regex-value
+              treemacs-file-follow-delay             0.2
+              treemacs-follow-after-init             t
+              treemacs-git-command-pipe              ""
+              treemacs-goto-tag-strategy             'refetch-index
+              treemacs-indentation                   2
+              treemacs-indentation-string            " "
+              treemacs-is-never-other-window         nil
+              treemacs-max-git-entries               5000
+              treemacs-missing-project-action        'ask
+              treemacs-no-png-images                 nil
+              treemacs-no-delete-other-windows       t
+              treemacs-project-follow-cleanup        nil
+              treemacs-persist-file                  (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+              treemacs-position                      'left
+              treemacs-recenter-distance             0.1
+              treemacs-recenter-after-file-follow    nil
+              treemacs-recenter-after-tag-follow     nil
+              treemacs-recenter-after-project-jump   'always
+              treemacs-recenter-after-project-expand 'on-distance
+              treemacs-show-cursor                   nil
+              treemacs-show-hidden-files             t
+              treemacs-silent-filewatch              nil
+              treemacs-silent-refresh                nil
+              treemacs-sorting                       'alphabetic-asc
+              treemacs-space-between-root-nodes      t
+              treemacs-tag-follow-cleanup            t
+              treemacs-tag-follow-delay              1.5
+              treemacs-width                         35)
+
+        ;; The default width and height of the icons is 22 pixels. If you are
+        ;; using a Hi-DPI display, uncomment this to double the icon size.
+        ;;(treemacs-resize-icons 44)
+
+        (treemacs-follow-mode t)
+        (treemacs-filewatch-mode t)
+        (treemacs-fringe-indicator-mode t)
+        (pcase (cons (not (null (executable-find "git")))
+                     (not (null treemacs-python-executable)))
+          (`(t . t)
+           (treemacs-git-mode 'deferred))
+          (`(t . _)
+           (treemacs-git-mode 'simple))))
+      :bind
+      (:map global-map
+            ("M-0"       . treemacs-select-window)
+            ("C-x t 1"   . treemacs-delete-other-windows)
+            ("C-x t t"   . treemacs)
+            ("C-x t B"   . treemacs-bookmark)
+            ("C-x t C-t" . treemacs-find-file)
+            ("C-x t M-t" . treemacs-find-tag)))
+
+    (use-package treemacs-evil
+      :after treemacs evil
+      :ensure t)
+
+    (use-package treemacs-projectile
+      :after treemacs projectile
+      :ensure t)
+
+    (use-package treemacs-icons-dired
+      :after treemacs dired
+      :ensure t
+      :config (treemacs-icons-dired-mode))
+
+    (use-package treemacs-magit
+      :after treemacs magit
+      :ensure t)
+  #+END_SRC
+* Managing workspace =eyebrowse=
+  #+BEGIN_SRC emacs-lisp
+    (use-package eyebrowse
+      :diminish eyebrowse-mode
+      :config (progn
+                (define-key eyebrowse-mode-map (kbd "s-1") 'eyebrowse-switch-to-window-config-1)
+                (define-key eyebrowse-mode-map (kbd "s-2") 'eyebrowse-switch-to-window-config-2)
+                (define-key eyebrowse-mode-map (kbd "s-3") 'eyebrowse-switch-to-window-config-3)
+                (define-key eyebrowse-mode-map (kbd "s-4") 'eyebrowse-switch-to-window-config-4)
+                (define-key eyebrowse-mode-map (kbd "s-5") 'eyebrowse-switch-to-window-config-5)
+                (define-key eyebrowse-mode-map (kbd "s-6") 'eyebrowse-switch-to-window-config-6)
+                (define-key eyebrowse-mode-map (kbd "s-7") 'eyebrowse-switch-to-window-config-7)
+                (define-key eyebrowse-mode-map (kbd "s-8") 'eyebrowse-switch-to-window-config-8)
+                (define-key eyebrowse-mode-map (kbd "s-9") 'eyebrowse-switch-to-window-config-9)
+                (eyebrowse-mode t)
+                (setq eyebrowse-new-workspace t)))
   #+END_SRC
 
 * File manager =dired=
@@ -456,7 +568,6 @@
   #+END_SRC
 
   #+BEGIN_SRC emacs-lisp
-  (add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/themes/"))
     (global-prettify-symbols-mode t)
     (setq ring-bell-function 'ignore)
     (setq split-height-threshold 0)
@@ -464,15 +575,22 @@
     (winner-mode 1)
   #+END_SRC
 
+  Highlight current cursor
+  #+BEGIN_SRC emacs-lisp
+  (global-hl-line-mode)
+  #+END_SRC
+
 ** Font
    #+BEGIN_SRC emacs-lisp
-    (set-frame-font "Fira Code 14" nil t)
+     (set-face-attribute 'font-lock-type-face nil :weight 'bold)
+     (set-frame-font "Operator Mono 18" nil t)
    #+END_SRC
-
-** Theme =kaolin-themes=
+** Theme
    #+BEGIN_SRC emacs-lisp
-    (use-package kaolin-themes)
-    (load-theme 'kaolin-aurora t)
+     (use-package base16-theme
+       :ensure t
+       :config
+       (load-theme 'base16-tomorrow-night t))
    #+END_SRC
 
 ** =diff-hl=
@@ -486,20 +604,88 @@
 
 ** =powerline=
    #+BEGIN_SRC emacs-lisp
-    (use-package powerline
-      :ensure t
-      :config
-      (powerline-default-theme)
-      (defpowerline powerline-minor-modes ""))
-    (use-package powerline-evil
-      :ensure t)
+     ;; (use-package telephone-line)
+     ;; (telephone-line-mode t)
+
+     (use-package spaceline)
+     (spaceline-spacemacs-theme)
    #+END_SRC
+*** =diminish=
+    #+BEGIN_SRC emacs-lisp
+      (use-package diminish :ensure t)
+      (diminish 'evil-org-mode)
+      (diminish 'ivy-mode)
+      (diminish 'subword-mode)
+      (diminish 'yas-minor-mode)
+      (diminish 'projectile-mode)
+      (diminish 'undo-tree-mode)
+      (diminish 'flycheck-mode)
+      (diminish 'flyspell-mode)
+      (diminish 'which-key-mode)
+      (diminish 'eldoc-mode)
+      (diminish 'org-src-mode)
+      (diminish 'sub-mode)
+      (diminish 'all-the-icons-dired-mode)
+      (diminish 'company-mode)
+    #+END_SRC
+** =all-the-icons=
+   #+BEGIN_SRC emacs-lisp
+     (use-package all-the-icons)
+     (use-package all-the-icons-dired
+       :diminish all-the-icons-dired-mode)
+     (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+     (use-package all-the-icons-ivy
+       :ensure t
+       :config
+       (all-the-icons-ivy-setup))
+     (use-package spaceline-all-the-icons)
+   #+END_SRC
+* =emoji-cheatsheets=
+  #+BEGIN_SRC emacs-lisp
+    (use-package emoji-cheat-sheet-plus
+        :defer t
+        :diminish emoji-cheat-sheet-plus-display-mode
+        :init
+        (progn
+          ;; enabled emoji in buffer
+          (add-hook 'org-mode-hook 'emoji-cheat-sheet-plus-display-mode)))
+  #+END_SRC
+* =emoji=
+  #+BEGIN_SRC emacs-lisp
+    (use-package emojify)
+  #+END_SRC
 * Publishing and Task Management =org-mode=
   #+BEGIN_SRC emacs-lisp
+    (defun disable-fylcheck-in-org-src-block ()
+      (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
+
+    (add-hook 'org-src-mode-hook 'disable-fylcheck-in-org-src-block)
     ;; (setq org-startup-truncated nil)
+    ;;;###autoload
+    (defun +org-cycle-only-current-subtree-h (&optional arg)
+      "Toggle the local fold at the point (as opposed to cycling through all levels
+    with `org-cycle')."
+      (interactive "P")
+      (unless (eq this-command 'org-shifttab)
+        (save-excursion
+          (org-beginning-of-line)
+          (let (invisible-p)
+            (when (and (org-at-heading-p)
+                       (or org-cycle-open-archived-trees
+                           (not (member org-archive-tag (org-get-tags))))
+                       (or (not arg)
+                           (setq invisible-p (outline-invisible-p (line-end-position)))))
+              (unless invisible-p
+                (setq org-cycle-subtree-status 'subtree))
+              (org-cycle-internal-local)
+              t)))))
+
     (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
 
-    (use-package org :ensure t)
+    (use-package org
+      :config
+      (add-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h 'append)
+      :ensure t)
 
     (setq org-ellipsis "⤵")
 
@@ -512,6 +698,7 @@
                                    "~/Dropbox/org/inbox.org"
                                    "~/Dropbox/org/goals.org")))
 
+    (add-hook 'org-capture-mode-hook 'evil-insert-state)
     (setq org-capture-templates
           '(("t" "Task" entry (file "~/Dropbox/org/inbox.org")
              "* TODO %?\n")
@@ -549,16 +736,26 @@
 
     (use-package ox-slack)
 
+    (use-package ox-twbs)
+
+    (use-package ob-restclient)
+
     (use-package org-pomodoro)
 
     (use-package evil-org
       :after org
+      :diminish evil-org-mode
       :config
       (add-hook 'org-mode-hook 'evil-org-mode)
       (add-hook 'evil-org-mode-hook
                 (lambda () (evil-org-set-key-theme)))
       (require 'evil-org-agenda)
       (evil-org-agenda-set-keys))
+
+    (defun disable-fylcheck-in-org-src-block ()
+      (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
+
+    (add-hook 'org-src-mode-hook 'disable-fylcheck-in-org-src-block)
   #+END_SRC
 
 * Calendar
@@ -572,7 +769,6 @@
    #+BEGIN_SRC emacs-lisp
      (use-package org-gcal)
    #+END_SRC
-
 * Spelling
   #+BEGIN_SRC emacs-lisp
     (setq ispell-program-name "aspell")
@@ -593,65 +789,23 @@
       (global-set-key (kbd "M-\\") 'define-word-at-point))
   #+END_SRC
 
-* Completion framework =ivy= and =counsel=
-  #+BEGIN_SRC emacs-lisp
-    (use-package ivy
-      :config
-      (ivy-mode 1)
-      (setq ivy-use-virtual-buffers t)
-      (setq ivy-count-format "(%d/%d) ")
-      (setq enable-recursive-minibuffers t)
-      (setq ivy-initial-inputs-alist nil)
-      (setq ivy-re-builders-alist
-            '((swiper . ivy--regex-plus)
-              (swiper-isearch . ivy--regex-plus)
-              (counsel-ag . ivy--regex-plus)
-              (counsel-rg . ivy--regex-plus)
-              (t      . ivy--regex-fuzzy)))   ;; enable fuzzy searching everywhere except for Swiper and ag
-
-      (global-set-key (kbd "s-b") 'ivy-switch-buffer))
-
-    (use-package swiper
-      :config
-      (global-set-key (kbd "s-f") 'swiper-isearch))
-
-    (use-package counsel
-      :config
-      (global-set-key (kbd "M-x") 'counsel-M-x)
-      (global-set-key (kbd "s-y") 'counsel-yank-pop)
-      (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-      (global-set-key (kbd "s-r") 'counsel-imenu)
-      (global-set-key (kbd "s-b") 'counsel-switch-buffer)
-      (global-set-key (kbd "s-/") 'comment-line)
-      (global-set-key (kbd "s-F") 'counsel-rg)
-      (global-set-key (kbd "s-f") 'swiper-isearch)
-      (global-set-key (kbd "s-p") 'counsel-git))
-
-    ;; When using git ls (via counsel-git), include unstaged files
-    (setq counsel-git-cmd "git ls-files --full-name --exclude-standard --others --cached --")
-
-    (use-package smex)
-    (use-package flx)
-
-    (define-key ivy-minibuffer-map (kbd "C-c C-e") 'ivy-occur)
-
-  #+END_SRC
-
 * Auto completion
 ** =company=
    #+BEGIN_SRC emacs-lisp
-    (use-package company
-      :ensure t
-      :config
-      (setq company-idle-delay 0.1)
-      (setq company-global-modes '(not org-mode markdown-mode))
-      (setq company-minimum-prefix-length 1)
-      (setq company-idle-delay 0.1)
-      (define-key company-active-map (kbd "ESC") 'company-abort)
-      (define-key company-active-map (kbd "[tab]") 'company-complete)
-      (define-key company-active-map (kbd "C-n") 'company-select-next)
-      (define-key company-active-map (kbd "C-p") 'company-select-previous)
-      (add-hook 'after-init-hook 'global-company-mode))
+     (use-package company
+       :ensure t
+       :diminish company-mode
+       :config
+       (setq company-global-modes '(not org-mode markdown-mode))
+       (setq company-minimum-prefix-length 1)
+       (setq company-idle-delay 0)
+       (setq company-dabbrev-downcase 0)
+       (define-key company-active-map (kbd "ESC") 'company-abort)
+       (define-key company-active-map (kbd "[tab]") 'company-complete)
+       (define-key company-active-map (kbd "[return]") 'company-complete)
+       (define-key company-active-map (kbd "C-n") 'company-select-next)
+       (define-key company-active-map (kbd "C-p") 'company-select-previous)
+       (add-hook 'after-init-hook 'global-company-mode))
    #+END_SRC
 
 ** =company-lsp=
@@ -682,6 +836,13 @@
     (defun kwamedat/config-evil-leader ()
       (evil-leader/set-leader "<SPC>")
       (evil-leader/set-key
+        ;; workspaces
+        "<tab>n" 'eyebrowse-create-window-config
+        "<tab>d" 'eyebrowse-close-window-config
+        "<tab>r" 'eyebrowse-rename-window-config
+        "<tab>." 'eyebrowse-switch-to-window-config
+        "<tab>[" 'eyebrowse-previous-window-config
+        "<tab>]" 'eyebrowse-next-window-config
         ;; files
         "fR"  'projectile-recentf
         "fdd" 'kwamedat/find-in-documents
@@ -698,7 +859,8 @@
         "fs"  'swiper-isearch
         "ft"  'kwamedat/visit-todo-list-file
         ;; buffers
-        "bb"  'counsel-switch-buffer
+        "bb"  'projectile-switch-to-buffer
+        "bB"  'counsel-switch-buffer
         "bk"  'kill-buffer
         ;; git
         "gR"  'vc-revert
@@ -714,23 +876,32 @@
         "gS"  'magit-stage-file
         "gU"  'magit-unstage-file
         ;; toggle
-        "ts"  'shell-pop
+        "tf"  'flycheck-mode
+        "tl"  'nlinum-mode
+        "tt"  'org-pomodoro
+        "tg"  'global-visual-line-mode
         ;; projects
         "pp"  'projectile-switch-project
         "pi"  'projectile-invalidate-cache
         "pt"  'projectile-run-term
+        "pb"  'projectile-switch-to-buffer
         ;; notes
-        "nn" 'kwamedat/find-in-notes
+        "nf" 'kwamedat/find-in-notes
         "na" 'org-agenda
+        "nn" 'kwamedat/find-in-notes
         "nc" 'org-capture
-        "nt" 'org-todo-list
+        "nt" 'kwamedat/visit-todo-list-file
+        "ni" 'kwamedat/visit-inbox
         "nv" 'org-search-view
         ":"  'eval-expression
         "cc"  'compile
         "<SPC>"  'projectile-find-file
         "/r"  'counsel-imenu
         "/sp"  'counsel-rg
+        ;; insert
+        "ie" 'emoji-cheat-sheet-plus-insert
         ;; open application
+        "od" 'docker
         "o-" 'dired-jump
         "oo" '+macos/reveal-in-finder
         "opp"  'password-store-copy
@@ -742,6 +913,7 @@
         "ope"  'password-store-edit
         "om"  'mu4e
         "ot"  'shell-pop
+        "oT"  'vterm-toggle
         "w"  'save-buffer
         "x"  'counsel-M-x))
 
@@ -766,8 +938,6 @@
       (evil-define-key 'normal org-mode-map (kbd ", n") 'org-narrow-to-element)
       (evil-define-key 'normal org-mode-map (kbd ", w") 'widen)
       (evil-define-key 'normal org-mode-map (kbd ", r") 'org-refile)
-      (evil-define-key 'normal org-mode-map (kbd ", '") 'org-edit-special)
-      (evil-define-key 'normal org-mode-map (kbd ", p") 'org-pomodoro)
 
       ;; Ledger Mode
       (evil-define-key 'normal ledger-mode-map (kbd ", a") 'ledger-add-transaction)
@@ -777,11 +947,6 @@
       (evil-define-key 'normal global-map (kbd "C-h") 'evil-window-left)
       (evil-define-key 'normal global-map (kbd "C-k") 'evil-window-up)
       (evil-define-key 'normal global-map (kbd "C-l") 'evil-window-right)
-
-      ;; PDF Tools Keybindings
-      (evil-define-key 'normal pdf-annot-minor-mode-map (kbd "s-0") 'pdf-view-scale-reset)
-      (evil-define-key 'normal pdf-annot-minor-mode-map (kbd "s--") 'pdf-view-shrink)
-      (evil-define-key 'normal pdf-annot-minor-mode-map (kbd "s-+") 'pdf-view-enlarge)
 
       ;; Dired
       (evil-define-key 'normal dired-mode-map (kbd "C-e") 'dired-toggle-read-only))
@@ -829,8 +994,8 @@
       :commands (evil-mode evil-define-key)
       :init
       (setq evil-want-C-u-scroll t)
-      (setq evil-vsplit-window-right t) ;split to right always
-      (setq evil-split-window-below t) ; split below always
+      (setq evil-vsplit-window-right t)
+      (setq evil-split-window-below t)
 
       (setq evil-want-abbrev-expand-on-insert-exit nil)
       :config
@@ -850,24 +1015,74 @@
 
       (use-package evil-indent-textobject
         :ensure t)
-
       (kwamedat/apply-evil-other-package-configs))
 
-    ;; (use-package evil-collection
-    ;;   :after evil
-    ;;   :ensure t)
+    (use-package evil-collection
+      :after evil
+      :ensure t)
+    (evil-collection-init)
+
+    (with-eval-after-load 'company
+      (define-key company-active-map (kbd "RET") #'company-complete-selection)
+      (define-key company-active-map (kbd "C-SPC") #'company-manual-begin))
+    (define-key evil-insert-state-map (kbd "C-SPC") 'company-manual-begin)
   #+END_SRC
-** Relative numbers =nlium-relative=
-   #+BEGIN_SRC emacs-lisp
+
+* Completion framework =ivy= and =counsel=
+  #+BEGIN_SRC emacs-lisp
+    (use-package ivy
+      :config
+      (ivy-mode 1)
+      (progn
+      (evil-set-initial-state 'ivy-occur-grep-mode 'normal))
+      (setq ivy-use-virtual-buffers t)
+      (setq ivy-count-format "(%d/%d) ")
+      (setq enable-recursive-minibuffers t)
+      (setq ivy-initial-inputs-alist nil)
+      (setq ivy-re-builders-alist
+            '((swiper . ivy--regex-plus)
+              (swiper-isearch . ivy--regex-plus)
+              (counsel-ag . ivy--regex-plus)
+              (counsel-rg . ivy--regex-plus)
+              (t      . ivy--regex-fuzzy)))   ;; enable fuzzy searching everywhere except for Swiper and ag
+
+      (global-set-key (kbd "s-b") 'ivy-switch-buffer))
+
+    (use-package swiper
+      :config
+      (global-set-key (kbd "s-f") 'swiper-isearch))
+
+    (use-package counsel
+      :config
+      (global-set-key (kbd "M-x") 'counsel-M-x)
+      (global-set-key (kbd "s-y") 'counsel-yank-pop)
+      (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+      (global-set-key (kbd "s-r") 'counsel-imenu)
+      (global-set-key (kbd "s-b") 'counsel-switch-buffer)
+      (global-set-key (kbd "s-/") 'comment-line)
+      (global-set-key (kbd "s-F") 'counsel-rg)
+      (global-set-key (kbd "s-f") 'swiper-isearch)
+      (global-set-key (kbd "s-p") 'counsel-git))
+
+    ;; When using git ls (via counsel-git), include unstaged files
+    (setq counsel-git-cmd "git ls-files --full-name --exclude-standard --others --cached --")
+
+    (use-package smex)
+    (use-package flx)
+
+    (define-key ivy-minibuffer-map (kbd "C-c C-e") 'ivy-occur)
+  #+END_SRC
+* Relative numbers =nlium-relative=
+  #+BEGIN_SRC emacs-lisp
     (use-package nlinum-relative
       :config
       (nlinum-relative-setup-evil)
       (add-hook 'prog-mode-hook 'nlinum-relative-mode))
 
     (setq nlinum-relative-redisplay-delay 0)
-    (setq nlinum-relative-current-symbol "->")
+    ;; (setq nlinum-relative-current-symbol "->")
     (setq nlinum-relative-offset 0)
-   #+END_SRC
+  #+END_SRC
 * Finance =ledger=
   #+BEGIN_SRC emacs-lisp
     (setq ledger-post-amount-alignment-column 70)
@@ -896,7 +1111,7 @@
 
     (setq mu4e-confirm-quit nil)
 
-    ;; (setq mu4e-compose-context-policy 'pick-first)
+    (setq mu4e-compose-context-policy 'pick-first)
 
     (setq mail-user-agent 'mu4e-user-agent)
 
@@ -907,7 +1122,7 @@
 
     (setq mu4e-view-show-addresses t)
 
-    (setq mu4e-attachment-dir "~/downloads")
+    (setq mu4e-attachment-dir "~/Downloads")
 
     (define-key mu4e-view-mode-map (kbd "C-c C-o") 'mu4e~view-browse-url-from-binding)
 
@@ -987,7 +1202,6 @@
     (require 'org-mu4e)
 
     (setq org-mu4e-link-query-in-headers-mode nil)
-
   #+END_SRC
 
 * Terminal =vterm=
@@ -1068,4 +1282,14 @@
   #+BEGIN_SRC emacs-lisp
     (use-package nov)
     (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+  #+END_SRC
+
+* =docker=
+  #+BEGIN_SRC emacs-lisp
+
+  #+END_SRC
+  #+BEGIN_SRC emacs-lisp
+    (use-package docker
+      :ensure t
+      :bind ("C-c d" . docker))
   #+END_SRC
