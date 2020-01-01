@@ -55,8 +55,8 @@
           user-mail-address "tony@arksolutions.it")
 
     (save-place-mode t)
-    (setq column-number-mode t) ;; show columns in addition to rows in mode line
-    ;; (global-visual-line-mode t)
+    (setq column-number-mode t)
+    (global-visual-line-mode t)
     (setq-default indent-tabs-mode nil)
   #+END_SRC
 
@@ -312,8 +312,8 @@
    #+END_SRC
 * Managing Projects =projectile=
   #+BEGIN_SRC emacs-lisp
-    (setq projectile-project-search-path '("~/Repo/2Areas"
-                                           "~/Repo/1Projects"))
+    (setq projectile-project-search-path '("~/Repositories/2 Areas"
+                                           "~/Repositories/1 Projects"))
     (setq projectile-completion-system 'ivy)
     (setq projectile-switch-project-action 'projectile-dired)
     (setq projectile-enable-caching t)
@@ -505,8 +505,7 @@
   #+BEGIN_SRC emacs-lisp
     (defun itechytony-dired-mode-setup ()
       "to be run as hook for `dired-mode'."
-      (dired-hide-details-mode 1)
-      (dired-hide-dotfiles-mode 1))
+      (dired-hide-details-mode 1))
     (add-hook 'dired-mode-hook 'itechytony-dired-mode-setup)
 
     (setq dired-dwim-target t)
@@ -583,7 +582,9 @@
 ** Font
    #+BEGIN_SRC emacs-lisp
      (set-face-attribute 'font-lock-type-face nil :weight 'bold)
-     (set-frame-font "Operator Mono 18" nil t)
+     (set-frame-font "Operator Mono 20" nil t)
+
+     (set-face-attribute 'default nil :height 150)
    #+END_SRC
 ** Theme
    #+BEGIN_SRC emacs-lisp
@@ -604,9 +605,6 @@
 
 ** =powerline=
    #+BEGIN_SRC emacs-lisp
-     ;; (use-package telephone-line)
-     ;; (telephone-line-mode t)
-
      (use-package spaceline)
      (spaceline-spacemacs-theme)
    #+END_SRC
@@ -688,8 +686,26 @@
   Install =org-mode=
   #+BEGIN_SRC emacs-lisp
     (use-package org
+      :custom-face
+      (variable-pitch ((t (:family "Avenir Next"))))
+      (org-document-title ((t (:weight bold :height 1.5))))
+      (org-done ((t (:strike-through t :weight bold))))
+      (org-headline-done ((t (:strike-through t))))
+      (org-level-1 ((t (:weight bold :height 1.3))))
+      (org-level-2 ((t (:weight normal :height 1.2))))
+      (org-level-3 ((t (:weight normal :height 1.1))))
+      (org-image-actual-width '(600))
       :config
       (add-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h 'append)
+      org-todo-keywords
+      '((sequence "TODO(t)"
+                  "STARTED(s)"
+                  "WAITING(w)"
+                  "SOMEDAY(.)"
+                  "MAYBE(m)"
+                  "|"
+                  "DONE(x!)"
+                  "CANCELLED(c)"))
       :ensure t)
   #+END_SRC
 
@@ -710,9 +726,7 @@
     (setq org-directory "~/Dropbox/org")
     (setq org-inbox-file "~/Dropbox/org/inbox.org")
     (setq org-agenda-files (quote ("~/Dropbox/org/todo.org"
-                                   "~/Dropbox/org/inbox.org"
-                                   "~/Dropbox/org/inbox.org"
-                                   "~/Dropbox/org/goals.org")))
+                                   "~/Dropbox/org/routine/tony.org")))
 
     (add-hook 'org-capture-mode-hook 'evil-insert-state)
     (setq org-capture-templates
@@ -733,6 +747,7 @@
      '((R . t)
        (emacs-lisp . t)
        (latex . t)
+       (shell . t)
        (ledger . t)
        (python . t)
        (ruby . t)
@@ -797,6 +812,10 @@
      (setq jiralib-url "https://netsells.atlassian.net")
      (use-package org-jira)
    #+END_SRC
+** =org-gcal=
+#+BEGIN_SRC emacs-lisp
+  (use-package org-gcal)
+#+END_SRC
 * Calendar
 ** =calfw=
    #+BEGIN_SRC emacs-lisp
@@ -917,8 +936,8 @@
         ;; toggle
         "tf"  'flycheck-mode
         "tl"  'nlinum-mode
-        "tt"  'org-pomodoro
-        "tg"  'global-visual-line-mode
+        "tt"  'toggle-truncate-lines
+        "tv"  'global-visual-line-mode
         ;; projects
         "pp"  'projectile-switch-project
         "pi"  'projectile-invalidate-cache
@@ -927,6 +946,7 @@
         ;; notes
         "nf" 'kwamedat/find-in-notes
         "na" 'org-agenda
+        "np" 'org-pomodoro
         "nn" 'kwamedat/find-in-notes
         "nc" 'org-capture
         "nt" 'kwamedat/visit-todo-list-file
@@ -1206,30 +1226,32 @@
     (setq smtpmail-debug-info t)
     (setq smtpmail-debug-verbose t)
 
-    (setq
-     mu4e-maildir       "~/.mail"   ;; top-level Maildir
-     mu4e-sent-folder   "/sent"       ;; folder for sent messages
-     mu4e-drafts-folder "/drafts"     ;; unfinished messages
-     mu4e-trash-folder  "/trash"      ;; trashed messages
-     mu4e-refile-folder "/archive")   ;; saved messages
+     (setq mu4e-contexts
+     `( ,(make-mu4e-context
+         :name "Netsells"
+         :match-func (lambda (msg) (when msg
+           (string-prefix-p "/netsells.co.uk" (mu4e-message-field msg :maildir))))
+         :vars '(
+           (mu4e-trash-folder . "/netsells.co.uk/[Gmail].Bin")
+           (mu4e-drafts-folder . "/netsells.co.uk/[Gmail].Drafts")
+           (mu4e-sent-folder . "/netsells.co.uk/[Gmail].Sent Mail")
+           (mu4e-refile-folder . "/netsells.co.uk/[Gmail].4 Archives")
+           ))
+       ,(make-mu4e-context
+         :name "Arksolutions"
+         :match-func (lambda (msg) (when msg
+           (string-prefix-p "/artsolutions.it" (mu4e-message-field msg :maildir))))
+         :vars '(
+           (mu4e-trash-folder . "/arksolutions.it/Trash")
+           (mu4e-sent-folder . "/arksolutions.it/Sent")
+           (mu4e-drafts-folder ."/arksolutions.it/Drafts")
+           (mu4e-refile-folder . "/arksolutions.it/4 Archives")
+           ))
+       ))
 
     (setq
      mu4e-get-mail-command "offlineimap"
-     mu4e-update-interval nil)             ;; 300 to update every 5 minutes
-
-    (setq mu4e-bookmarks
-          '( ("flag:unread AND NOT flag:trashed"                "Unread messages"        ?u)
-             ("date:today..now"                                 "Today's messages"       ?t)
-             ("date:7d..now"                                    "Last 7 days"            ?w)
-             ("maildir:/sent"                                   "sent"                   ?s)
-             ("maildir:/arksolutions.it/INBOX AND date:7d..now" "Personal Last 7 days"   ?p)
-             ("maildir:/netsells.co.uk/INBOX AND date:7d..now"  "Work Last 7 days"       ?n)
-             ("mime:image/*"                                    "Messages with images"   ?i)))
-
-    (setq mu4e-maildir-shortcuts
-          '( ("/netsells.co.uk/INBOX" . ?w)
-             ("/arksolutions.it/INBOX"       . ?p)
-             ("/sent"            . ?s)))
+     mu4e-update-interval 300)
 
     (setq mu4e-user-mail-address-list (list "tony@arksolutions.it" "tony.ampomah@netsells.co.uk"))
 
@@ -1320,16 +1342,16 @@
 
 * Reading books =nov=
   #+BEGIN_SRC emacs-lisp
+    (setq nov-text-width t)
+    (setq visual-fill-column-center-text t)
+    (add-hook 'nov-mode-hook 'visual-fill-column-mode)
+    (use-package visual-fill-column)
     (use-package nov)
     (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
     (defun my-nov-font-setup ()
-      (face-remap-add-relative 'variable-pitch :family "Liberation Serif"
+      (face-remap-add-relative 'variable-pitch :family "Avenir"
                                :height 1.0))
     (add-hook 'nov-mode-hook 'my-nov-font-setup)
-    (setq nov-text-width 80)
-    (setq nov-text-width t)
-    (add-hook 'nov-mode-hook 'visual-line-mode)
-    (add-hook 'nov-mode-hook 'visual-fill-column-mode)
   #+END_SRC
 
 * =docker=
