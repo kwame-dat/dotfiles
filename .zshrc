@@ -1,6 +1,5 @@
 export ZSH="/Users/tonyampomah/.oh-my-zsh"
 
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 
 plugins=(
