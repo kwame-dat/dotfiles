@@ -9,10 +9,10 @@ module.exports = {
     updateChannel: 'stable',
 
     // default font size in pixels for all tabs
-    fontSize: 16,
+    fontSize: 18,
 
     // font family with optional fallbacks
-    fontFamily: 'Dank Mono, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
+    fontFamily: 'Operator Mono, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
 
     // default font weight: 'normal' or 'bold'
     fontWeight: 'normal',
@@ -21,7 +21,7 @@ module.exports = {
     fontWeightBold: 'bold',
 
     // line height as a relative unit
-    lineHeight: 1,
+    lineHeight: 1.5,
 
     // letter spacing as a relative unit
     letterSpacing: 0,
