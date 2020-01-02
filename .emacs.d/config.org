@@ -687,7 +687,7 @@
   #+BEGIN_SRC emacs-lisp
     (use-package org
       :custom-face
-      (variable-pitch ((t (:family "Avenir Next"))))
+      (variable-pitch ((t (:family "Avenir"))))
       (org-document-title ((t (:weight bold :height 1.5))))
       (org-done ((t (:strike-through t :weight bold))))
       (org-headline-done ((t (:strike-through t))))
@@ -815,6 +815,13 @@
 ** =org-gcal=
 #+BEGIN_SRC emacs-lisp
   (use-package org-gcal)
+#+END_SRC
+** =mixed-pitch=
+#+BEGIN_SRC emacs-lisp
+  (use-package mixed-pitch
+    :hook
+    ;; If you want it in all text modes:
+    (text-mode . mixed-pitch-mode))
 #+END_SRC
 * Calendar
 ** =calfw=
