@@ -13,6 +13,8 @@ plugins=(
     brew
     bower
     ansible
+    docker
+    docker-compose
     history-substring-search
     history
     command-not-found

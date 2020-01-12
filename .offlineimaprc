@@ -1,7 +1,10 @@
 [general]
 accounts = Netsells, Arksolutions
 maxsyncaccounts = 2
-pythonfile = ~/Repositories/2 Areas/Dotfiles/shell/+mu/lib.py
+pythonfile = ~/Repositories/2Areas/Dotfiles/shell/+mu/lib.py
+
+autorefresh = 0.5
+quick = 10
 
 [Account Arksolutions]
 localrepository = LocalArksolutions
