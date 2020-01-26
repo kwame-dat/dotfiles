@@ -4,13 +4,18 @@
 * Core
 ** Sane defaults
   #+BEGIN_SRC emacs-lisp
+    (setq-default buffer-file-coding-system 'utf-8-unix)
+    (set-default-coding-systems 'utf-8-unix)
+    (setq locale-coding-system 'utf-8-unix)
+    (prefer-coding-system 'utf-8-unix)
+    (setq tramp-default-method "ssh")
+    (setq comint-prompt-read-only t)
     (setq gc-cons-threshold 100000000)
     (setq evil-want-integration t)
     (setq display-time-day-and-date t)
     (setq display-time-format "%e %b %y  %H:%M")
     (setq display-time-default-load-average nil)
     (setq pdf-view-use-scaling t)
-    (setq-default buffer-file-coding-system 'utf-8-unix)
     (display-time-mode 1) ;; add time
     (setq evil-want-keybinding nil)
     (setq evil-want-C-u-scroll t)
@@ -23,17 +28,20 @@
     (setq delete-by-moving-to-trash t)
     (defun system-move-file-to-trash (file)
       "Use \"trash\" to move FILE to the system trash.
-            When using Homebrew, install it using \"brew install trash\"."
+                When using Homebrew, install it using \"brew install trash\"."
       (call-process (executable-find "trash")
                     nil 0 nil
                     file))
+    ;; Keep all backup and auto-save files in one directory
+    (setq backup-directory-alist '(("." . "~/.emacs.d/.cache/backups")))
+    (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/.cache/auto-save-list/" t)))
 
     (setq make-backup-files nil) ; stop creating backup~ files
     (setq auto-save-default nil) ; stop creating #autosave# files
     (setq create-lockfiles nil)  ; stop creating .# files
 
-
     (global-auto-revert-mode t)
+    (global-visual-line-mode 1)
 
     (setq
      inhibit-startup-message t         ; Don't show the startup message
@@ -47,7 +55,6 @@
      )
 
     (fset 'yes-or-no-p 'y-or-n-p)      ; y and n instead of yes and no everywhere else
-    ;; (delete-selection-mode 1)
     (global-unset-key (kbd "s-p"))
 
     (electric-pair-mode 1)
@@ -58,9 +65,9 @@
 
     (save-place-mode t)
     (setq column-number-mode t)
-    (global-visual-line-mode t)
     (setq-default indent-tabs-mode nil)
 
+    (setq epg-gpg-program "gpg2")
     (setq auth-sources
           '((:source "~/.authinfo.gpg")))
   #+END_SRC
@@ -75,6 +82,26 @@
     (setq c-basic-offset 2)
     (setq-default tab-width 2)
     (setq-default c-basic-indent 2)
+  #+END_SRC
+
+  Delete shell buffer when I type exit
+  #+BEGIN_SRC emacs-lisp
+    (defun my-shell-mode-hook ()
+      "Custom `shell-mode' behaviours."
+      ;; Kill the buffer when the shell process exits.
+      (let* ((proc (get-buffer-process (current-buffer)))
+             (sentinel (process-sentinel proc)))
+        (set-process-sentinel
+         proc
+         `(lambda (process signal)
+            ;; Call the original process sentinel first.
+            (funcall #',sentinel process signal)
+            ;; Kill the buffer on an exit signal.
+            (and (memq (process-status process) '(exit signal))
+                 (buffer-live-p (process-buffer process))
+                 (kill-buffer (process-buffer process)))))))
+
+    (add-hook 'shell-mode-hook 'my-shell-mode-hook)
   #+END_SRC
 
 ** Utility functions
@@ -119,18 +146,18 @@
   #+END_SRC
 
 ** Key bindings
-  #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp :results none
+    (setq mac-option-modifier 'meta)
+    (setq mac-command-modifier 'super)
     (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
     (global-set-key (kbd "s-o") (kbd "C-x o"))
     (global-set-key (kbd "<escape>")      'keyboard-escape-quit) ;; use escape to quit
     (global-set-key (kbd "s-w") (kbd "C-x 0")) ;; just like close tab in a web browser
     (global-set-key (kbd "s-p") 'projectile-find-file)
     (global-set-key (kbd "s-P") 'projectile-switch-project)
-    (define-key global-map (kbd "s-)") 'sensible-defaults/reset-text-size)
-    (define-key global-map (kbd "s-+") 'text-scale-increase)
-    (define-key global-map (kbd "s-=") 'text-scale-increase)
-    (define-key global-map (kbd "s-_") 'text-scale-decrease)
-    (define-key global-map (kbd "s--") 'text-scale-decrease)
+    (global-set-key (kbd "s-s") 'save-buffer)
+    (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
+    (global-set-key (kbd "s-k") 'kill-this-buffer)
   #+END_SRC
 
 ** =exec-path-from-shell=
@@ -147,12 +174,20 @@
       (evil-leader/set-leader "<SPC>")
       (evil-leader/set-key
         ;; workspaces
+        "<tab><tab>" 'eyebrowse-switch-to-window-config
+        "<tab>c" 'eyebrowse-create-window-config
         "<tab>n" 'eyebrowse-create-window-config
         "<tab>d" 'eyebrowse-close-window-config
-        "<tab>r" 'eyebrowse-rename-window-config
+        "<tab>k" 'eyebrowse-close-window-config
+        "<tab>m" 'eyebrowse-rename-window-config
         "<tab>." 'eyebrowse-switch-to-window-config
         "<tab>[" 'eyebrowse-previous-window-config
         "<tab>]" 'eyebrowse-next-window-config
+        "<tab>S" 'persp-state-save
+        "<tab>s" 'persp-state-save
+        "<tab>L" 'persp-state-load
+        "<tab>l" 'persp-state-load
+        "<tab>R" 'persp-state-restore
         ;; files
         "fR"  'projectile-recentf
         "fdd" 'kwamedat/find-in-documents
@@ -166,7 +201,6 @@
         "fr"  'recentf-open-files
         "fs"  'save-buffer
         "fS"  'write-file
-        "fs"  'swiper-isearch
         "ft"  'kwamedat/visit-todo-list-file
         ;; buffers
         "bb"  'projectile-switch-to-buffer
@@ -186,6 +220,7 @@
         "gS"  'magit-stage-file
         "gU"  'magit-unstage-file
         ;; toggle
+        "ta"  'company-mode
         "tf"  'flycheck-mode
         "tl"  'nlinum-mode
         "tt"  'toggle-truncate-lines
@@ -211,21 +246,26 @@
         "/sp"  'counsel-rg
         ;; insert
         "ie" 'emoji-cheat-sheet-plus-insert
+        ;; window
+        "w"  'evil-window-map
+        ;; help
+        "h"  'help-map
         ;; open application
         "oD" 'docker
+        "od" 'docker
         "o-" 'dired-jump
         "oo" '+macos/reveal-in-finder
-        "opp"  'password-store-copy
-        "opf"  'password-store-copy-field
-        "opi"  'password-store-insert
-        "opg"  'password-store-generate
-        "opd"  'password-store-remove
-        "opr"  'password-store-rename
-        "ope"  'password-store-edit
+        "op" 'treemacs
+        "oxp"  'password-store-copy
+        "oxf"  'password-store-copy-field
+        "oxi"  'password-store-insert
+        "oxg"  'password-store-generate
+        "oxd"  'password-store-remove
+        "oxr"  'password-store-rename
+        "oxe"  'password-store-edit
         "om"  'mu4e
         "ot"  'shell-pop
         "oT"  'vterm-toggle
-        "w"  'save-buffer
         "x"  'counsel-M-x))
 
 
@@ -239,8 +279,10 @@
       (evil-define-key 'normal php-mode-map (kbd ", m") 'phpactor-move-class)
       (evil-define-key 'normal php-mode-map (kbd ", i") 'phpactor-import-class)
       (evil-define-key 'normal php-mode-map (kbd ", f") 'php-search-documentation)
+      (evil-define-key 'normal php-mode-map (kbd ", r") 'counsel-imenu)
 
       ;; Org Mode
+      (evil-define-key 'normal org-mode-map (kbd ", c") 'org-ctrl-c-ctrl-c)
       (evil-define-key 'normal org-mode-map (kbd ", t") 'org-todo)
       (evil-define-key 'normal org-mode-map (kbd ", s") 'org-schedule)
       (evil-define-key 'normal org-mode-map (kbd ", d") 'org-deadline)
@@ -324,6 +366,12 @@
         :config
         (global-evil-surround-mode))
 
+      (use-package evil-commentary
+        :diminish evil-commentary-mode
+        :ensure t
+        :config
+        (evil-commentary-mode))
+
       (use-package evil-indent-textobject
         :ensure t)
       (kwamedat/apply-evil-other-package-configs))
@@ -370,13 +418,27 @@
 #+END_SRC
 ** =projectile=
   #+BEGIN_SRC emacs-lisp
-    (setq projectile-project-search-path '("~/Repositories/2Areas"
+    (setq projectile-project-search-path '("~/Documents/3Resources"
+                                           "~/Documents/2Areas"
+                                           "~/Documents/1Projects"
+                                           "~/Dropbox/org"
+                                           "~/Desktop"
+                                           "~/Downloads"
+                                           "~/Repositories/3Resources"
+                                           "~/Repositories/2Areas"
                                            "~/Repositories/1Projects"))
     (setq projectile-completion-system 'ivy)
-    ;; (setq projectile-switch-project-action 'magit-status)
     (setq projectile-enable-caching t)
-    (use-package projectile)
-    (projectile-mode +1)
+    (setq projectile-switch-project-action #'projectile-dired)
+
+    (setq projectile-mode-line
+          '(:eval (if (file-remote-p default-directory)
+                      " Prj[*remote*]"
+                    (format " Prj[%s]" (projectile-project-name)))))
+
+    (use-package projectile
+      :ensure t
+      :init (projectile-mode))
   #+END_SRC
 
 ** =which-key=
@@ -395,7 +457,12 @@
 
 ** =undo-tree=
   #+BEGIN_SRC emacs-lisp
-    (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+    ;; (setq undo-tree-auto-save-history t
+    ;;       undo-tree-history-directory-alist
+    ;;       `(("." . , "~/.emacs.d/.cache/undo")))
+    ;; (unless (file-exists-p  "~/.emacs.d/.cache/undo")
+    ;;   (make-directory "~/.emacs.d/.cache/undo" ))
+
     (use-package undo-tree
       :ensure t
       :config
@@ -410,7 +477,8 @@
       (defun my-php-mode-setup ()
         "My PHP-mode hook."
         (require 'flycheck-phpstan)
-        (flycheck-mode t))
+        (flycheck-mode t)
+        (subword-mode nil))
       (add-hook 'php-mode-hook 'my-php-mode-setup)
 
       (use-package php-mode
@@ -548,15 +616,15 @@
 
   Org mode configuration
   #+BEGIN_SRC emacs-lisp
-    ;; (setq org-startup-truncated nil)
+    (setq org-icalendar-include-todo t
+          org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due)
+          org-icalendar-use-scheduled '(event-if-todo event-if-not-todo todo-start)
+          org-icalendar-with-timestamps t)
+    (setq org-startup-truncated nil)
     (setq org-agenda-inhibit-startup nil)
+    (add-hook 'org-mode-hook 'org-indent-mode)
 
-    (add-hook 'org-mode-hook
-              (lambda ()
-                (org-indent-mode t))
-              t)
-
-    (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
+    (setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
 
     (setq org-ellipsis "⤵")
 
@@ -598,12 +666,15 @@
     (use-package org
       :custom-face
       (variable-pitch ((t (:family "Avenir"))))
-      (org-document-title ((t (:weight bold :height 1.5))))
+      (org-document-title ((t (:weight bold ))))
       (org-done ((t (:strike-through t :weight bold))))
       (org-headline-done ((t (:strike-through t))))
       (org-level-1 ((t (:weight bold :height 1.5))))
       (org-level-2 ((t (:weight normal :height 1.4))))
       (org-level-3 ((t (:weight normal :height 1.3))))
+      (org-level-1 ((t (:weight bold ))))
+      (org-level-2 ((t (:weight normal ))))
+      (org-level-3 ((t (:weight normal ))))
       (org-image-actual-width '(600))
       :config
       (add-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h 'append)
@@ -676,7 +747,10 @@
    #+END_SRC
 *** =org-gcal=
 #+BEGIN_SRC emacs-lisp
-  (use-package org-gcal)
+  (setq package-check-signature nil)
+
+  (use-package org-gcal
+  :ensure t)
 #+END_SRC
 *** =mixed-pitch=
 #+BEGIN_SRC emacs-lisp
@@ -750,7 +824,8 @@
 
 ** =multiple-cursors=
   #+BEGIN_SRC emacs-lisp
-    (use-package evil-mc)
+    (use-package evil-mc
+      :diminish evil-mc-mode)
     (global-evil-mc-mode 1)
     (use-package evil-multiedit)
     ;; Highlights all matches of the selection in the buffer.
@@ -817,11 +892,59 @@
 
   Highlight current cursor
   #+BEGIN_SRC emacs-lisp
-  (global-hl-line-mode)
+    ;; (global-hl-line-mode)
   #+END_SRC
 ** Font
    #+BEGIN_SRC emacs-lisp
-     (set-face-attribute 'default nil :weight 'bold :height 150)
+     (defcustom sanityinc/force-default-font-for-symbols nil
+       "When non-nil, force Emacs to use your default font for symbols."
+       :type 'boolean)
+
+     (defun sanityinc/maybe-use-default-font-for-symbols ()
+       "Force Emacs to render symbols using the default font, if so configured."
+       (when sanityinc/force-default-font-for-symbols
+         (set-fontset-font "fontset-default" 'symbol (face-attribute 'default :family))))
+
+     (add-hook 'after-init-hook 'sanityinc/maybe-use-default-font-for-symbols)
+
+     ;;; Changing font sizes
+
+     (require 'cl)
+
+     (defun sanityinc/font-name-replace-size (font-name new-size)
+       (let ((parts (split-string font-name "-")))
+         (setcar (nthcdr 7 parts) (format "%d" new-size))
+         (mapconcat 'identity parts "-")))
+
+     (defun sanityinc/set-frame-font-size (size)
+         (set-frame-font (sanityinc/font-name-replace-size (face-font 'default) size) t t))
+
+     (defun sanityinc/increment-default-font-height (delta)
+       "Adjust the default font height by DELTA on every frame.
+     Emacs will keep the pixel size of the frame approximately the
+     same.  DELTA should be a multiple of 10, to match the units used
+     by the :height face attribute."
+       (let* ((new-height (+ (face-attribute 'default :height) delta))
+              (new-point-height (/ new-height 10)))
+         (sanityinc/set-frame-font-size new-point-height)
+         (set-face-attribute 'default nil :height new-height)
+         (message "Default font size is now %d" new-point-height)))
+
+     (defun sanityinc/increase-default-font-height ()
+       (interactive)
+       (sanityinc/increment-default-font-height 10)
+       (if (fboundp 'powerline-reset)
+           (powerline-reset)))
+
+     (defun sanityinc/decrease-default-font-height ()
+       (interactive)
+       (sanityinc/increment-default-font-height -10)
+       (if (fboundp 'powerline-reset)
+           (powerline-reset)))
+
+     (bind-key (kbd "s-=") 'sanityinc/increase-default-font-height)
+     (bind-key (kbd "s--") 'sanityinc/decrease-default-font-height)
+
      (set-frame-font "Operator Mono 18" nil t)
    #+END_SRC
 ** Theme
@@ -829,7 +952,7 @@
      (use-package base16-theme
        :ensure t
        :config
-       (load-theme 'base16-tomorrow-night t))
+       (load-theme 'base16-synth-midnight-dark t))
    #+END_SRC
 
 ** =diff-hl=
@@ -844,7 +967,7 @@
 ** =powerline=
    #+BEGIN_SRC emacs-lisp
      (use-package spaceline)
-     (spaceline-spacemacs-theme)
+     (spaceline-emacs-theme)
    #+END_SRC
 *** =diminish=
     #+BEGIN_SRC emacs-lisp
@@ -865,6 +988,16 @@
       (diminish 'sub-mode)
       (diminish 'all-the-icons-dired-mode)
       (diminish 'company-mode)
+      (add-hook 'org-indent-mode-hook (lambda () (diminish 'org-indent-mode)))
+      (diminish 'wrap-region-mode)
+      (diminish 'yas/minor-mode)
+      (diminish 'visual-line-mode)
+      (diminish 'abbrev-mode)
+      (diminish 'subword-mode)
+
+      (with-eval-after-load 'subword
+        (diminish 'subword-mode))
+      (global-subword-mode +1)
     #+END_SRC
 ** =all-the-icons=
    #+BEGIN_SRC emacs-lisp
@@ -955,14 +1088,13 @@
 
     (use-package treemacs-icons-dired
       :after treemacs dired
-      :ensure t
-      :config (treemacs-icons-dired-mode))
+      :ensure t)
 
     (use-package treemacs-magit
       :after treemacs magit
       :ensure t)
   #+END_SRC
-** =eyebrowse=
+** =workspace=
   #+BEGIN_SRC emacs-lisp
     (use-package eyebrowse
       :diminish eyebrowse-mode
@@ -993,29 +1125,73 @@
 ** =emoji=
   #+BEGIN_SRC emacs-lisp
     (use-package emojify)
+    (global-emojify-mode 1)
   #+END_SRC
 * Completion
 ** =company=
    #+BEGIN_SRC emacs-lisp
+     (setq
+      company-global-modes
+      '(not erc-mode message-mode help-mode gud-mode eshell-mode shell-mode vterm-mode))
+     (setq company-minimum-prefix-length 3)
+     (setq company-idle-delay 0)
+
      (use-package company
        :ensure t
        :diminish company-mode
        :config
-       (setq company-global-modes '(not org-mode markdown-mode))
-       (setq company-minimum-prefix-length 1)
-       (setq company-idle-delay 0)
-       (setq company-dabbrev-downcase 0)
        (define-key company-active-map (kbd "ESC") 'company-abort)
        (define-key company-active-map (kbd "[tab]") 'company-complete)
        (define-key company-active-map (kbd "[return]") 'company-complete)
        (define-key company-active-map (kbd "C-n") 'company-select-next)
        (define-key company-active-map (kbd "C-p") 'company-select-previous)
        (add-hook 'after-init-hook 'global-company-mode))
-
-
-     (use-package company-box
-       :hook (company-mode . company-box-mode))
    #+END_SRC
+** =company-box=
+#+BEGIN_SRC emacs-lisp
+  (setq company-box-show-single-candidate t
+        company-box-doc-delay 1
+        company-box-doc-enable nil
+        company-box-backends-colors nil
+        company-box-max-candidates 50
+        company-box-icons-alist 'company-box-icons-all-the-icons
+        company-box-icons-all-the-icons
+        `((Unknown       . ,(all-the-icons-material "find_in_page"             :height 0.8 :face 'all-the-icons-purple))
+          (Text          . ,(all-the-icons-material "text_fields"              :height 0.8 :face 'all-the-icons-green))
+          (Method        . ,(all-the-icons-material "functions"                :height 0.8 :face 'all-the-icons-red))
+          (Function      . ,(all-the-icons-material "functions"                :height 0.8 :face 'all-the-icons-red))
+          (Constructor   . ,(all-the-icons-material "functions"                :height 0.8 :face 'all-the-icons-red))
+          (Field         . ,(all-the-icons-material "functions"                :height 0.8 :face 'all-the-icons-red))
+          (Variable      . ,(all-the-icons-material "adjust"                   :height 0.8 :face 'all-the-icons-blue))
+          (Class         . ,(all-the-icons-material "class"                    :height 0.8 :face 'all-the-icons-red))
+          (Interface     . ,(all-the-icons-material "settings_input_component" :height 0.8 :face 'all-the-icons-red))
+          (Module        . ,(all-the-icons-material "view_module"              :height 0.8 :face 'all-the-icons-red))
+          (Property      . ,(all-the-icons-material "settings"                 :height 0.8 :face 'all-the-icons-red))
+          (Unit          . ,(all-the-icons-material "straighten"               :height 0.8 :face 'all-the-icons-red))
+          (Value         . ,(all-the-icons-material "filter_1"                 :height 0.8 :face 'all-the-icons-red))
+          (Enum          . ,(all-the-icons-material "plus_one"                 :height 0.8 :face 'all-the-icons-red))
+          (Keyword       . ,(all-the-icons-material "filter_center_focus"      :height 0.8 :face 'all-the-icons-red))
+          (Snippet       . ,(all-the-icons-material "short_text"               :height 0.8 :face 'all-the-icons-red))
+          (Color         . ,(all-the-icons-material "color_lens"               :height 0.8 :face 'all-the-icons-red))
+          (File          . ,(all-the-icons-material "insert_drive_file"        :height 0.8 :face 'all-the-icons-red))
+          (Reference     . ,(all-the-icons-material "collections_bookmark"     :height 0.8 :face 'all-the-icons-red))
+          (Folder        . ,(all-the-icons-material "folder"                   :height 0.8 :face 'all-the-icons-red))
+          (EnumMember    . ,(all-the-icons-material "people"                   :height 0.8 :face 'all-the-icons-red))
+          (Constant      . ,(all-the-icons-material "pause_circle_filled"      :height 0.8 :face 'all-the-icons-red))
+          (Struct        . ,(all-the-icons-material "streetview"               :height 0.8 :face 'all-the-icons-red))
+          (Event         . ,(all-the-icons-material "event"                    :height 0.8 :face 'all-the-icons-red))
+          (Operator      . ,(all-the-icons-material "control_point"            :height 0.8 :face 'all-the-icons-red))
+          (TypeParameter . ,(all-the-icons-material "class"                    :height 0.8 :face 'all-the-icons-red))
+          ;; (Template   . ,(company-box-icons-image "Template.png"))))
+          (Yasnippet     . ,(all-the-icons-material "short_text"               :height 0.8 :face 'all-the-icons-green))
+          (ElispFunction . ,(all-the-icons-material "functions"                :height 0.8 :face 'all-the-icons-red))
+          (ElispVariable . ,(all-the-icons-material "check_circle"             :height 0.8 :face 'all-the-icons-blue))
+          (ElispFeature  . ,(all-the-icons-material "stars"                    :height 0.8 :face 'all-the-icons-orange))
+          (ElispFace     . ,(all-the-icons-material "format_paint"             :height 0.8 :face 'all-the-icons-pink))))
+  (use-package company-box
+    :diminish company-box-mode
+    :hook (company-mode . company-box-mode))
+#+END_SRC
 ** =lsp=
 *** =company-lsp=
    #+BEGIN_SRC emacs-lisp
@@ -1025,13 +1201,14 @@
 
 *** =lsp-mode=
    #+BEGIN_SRC emacs-lisp
-    (use-package lsp-mode
-      :config
-      (setq lsp-prefer-flymake nil)
-      (setq lsp-auto-guess-root t)
-      (setq lsp-enable-file-watchers nil)
-      :hook (php-mode . lsp)
-      :commands lsp)
+     (setq lsp-prefer-flymake nil)
+     (setq lsp-auto-guess-root t)
+     (setq lsp-enable-file-watchers nil)
+
+     (use-package lsp-mode
+       :diminish lsp-mode
+       :hook (php-mode . lsp)
+       :commands lsp)
 
    #+END_SRC
 
@@ -1043,47 +1220,45 @@
    #+END_SRC
 ** =ivy=
 #+BEGIN_SRC emacs-lisp
-  (use-package ivy
-    :config
-    (ivy-mode 1)
-    (progn
-      (evil-set-initial-state 'ivy-occur-grep-mode 'normal))
-    (setq ivy-use-virtual-buffers t)
-    (setq ivy-count-format "(%d/%d) ")
-    (setq enable-recursive-minibuffers t)
-    (setq ivy-initial-inputs-alist nil)
-    (setq ivy-on-del-error-function #'ignore)
-    (setq ivy-re-builders-alist
-          '((swiper . ivy--regex-plus)
-            (swiper-isearch . ivy--regex-plus)
-            (counsel-ag . ivy--regex-plus)
-            (counsel-rg . ivy--regex-plus)
-            (t      . ivy--regex-fuzzy)))
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  (setq enable-recursive-minibuffers t)
+  (setq ivy-initial-inputs-alist nil)
+  (setq ivy-on-del-error-function #'ignore)
+  (setq ivy-re-builders-alist
+        '((swiper . ivy--regex-plus)
+          (swiper-isearch . ivy--regex-plus)
+          (counsel-ag . ivy--regex-plus)
+          (counsel-rg . ivy--regex-plus)
+          (t      . ivy--regex-fuzzy)))
+  (evil-set-initial-state 'ivy-occur-grep-mode 'normal)
 
-    (global-set-key (kbd "s-b") 'ivy-switch-buffer))
+  (use-package ivy
+    :diminish ivy-mode)
+
+  (ivy-mode 1)
+  (global-set-key (kbd "s-b") 'ivy-switch-buffer)
 #+END_SRC
 ** =swiper=
 #+BEGIN_SRC emacs-lisp
-  (use-package swiper
-    :config
-    (global-set-key (kbd "s-f") 'swiper-isearch))
+  (use-package swiper)
+  (global-set-key (kbd "s-f") 'swiper-isearch)
 #+END_SRC
 ** =counsel=
 #+BEGIN_SRC emacs-lisp
   (setq counsel-git-cmd "git ls-files --full-name --exclude-standard --others --cached --")
-  (use-package counsel
-    :config
-    (global-set-key (kbd "M-x") 'counsel-M-x)
-    (global-set-key (kbd "s-y") 'counsel-yank-pop)
-    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-    (global-set-key (kbd "s-r") 'counsel-imenu)
-    (global-set-key (kbd "s-b") 'counsel-switch-buffer)
-    (global-set-key (kbd "s-/") 'comment-line)
-    (global-set-key (kbd "s-F") 'counsel-rg)
-    (global-set-key (kbd "s-f") 'swiper-isearch)
-    (global-set-key (kbd "s-p") 'counsel-git))
+  (use-package counsel)
 
   (define-key ivy-minibuffer-map (kbd "C-c C-e") 'ivy-occur)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "s-y") 'counsel-yank-pop)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "s-r") 'counsel-imenu)
+  (global-set-key (kbd "s-b") 'counsel-switch-buffer)
+  (global-set-key (kbd "s-/") 'comment-line)
+  (global-set-key (kbd "s-F") 'counsel-rg)
+  (global-set-key (kbd "s-f") 'swiper-isearch)
+  (global-set-key (kbd "s-p") 'counsel-git)
 #+END_SRC
 ** =smex=
 #+BEGIN_SRC emacs-lisp
@@ -1258,6 +1433,9 @@
 
       (custom-set-variables
        '(shell-pop-shell-type (quote ("vterm" "*vterm*" (lambda nil (vterm)))))
+       '(shell-pop-universal-key "§")
+       '(shell-pop-window-size 50)
+       '(shell-pop-full-span t)
        '(shell-pop-term-shell "/usr/bin/zsh")
        '(shell-pop-window-position "bottom")))
 
@@ -1418,17 +1596,151 @@
 * App
 ** Epub
 #+BEGIN_SRC emacs-lisp
-    (setq nov-text-width t)
-    (use-package visual-fill-column)
-    (use-package nov)
-    (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
-    (defun my-nov-font-setup ()
-      (face-remap-add-relative 'variable-pitch :family "Avenir Next"))
-    (add-hook 'nov-mode-hook 'my-nov-font-setup)
+  (setq nov-text-width 150)
+  (setq visual-fill-column-center-text t)
+  (use-package visual-fill-column)
+  (use-package nov)
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+  (defun my-nov-font-setup ()
+    (face-remap-add-relative 'variable-pitch :family "Avenir Next"
+                                             :height 1.5))
+  (add-hook 'nov-mode-hook 'my-nov-font-setup)
+  (add-hook 'nov-mode-hook 'visual-line-mode)
+  (add-hook 'nov-mode-hook 'visual-fill-column-mode)
 #+END_SRC
 ** Write
 #+BEGIN_SRC emacs-lisp
   (use-package synosaurus
     :config
     (global-set-key (kbd "s-|") 'powerthesaurus-lookup-word-dwim))
+#+END_SRC
+** Slack
+#+BEGIN_SRC emacs-lisp
+  (use-package slack
+    :commands (slack-start)
+    :init
+    (setq slack-buffer-emojify t) ;; if you want to enable emoji, default nil
+    (setq slack-prefer-current-team t)
+    :config
+
+    (slack-register-team
+     :name "emacs-slack"
+     :default t
+     :client-id ""
+     :client-secret ""
+     :token ""
+     :subscribed-channels '(devz general random team-backend ccs-new suite-3))
+
+    (evil-define-key 'normal slack-info-mode-map
+      ",u" 'slack-room-update-messages)
+    (evil-define-key 'normal slack-mode-map
+      ",c" 'slack-buffer-kill
+      ",ra" 'slack-message-add-reaction
+      ",rr" 'slack-message-remove-reaction
+      ",rs" 'slack-message-show-reaction-users
+      ",pl" 'slack-room-pins-list
+      ",pa" 'slack-message-pins-add
+      ",pr" 'slack-message-pins-remove
+      ",mm" 'slack-message-write-another-buffer
+      ",me" 'slack-message-edit
+      ",md" 'slack-message-delete
+      ",u" 'slack-room-update-messages
+      ",2" 'slack-message-embed-mention
+      ",3" 'slack-message-embed-channel
+      "\C-n" 'slack-buffer-goto-next-message
+      "\C-p" 'slack-buffer-goto-prev-message)
+     (evil-define-key 'normal slack-edit-message-mode-map
+      ",k" 'slack-message-cancel-edit
+      ",s" 'slack-message-send-from-buffer
+      ",2" 'slack-message-embed-mention
+      ",3" 'slack-message-embed-channel))
+
+  (use-package alert
+    :commands (alert)
+    :init
+    (setq alert-default-style 'notifier))
+#+END_SRC
+** Music Player
+#+BEGIN_SRC emacs-lisp
+  (use-package bongo
+    :ensure t
+    :commands bongo
+    :custom
+    (bongo-default-directory "~/Music")
+    (bongo-prefer-library-buffers nil)
+    (bongo-insert-whole-directory-trees t)
+    (bongo-logo nil)
+    (bongo-action-track-icon nil)
+    (bongo-display-track-icons nil)
+    (bongo-display-track-lengths nil)
+    (bongo-display-header-icons nil)
+    (bongo-display-playback-mode-indicator t)
+    (bongo-display-inline-playback-progress nil)
+    (bongo-mark-played-tracks nil)
+    (bongo-header-line-mode nil)
+    (bongo-header-line-function nil)
+    (bongo-mode-line-indicator-mode nil)
+    (bongo-vlc-program-name "cvlc")
+    :config
+    (defun contrib/bongo-add-dired-files ()
+      "Add marked files inside of a Dired buffer to the Bongo library"
+      (interactive)
+      (let (file-point file (files nil))
+        (dired-map-over-marks
+         (setq file-point (dired-move-to-filename)
+               file (dired-get-filename)
+               files (append files (list file)))
+         nil t)
+        (save-excursion
+          (set-buffer bongo-default-playlist-buffer-name)
+          (mapc 'bongo-insert-file files))))
+
+    (defun prot/bongo-dired-library ()
+      "Activate `bongo-dired-library-mode' when accessing the
+  ~/Music directory.  This is meant to be hooked into `dired-mode'.
+
+  Upon activation, the directory and all its sub-directories become
+  a valid library buffer for Bongo, from where we can, among
+  others, add tracks to playlists.  The added benefit is that Dired
+  will continue to behave as normal, making this a superior
+  alternative to a purpose-specific library buffer."
+      (when (string-match-p "\\`~/Music/" default-directory)
+        (set (make-local-variable 'bongo-dired-library-mode) 't)))
+
+    (defun prot/bongo-clear-playlist-and-stop ()
+      "Stop playback and clear the entire `bongo' playlist buffer.
+  Contrary to the standard `bongo-erase-buffer', this also removes
+  the currently-playing track."
+      (interactive)
+      (bongo-stop)
+      (bongo-erase-buffer))
+
+    (defun prot/bongo-library-insert-and-play-random ()
+      "Enqueue directory tree at point, or marked items, to the
+  `bongo' playlist.  This is meant to work while inside a `dired'
+  buffer that doubles as a library buffer (see
+  `prot/bongo-dired-library')."
+      (interactive)
+      (contrib/bongo-add-dired-files)
+      (bongo-play-random)
+      (bongo-random-playback-mode 1))
+    :hook
+    (dired-mode . prot/bongo-dired-library)
+    (bongo-playlist-mode . hl-line-mode)
+    :bind (("<C-XF86AudioPlay>" . bongo-pause/resume)
+           ("<C-XF86AudioNext>" . bongo-next)
+           ("<C-XF86AudioPrev>" . bongo-previous)
+           ("<M-XF86AudioPlay>" . bongo-show)
+           :map bongo-playlist-mode-map
+           ("C-d" . prot/bongo-clear-playlist-and-stop)
+           :map bongo-dired-library-mode-map
+           ("<C-return>" . prot/bongo-library-insert-and-play-random)))
+#+END_SRC
+** Reading Docs with =dash=
+#+BEGIN_SRC emacs-lisp
+  (use-package dash-at-point)
+  (autoload 'dash-at-point "dash-at-point"
+            "Search the word at point with Dash." t nil)
+  (global-set-key "\C-cd" 'dash-at-point)
+  (global-set-key "\C-ce" 'dash-at-point-with-docset)
 #+END_SRC
