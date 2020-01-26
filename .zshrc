@@ -1,35 +1,42 @@
-export ZSH="/Users/tonyampomah/.oh-my-zsh"
-
-ZSH_THEME="robbyrussell"
-
-plugins=(
-    git
-    docker
-    git-flow
-    composer
-    emacs
-    node
-    pass
-    brew
-    bower
-    ansible
-    docker
-    docker-compose
-    history-substring-search
-    history
-    command-not-found
-)
-
-source $ZSH/oh-my-zsh.sh
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='emacsclient'
-else
-  export EDITOR='emacs'
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-source ~/.aliases.zsh
+# General
+alias e="exit"
+alias c="clear"
+alias h="cd ~/"
+alias o="open ."
+alias desk="cd ~/Desktop"
+alias db="cd ~/Databases"
+alias down="cd ~/Downloads"
+alias rr="source $ZSH/oh-my-zsh.sh"
+alias r="cd ~/Repositories/"
+alias ckh="rm -rf ~/.ssh/known_hosts"
+alias getKey="pbcopy < ~/.ssh/id_rsa.pub"
+alias flushdns="dscacheutil -flushcache;sudo killall -HUP mDNSResponder;say flushed"
+alias ios="cd /Applications/Xcode.app/Contents/Developer/Applications && open -n Simulator.app"
+
+# Composer
+alias cu="composer update"
+alias ci="composer install"
+alias cda="composer dump-autoload"
+
+# Docker
+alias ds="docker ps"
+
+# PHP Test
+alias t="bin/phpunit"
+alias tc="bin/phpunit --coverage-html='tests/coverage/html'"
+alias tf="bin/phpunit --filter"
+alias tpf="vendor/bin/phpunit --filter"
+alias tp="vendor/bin/phpunit"
+alias tpc="vendor/bin/phpunit --coverage-html='tests/coverage/html'"
+
+# Laravel
+alias art="php artisan"
+alias tinker="php artisan tinker"
+alias migrate="php artisan migrate"
 
 # fnm
 eval "$(fnm env --multi)"
