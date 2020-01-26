@@ -17,3 +17,4 @@ tags.temp
 yarn.lock
 notes.org
 todo.org
+tests/coverage
