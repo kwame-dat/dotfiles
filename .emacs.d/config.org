@@ -4,6 +4,7 @@
 * Core
 ** Sane defaults
   #+BEGIN_SRC emacs-lisp
+    (setq scroll-conservatively 100)
     (setq-default buffer-file-coding-system 'utf-8-unix)
     (set-default-coding-systems 'utf-8-unix)
     (setq locale-coding-system 'utf-8-unix)
@@ -55,10 +56,8 @@
      )
 
     (fset 'yes-or-no-p 'y-or-n-p)      ; y and n instead of yes and no everywhere else
-    (global-unset-key (kbd "s-p"))
 
     (electric-pair-mode 1)
-
 
     (setq user-full-name "Tony Ampomah"
           user-mail-address "tony@arksolutions.it")
@@ -67,7 +66,7 @@
     (setq column-number-mode t)
     (setq-default indent-tabs-mode nil)
 
-    (setq epg-gpg-program "gpg2")
+    (setq epg-gpg-program "gpg")
     (setq auth-sources
           '((:source "~/.authinfo.gpg")))
   #+END_SRC
@@ -141,8 +140,6 @@
     (defun kwamedat/visit-inbox ()
       (interactive)
       (find-file "~/Dropbox/org/inbox.org"))
-
-
   #+END_SRC
 
 ** Key bindings
@@ -151,13 +148,32 @@
     (setq mac-command-modifier 'super)
     (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
     (global-set-key (kbd "s-o") (kbd "C-x o"))
-    (global-set-key (kbd "<escape>")      'keyboard-escape-quit) ;; use escape to quit
-    (global-set-key (kbd "s-w") (kbd "C-x 0")) ;; just like close tab in a web browser
+    (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
+    (global-set-key (kbd "s-w") (kbd "C-x 0"))
     (global-set-key (kbd "s-p") 'projectile-find-file)
-    (global-set-key (kbd "s-P") 'projectile-switch-project)
-    (global-set-key (kbd "s-s") 'save-buffer)
+    (global-set-key (kbd "s-P") 'projectile-persp-switch-project)
     (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
     (global-set-key (kbd "s-k") 'kill-this-buffer)
+
+    ;; Keybonds
+    (global-set-key [(super a)] 'mark-whole-buffer)
+    (global-set-key [(super v)] 'yank)
+    (global-set-key [(super c)] 'kill-ring-save)
+    (global-set-key [(super s)] 'save-buffer)
+    (global-set-key [(super l)] 'goto-line)
+    (global-set-key [(super w)]
+                    (lambda () (interactive) (delete-window)))
+    (global-set-key [(super z)] 'undo)
+
+
+    (global-set-key (kbd "M-x") 'counsel-M-x)
+    (global-set-key (kbd "s-y") 'counsel-yank-pop)
+    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+    (global-set-key (kbd "s-r") 'counsel-imenu)
+    (global-set-key (kbd "s-b") 'counsel-switch-buffer)
+    (global-set-key (kbd "s-/") 'comment-line)
+    (global-set-key (kbd "s-F") 'counsel-rg)
+    (global-set-key (kbd "s-f") 'swiper-isearch)
   #+END_SRC
 
 ** =exec-path-from-shell=
@@ -174,20 +190,19 @@
       (evil-leader/set-leader "<SPC>")
       (evil-leader/set-key
         ;; workspaces
-        "<tab><tab>" 'eyebrowse-switch-to-window-config
-        "<tab>c" 'eyebrowse-create-window-config
-        "<tab>n" 'eyebrowse-create-window-config
-        "<tab>d" 'eyebrowse-close-window-config
-        "<tab>k" 'eyebrowse-close-window-config
-        "<tab>m" 'eyebrowse-rename-window-config
-        "<tab>." 'eyebrowse-switch-to-window-config
-        "<tab>[" 'eyebrowse-previous-window-config
-        "<tab>]" 'eyebrowse-next-window-config
-        "<tab>S" 'persp-state-save
-        "<tab>s" 'persp-state-save
-        "<tab>L" 'persp-state-load
-        "<tab>l" 'persp-state-load
+        "<tab><tab>" 'persp-switch
+        "<tab>c" 'persp-switch
+        "<tab>." 'persp-switch
+        "<tab>s" 'persp-switch
+        "<tab>n" 'persp-switch
+        "<tab>d" 'persp-kill
+        "<tab>k" 'persp-kill
+        "<tab>r" 'persp-rename
         "<tab>R" 'persp-state-restore
+        "<tab>[" 'persp-prev
+        "<tab>]" 'persp-next
+        "<tab>S" 'persp-state-save
+        "<tab>L" 'persp-state-load
         ;; files
         "fR"  'projectile-recentf
         "fdd" 'kwamedat/find-in-documents
@@ -203,9 +218,13 @@
         "fS"  'write-file
         "ft"  'kwamedat/visit-todo-list-file
         ;; buffers
-        "bb"  'projectile-switch-to-buffer
-        "bB"  'counsel-switch-buffer
+        "bb"  'persp-counsel-switch-buffer
+        "bB"  'persp-ibuffer
         "bk"  'kill-buffer
+        "bd"  'kill-buffer
+        ;; search
+        "sb" 'swiper-isearch
+        "sp" 'projectile-ag
         ;; git
         "gR"  'vc-revert
         "gg"  'magit-status
@@ -226,9 +245,9 @@
         "tt"  'toggle-truncate-lines
         "tv"  'global-visual-line-mode
         ;; projects
-        "pp"  'projectile-switch-project
+        "pp"  'projectile-persp-switch-project
         "pi"  'projectile-invalidate-cache
-        "pt"  'projectile-run-term
+        "pt"  'projectile-run-vterm
         "pb"  'projectile-switch-to-buffer
         ;; notes
         "nf" 'kwamedat/find-in-notes
@@ -367,7 +386,6 @@
         (global-evil-surround-mode))
 
       (use-package evil-commentary
-        :diminish evil-commentary-mode
         :ensure t
         :config
         (evil-commentary-mode))
@@ -386,6 +404,7 @@
       (define-key company-active-map (kbd "C-SPC") #'company-manual-begin))
     (define-key evil-insert-state-map (kbd "C-SPC") 'company-manual-begin)
   #+END_SRC
+
 *** Relative numbers =nlium-relative=
   #+BEGIN_SRC emacs-lisp
     (use-package nlinum-relative
@@ -572,7 +591,7 @@
 
 ** =ledger=
   #+BEGIN_SRC emacs-lisp
-    (setq ledger-post-amount-alignment-column 70)
+    (setq ledger-post-amount-alignment-column 80)
     (use-package ledger-mode)
     (use-package flycheck-ledger)
     (use-package evil-ledger)
@@ -632,7 +651,10 @@
 
     (setq org-directory "~/Dropbox/org")
     (setq org-inbox-file "~/Dropbox/org/inbox.org")
-    (setq org-agenda-files (quote ("~/Dropbox/org/todo.org")))
+    (setq org-agenda-files (quote (
+                                   "~/Dropbox/org/todo.org"
+                                   "~/Dropbox/org/routine.org"
+                                   )))
 
     (add-hook 'org-capture-mode-hook 'evil-insert-state)
     (setq org-capture-templates
@@ -669,12 +691,9 @@
       (org-document-title ((t (:weight bold ))))
       (org-done ((t (:strike-through t :weight bold))))
       (org-headline-done ((t (:strike-through t))))
-      (org-level-1 ((t (:weight bold :height 1.5))))
-      (org-level-2 ((t (:weight normal :height 1.4))))
-      (org-level-3 ((t (:weight normal :height 1.3))))
-      (org-level-1 ((t (:weight bold ))))
-      (org-level-2 ((t (:weight normal ))))
-      (org-level-3 ((t (:weight normal ))))
+      (org-level-1 ((t (:weight bold :height 1.2))))
+      (org-level-2 ((t (:weight normal :height 1.2))))
+      (org-level-3 ((t (:weight normal :height 1.2))))
       (org-image-actual-width '(600))
       :config
       (add-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h 'append)
@@ -690,17 +709,9 @@
       :ensure t)
   #+END_SRC
 
-*** =org-bullets=
-   #+BEGIN_SRC emacs-lisp
-    (use-package org-bullets
-      :init
-      (add-hook 'org-mode-hook 'org-bullets-mode))
-   #+END_SRC
-
 *** =ox-pandoc=
    #+BEGIN_SRC emacs-lisp
     (use-package ox-pandoc)
-
    #+END_SRC
 *** =ox-jira=
    #+BEGIN_SRC emacs-lisp
@@ -708,7 +719,6 @@
    #+END_SRC
 *** =ox-slack=
    #+BEGIN_SRC emacs-lisp
-
     (use-package ox-slack)
    #+END_SRC
 *** =ox-twbs=
@@ -730,7 +740,6 @@
    #+BEGIN_SRC emacs-lisp
      (use-package evil-org
        :ensure t
-       :diminish evil-org-mode
        :after org
        :config
        (add-hook 'org-mode-hook 'evil-org-mode)
@@ -748,15 +757,12 @@
 *** =org-gcal=
 #+BEGIN_SRC emacs-lisp
   (setq package-check-signature nil)
-
   (use-package org-gcal
   :ensure t)
 #+END_SRC
-*** =mixed-pitch=
+*** =org-pdfview=
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package mixed-pitch
-  ;;   :hook
-  ;;   (org-mode . mixed-pitch-mode))
+  (use-package org-pdftools)
 #+END_SRC
 * Emacs
 ** =dired=
@@ -818,14 +824,12 @@
       :config
       (setq yas-snippet-dirs
             '("~/.emacs.d/snippets"))
-
       (yas-global-mode 1))
   #+END_SRC
 
 ** =multiple-cursors=
   #+BEGIN_SRC emacs-lisp
-    (use-package evil-mc
-      :diminish evil-mc-mode)
+    (use-package evil-mc)
     (global-evil-mc-mode 1)
     (use-package evil-multiedit)
     ;; Highlights all matches of the selection in the buffer.
@@ -865,16 +869,12 @@
     (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match)
   #+END_SRC
 
-** =word-wrap=
-#+BEGIN_SRC emacs-lisp
-  (use-package adaptive-wrap)
-#+END_SRC
 * UI
   I don’t usually use the menu or scroll bar, and they take up useful space.
   #+BEGIN_SRC emacs-lisp
     (tool-bar-mode 0)
     (menu-bar-mode 0)
-    (scroll-bar-mode -1)
+    (scroll-bar-mode 0)
   #+END_SRC
 
   There’s a tiny scroll bar that appears in the minibuffer window. This disables that:
@@ -888,11 +888,6 @@
     (setq split-height-threshold 0)
     (setq split-width-threshold nil)
     (winner-mode 1)
-  #+END_SRC
-
-  Highlight current cursor
-  #+BEGIN_SRC emacs-lisp
-    ;; (global-hl-line-mode)
   #+END_SRC
 ** Font
    #+BEGIN_SRC emacs-lisp
@@ -946,64 +941,37 @@
      (bind-key (kbd "s--") 'sanityinc/decrease-default-font-height)
 
      (set-frame-font "Operator Mono 18" nil t)
+     (set-face-attribute 'font-lock-type-face nil :weight 'light)
+     (mapc
+        (lambda (face)
+          (when (eq (face-attribute face :weight) 'light)
+            (set-face-attribute face nil :weight 'light)))
+        (face-list))
    #+END_SRC
 ** Theme
    #+BEGIN_SRC emacs-lisp
-     (use-package base16-theme
+     (use-package color-theme-sanityinc-tomorrow
        :ensure t
        :config
-       (load-theme 'base16-synth-midnight-dark t))
+       (load-theme 'sanityinc-tomorrow-bright t))
    #+END_SRC
-
 ** =diff-hl=
    #+BEGIN_SRC emacs-lisp
     (use-package diff-hl
       :config
       (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
       (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
-
    #+END_SRC
 
 ** =powerline=
    #+BEGIN_SRC emacs-lisp
-     (use-package spaceline)
-     (spaceline-emacs-theme)
+     (use-package telephone-line)
+     (telephone-line-mode 1)
    #+END_SRC
-*** =diminish=
-    #+BEGIN_SRC emacs-lisp
-      (use-package diminish :ensure t)
-      (diminish 'evil-org-mode)
-      (diminish 'ivy-mode)
-      (diminish 'subword-mode)
-      (diminish 'mixed-pitch-mode)
-      (diminish 'indented-text-mode)
-      (diminish 'yas-minor-mode)
-      (diminish 'projectile-mode)
-      (diminish 'undo-tree-mode)
-      (diminish 'flycheck-mode)
-      (diminish 'flyspell-mode)
-      (diminish 'which-key-mode)
-      (diminish 'eldoc-mode)
-      (diminish 'org-src-mode)
-      (diminish 'sub-mode)
-      (diminish 'all-the-icons-dired-mode)
-      (diminish 'company-mode)
-      (add-hook 'org-indent-mode-hook (lambda () (diminish 'org-indent-mode)))
-      (diminish 'wrap-region-mode)
-      (diminish 'yas/minor-mode)
-      (diminish 'visual-line-mode)
-      (diminish 'abbrev-mode)
-      (diminish 'subword-mode)
-
-      (with-eval-after-load 'subword
-        (diminish 'subword-mode))
-      (global-subword-mode +1)
-    #+END_SRC
 ** =all-the-icons=
    #+BEGIN_SRC emacs-lisp
      (use-package all-the-icons)
-     (use-package all-the-icons-dired
-       :diminish all-the-icons-dired-mode)
+     (use-package all-the-icons-dired)
      (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
      (use-package all-the-icons-ivy
        :ensure t
@@ -1096,27 +1064,64 @@
   #+END_SRC
 ** =workspace=
   #+BEGIN_SRC emacs-lisp
-    (use-package eyebrowse
-      :diminish eyebrowse-mode
-      :config (progn
-                (define-key eyebrowse-mode-map (kbd "s-1") 'eyebrowse-switch-to-window-config-1)
-                (define-key eyebrowse-mode-map (kbd "s-2") 'eyebrowse-switch-to-window-config-2)
-                (define-key eyebrowse-mode-map (kbd "s-3") 'eyebrowse-switch-to-window-config-3)
-                (define-key eyebrowse-mode-map (kbd "s-4") 'eyebrowse-switch-to-window-config-4)
-                (define-key eyebrowse-mode-map (kbd "s-5") 'eyebrowse-switch-to-window-config-5)
-                (define-key eyebrowse-mode-map (kbd "s-6") 'eyebrowse-switch-to-window-config-6)
-                (define-key eyebrowse-mode-map (kbd "s-7") 'eyebrowse-switch-to-window-config-7)
-                (define-key eyebrowse-mode-map (kbd "s-8") 'eyebrowse-switch-to-window-config-8)
-                (define-key eyebrowse-mode-map (kbd "s-9") 'eyebrowse-switch-to-window-config-9)
-                (eyebrowse-mode t)
-                (setq eyebrowse-new-workspace t)))
+    (use-package perspective
+      :demand t
+      :config
+      (progn
+        (persp-mode)
+        (defun persp-get-perspectives-for-buffer (buffer)
+          "Get the names of all of the perspectives of which `buffer` is a member."
+          (cl-loop for perspective being the hash-value of perspectives-hash
+                   if (member buffer (persp-buffers perspective))
+                   collect (persp-name perspective)))
+
+        (defun persp-pick-perspective-by-buffer (buffer)
+          "Select a buffer and go to the perspective to which that buffer
+        belongs. If the buffer belongs to more than one perspective
+        completion will be used to pick the perspective to switch to.
+        Switch the focus to the window in which said buffer is displayed
+        if such a window exists. Otherwise display the buffer in whatever
+        window is active in the perspective."
+          (interactive (list (funcall persp-interactive-completion-function
+                                      "Buffer: " (mapcar 'buffer-name (buffer-list)))))
+          (let* ((perspectives (persp-get-perspectives-for-buffer (get-buffer buffer)))
+                 (perspective (if (> (length perspectives) 1)
+                                  (funcall persp-interactive-completion-function
+                                           (format "Select the perspective in which you would like to visit %s."
+                                                   buffer)
+                                           perspectives)
+                                (car perspectives))))
+            (if (string= (persp-name persp-curr) perspective)
+                ;; This allows the opening of a single buffer in more than one window
+                ;; in a single perspective.
+                (switch-to-buffer buffer)
+              (progn
+                (persp-switch perspective)
+                (if (get-buffer-window buffer)
+                    (set-frame-selected-window nil (get-buffer-window buffer))
+                  (switch-to-buffer buffer))))))
+
+        (defun persp-mode-switch-buffers (arg)
+          (interactive "P")
+          (if arg (call-interactively 'ido-switch-buffer)
+            (call-interactively 'persp-pick-perspective-by-buffer)))))
+
+    (use-package persp-projectile)
   #+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package shackle
+  :hook
+  (after-init . shackle-mode)
+  :custom
+  (shackle-rules '((help-mode :inhibit-window-quit t :same t)))
+  (shackle-select-reused-windows t))
+#+END_SRC
 
 ** =emoji-cheatsheets=
   #+BEGIN_SRC emacs-lisp
     (use-package emoji-cheat-sheet-plus
         :defer t
-        :diminish emoji-cheat-sheet-plus-display-mode
         :init
         (progn
           ;; enabled emoji in buffer
@@ -1133,12 +1138,11 @@
      (setq
       company-global-modes
       '(not erc-mode message-mode help-mode gud-mode eshell-mode shell-mode vterm-mode))
-     (setq company-minimum-prefix-length 3)
+     (setq company-minimum-prefix-length 2)
      (setq company-idle-delay 0)
 
      (use-package company
        :ensure t
-       :diminish company-mode
        :config
        (define-key company-active-map (kbd "ESC") 'company-abort)
        (define-key company-active-map (kbd "[tab]") 'company-complete)
@@ -1147,13 +1151,14 @@
        (define-key company-active-map (kbd "C-p") 'company-select-previous)
        (add-hook 'after-init-hook 'global-company-mode))
    #+END_SRC
+
 ** =company-box=
 #+BEGIN_SRC emacs-lisp
   (setq company-box-show-single-candidate t
-        company-box-doc-delay 1
+        ;; company-box-doc-delay 1
         company-box-doc-enable nil
-        company-box-backends-colors nil
-        company-box-max-candidates 50
+        ;; company-box-backends-colors nil
+        ;; company-box-max-candidates 50
         company-box-icons-alist 'company-box-icons-all-the-icons
         company-box-icons-all-the-icons
         `((Unknown       . ,(all-the-icons-material "find_in_page"             :height 0.8 :face 'all-the-icons-purple))
@@ -1189,7 +1194,6 @@
           (ElispFeature  . ,(all-the-icons-material "stars"                    :height 0.8 :face 'all-the-icons-orange))
           (ElispFace     . ,(all-the-icons-material "format_paint"             :height 0.8 :face 'all-the-icons-pink))))
   (use-package company-box
-    :diminish company-box-mode
     :hook (company-mode . company-box-mode))
 #+END_SRC
 ** =lsp=
@@ -1202,14 +1206,13 @@
 *** =lsp-mode=
    #+BEGIN_SRC emacs-lisp
      (setq lsp-prefer-flymake nil)
-     (setq lsp-auto-guess-root t)
      (setq lsp-enable-file-watchers nil)
+     (setq lsp-ui-doc-enable nil)
+     (setq lsp-auto-guess-root nil)
 
      (use-package lsp-mode
-       :diminish lsp-mode
        :hook (php-mode . lsp)
        :commands lsp)
-
    #+END_SRC
 
 *** =lsp-ui=
@@ -1233,8 +1236,7 @@
           (t      . ivy--regex-fuzzy)))
   (evil-set-initial-state 'ivy-occur-grep-mode 'normal)
 
-  (use-package ivy
-    :diminish ivy-mode)
+  (use-package ivy)
 
   (ivy-mode 1)
   (global-set-key (kbd "s-b") 'ivy-switch-buffer)
@@ -1250,15 +1252,6 @@
   (use-package counsel)
 
   (define-key ivy-minibuffer-map (kbd "C-c C-e") 'ivy-occur)
-  (global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "s-y") 'counsel-yank-pop)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  (global-set-key (kbd "s-r") 'counsel-imenu)
-  (global-set-key (kbd "s-b") 'counsel-switch-buffer)
-  (global-set-key (kbd "s-/") 'comment-line)
-  (global-set-key (kbd "s-F") 'counsel-rg)
-  (global-set-key (kbd "s-f") 'swiper-isearch)
-  (global-set-key (kbd "s-p") 'counsel-git)
 #+END_SRC
 ** =smex=
 #+BEGIN_SRC emacs-lisp
@@ -1433,8 +1426,7 @@
 
       (custom-set-variables
        '(shell-pop-shell-type (quote ("vterm" "*vterm*" (lambda nil (vterm)))))
-       '(shell-pop-universal-key "§")
-       '(shell-pop-window-size 50)
+       '(shell-pop-window-size 35)
        '(shell-pop-full-span t)
        '(shell-pop-term-shell "/usr/bin/zsh")
        '(shell-pop-window-position "bottom")))
@@ -1516,7 +1508,6 @@
   #+BEGIN_SRC emacs-lisp
     (use-package flycheck
       :ensure t
-      :diminish flycheck-mode
       :config
       (progn
         (setq-local flycheck-phpcs-standard "PSR2")
@@ -1743,4 +1734,3 @@
             "Search the word at point with Dash." t nil)
   (global-set-key "\C-cd" 'dash-at-point)
   (global-set-key "\C-ce" 'dash-at-point-with-docset)
-#+END_SRC
