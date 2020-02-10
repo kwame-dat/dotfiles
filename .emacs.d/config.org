@@ -953,7 +953,7 @@
      (use-package color-theme-sanityinc-tomorrow
        :ensure t
        :config
-       (load-theme 'sanityinc-tomorrow-bright t))
+       (load-theme 'sanityinc-tomorrow-blue t))
    #+END_SRC
 ** =diff-hl=
    #+BEGIN_SRC emacs-lisp
