@@ -16,7 +16,6 @@
     (setq display-time-day-and-date t)
     (setq display-time-format "%e %b %y  %H:%M")
     (setq display-time-default-load-average nil)
-    (setq pdf-view-use-scaling t)
     (display-time-mode 1) ;; add time
     (setq evil-want-keybinding nil)
     (setq evil-want-C-u-scroll t)
@@ -272,9 +271,10 @@
         ;; open application
         "oD" 'docker
         "od" 'docker
+        "oc" 'calender
         "o-" 'dired-jump
         "oo" '+macos/reveal-in-finder
-        "op" 'treemacs
+        "op" 'treemacs-projectile
         "oxp"  'password-store-copy
         "oxf"  'password-store-copy-field
         "oxi"  'password-store-insert
@@ -407,14 +407,12 @@
 
 *** Relative numbers =nlium-relative=
   #+BEGIN_SRC emacs-lisp
-    (use-package nlinum-relative
-      :config
-      (nlinum-relative-setup-evil)
-      (add-hook 'prog-mode-hook 'nlinum-relative-mode))
-
     (setq nlinum-relative-redisplay-delay 0)
-    ;; (setq nlinum-relative-current-symbol "->")
+    (setq nlinum-relative-current-symbol "->")
     (setq nlinum-relative-offset 0)
+    (nlinum-relative-setup-evil)
+    (add-hook 'prog-mode-hook 'nlinum-relative-mode)
+    (use-package nlinum-relative)
   #+END_SRC
 *** =wgrep=
 #+BEGIN_SRC emacs-lisp
@@ -653,7 +651,6 @@
     (setq org-inbox-file "~/Dropbox/org/inbox.org")
     (setq org-agenda-files (quote (
                                    "~/Dropbox/org/todo.org"
-                                   "~/Dropbox/org/routine.org"
                                    )))
 
     (add-hook 'org-capture-mode-hook 'evil-insert-state)
@@ -760,10 +757,6 @@
   (use-package org-gcal
   :ensure t)
 #+END_SRC
-*** =org-pdfview=
-#+BEGIN_SRC emacs-lisp
-  (use-package org-pdftools)
-#+END_SRC
 * Emacs
 ** =dired=
   #+BEGIN_SRC emacs-lisp
@@ -869,6 +862,13 @@
     (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match)
   #+END_SRC
 
+** =editor-config=
+#+BEGIN_SRC emacs-lisp
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
+#+END_SRC
 * UI
   I don’t usually use the menu or scroll bar, and they take up useful space.
   #+BEGIN_SRC emacs-lisp
@@ -1039,6 +1039,10 @@
            (treemacs-git-mode 'simple))))
       :bind
       (:map global-map
+            ("C-j". evil-window-down)
+            ("C-h". evil-window-left)
+            ("C-k". evil-window-up)
+            ("C-l". evil-window-right)
             ("M-0"       . treemacs-select-window)
             ("C-x t 1"   . treemacs-delete-other-windows)
             ("C-x t t"   . treemacs)
@@ -1208,7 +1212,7 @@
      (setq lsp-prefer-flymake nil)
      (setq lsp-enable-file-watchers nil)
      (setq lsp-ui-doc-enable nil)
-     (setq lsp-auto-guess-root nil)
+     (setq lsp-auto-guess-root t)
 
      (use-package lsp-mode
        :hook (php-mode . lsp)
@@ -1339,7 +1343,7 @@
            (mu4e-trash-folder . "/netsells.co.uk/[Gmail].Bin")
            (mu4e-drafts-folder . "/netsells.co.uk/[Gmail].Drafts")
            (mu4e-sent-folder . "/netsells.co.uk/[Gmail].Sent Mail")
-           (mu4e-refile-folder . "/netsells.co.uk/[Gmail].4 Archives")
+           (mu4e-refile-folder . "/netsells.co.uk/[Gmail].4Archives")
            ))
        ,(make-mu4e-context
          :name "Arksolutions"
@@ -1349,13 +1353,9 @@
            (mu4e-trash-folder . "/arksolutions.it/Trash")
            (mu4e-sent-folder . "/arksolutions.it/Sent")
            (mu4e-drafts-folder ."/arksolutions.it/Drafts")
-           (mu4e-refile-folder . "/arksolutions.it/4 Archives")
+           (mu4e-refile-folder . "/arksolutions.it/4Archives")
            ))
        ))
-
-    (setq
-     mu4e-get-mail-command "offlineimap"
-     mu4e-update-interval 300)
 
     (setq mu4e-user-mail-address-list (list "tony@arksolutions.it" "tony.ampomah@netsells.co.uk"))
 
@@ -1502,6 +1502,10 @@
       :ensure t
       :config (pdf-tools-install))
     (use-package org-pdfview :ensure t)
+
+    (use-package org-pdfview :ensure t)
+    (require 'pdf-tools)
+    (require 'org-pdfview)
   #+END_SRC
 
 ** =flycheck=
