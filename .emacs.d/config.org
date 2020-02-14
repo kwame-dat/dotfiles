@@ -442,9 +442,9 @@
                                            "~/Dropbox/org"
                                            "~/Desktop"
                                            "~/Downloads"
-                                           "~/Repositories/3Resources"
-                                           "~/Repositories/2Areas"
-                                           "~/Repositories/1Projects"))
+                                           "~/Repo/3Resources"
+                                           "~/Repo/2Areas"
+                                           "~/Repo/1Projects"))
     (setq projectile-completion-system 'ivy)
     (setq projectile-enable-caching t)
     (setq projectile-switch-project-action #'projectile-dired)
