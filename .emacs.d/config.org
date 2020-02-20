@@ -185,226 +185,229 @@
 
 ** =evil-mode=
   #+BEGIN_SRC emacs-lisp
-    (defun kwamedat/config-evil-leader ()
-      (evil-leader/set-leader "<SPC>")
-      (evil-leader/set-key
-        ;; workspaces
-        "<tab><tab>" 'persp-switch
-        "<tab>c" 'persp-switch
-        "<tab>." 'persp-switch
-        "<tab>s" 'persp-switch
-        "<tab>n" 'persp-switch
-        "<tab>d" 'persp-kill
-        "<tab>k" 'persp-kill
-        "<tab>r" 'persp-rename
-        "<tab>R" 'persp-state-restore
-        "<tab>[" 'persp-prev
-        "<tab>]" 'persp-next
-        "<tab>S" 'persp-state-save
-        "<tab>L" 'persp-state-load
-        ;; files
-        "fR"  'projectile-recentf
-        "fdd" 'kwamedat/find-in-documents
-        "fdp" 'kwamedat/find-projects-in-documents
-        "fda" 'kwamedat/find-areas-in-documents
-        "fdr" 'kwamedat/find-resources-in-documents
-        "ff"  'find-file
-        "fh"  'kwamedat/visit-host-file
-        "fl"  'locate
-        "fp"  'kwamedat/visit-emacs-config
-        "fr"  'recentf-open-files
-        "fs"  'save-buffer
-        "fS"  'write-file
-        "ft"  'kwamedat/visit-todo-list-file
-        ;; buffers
-        "bb"  'persp-counsel-switch-buffer
-        "bB"  'ibuffer
-        "bk"  'kill-buffer
-        "bd"  'kill-buffer
-        ;; search
-        "sb" 'swiper-isearch
-        "sp" 'projectile-ag
-        ;; git
-        "gR"  'vc-revert
-        "gg"  'magit-status
-        "gb"  'magit-branch-checkout
-        "gR"  'vc-revert
-        "g/"  'magit-dispatch
-        "gD"  'magit-file-delete
-        "gB"  'magit-blame-addition
-        "gC"  'magit-clone
-        "gF"  'magit-fetch
-        "gL"  'magit-log
-        "gS"  'magit-stage-file
-        "gU"  'magit-unstage-file
-        ;; toggle
-        "ta"  'company-mode
-        "tf"  'flycheck-mode
-        "tl"  'nlinum-mode
-        "tt"  'toggle-truncate-lines
-        "tv"  'global-visual-line-mode
-        ;; projects
-        "pp"  'projectile-persp-switch-project
-        "pi"  'projectile-invalidate-cache
-        "pt"  'projectile-run-vterm
-        "pb"  'projectile-switch-to-buffer
-        "pB"  'persp-buffers
-        ;; notes
-        "nf" 'kwamedat/find-in-notes
-        "na" 'org-agenda
-        "np" 'org-pomodoro
-        "nn" 'kwamedat/find-in-notes
-        "nc" 'org-capture
-        "nt" 'kwamedat/visit-todo-list-file
-        "ni" 'kwamedat/visit-inbox
-        "nv" 'org-search-view
-        ":"  'eval-expression
-        "cc"  'compile
-        "<SPC>"  'projectile-find-file
-        "/r"  'counsel-imenu
-        "/sp"  'counsel-rg
-        ;; insert
-        "ie" 'emoji-cheat-sheet-plus-insert
-        ;; window
-        "w"  'evil-window-map
-        ;; help
-        "h"  'help-map
-        ;; open application
-        "oD" 'docker
-        "od" 'docker
-        "oc" 'calender
-        "o-" 'dired-jump
-        "oo" '+macos/reveal-in-finder
-        "op" 'treemacs
-        "oxp"  'password-store-copy
-        "oxf"  'password-store-copy-field
-        "oxi"  'password-store-insert
-        "oxg"  'password-store-generate
-        "oxd"  'password-store-remove
-        "oxr"  'password-store-rename
-        "oxe"  'password-store-edit
-        "om"  'mu4e
-        "ot"  'shell-pop
-        "oT"  'vterm-toggle
-        "x"  'counsel-M-x))
+        (defun kwamedat/config-evil-leader ()
+          (evil-leader/set-leader "<SPC>")
+          (evil-leader/set-key
+            ;; workspaces
+            "<tab><tab>" 'persp-switch
+            "<tab>c" 'persp-switch
+            "<tab>." 'persp-switch
+            "<tab>s" 'persp-switch
+            "<tab>n" 'persp-switch
+            "<tab>d" 'persp-kill
+            "<tab>k" 'persp-kill
+            "<tab>r" 'persp-rename
+            "<tab>R" 'persp-state-restore
+            "<tab>[" 'persp-prev
+            "<tab>]" 'persp-next
+            "<tab>S" 'persp-state-save
+            "<tab>L" 'persp-state-load
+            ;; files
+            "fR"  'projectile-recentf
+            "fdd" 'kwamedat/find-in-documents
+            "fdp" 'kwamedat/find-projects-in-documents
+            "fda" 'kwamedat/find-areas-in-documents
+            "fdr" 'kwamedat/find-resources-in-documents
+            "ff"  'find-file
+            "fh"  'kwamedat/visit-host-file
+            "fl"  'locate
+            "fp"  'kwamedat/visit-emacs-config
+            "fr"  'recentf-open-files
+            "fs"  'save-buffer
+            "fS"  'write-file
+            "ft"  'kwamedat/visit-todo-list-file
+            ;; buffers
+            "bb"  'persp-counsel-switch-buffer
+            "bB"  'ibuffer
+            "bk"  'kill-buffer
+            "bd"  'kill-buffer
+            ;; search
+            "sb" 'swiper-isearch
+            "sp" 'projectile-ag
+            ;; git
+            "gR"  'vc-revert
+            "gg"  'magit-status
+            "gb"  'magit-branch-checkout
+            "gR"  'vc-revert
+            "g/"  'magit-dispatch
+            "gD"  'magit-file-delete
+            "gB"  'magit-blame-addition
+            "gC"  'magit-clone
+            "gF"  'magit-fetch
+            "gL"  'magit-log
+            "gS"  'magit-stage-file
+            "gU"  'magit-unstage-file
+            ;; toggle
+            "ta"  'company-mode
+            "tf"  'flycheck-mode
+            "tl"  'nlinum-mode
+            "tt"  'toggle-truncate-lines
+            "tv"  'global-visual-line-mode
+            ;; projects
+            "pp"  'projectile-persp-switch-project
+            "pi"  'projectile-invalidate-cache
+            "pt"  'projectile-run-vterm
+            "pb"  'projectile-switch-to-buffer
+            "pB"  'persp-buffers
+            ;; notes
+            "nf" 'kwamedat/find-in-notes
+            "na" 'org-agenda
+            "np" 'org-pomodoro
+            "nn" 'kwamedat/find-in-notes
+            "nc" 'org-capture
+            "nt" 'kwamedat/visit-todo-list-file
+            "ni" 'kwamedat/visit-inbox
+            "nv" 'org-search-view
+            ":"  'eval-expression
+            "cc"  'compile
+            "<SPC>"  'projectile-find-file
+            "/r"  'counsel-imenu
+            "/sp"  'counsel-rg
+            ;; insert
+            "ie" 'emoji-cheat-sheet-plus-insert
+            ;; window
+            "w"  'evil-window-map
+            ;; help
+            "h"  'help-map
+            ;; open application
+            "oD" 'docker
+            "od" 'docker
+            "oc" 'calender
+            "o-" 'dired-jump
+            "oo" '+macos/reveal-in-finder
+            "op" 'treemacs
+            "oxp"  'password-store-copy
+            "oxf"  'password-store-copy-field
+            "oxi"  'password-store-insert
+            "oxg"  'password-store-generate
+            "oxd"  'password-store-remove
+            "oxr"  'password-store-rename
+            "oxe"  'password-store-edit
+            "om"  'mu4e
+            "ot"  'shell-pop
+            "oT"  'vterm-toggle
+            "x"  'counsel-M-x))
 
 
-    (defun kwamedat/apply-evil-other-package-configs ()
-      "Apply evil-dependent settings specific to other packages."
-      ;; PHP
-      (evil-define-key 'normal php-mode-map (kbd ", tt") 'phpunit-current-test)
-      (evil-define-key 'normal php-mode-map (kbd ", tp") 'phpunit-current-project)
-      (evil-define-key 'normal php-mode-map (kbd ", tc") 'phpunit-current-class)
-      (evil-define-key 'normal php-mode-map (kbd ", n") 'phpactor-create-new-class)
-      (evil-define-key 'normal php-mode-map (kbd ", m") 'phpactor-move-class)
-      (evil-define-key 'normal php-mode-map (kbd ", i") 'phpactor-import-class)
-      (evil-define-key 'normal php-mode-map (kbd ", f") 'php-search-documentation)
-      (evil-define-key 'normal php-mode-map (kbd ", r") 'counsel-imenu)
+        (defun kwamedat/apply-evil-other-package-configs ()
+          "Apply evil-dependent settings specific to other packages."
+          ;; PHP
+          (evil-define-key 'normal php-mode-map (kbd ", tt") 'phpunit-current-test)
+          (evil-define-key 'normal php-mode-map (kbd ", tp") 'phpunit-current-project)
+          (evil-define-key 'normal php-mode-map (kbd ", tc") 'phpunit-current-class)
+          (evil-define-key 'normal php-mode-map (kbd ", n") 'phpactor-create-new-class)
+          (evil-define-key 'normal php-mode-map (kbd ", m") 'phpactor-move-class)
+          (evil-define-key 'normal php-mode-map (kbd ", i") 'phpactor-import-class)
+          (evil-define-key 'normal php-mode-map (kbd ", f") 'php-search-documentation)
+          (evil-define-key 'normal php-mode-map (kbd ", r") 'counsel-imenu)
 
-      ;; Org Mode
-      (evil-define-key 'normal org-mode-map (kbd ", c") 'org-ctrl-c-ctrl-c)
-      (evil-define-key 'normal org-mode-map (kbd ", t") 'org-todo)
-      (evil-define-key 'normal org-mode-map (kbd ", s") 'org-schedule)
-      (evil-define-key 'normal org-mode-map (kbd ", d") 'org-deadline)
-      (evil-define-key 'normal org-mode-map (kbd ", a") 'org-agenda)
-      (evil-define-key 'normal org-mode-map (kbd ", e") 'org-export-dispatch)
-      (evil-define-key 'normal org-mode-map (kbd ", n") 'org-narrow-to-element)
-      (evil-define-key 'normal org-mode-map (kbd ", w") 'widen)
-      (evil-define-key 'normal org-mode-map (kbd ", r") 'org-refile)
+          ;; Org Mode
+          (evil-define-key 'normal org-mode-map (kbd ", c") 'org-ctrl-c-ctrl-c)
+          (evil-define-key 'normal org-mode-map (kbd ", t") 'org-todo)
+          (evil-define-key 'normal org-mode-map (kbd ", s") 'org-schedule)
+          (evil-define-key 'normal org-mode-map (kbd ", d") 'org-deadline)
+          (evil-define-key 'normal org-mode-map (kbd ", a") 'org-agenda)
+          (evil-define-key 'normal org-mode-map (kbd ", e") 'org-export-dispatch)
+          (evil-define-key 'normal org-mode-map (kbd ", n") 'org-narrow-to-element)
+          (evil-define-key 'normal org-mode-map (kbd ", w") 'widen)
+          (evil-define-key 'normal org-mode-map (kbd ", r") 'org-refile)
 
-      ;; Ledger Mode
-      (evil-define-key 'normal ledger-mode-map (kbd ", a") 'ledger-add-transaction)
+          ;; Ledger Mode
+          (evil-define-key 'normal ledger-mode-map (kbd ", a") 'ledger-add-transaction)
 
-      ;; Easy window movement
-      (evil-define-key 'normal global-map (kbd "C-j") 'evil-window-down)
-      (evil-define-key 'normal global-map (kbd "C-h") 'evil-window-left)
-      (evil-define-key 'normal global-map (kbd "C-k") 'evil-window-up)
-      (evil-define-key 'normal global-map (kbd "C-l") 'evil-window-right)
+          ;; Easy window movement
+          (evil-define-key 'normal global-map (kbd "C-j") 'evil-window-down)
+          (evil-define-key 'normal global-map (kbd "C-h") 'evil-window-left)
+          (evil-define-key 'normal global-map (kbd "C-k") 'evil-window-up)
+          (evil-define-key 'normal global-map (kbd "C-l") 'evil-window-right)
 
-      ;; Dired
-      (evil-define-key 'normal dired-mode-map (kbd "C-e") 'dired-toggle-read-only))
+          ;; Dired
+          (evil-define-key 'normal dired-mode-map (kbd "C-e") 'dired-toggle-read-only))
 
 
-    (defun kwamedat/config-evil ()
-      "Configure evil mode."
-      (evil-add-hjkl-bindings occur-mode-map 'emacs
-        (kbd "/")       'evil-search-forward
-        (kbd "n")       'evil-search-next
-        (kbd "N")       'evil-search-previous
-        (kbd "C-d")     'evil-scroll-down
-        (kbd "C-u")     'evil-scroll-up
-        (kbd "C-w C-w") 'other-window)
+        (defun kwamedat/config-evil ()
+          "Configure evil mode."
+          (evil-add-hjkl-bindings occur-mode-map 'emacs
+            (kbd "/")       'evil-search-forward
+            (kbd "n")       'evil-search-next
+            (kbd "N")       'evil-search-previous
+            (kbd "C-d")     'evil-scroll-down
+            (kbd "C-u")     'evil-scroll-up
+            (kbd "C-w C-w") 'other-window)
 
-      (define-key evil-visual-state-map [escape] 'keyboard-quit)
-      (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-      (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-      (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-      (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-      (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit))
+          (define-key evil-visual-state-map [escape] 'keyboard-quit)
+          (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+          (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+          (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+          (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+          (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit))
 
-    (defmacro define-evil-or-global-key (key def &optional state)
-      "Define a key KEY with DEF in an Evil map, or in the global map.
+        (defmacro define-evil-or-global-key (key def &optional state)
+          "Define a key KEY with DEF in an Evil map, or in the global map.
 
-               If the Evil map for STATE is defined (or `normal' if STATE is not
-               provided) the key will be defined in that map.  Failing that, it will
-               be defined globally.
+                   If the Evil map for STATE is defined (or `normal' if STATE is not
+                   provided) the key will be defined in that map.  Failing that, it will
+                   be defined globally.
 
-               Note that STATE should be provided as an unquoted symbol.
+                   Note that STATE should be provided as an unquoted symbol.
 
-               This macro provides a way to override Evil mappings in the appropriate
-               Evil map in a manner that is compatible with environments where Evil
-               is not used."
-      (let* ((evil-map-name (if state
-                                (concat "evil-" (symbol-name state) "-state-map")
-                              "evil-normal-state-map"))
-             (map (if (boundp (intern evil-map-name))
-                      (intern evil-map-name)
-                    global-map)))
-        `(define-key ,map ,key ,def)))
+                   This macro provides a way to override Evil mappings in the appropriate
+                   Evil map in a manner that is compatible with environments where Evil
+                   is not used."
+          (let* ((evil-map-name (if state
+                                    (concat "evil-" (symbol-name state) "-state-map")
+                                  "evil-normal-state-map"))
+                 (map (if (boundp (intern evil-map-name))
+                          (intern evil-map-name)
+                        global-map)))
+            `(define-key ,map ,key ,def)))
 
-    (use-package evil
-      :ensure t
-      :commands (evil-mode evil-define-key)
-      :init
-      (setq evil-want-C-u-scroll t)
-      (setq evil-vsplit-window-right t)
-      (setq evil-split-window-below t)
+        (use-package evil
+          :ensure t
+          :commands (evil-mode evil-define-key)
+          :init
+          (setq evil-want-C-u-scroll t)
+          (setq evil-vsplit-window-right t)
+          (setq evil-split-window-below t)
 
-      (setq evil-want-abbrev-expand-on-insert-exit nil)
-      :config
-      (add-hook 'evil-mode-hook 'kwamedat/config-evil)
-      (evil-mode 1)
+          (setq evil-want-abbrev-expand-on-insert-exit nil)
+          :config
+          (add-hook 'evil-mode-hook 'kwamedat/config-evil)
+          (evil-mode 1)
 
-      (use-package evil-leader
-        :ensure t
-        :config
-        (global-evil-leader-mode)
-        (kwamedat/config-evil-leader))
+          (use-package evil-leader
+            :ensure t
+            :config
+            (global-evil-leader-mode)
+            (kwamedat/config-evil-leader))
 
-      (use-package evil-surround
-        :ensure t
-        :config
-        (global-evil-surround-mode))
+          (use-package evil-surround
+            :ensure t
+            :config
+            (global-evil-surround-mode))
 
-      (use-package evil-commentary
-        :ensure t
-        :config
-        (evil-commentary-mode))
+          (use-package evil-commentary
+            :ensure t
+            :config
+            (evil-commentary-mode))
 
-      (use-package evil-indent-textobject
-        :ensure t)
-      (kwamedat/apply-evil-other-package-configs))
+          (use-package evil-indent-textobject
+            :ensure t)
+          (kwamedat/apply-evil-other-package-configs))
 
-    (use-package evil-collection
-      :after evil
-      :ensure t)
-    (evil-collection-init)
+        (use-package evil-collection
+          :after evil
+          :ensure t)
+        (evil-collection-init)
 
-    (with-eval-after-load 'company
-      (define-key company-active-map (kbd "RET") #'company-complete-selection)
-      (define-key company-active-map (kbd "C-SPC") #'company-manual-begin))
-    (define-key evil-insert-state-map (kbd "C-SPC") 'company-manual-begin)
+        (with-eval-after-load 'company
+          (define-key company-active-map (kbd "RET") #'company-complete-selection)
+          (define-key company-active-map (kbd "C-SPC") #'company-manual-begin))
+        (define-key evil-insert-state-map (kbd "C-SPC") 'company-manual-begin)
   #+END_SRC
+
+  #+RESULTS:
+  : company-manual-begin
 
 *** Relative numbers =nlium-relative=
   #+BEGIN_SRC emacs-lisp
@@ -436,6 +439,7 @@
 #+END_SRC
 ** =projectile=
   #+BEGIN_SRC emacs-lisp
+    (setq projectile-enable-caching nil)
     (setq projectile-project-search-path '("~/Documents/3Resources"
                                            "~/Documents/2Areas"
                                            "~/Documents/1Projects"
@@ -457,6 +461,8 @@
     (use-package projectile
       :ensure t
       :init (projectile-mode))
+
+    (add-to-list 'projectile-globally-ignored-directories "vendor" "node_modules")
   #+END_SRC
 
 ** =which-key=
@@ -590,12 +596,11 @@
 
 ** =ledger=
   #+BEGIN_SRC emacs-lisp
-    (setq ledger-post-amount-alignment-column 65)
+    (setq ledger-post-amount-alignment-column 70)
     (use-package ledger-mode)
     (use-package flycheck-ledger)
     (use-package evil-ledger)
   #+END_SRC
-
 ** =csv=
 #+BEGIN_SRC emacs-lisp
   (use-package csv-mode)
@@ -652,6 +657,7 @@
     (setq org-inbox-file "~/Dropbox/org/inbox.org")
     (setq org-agenda-files (quote (
                                    "~/Dropbox/org/todo.org"
+                                   "~/Dropbox/org/routine.org"
                                    )))
 
     (add-hook 'org-capture-mode-hook 'evil-insert-state)
@@ -671,6 +677,7 @@
        (emacs-lisp . t)
        (latex . t)
        (shell . t)
+       (elasticsearch . t)
        (ledger . t)
        (python . t)
        (ruby . t)
@@ -706,6 +713,14 @@
                   "CANCELLED(c)")))
       :ensure t)
   #+END_SRC
+
+  Instal
+*** =org-bullets=
+#+BEGIN_SRC emacs-lisp
+(use-package org-bullets
+  :init
+  (add-hook 'org-mode-hook 'org-bullets-mode))
+#+END_SRC
 
 *** =ox-pandoc=
    #+BEGIN_SRC emacs-lisp
@@ -939,7 +954,7 @@
      (bind-key (kbd "s-=") 'sanityinc/increase-default-font-height)
      (bind-key (kbd "s--") 'sanityinc/decrease-default-font-height)
 
-     (set-frame-font "Operator Mono Bold 18" nil t)
+     (set-frame-font "Operator Mono Book 18" nil t)
    #+END_SRC
 
 ** Theme
@@ -949,6 +964,7 @@
        :config
        (load-theme 'sanityinc-tomorrow-night t))
    #+END_SRC
+
 ** =diff-hl=
    #+BEGIN_SRC emacs-lisp
     (use-package diff-hl
@@ -1732,3 +1748,11 @@
             "Search the word at point with Dash." t nil)
   (global-set-key "\C-cd" 'dash-at-point)
   (global-set-key "\C-ce" 'dash-at-point-with-docset)
+** Elastic search
+#+BEGIN_SRC emacs-lisp
+  (use-package es-mode)
+  (add-to-list 'load-path "/path/to/es-mode-dir")
+  (autoload 'es-mode "es-mode.el"
+    "Major mode for editing Elasticsearch queries" t)
+  (add-to-list 'auto-mode-alist '("\\.es$" . es-mode))
+#+END_SRC
