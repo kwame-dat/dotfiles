@@ -1,0 +1,146 @@
+;;; init-org.el --- Set up Org Mode
+;;; Commentary:
+
+;; Basic Org Mode configuration, assuming presence of Evil & Evil Leader.
+
+;;;###autoload
+(defun +org-cycle-only-current-subtree-h (&optional arg)
+  (interactive "P")
+  (unless (eq this-command 'org-shifttab)
+    (save-excursion
+      (org-beginning-of-line)
+      (let (invisible-p)
+        (when (and (org-at-heading-p)
+                   (or org-cycle-open-archived-trees
+                       (not (member org-archive-tag (org-get-tags))))
+                   (or (not arg)
+                       (setq invisible-p (outline-invisible-p (line-end-position)))))
+          (unless invisible-p
+            (setq org-cycle-subtree-status 'subtree))
+          (org-cycle-internal-local)
+          t)))))
+
+(setq org-icalendar-include-todo t
+      org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due)
+      org-icalendar-use-scheduled '(event-if-todo event-if-not-todo todo-start)
+      org-icalendar-with-timestamps t)
+(setq org-startup-truncated nil)
+(setq org-agenda-inhibit-startup nil)
+(add-hook 'org-mode-hook 'org-indent-mode)
+
+(setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
+
+(setq org-ellipsis "⤵")
+
+(setq org-src-fontify-natively t)
+
+(setq org-directory "~/Dropbox/org")
+(setq org-inbox-file "~/Dropbox/org/inbox.org")
+(setq org-agenda-files (quote (
+                               "~/Dropbox/org/todo.org"
+                               )))
+
+(add-hook 'org-capture-mode-hook 'evil-insert-state)
+(setq org-capture-templates
+      '(("t" "Task" entry (file "~/Dropbox/org/inbox.org")
+         "* TODO %?\n")
+        ("p" "Project" entry (file+headline "~/Dropbox/org/todo.org" "1Projects")
+         (file "~/Dropbox/org/templates/new-project-template.org"))
+        ("g" "Someday" entry (file+headline "~/Dropbox/org/someday.org" "Someday")
+         "* SOMEDAY %?\n")
+        ("l" "Log" entry (file+olp+datetree "~/Dropbox/org/log.org" "Log")
+         (file "~/Dropbox/org/templates/logtemplate.org"))))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((R . t)
+   (emacs-lisp . t)
+   (latex . t)
+   (shell . t)
+   (elasticsearch . t)
+   (ledger . t)
+   (python . t)
+   (ruby . t)
+   (sqlite . t)))
+
+(setq org-confirm-babel-evaluate nil)
+
+;; (setq initial-major-mode 'org-mode)
+
+(use-package org
+  :custom-face
+  (variable-pitch ((t (:family "Avenir"))))
+  (org-document-title ((t (:weight bold ))))
+  (org-done ((t (:strike-through t :weight bold))))
+  (org-headline-done ((t (:strike-through t))))
+  (org-level-1 ((t (:weight bold :height 1.2))))
+  (org-level-2 ((t (:weight normal :height 1.2))))
+  (org-level-3 ((t (:weight normal :height 1.2))))
+  (org-image-actual-width '(600))
+  :config
+  (add-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h 'append)
+  (setq org-todo-keywords
+  '((sequence "TODO(t)"
+              "STARTED(s)"
+              "WAITING(w)"
+              "SOMEDAY(.)"
+              "MAYBE(m)"
+              "|"
+              "DONE(d!)"
+              "CANCELLED(c)")))
+  :ensure t)
+
+(use-package ox-pandoc)
+
+(use-package ox-jira)
+
+(use-package ox-slack)
+
+(use-package ox-twbs)
+
+(use-package ob-restclient)
+
+(use-package org-pomodoro
+  :config
+  (setq org-pomodoro-long-break-length 60)
+  (setq org-pomodoro-long-break-frequency 10))
+
+(use-package evil-org
+  :ensure t
+  :after org
+  :config
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook
+            (lambda ()
+              (evil-org-set-key-theme)))
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
+(setq jiralib-url "https://netsells.atlassian.net")
+(use-package org-jira)
+
+(use-package org-gcal
+:ensure t)
+
+(use-package org-evil
+  :ensure t
+  :config
+  (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "@" 'org-refile)
+  (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "#" 'org-add-note)
+  (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "+" 'org-shiftup)
+  (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "=" 'org-shiftdown))
+
+(use-package org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  (setq org-bullets-bullet-list '("•")))
+
+(use-package ox-clip
+  :ensure t
+  :defer t
+  :config
+  (evil-define-key 'visual org-mode-map (kbd "gy") 'ox-clip-formatted-copy))
+
+(provide 'init-org)
+;;; init-org.el ends here

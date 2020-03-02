@@ -1,10 +1,8 @@
-*.pyc
-.doom.d/eshell/history
-.doom.d/eshell/lastdir
-.doom.d/flycheck_config.el
-.doom.d/*.elc
-.emacs.d/*
-!.emacs.d/config.org
-!.emacs.d/init.el
-!.emacs.d/resources
-!.emacs.d/snippets
+*.elc
+# But don't ignore these specific locations.
+!emacs.d/eshell/alias
+!emacs.d/lisp
+!emacs.d/snippets
+!emacs.d/init.el
+!emacs.d/custom.el
+!emacs.d/themes
