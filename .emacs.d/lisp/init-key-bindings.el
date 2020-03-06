@@ -12,7 +12,7 @@
 (global-set-key (kbd "s-r") 'counsel-imenu)
 (global-set-key (kbd "s-b") 'counsel-switch-buffer)
 (global-set-key (kbd "s-/") 'comment-line)
-(global-set-key (kbd "s-F") 'counsel-rg)
+(global-set-key (kbd "s-F") 'counsel-projectile-rg)
 (global-set-key (kbd "s-f") 'swiper-isearch)
 
 (setq mac-option-modifier 'meta)
@@ -59,7 +59,7 @@
     "fdp" 'itechytony/find-projects-in-documents
     "fda" 'itechytony/find-areas-in-documents
     "fdr" 'itechytony/find-resources-in-documents
-    "ff"  'find-file
+    "ff"  'counsel-find-file
     "fh"  'itechytony/visit-host-file
     "fl"  'locate
     "fp"  'itechytony/visit-emacs-config
@@ -69,7 +69,7 @@
     "ft"  'itechytony/visit-todo-list-file
     ;; buffers
     "bb"  'persp-counsel-switch-buffer
-    "bB"  'ibuffer
+    "bB"  'counsel-ibuffer
     "bk"  'kill-buffer
     "bd"  'kill-buffer
     ;; search

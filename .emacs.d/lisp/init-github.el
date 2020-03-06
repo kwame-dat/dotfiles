@@ -1,0 +1,14 @@
+;;; init-github.el --- Github integration -*- lexical-binding: t -*-
+;;; Commentary:
+;;; Code:
+
+(require 'init-git)
+
+(use-package yagist)
+(use-package bug-reference-github)
+(use-package github-clone)
+(use-package forge)
+(use-package github-review)
+
+(provide 'init-github)
+;;; init-github.el ends here

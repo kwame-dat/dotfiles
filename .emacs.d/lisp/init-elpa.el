@@ -1,9 +1,7 @@
-;;; init-elpa.el --- Initialize my Elpa shit.
+;;; init-elpa.el --- Settings and helpers for package.el -*- lexical-binding: t -*-
 ;;; Commentary:
-
-;; Elpa configuration
-
 ;;; Code:
+
 (require 'package)
 
 (setq package-enable-at-startup nil)
@@ -18,6 +16,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (setq use-package-always-ensure t)
+
 
 (provide 'init-elpa)
 ;;; init-elpa.el ends here

@@ -36,26 +36,5 @@
   :diminish company-box-mode
   :hook (company-mode . company-box-mode))
 
-(use-package company-lsp
-  :commands company-lsp
-  :ensure t)
-
-(use-package lsp-mode
-  :init
-  (setq lsp-prefer-flymake nil)
-  (setq lsp-enable-file-watchers nil)
-  (setq lsp-idle-delay 0.0)
-  (setq lsp-auto-guess-root t)
-  :diminish lsp-mode
-  :hook (php-mode . lsp)
-  :commands lsp)
-
-(use-package lsp-ui
-  :init
-  (setq lsp-ui-doc-enable nil)
-  (setq lsp-ui-doc-enable nil)
-  :diminish lsp-ui-mode
-  :requires lsp-mode flycheck)
-
 (provide 'init-company)
 ;;; init-company.el ends here

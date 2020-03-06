@@ -1,8 +1,5 @@
-*.elc
-# But don't ignore these specific locations.
-!emacs.d/eshell/alias
-!emacs.d/lisp
-!emacs.d/snippets
-!emacs.d/init.el
-!emacs.d/custom.el
-!emacs.d/themes
+.emacs.d/*
+!.emacs.d/lisp
+!.emacs.d/init.el
+!.emacs.d/snippets
+!.emacs.d/eshell/alias

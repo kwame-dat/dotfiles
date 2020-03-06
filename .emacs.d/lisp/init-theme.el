@@ -1,6 +1,8 @@
 ;;; init-theme.el --- UI
 ;;; Commentary:
 ;;; Code:
+(add-to-list 'default-frame-alist
+             '(ns-appearance . light))
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
   :config
@@ -51,7 +53,6 @@
 (use-package spaceline-all-the-icons)
 
 (use-package spaceline)
-;; (spaceline-emacs-theme)
 (spaceline-spacemacs-theme)
 (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 

@@ -1,5 +1,7 @@
-;;; init-tools.el -- Installing useful tools
+;; init-macos.el -- Configuration for PHP
+
 ;;; Commentary:
+
 ;;; Code:
 ;; macos
 ;;;###autoload
@@ -52,75 +54,5 @@
 (+macos--open-with send-project-to-launchbar "LaunchBar"
                    (or (doom-project-root) default-directory))
 
-;;docker
-(use-package docker
-  :ensure t)
-
-;;pass
-(use-package pass
-  :ensure t)
-
-;;ivy-pass
-(use-package ivy-pass
-  :ensure t)
-
-;;pdf-tools
-(use-package pdf-tools
-  :ensure t
-  :config (pdf-tools-install))
-
-;;org-pdfview
-(use-package org-pdfview
-  :ensure t)
-
-;; magit
-(use-package magit
-  :init
-  (setq magit-status-buffer-switch-function 'switch-to-buffer)
-  (setq magit-push-always-verify nil)
-  (setq git-commit-summary-max-length 50)
-  :config
-  (use-package evil-magit)
-  (use-package with-editor)
-  (add-hook 'with-editor-mode-hook 'evil-insert-state)
-  :ensure t)
-
-;; git-gutter-fringe
-(use-package git-gutter-fringe
-  :ensure t
-  :init
-  (setq git-gutter-fr:side 'right-fringe)
-  :diminish git-gutter-mode
-  :config (global-git-gutter-mode))
-
-;; debugging
-(use-package dap-mode
-  :ensure t
-  :commands dap-mode
-  :config
-  (dap-mode 1)
-  (require 'dap-ui)
-  (dap-ui-mode 1)
-  (require 'dap-lldb))
-
-;; define-word
-(use-package define-word
-  :config
-  (global-set-key (kbd "M-\\") 'define-word-at-point))
-
-;; flyspell-correct-ivy
-(use-package flyspell-correct-ivy
-  :bind ("C-M-;" . flyspell-correct-wrapper)
-  :init
-  (setq flyspell-correct-interface #'flyspell-correct-ivy)
-  (setq ispell-program-name "aspell"))
-
-(add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
-(add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
-(add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
-
-(add-hook 'text-mode-hook 'flyspell-mode)
-(global-set-key (kbd "s-\\") 'ispell-word)
-
-(provide 'init-tools)
-;;; init-tools.el ends here
+(provide 'init-macos)
+;;; init-macos.el ends here

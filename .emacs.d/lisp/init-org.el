@@ -65,7 +65,7 @@
 
 (setq org-confirm-babel-evaluate nil)
 
-;; (setq initial-major-mode 'org-mode)
+(setq initial-major-mode 'org-mode)
 
 (use-package org
   :custom-face
@@ -80,15 +80,14 @@
   :config
   (add-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h 'append)
   (setq org-todo-keywords
-  '((sequence "TODO(t)"
-              "STARTED(s)"
-              "WAITING(w)"
-              "SOMEDAY(.)"
-              "MAYBE(m)"
-              "|"
-              "DONE(d!)"
-              "CANCELLED(c)")))
-  :ensure t)
+        '((sequence "TODO(t)"
+                    "STARTED(s)"
+                    "WAITING(w)"
+                    "SOMEDAY(.)"
+                    "MAYBE(m)"
+                    "|"
+                    "DONE(d!)"
+                    "CANCELLED(c)"))))
 
 (use-package ox-pandoc)
 
@@ -100,13 +99,15 @@
 
 (use-package ob-restclient)
 
+(use-package org-trello)
+(custom-set-variables '(org-trello-files '("~/Dropbox/org/trello.org")))
+
 (use-package org-pomodoro
   :config
   (setq org-pomodoro-long-break-length 60)
   (setq org-pomodoro-long-break-frequency 10))
 
 (use-package evil-org
-  :ensure t
   :after org
   :config
   (add-hook 'org-mode-hook 'evil-org-mode)
@@ -119,11 +120,9 @@
 (setq jiralib-url "https://netsells.atlassian.net")
 (use-package org-jira)
 
-(use-package org-gcal
-:ensure t)
+(use-package org-gcal)
 
 (use-package org-evil
-  :ensure t
   :config
   (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "@" 'org-refile)
   (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "#" 'org-add-note)
@@ -131,13 +130,12 @@
   (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "=" 'org-shiftdown))
 
 (use-package org-bullets
-  :ensure t
   :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  (setq org-bullets-bullet-list '("•")))
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+(use-package org-pdfview)
 
 (use-package ox-clip
-  :ensure t
   :defer t
   :config
   (evil-define-key 'visual org-mode-map (kbd "gy") 'ox-clip-formatted-copy))

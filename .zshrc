@@ -26,12 +26,9 @@ alias cda="composer dump-autoload"
 alias ds="docker ps"
 
 # PHP Test
-alias t="bin/phpunit"
-alias tc="bin/phpunit --coverage-html='tests/coverage/html'"
-alias tf="bin/phpunit --filter"
-alias tpf="vendor/bin/phpunit --filter"
-alias tp="vendor/bin/phpunit"
-alias tpc="vendor/bin/phpunit --coverage-html='tests/coverage/html'"
+alias t="vendor/bin/phpunit"
+alias tc="vendor/bin/phpunit --coverage-html='tests/coverage/html'"
+alias tf="vendor/bin/phpunit --filter"
 
 # Laravel
 alias art="php artisan"

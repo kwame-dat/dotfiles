@@ -19,10 +19,12 @@
 
 
 (use-package async
+  :diminish dired-async-mode
   :config
   (dired-async-mode 1))
 
 (use-package dired-narrow
+  :diminish dired-narrow-mode
   :ensure t
   :config
   (bind-key "C-c C-n" #'dired-narrow)

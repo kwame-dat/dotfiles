@@ -49,7 +49,4 @@ by the :height face attribute."
 (bind-key (kbd "s-=") 'sanityinc/increase-default-font-height)
 (bind-key (kbd "s--") 'sanityinc/decrease-default-font-height)
 
-;; (set-frame-font "SF Mono 16" nil t)
-;; (set-face-attribute 'font-lock-type-face nil :weight 'bold)
-
 (provide 'init-fonts)
