@@ -13,6 +13,7 @@
         flycheck-check-syntax-automatically '(save idle-change mode-enabled)
         flycheck-idle-change-delay 0.4
         flycheck-disabled-checkers '(php-phpmd)))
+(global-flycheck-mode)
 
 (provide 'init-flycheck)
 ;;; init-flycheck.el ends here

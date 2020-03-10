@@ -65,7 +65,6 @@
 
 (setq org-confirm-babel-evaluate nil)
 
-(setq initial-major-mode 'org-mode)
 
 (use-package org
   :custom-face
@@ -98,9 +97,6 @@
 (use-package ox-twbs)
 
 (use-package ob-restclient)
-
-(use-package org-trello)
-(custom-set-variables '(org-trello-files '("~/Dropbox/org/trello.org")))
 
 (use-package org-pomodoro
   :config

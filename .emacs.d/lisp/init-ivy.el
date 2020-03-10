@@ -2,17 +2,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "s-y") 'counsel-yank-pop)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "s-r") 'counsel-imenu)
-(global-set-key (kbd "s-b") 'counsel-switch-buffer)
-(global-set-key (kbd "s-/") 'comment-line)
-(global-set-key (kbd "s-F") 'counsel-rg)
-(global-set-key (kbd "s-f") 'swiper-isearch)
-(global-set-key (kbd "s-b") 'ivy-switch-buffer)
-(define-key ivy-minibuffer-map (kbd "C-c C-e") 'ivy-occur)
-
 (use-package ivy
   :init
   (setq ivy-use-virtual-buffers t)
@@ -31,5 +20,8 @@
   :diminish ivy-mode)
 
 (ivy-mode 1)
+
+(use-package all-the-icons-ivy
+  :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
 (provide 'init-ivy)
 ;;; init-ivy.el ends here

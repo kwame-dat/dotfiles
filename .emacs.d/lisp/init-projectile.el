@@ -4,12 +4,14 @@
 
 ;;; Code:
 (setq projectile-enable-caching nil)
-(setq projectile-project-search-path '("~/Desktop"
+(setq projectile-project-search-path '(
+                                       "~/Desktop"
                                        "~/Downloads"
                                        "~/Documents/2Areas"
                                        "~/Documents/1Projects"
                                        "~/Repo/2Areas"
-                                       "~/Repo/1Projects"))
+                                       "~/Repo/1Projects"
+                                       ))
 (setq projectile-completion-system 'ivy)
 (setq projectile-enable-caching t)
 (setq projectile-switch-project-action #'projectile-dired)

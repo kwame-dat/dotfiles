@@ -4,6 +4,11 @@
 ;;----------------------------------------------------------------------------
 ;; Essential settings.
 ;;----------------------------------------------------------------------------
+(setq initial-major-mode 'org-mode)
+(setq-default buffer-file-coding-system 'utf-8-unix)
+(set-default-coding-systems 'utf-8-unix)
+(setq locale-coding-system 'utf-8-unix)
+(prefer-coding-system 'utf-8-unix)
 (setq-default
  blink-cursor-interval 0.4
  bookmark-default-file (expand-file-name ".bookmarks.el" user-emacs-directory)
@@ -95,10 +100,12 @@
       '((:source "~/.authinfo.gpg")))
 
 ;; display date and time
-(setq display-time-day-and-date t)
-(setq display-time-format "%e %b %y  %H:%M")
-(setq display-time-default-load-average nil)
-(display-time-mode 1)
+;; (setq display-time-day-and-date t)
+;; (setq display-time-format "%e %b %y  %H:%M")
+;; (setq display-time-default-load-average nil)
+;; (display-time-mode 1)
+
+(global-hl-line-mode)
 
 ;; start calendar from Monday
 (setq calendar-week-start-day 1)

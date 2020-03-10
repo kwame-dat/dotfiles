@@ -6,22 +6,20 @@
 ;;
 ;;
 ;;; Code:
+(setq mac-option-modifier 'meta)
+(setq mac-command-modifier 'super)
+
 (global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "s-y") 'counsel-yank-pop)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
 (global-set-key (kbd "s-r") 'counsel-imenu)
 (global-set-key (kbd "s-b") 'counsel-switch-buffer)
 (global-set-key (kbd "s-/") 'comment-line)
 (global-set-key (kbd "s-F") 'counsel-projectile-rg)
 (global-set-key (kbd "s-f") 'swiper-isearch)
-
-(setq mac-option-modifier 'meta)
-(setq mac-command-modifier 'super)
 (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
 (global-set-key (kbd "s-o") (kbd "C-x o"))
 (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
 (global-set-key (kbd "s-w") (kbd "C-x 0"))
-(global-set-key (kbd "s-p") 'projectile-find-file)
+(global-set-key (kbd "s-p") 'counsel-projectile-find-file)
 (global-set-key (kbd "s-P") 'projectile-persp-switch-project)
 (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
 (global-set-key (kbd "s-k") 'kill-this-buffer)
@@ -54,13 +52,19 @@
     "<tab>S" 'persp-state-save
     "<tab>L" 'persp-state-load
     ;; files
+    "fc"  'editorconfig-find-current-editorconfig
+    "fC"  'itecytony/copy-this-file
     "fR"  'projectile-recentf
-    "fdd" 'itechytony/find-in-documents
-    "fdp" 'itechytony/find-projects-in-documents
-    "fda" 'itechytony/find-areas-in-documents
-    "fdr" 'itechytony/find-resources-in-documents
+    "fD"  'itechytony/delete-this-file
+    "fd" 'dired
     "ff"  'counsel-find-file
+    "fe"  '+default/find-in-emacsd
+    "fE"  '+default/browse-emacsd
+    "fF"  '+default/find-file-under-here
     "fh"  'itechytony/visit-host-file
+    "fu"  'itechytony/sudo-find-file
+    "fU"  'itechytony/sudo-this-file
+    "fy"  'default/yank-buffer-filename
     "fl"  'locate
     "fp"  'itechytony/visit-emacs-config
     "fr"  'recentf-open-files
@@ -74,7 +78,7 @@
     "bd"  'kill-buffer
     ;; search
     "sb" 'swiper-isearch
-    "sp" 'projectile-ag
+    "sp" 'counsel-projectile-ag
     ;; git
     "gR"  'vc-revert
     "gg"  'magit-status
@@ -109,13 +113,13 @@
     "na" 'org-agenda
     "np" 'org-pomodoro
     "nn" 'itechytony/find-in-notes
-    "nc" 'org-capture
+    "nn" 'org-capture
     "nt" 'itechytony/visit-todo-list-file
     "ni" 'itechytony/visit-inbox
     "nv" 'org-search-view
     ":"  'eval-expression
     "cc"  'compile
-    "<SPC>"  'projectile-find-file
+    "<SPC>"  'counsel-projectile-find-file
     "/r"  'counsel-imenu
     "/sp"  'counsel-rg
     ;; insert
@@ -179,41 +183,6 @@
   ;; Dired
   (evil-define-key 'normal dired-mode-map (kbd "C-e") 'dired-toggle-read-only))
 
-; ;; Highlights all matches of the selection in the buffer.
-; (define-key evil-visual-state-map "R" 'evil-multiedit-match-all)
-
-; ;; Match the word under cursor (i.e. make it an edit region). Consecutive presses will
-; ;; incrementally add the next unmatched match.
-; (define-key evil-normal-state-map (kbd "M-d") 'evil-multiedit-match-and-next)
-; ;; Match selected region.
-; (define-key evil-visual-state-map (kbd "M-d") 'evil-multiedit-match-and-next)
-; ;; Insert marker at point
-; (define-key evil-insert-state-map (kbd "M-d") 'evil-multiedit-toggle-marker-here)
-
-; ;; Same as M-d but in reverse.
-; (define-key evil-normal-state-map (kbd "M-D") 'evil-multiedit-match-and-prev)
-; (define-key evil-visual-state-map (kbd "M-D") 'evil-multiedit-match-and-prev)
-
-; ;; OPTIONAL: If you prefer to grab symbols rather than words, use
-; ;; `evil-multiedit-match-symbol-and-next` (or prev).
-
-; ;; Restore the last group of multiedit regions.
-; (define-key evil-visual-state-map (kbd "C-M-D") 'evil-multiedit-restore)
-
-; ;; RET will toggle the region under the cursor
-; (define-key evil-multiedit-state-map (kbd "RET") 'evil-multiedit-toggle-or-restrict-region)
-
-; ;; ...and in visual mode, RET will disable all fields outside the selected region
-; (define-key evil-motion-state-map (kbd "RET") 'evil-multiedit-toggle-or-restrict-region)
-
-; ;; For moving between edit regions
-; (define-key evil-multiedit-state-map (kbd "C-n") 'evil-multiedit-next)
-; (define-key evil-multiedit-state-map (kbd "C-p") 'evil-multiedit-prev)
-; (define-key evil-multiedit-insert-state-map (kbd "C-n") 'evil-multiedit-next)
-; (define-key evil-multiedit-insert-state-map (kbd "C-p") 'evil-multiedit-prev)
-
-; ;; Ex command that allows you to invoke evil-multiedit with a regular expression, e.g.
-; (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match)
 
 (provide 'init-key-bindings)
 ;;; init-key-bindings.el ends here

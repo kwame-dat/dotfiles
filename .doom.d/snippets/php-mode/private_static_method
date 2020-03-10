@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: private_static_method
-# key: pris                                 
-# --
-private static function $1($2)$3
-{
-  $0
-}

@@ -45,5 +45,6 @@
         (call-interactively 'persp-pick-perspective-by-buffer)))))
 
 (use-package persp-projectile)
+
 (provide 'init-workspace)
 ;;; init-workspace.el ends here
