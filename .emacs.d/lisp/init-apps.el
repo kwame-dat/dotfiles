@@ -3,17 +3,16 @@
 ;;: Code:
 
 ;; Epub Reading Books
-(setq nov-text-width 150)
+(setq nov-text-width 70)
 (setq visual-fill-column-center-text t)
-(use-package visual-fill-column)
 (use-package nov)
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 (defun my-nov-font-setup ()
-  (face-remap-add-relative 'variable-pitch :family "Avenir Next"
+  (face-remap-add-relative 'variable-pitch :family "Avenir"
                            :height 1.5))
 (add-hook 'nov-mode-hook 'my-nov-font-setup)
 (add-hook 'nov-mode-hook 'visual-line-mode)
-(add-hook 'nov-mode-hook 'visual-fill-column-mode)
+;; (add-hook 'nov-mode-hook 'visual-fill-column-mode)
 
 ;; Write
 (use-package synosaurus

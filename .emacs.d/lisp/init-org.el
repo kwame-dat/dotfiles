@@ -113,7 +113,7 @@
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
-(setq jiralib-url "https://netsells.atlassian.net")
+(setq jiralib-url "https://theampomahs.atlassian.net")
 (use-package org-jira)
 
 (use-package org-gcal)

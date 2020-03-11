@@ -31,17 +31,5 @@
   :config
   (global-set-key (kbd "M-\\") 'define-word-at-point))
 
-(use-package ispell
-  :defer 2
-  :ensure-system-package (hunspell . "trizen -S hunspell")
-  :custom
-  (ispell-dictionary "en_GB")
-  (ispell-dictionary-alist
-   '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_GB") nil utf-8)
-     ))
-  (ispell-program-name (executable-find "hunspell"))
-  (ispell-really-hunspell t)
-  (ispell-silently-savep t))
-
 (provide 'init-spelling)
 ;;; init-spelling.el ends here

@@ -9,6 +9,16 @@
 (setq mac-option-modifier 'meta)
 (setq mac-command-modifier 'super)
 
+;; Keybonds
+(global-set-key [(super a)] 'mark-whole-buffer)
+(global-set-key [(super v)] 'yank)
+(global-set-key [(super c)] 'kill-ring-save)
+(global-set-key [(super s)] 'save-buffer)
+(global-set-key [(super l)] 'goto-line)
+(global-set-key [(super w)]
+                (lambda () (interactive) (delete-window)))
+(global-set-key [(super z)] 'undo)
+
 (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "s-r") 'counsel-imenu)
 (global-set-key (kbd "s-b") 'counsel-switch-buffer)
@@ -24,15 +34,6 @@
 (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
 (global-set-key (kbd "s-k") 'kill-this-buffer)
 
-;; Keybonds
-(global-set-key [(super a)] 'mark-whole-buffer)
-(global-set-key [(super v)] 'yank)
-(global-set-key [(super c)] 'kill-ring-save)
-(global-set-key [(super s)] 'save-buffer)
-(global-set-key [(super l)] 'goto-line)
-(global-set-key [(super w)]
-                (lambda () (interactive) (delete-window)))
-(global-set-key [(super z)] 'undo)
 
 (defun itechytony/config-evil-leader ()
   (evil-leader/set-leader "<SPC>")

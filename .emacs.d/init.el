@@ -1,12 +1,9 @@
+;;; init.el --- Main configuration -*- lexical-binding: t -*-
 ;;; Commentary:
-;;
-;;
-;;
 ;;; Code:
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-(require 'init-benchmarking) ;; Measure startup time
-
-(defconst *spell-check-support-enabled* nil) ;; Enable with t if you prefer
+(require 'init-benchmarking)
+(defconst *spell-check-support-enabled* nil)
 (defconst *is-a-mac* (eq system-type 'darwin))
 ;;----------------------------------------------------------------------------
 ;; Adjust garbage collection thresholds during startup, and thereafter
@@ -16,15 +13,13 @@
   (setq gc-cons-threshold init-gc-cons-threshold)
   (add-hook 'emacs-startup-hook
             (lambda () (setq gc-cons-threshold normal-gc-cons-threshold))))
-
 ;;----------------------------------------------------------------------------
-;; Bootstrap config
+;; Bootstrap configuration
 ;;----------------------------------------------------------------------------
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (require 'init-utils)
 (require 'init-elpa)
 (require 'init-exec-path)
-
 ;;----------------------------------------------------------------------------
 ;; Load configs for specific features and modes
 ;;----------------------------------------------------------------------------
@@ -65,6 +60,10 @@
 (require 'init-pdf-tools)
 (require 'init-debugging)
 (require 'init-wgrep)
+(require 'init-snippets)
+(require 'init-csv)
+(require 'init-spelling)
+(require 'init-uniquify)
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient
 ;;----------------------------------------------------------------------------
@@ -73,22 +72,16 @@
             (require 'server)
             (unless (server-running-p)
               (server-start))))
-
 ;;----------------------------------------------------------------------------
 ;; Variables configured via the interactive 'customize' interface
 ;;----------------------------------------------------------------------------
 (when (file-exists-p custom-file)
   (load custom-file))
-
-
 ;;----------------------------------------------------------------------------
 ;; Locales (setting them earlier in this file doesn't work in X)
 ;;----------------------------------------------------------------------------
 (require 'init-locales)
-
-
 (provide 'init)
-
 ;; Local Variables:
 ;; coding: utf-8
 ;; no-byte-compile: t

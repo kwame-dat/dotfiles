@@ -4,7 +4,7 @@
 (use-package doom-themes
   :ensure t
   :config
-  (load-theme 'doom-tomorrow-day t))
+  (load-theme 'doom-one t))
 
 (use-package all-the-icons)
 
@@ -19,11 +19,15 @@
   :ensure t
   :init (doom-modeline-mode 1))
 
-;; (use-package spaceline-all-the-icons)
+(setq hl-todo-keyword-faces
+      '(("TODO"   . "#FF0000")
+        ("FIXME"  . "#FF0000")
+        ("DEBUG"  . "#A020F0")
+        ("GOTCHA" . "#FF4500")
+        ("STUB"   . "#1E90FF")))
+(use-package hl-todo)
 
-;; (use-package spaceline)
-;; (spaceline-spacemacs-theme)
-;; (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
 (provide 'init-theme)
 ;;; init-theme.el ends here

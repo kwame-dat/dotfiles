@@ -100,10 +100,10 @@
       '((:source "~/.authinfo.gpg")))
 
 ;; display date and time
-;; (setq display-time-day-and-date t)
-;; (setq display-time-format "%e %b %y  %H:%M")
-;; (setq display-time-default-load-average nil)
-;; (display-time-mode 1)
+(setq display-time-day-and-date t)
+(setq display-time-format "%H:%M | %a %e %B %Y ")
+(setq display-time-default-load-average nil)
+(display-time-mode 1)
 
 (global-hl-line-mode)
 

@@ -2,6 +2,10 @@
 ;;; Commentary:
 ;;; Code:
 (use-package pdf-tools
+  :config
+  (setq-default pdf-view-display-size 'fit-page
+                pdf-view-use-scaling t
+                pdf-view-use-imagemagick nil)
   :ensure t
   :config (pdf-tools-install))
 

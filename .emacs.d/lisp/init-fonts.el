@@ -50,6 +50,6 @@ by the :height face attribute."
 (bind-key (kbd "s--") 'sanityinc/decrease-default-font-height)
 
 
-(set-frame-font "SF Mono Medium 16" nil t)
+(set-frame-font "Operator Mono Medium 16" nil t)
 
 (provide 'init-fonts)
