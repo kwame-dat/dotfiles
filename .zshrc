@@ -27,6 +27,8 @@ alias ds="docker ps"
 
 # PHP Test
 alias t="vendor/bin/phpunit"
+alias tsd="vendor/bin/phpunit --order-by=defects --stop-on-defect"
+alias test="vendor/bin/phpunit"
 alias tc="vendor/bin/phpunit --coverage-html='tests/coverage/html'"
 alias tf="vendor/bin/phpunit --filter"
 
@@ -37,3 +39,5 @@ alias migrate="php artisan migrate"
 
 # fnm
 eval "$(fnm env --multi)"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
