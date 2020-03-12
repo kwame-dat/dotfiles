@@ -19,13 +19,14 @@
   :ensure t
   :init (doom-modeline-mode 1))
 
-(setq hl-todo-keyword-faces
-      '(("TODO"   . "#FF0000")
-        ("FIXME"  . "#FF0000")
-        ("DEBUG"  . "#A020F0")
-        ("GOTCHA" . "#FF4500")
-        ("STUB"   . "#1E90FF")))
-(use-package hl-todo)
+(use-package hl-todo
+  :init
+  (setq hl-todo-keyword-faces
+        '(("TODO"   . "#FF0000")
+          ("FIXME"  . "#FF0000")
+          ("DEBUG"  . "#A020F0")
+          ("GOTCHA" . "#FF4500")
+          ("STUB"   . "#1E90FF"))))
 
 (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
