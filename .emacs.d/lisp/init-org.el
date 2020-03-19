@@ -44,6 +44,8 @@
 (setq org-capture-templates
       '(("t" "Task" entry (file "~/Dropbox/org/inbox.org")
          "* TODO %?\n")
+        ("e" "Email" entry (file+headline "~/Dropbox/org/inbox.org" "Tasks")
+         "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
         ("p" "Project" entry (file+headline "~/Dropbox/org/todo.org" "1Projects")
          (file "~/Dropbox/org/templates/new-project-template.org"))
         ("g" "Someday" entry (file+headline "~/Dropbox/org/someday.org" "Someday")
@@ -116,8 +118,6 @@
 (setq jiralib-url "https://theampomahs.atlassian.net")
 (use-package org-jira)
 
-(use-package org-gcal)
-
 (use-package org-evil
   :config
   (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "@" 'org-refile)
@@ -125,11 +125,15 @@
   (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "+" 'org-shiftup)
   (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "=" 'org-shiftdown))
 
+(use-package org-gcal)
+
 (use-package org-bullets
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 (use-package org-pdfview)
+
+(use-package ox-slimhtml)
 
 (use-package ox-clip
   :defer t
