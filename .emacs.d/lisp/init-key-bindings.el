@@ -1,10 +1,5 @@
 ;;; init-key-bindings.el --- Key bindings
 ;;; Commentary:
-
-;;; Commentary:
-;;
-;;
-;;
 ;;; Code:
 (setq mac-option-modifier 'meta)
 (setq mac-command-modifier 'super)
@@ -34,10 +29,22 @@
 (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
 (global-set-key (kbd "s-k") 'kill-this-buffer)
 
-
 (defun itechytony/config-evil-leader ()
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
+    ;; application Chat
+    "acs" 'slack-start
+    "acj" 'slack-channel-select
+    "acd" 'slack-im-select
+    "acq" 'slack-ws-close
+    "am"  'mu4e
+    "ad" 'docker
+    "app" 'pass
+    "apf"  'password-store-copy
+    "apd"  'password-store-remove
+    "apr"  'password-store-rename
+    "ape"  'password-store-edit
+    "ae" 'es-command-center
     ;; workspaces
     "<tab><tab>" 'persp-switch
     "<tab>c" 'persp-switch
@@ -75,11 +82,11 @@
     ;; buffers
     "bb"  'persp-counsel-switch-buffer
     "bB"  'counsel-ibuffer
-    "bk"  'kill-buffer
-    "bd"  'kill-buffer
+    "bk"  'kill-this-buffer
+    "bd"  'kill-this-buffer
     ;; search
     "sb" 'swiper-isearch
-    "sp" 'counsel-projectile-ag
+    "sp" 'counsel-projectile-rg
     ;; git
     "gR"  'vc-revert
     "gg"  'magit-status
@@ -106,7 +113,7 @@
     "pi"  'projectile-invalidate-cache
     "pt"  'projectile-run-vterm
     "pb"  'projectile-switch-to-buffer
-    "ps"  'projectile-rg
+    "ps"  'counsel-projectile-rg
     "pB"  'persp-buffers
     "pd"  'projectile-discover-projects-in-search-path
     ;; notes
@@ -130,21 +137,8 @@
     ;; help
     "h"  'help-map
     ;; open application
-    "oD" 'docker
-    "od" 'docker
-    "oesc" 'es-command-center
-    "oc" 'calender
     "o-" 'dired-jump
     "oo" '+macos/reveal-in-finder
-    "opp"  'pass
-    "opcc"  'password-store-copy
-    "opcf"  'password-store-copy-field
-    "opi"  'password-store-insert
-    "opg"  'password-store-generate
-    "opd"  'password-store-remove
-    "opr"  'password-store-rename
-    "ope"  'password-store-edit
-    "om"  'mu4e
     "ot"  'shell-pop
     "oT"  'vterm-toggle
     "x"  'counsel-M-x))
@@ -181,9 +175,47 @@
   (evil-define-key 'normal global-map (kbd "C-k") 'evil-window-up)
   (evil-define-key 'normal global-map (kbd "C-l") 'evil-window-right)
 
-  ;; Dired
-  (evil-define-key 'normal dired-mode-map (kbd "C-e") 'dired-toggle-read-only))
+  ;; Slack mode
+  (evil-define-key 'normal slack-mode-map
+    (kbd ",j") 'slack-channel-select
+    (kbd ",d") 'slack-im-select
+    (kbd ",p") 'slack-room-load-prev-messages
+    (kbd ",e") 'slack-message-edit
+    (kbd ",q") 'slack-ws-close
+    (kbd ",mm") 'slack-message-embed-mention
+    (kbd ",c") 'slack-message-embed-channel
+    (kbd ",k") 'slack-channel-select
+    (kbd ",@") 'slack-message-embed-mention
+    (kbd ",j") 'slack-channel-select
+    (kbd ",#") 'slack-message-embed-channel
+    (kbd ",u") 'slack-room-update-messages
+    ",q" 'slack-buffer-kill
+    ",ra" 'slack-message-add-reaction
+    ",rr" 'slack-message-remove-reaction
+    ",rs" 'slack-message-show-reaction-users
+    ",pl" 'slack-room-pins-list
+    ",pa" 'slack-message-pins-add
+    ",pr" 'slack-message-pins-remove
+    ",mm" 'slack-message-write-another-buffer
+    ",me" 'slack-message-edit
+    ",md" 'slack-message-delete
+    ",u" 'slack-room-update-messages
+    ",2" 'slack-message-embed-mention
+    ",3" 'slack-message-embed-channel
+    "\C-n" 'slack-buffer-goto-next-message
+    "\C-p" 'slack-buffer-goto-prev-message)
 
+  (evil-define-key 'normal slack-edit-message-mode-map
+    ",k" 'slack-message-cancel-edit
+    ",s" 'slack-message-send-from-buffer
+    ",2" 'slack-message-embed-mention
+    ",3" 'slack-message-embed-channel)
+
+  ;; Dired
+  (evil-define-key 'normal dired-mode-map
+    (kbd "C-e") 'dired-toggle-read-only
+    (kbd "j") 'dired-next-line
+    (kbd "k") 'dired-previous-line))
 
 (provide 'init-key-bindings)
 ;;; init-key-bindings.el ends here
