@@ -19,7 +19,5 @@
   (add-hook 'with-editor-mode-hook 'evil-insert-state)
   :ensure t)
 
-(fullframe magit-status magit-mode-quit-window)
-
 (provide 'init-git)
 ;;; init-git.el ends here
