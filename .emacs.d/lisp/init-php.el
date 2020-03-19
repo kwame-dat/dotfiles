@@ -1,7 +1,5 @@
-;; init-php.el -- Configuration for PHP
-
+;; init-php.el -- My best friend PHP config
 ;;; Commentary:
-
 ;;; Code:
 
 (setq-default phpstan-executable 'phpstan)
@@ -11,7 +9,6 @@
 (use-package phpactor)
 (use-package phpunit)
 (use-package psysh)
-(use-package smarty-mode)
 
 (provide 'init-php)
 ;;; init-php.el ends here
