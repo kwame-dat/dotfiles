@@ -13,11 +13,6 @@
 (setq dired-recursive-copies 'always)
 (setq dired-recursive-deletes 'top)
 
-(evil-define-key 'normal global-map (kbd "-")       'dired-jump)
-(evil-define-key 'normal dired-mode-map (kbd "j") 'dired-next-line)
-(evil-define-key 'normal dired-mode-map (kbd "k") 'dired-previous-line)
-
-
 (use-package async
   :diminish dired-async-mode
   :config
