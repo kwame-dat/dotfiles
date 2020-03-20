@@ -4,33 +4,16 @@
 ;;----------------------------------------------------------------------------
 ;; Essential settings.
 ;;----------------------------------------------------------------------------
+(sensible-defaults/use-all-settings)
+(sensible-defaults/use-all-keybindings)
+(sensible-defaults/backup-to-temp-directory)
 (setq initial-major-mode 'org-mode)
 (setq-default buffer-file-coding-system 'utf-8-unix)
 (set-default-coding-systems 'utf-8-unix)
 (setq locale-coding-system 'utf-8-unix)
 (prefer-coding-system 'utf-8-unix)
-(setq-default
- blink-cursor-interval 0.4
- bookmark-default-file (expand-file-name ".bookmarks.el" user-emacs-directory)
- buffers-menu-max-size 30
- case-fold-search t
- column-number-mode t
- delete-selection-mode t
- ediff-split-window-function 'split-window-horizontally
- ediff-window-setup-function 'ediff-setup-windows-plain
- indent-tabs-mode nil
- make-backup-files nil
- mouse-yank-at-point t
- save-interprogram-paste-before-kill t
- scroll-preserve-screen-position 'always
- set-mark-command-repeat-pop t
- tooltip-delay 1.5
- truncate-lines nil
- truncate-partial-width-windows nil)
-
 (setq load-prefer-newer t)
-
-(setq scroll-conservatively  100)
+;; (setq scroll-conservatively  100)
 (setq
  inhibit-startup-message t
  inhibit-startup-screen t
@@ -96,8 +79,9 @@
       user-mail-address "tony@arksolutions.it")
 
 (setq epg-gpg-program "gpg")
-(setq auth-sources
-      '((:source "~/.authinfo.gpg")))
+;; (setq auth-sources
+;;       '((:source "~/.authinfo.gpg")))
+ (setq auth-sources '("~/.authinfo.gpg" "~/.authinfo"))
 
 ;; display date and time
 (setq display-time-day-and-date t)
@@ -106,6 +90,8 @@
 (display-time-mode 1)
 
 (global-hl-line-mode)
+(add-hook 'vterm-mode-hook (lambda ()
+  (setq-local global-hl-line-mode nil)))
 
 ;; start calendar from Monday
 (setq calendar-week-start-day 1)
@@ -130,5 +116,7 @@
 
 (use-package fullframe)
 
+;; make Emacs full screen on start up
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 (provide 'init-editing-utils)
 ;;; init-editing-utils.el ends here
