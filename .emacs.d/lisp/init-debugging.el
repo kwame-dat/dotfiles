@@ -10,5 +10,10 @@
   (dap-ui-mode 1)
   (require 'dap-lldb))
 
+(dap-tooltip-mode 1)
+(tooltip-mode 1)
+
+(require 'dap-php)
+
 (provide 'init-debugging)
 ;;; init-debugging.el ends here
