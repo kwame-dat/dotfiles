@@ -406,7 +406,7 @@
             "key_code": "f1"
           },
           "to": {
-            "consumer_key_code": "display_brightness_decrement"
+            "consumer_key_code": "apple_display_brightness_decrement"
           }
         },
         {
@@ -414,7 +414,7 @@
             "key_code": "f2"
           },
           "to": {
-            "consumer_key_code": "display_brightness_increment"
+            "consumer_key_code": "apple_display_brightness_increment"
           }
         },
         {
