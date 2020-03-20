@@ -53,7 +53,6 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 ;;----------------------------------------------------------------------------
 ;; Load configs for specific features and modes
 ;;----------------------------------------------------------------------------
-(load-)
 (require 'sensible-defaults)
 (require 'init-editing-utils)
 (require 'init-key-bindings)
