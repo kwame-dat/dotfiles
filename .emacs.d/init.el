@@ -1,18 +1,48 @@
 ;;; init.el --- Main configuration -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; Code:
+(setq gc-cons-threshold 100000000)
+(setq package-enable-at-startup nil)
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-(require 'init-benchmarking)
-(defconst *spell-check-support-enabled* nil)
-(defconst *is-a-mac* (eq system-type 'darwin))
+(defvar file-name-handler-alist-original file-name-handler-alist)
+(setq file-name-handler-alist nil)
+(setq site-run-file nil)
 ;;----------------------------------------------------------------------------
 ;; Adjust garbage collection thresholds during startup, and thereafter
 ;;----------------------------------------------------------------------------
-(let ((normal-gc-cons-threshold (* 20 1024 1024))
-      (init-gc-cons-threshold (* 128 1024 1024)))
-  (setq gc-cons-threshold init-gc-cons-threshold)
-  (add-hook 'emacs-startup-hook
-            (lambda () (setq gc-cons-threshold normal-gc-cons-threshold))))
+(defvar better-gc-cons-threshold 67108864 ; 64mb
+  "The default value to use for `gc-cons-threshold'.
+
+If you experience freezing, decrease this.  If you experience stuttering, increase this.")
+
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq gc-cons-threshold better-gc-cons-threshold)
+            (setq file-name-handler-alist file-name-handler-alist-original)
+            (makunbound 'file-name-handler-alist-original)))
+(setq gc-cons-threshold most-positive-fixnum)
+(setq load-prefer-newer noninteractive)
+(let (file-name-handler-alist)
+  (setq user-emacs-directory (file-name-directory load-file-name)))
+
+;; Garbage Collect when Emacs is out of focus and avoid garbage collection when using minibuffer.
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (if (boundp 'after-focus-change-function)
+                (add-function :after after-focus-change-function
+                              (lambda ()
+                                (unless (frame-focus-state)
+                                  (garbage-collect))))
+              (add-hook 'after-focus-change-function 'garbage-collect))
+            (defun gc-minibuffer-setup-hook ()
+              (setq gc-cons-threshold (* better-gc-cons-threshold 2)))
+
+            (defun gc-minibuffer-exit-hook ()
+              (garbage-collect)
+              (setq gc-cons-threshold better-gc-cons-threshold))
+
+            (add-hook 'minibuffer-setup-hook #'gc-minibuffer-setup-hook)
+            (add-hook 'minibuffer-exit-hook #'gc-minibuffer-exit-hook)))
 ;;----------------------------------------------------------------------------
 ;; Bootstrap configuration
 ;;----------------------------------------------------------------------------
@@ -23,6 +53,8 @@
 ;;----------------------------------------------------------------------------
 ;; Load configs for specific features and modes
 ;;----------------------------------------------------------------------------
+(load-)
+(require 'sensible-defaults)
 (require 'init-editing-utils)
 (require 'init-key-bindings)
 (require 'init-evil)
@@ -64,6 +96,12 @@
 (require 'init-csv)
 (require 'init-spelling)
 (require 'init-uniquify)
+(require 'init-pass)
+(require 'init-slack)
+(require 'init-elasticsearch)
+(require 'init-nov)
+(require 'init-eredis)
+(require 'init-grammar)
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient
 ;;----------------------------------------------------------------------------
