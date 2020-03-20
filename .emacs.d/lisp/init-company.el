@@ -39,6 +39,7 @@
 
 
 (use-package company-box
+  :diminish company-box-mode
   :config
   (setq company-box-show-single-candidate t
         company-box-backends-colors nil
@@ -78,6 +79,10 @@
             (ElispFeature  . ,(all-the-icons-material "stars"                    :face 'all-the-icons-orange))
             (ElispFace     . ,(all-the-icons-material "format_paint"             :face 'all-the-icons-pink)))))
   :hook (company-mode . company-box-mode))
+
+(use-package company-lsp
+  :defer t
+  :custom (company-lsp-cache-candidates 'auto))
 
 (provide 'init-company)
 ;;; init-company.el ends here
