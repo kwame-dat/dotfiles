@@ -38,6 +38,9 @@
 (setq org-inbox-file "~/Dropbox/org/inbox.org")
 (setq org-agenda-files (quote (
                                "~/Dropbox/org/todo.org"
+                               "~/Dropbox/org/calendar/personal.org"
+                               "~/Dropbox/org/calendar/shared.org"
+                               "~/Dropbox/org/calendar/spouse.org"
                                )))
 
 (add-hook 'org-capture-mode-hook 'evil-insert-state)
