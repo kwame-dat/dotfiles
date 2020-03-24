@@ -16,7 +16,12 @@
   (all-the-icons-ivy-setup))
 
 (use-package spaceline)
-(spaceline-emacs-theme)
+;; (spaceline-emacs-theme)
+
+(setq spaceline-all-the-icons-separator-type 'arrow)
+(use-package spaceline-all-the-icons
+  :after spaceline
+  :config (spaceline-all-the-icons-theme))
 
 (use-package diminish :ensure t)
 (diminish 'evil-org-mode)
