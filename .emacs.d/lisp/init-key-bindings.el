@@ -25,40 +25,43 @@
 (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
 (global-set-key (kbd "s-w") (kbd "C-x 0"))
 (global-set-key (kbd "s-p") 'counsel-projectile-find-file)
-(global-set-key (kbd "s-P") 'projectile-persp-switch-project)
+(global-set-key (kbd "s-P") 'projectile-switch-project)
 (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
 (global-set-key (kbd "s-k") 'kill-this-buffer)
+
+(global-set-key (kbd "s-1")   'eyebrowse-switch-to-window-config-1)
+(global-set-key (kbd "s-2" )  'eyebrowse-switch-to-window-config-2)
+(global-set-key (kbd "s-3" )  'eyebrowse-switch-to-window-config-3)
+(global-set-key (kbd "s-4" )  'eyebrowse-switch-to-window-config-4)
+(global-set-key (kbd "s-5" )  'eyebrowse-switch-to-window-config-5)
+(global-set-key (kbd "s-6" )  'eyebrowse-switch-to-window-config-6)
+(global-set-key (kbd "s-7" )  'eyebrowse-switch-to-window-config-7)
+(global-set-key (kbd "s-8" )  'eyebrowse-switch-to-window-config-8)
+(global-set-key (kbd "s-9" )  'eyebrowse-switch-to-window-config-9)
 
 (defun itechytony/config-evil-leader ()
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
-    ;; application Chat
+    ;; application
     "acs" 'slack-start
     "acj" 'slack-channel-select
     "acd" 'slack-im-select
     "acq" 'slack-ws-close
-    "am"  'mu4e
-    "ad" 'docker
-    "app" 'pass
-    "apf"  'password-store-copy
-    "apd"  'password-store-remove
-    "apr"  'password-store-rename
-    "ape"  'password-store-edit
-    "ae" 'es-command-center
+    "app" 'password-store-copy
+    "apf" 'password-store-get-field
+    "apd" 'password-store-remove
+    "apr" 'password-store-rename
+    "ape" 'password-store-edit
     ;; workspaces
-    "<tab><tab>" 'persp-switch
-    "<tab>c" 'persp-switch
-    "<tab>." 'persp-switch
-    "<tab>s" 'persp-switch
-    "<tab>n" 'persp-switch
-    "<tab>d" 'persp-kill
-    "<tab>k" 'persp-kill
-    "<tab>r" 'persp-rename
-    "<tab>R" 'persp-state-restore
-    "<tab>[" 'persp-prev
-    "<tab>]" 'persp-next
-    "<tab>S" 'persp-state-save
-    "<tab>L" 'persp-state-load
+    "<tab><tab>" 'eyebrowse-switch-to-window-config
+    "<tab>c" 'eyebrowse-new-workspace
+    "<tab>." 'eyebrowse-switch-back-and-forth
+    "<tab>n" 'eyebrowse-new-workspace
+    "<tab>d" 'eyebrowse-projectile-remove-project
+    "<tab>k" 'eyebrowse-projectile-kill-buffer-and-window
+    "<tab>r" 'eyebrowse-rename-window-config
+    "<tab>[" 'eyebrowse-prev-window-config
+    "<tab>]" 'eyebrowse-next-window-config
     ;; files
     "fc"  'editorconfig-find-current-editorconfig
     "fC"  'itecytony/copy-this-file
@@ -80,10 +83,11 @@
     "fS"  'write-file
     "ft"  'itechytony/visit-todo-list-file
     ;; buffers
-    "bb"  'persp-counsel-switch-buffer
+    "bb"  'counsel-switch-buffer
     "bB"  'counsel-ibuffer
     "bk"  'kill-this-buffer
     "bd"  'kill-this-buffer
+    "bq"  'kill-buffer-and-window
     ;; search
     "sb" 'swiper-isearch
     "sp" 'counsel-projectile-rg
@@ -109,17 +113,18 @@
     "tvl"  'global-visual-line-mode
     "te"  'global-emojify-mode
     ;; projects
-    "pp"  'projectile-persp-switch-project
+    "pp"  'projectile-switch-project
     "pi"  'projectile-invalidate-cache
     "pt"  'projectile-run-vterm
     "pb"  'projectile-switch-to-buffer
     "ps"  'counsel-projectile-rg
-    "pB"  'persp-buffers
+    "pB"  'counsel-switch-buffer
     "pd"  'projectile-discover-projects-in-search-path
     ;; notes
     "nf" 'itechytony/find-in-notes
     "na" 'org-agenda
-    "np" 'org-pomodoro
+    "nci" 'org-pomodoro
+    "nco" 'org-pomodoro-clock-break
     "nn" 'itechytony/find-in-notes
     "nn" 'org-capture
     "nt" 'itechytony/visit-todo-list-file
@@ -138,9 +143,15 @@
     "h"  'help-map
     ;; open application
     "o-" 'dired-jump
+    "oc" 'cfw:open-org-calendar
     "oo" '+macos/reveal-in-finder
-    "ot"  'shell-pop
-    "oT"  'vterm-toggle
+    "om" 'mu4e
+    "od"  'docker
+    "op"  'pass
+    "oe"  'es-command-center
+    "oe"  'es-command-center
+    "ot" 'shell-pop
+    "oT" 'vterm-toggle
     "x"  'counsel-M-x))
 
 (defun itechytony/apply-evil-other-package-configs ()
