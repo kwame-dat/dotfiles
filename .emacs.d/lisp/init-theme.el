@@ -1,10 +1,10 @@
 ;;; init-theme.el --- UI
 ;;; Commentary:
 ;;; Code:
-(use-package doom-themes
+(use-package color-theme-sanityinc-tomorrow
   :ensure t
   :config
-  (load-theme 'doom-tomorrow-night t))
+  (load-theme 'sanityinc-tomorrow-night t))
 
 (use-package all-the-icons)
 
@@ -16,10 +16,10 @@
   (all-the-icons-ivy-setup))
 
 (use-package spaceline)
-;; (spaceline-emacs-theme)
 
-(setq spaceline-all-the-icons-separator-type 'arrow)
 (use-package spaceline-all-the-icons
+  :init
+  (setq spaceline-all-the-icons-separator-type 'arrow)
   :after spaceline
   :config (spaceline-all-the-icons-theme))
 
