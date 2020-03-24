@@ -49,7 +49,7 @@ by the :height face attribute."
 (bind-key (kbd "s-=") 'sanityinc/increase-default-font-height)
 (bind-key (kbd "s--") 'sanityinc/decrease-default-font-height)
 
-
-(set-frame-font "Operator Mono Medium 16" nil t)
+(mac-auto-operator-composition-mode)
+(set-frame-font "Fira Code 16" nil t)
 
 (provide 'init-fonts)
