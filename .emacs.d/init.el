@@ -102,6 +102,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 (require 'init-eredis)
 (require 'init-grammar)
 (require 'init-calendar)
+(require 'secrets)
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient
 ;;----------------------------------------------------------------------------

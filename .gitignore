@@ -1,4 +1,5 @@
 .emacs.d/*
+.emacs.d/lisp/secrets.el
 !.emacs.d/lisp
 !.emacs.d/init.el
 !.emacs.d/snippets
