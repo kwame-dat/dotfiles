@@ -54,10 +54,10 @@
     "ape" 'password-store-edit
     ;; workspaces
     "<tab><tab>" 'eyebrowse-switch-to-window-config
-    "<tab>c" 'eyebrowse-new-workspace
-    "<tab>." 'eyebrowse-switch-back-and-forth
-    "<tab>n" 'eyebrowse-new-workspace
-    "<tab>d" 'eyebrowse-projectile-remove-project
+    "<tab>." 'eyebrowse-switch-to-window-config
+    "<tab>c" 'eyebrowse-create-window-config
+    "<tab>n" 'eyebrowse-create-window-config
+    "<tab>d" 'eyebrowse-close-window-config
     "<tab>k" 'eyebrowse-projectile-kill-buffer-and-window
     "<tab>r" 'eyebrowse-rename-window-config
     "<tab>[" 'eyebrowse-prev-window-config
