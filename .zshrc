@@ -41,3 +41,5 @@ alias migrate="php artisan migrate"
 eval "$(fnm env --multi)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export PATH=$PATH:$(go env GOPATH)/bin
