@@ -11,6 +11,5 @@
 (fullframe docker-networks tablist-quit)
 (fullframe docker-containers tablist-quit)
 
-
 (provide 'init-docker)
 ;;; init-docker.el ends here

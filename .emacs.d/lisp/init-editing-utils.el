@@ -4,16 +4,12 @@
 ;;----------------------------------------------------------------------------
 ;; Essential settings.
 ;;----------------------------------------------------------------------------
-(sensible-defaults/use-all-settings)
-(sensible-defaults/use-all-keybindings)
-(sensible-defaults/backup-to-temp-directory)
 (setq initial-major-mode 'org-mode)
 (setq-default buffer-file-coding-system 'utf-8-unix)
 (set-default-coding-systems 'utf-8-unix)
 (setq locale-coding-system 'utf-8-unix)
 (prefer-coding-system 'utf-8-unix)
 (setq load-prefer-newer t)
-;; (setq scroll-conservatively  100)
 (setq
  inhibit-startup-message t
  inhibit-startup-screen t
@@ -79,9 +75,7 @@
       user-mail-address "tony@arksolutions.it")
 
 (setq epg-gpg-program "gpg")
-;; (setq auth-sources
-;;       '((:source "~/.authinfo.gpg")))
- (setq auth-sources '("~/.authinfo.gpg" "~/.authinfo"))
+(setq auth-sources '("~/.authinfo.gpg" "~/.authinfo"))
 
 ;; display date and time
 (setq display-time-day-and-date t)
@@ -116,7 +110,5 @@
 
 (use-package fullframe)
 
-;; make Emacs full screen on start up
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
 (provide 'init-editing-utils)
 ;;; init-editing-utils.el ends here

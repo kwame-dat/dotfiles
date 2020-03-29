@@ -50,6 +50,6 @@ by the :height face attribute."
 (bind-key (kbd "s--") 'sanityinc/decrease-default-font-height)
 
 (mac-auto-operator-composition-mode)
-(set-frame-font "Fira Code 16" nil t)
+(set-frame-font "Fira Code Medium 16" nil t)
 
 (provide 'init-fonts)

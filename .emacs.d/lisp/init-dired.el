@@ -47,5 +47,7 @@
           ("mp4" . "mpv")
           ("avi" . "mpv"))))
 
+(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+
 (provide 'init-dired)
 ;;; init-dired.el ends here

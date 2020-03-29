@@ -1,10 +1,10 @@
 ;;; init-theme.el --- UI
 ;;; Commentary:
 ;;; Code:
-(use-package color-theme-sanityinc-tomorrow
+(use-package doom-themes
   :ensure t
   :config
-  (load-theme 'sanityinc-tomorrow-night t))
+  (load-theme 'doom-one-light t))
 
 (use-package all-the-icons)
 
@@ -16,12 +16,7 @@
   (all-the-icons-ivy-setup))
 
 (use-package spaceline)
-
-(use-package spaceline-all-the-icons
-  :init
-  (setq spaceline-all-the-icons-separator-type 'arrow)
-  :after spaceline
-  :config (spaceline-all-the-icons-theme))
+(spaceline-spacemacs-theme)
 
 (use-package diminish :ensure t)
 (diminish 'evil-org-mode)
@@ -63,8 +58,6 @@
           ("DEBUG"  . "#A020F0")
           ("GOTCHA" . "#FF4500")
           ("STUB"   . "#1E90FF"))))
-
-(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
 (provide 'init-theme)
 ;;; init-theme.el ends here

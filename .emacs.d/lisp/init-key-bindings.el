@@ -14,7 +14,7 @@
                 (lambda () (interactive) (delete-window)))
 (global-set-key [(super z)] 'undo)
 
-(global-set-key (kbd "M-x") 'counsel-M-x)
+;; (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "s-r") 'counsel-imenu)
 (global-set-key (kbd "s-b") 'counsel-switch-buffer)
 (global-set-key (kbd "s-/") 'comment-line)
@@ -25,19 +25,9 @@
 (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
 (global-set-key (kbd "s-w") (kbd "C-x 0"))
 (global-set-key (kbd "s-p") 'counsel-projectile-find-file)
-(global-set-key (kbd "s-P") 'projectile-switch-project)
+(global-set-key (kbd "s-P") 'projectile-persp-switch-project)
 (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
 (global-set-key (kbd "s-k") 'kill-this-buffer)
-
-(global-set-key (kbd "s-1")   'eyebrowse-switch-to-window-config-1)
-(global-set-key (kbd "s-2" )  'eyebrowse-switch-to-window-config-2)
-(global-set-key (kbd "s-3" )  'eyebrowse-switch-to-window-config-3)
-(global-set-key (kbd "s-4" )  'eyebrowse-switch-to-window-config-4)
-(global-set-key (kbd "s-5" )  'eyebrowse-switch-to-window-config-5)
-(global-set-key (kbd "s-6" )  'eyebrowse-switch-to-window-config-6)
-(global-set-key (kbd "s-7" )  'eyebrowse-switch-to-window-config-7)
-(global-set-key (kbd "s-8" )  'eyebrowse-switch-to-window-config-8)
-(global-set-key (kbd "s-9" )  'eyebrowse-switch-to-window-config-9)
 
 (defun itechytony/config-evil-leader ()
   (evil-leader/set-leader "<SPC>")
@@ -53,15 +43,16 @@
     "apr" 'password-store-rename
     "ape" 'password-store-edit
     ;; workspaces
-    "<tab><tab>" 'eyebrowse-switch-to-window-config
-    "<tab>." 'eyebrowse-switch-to-window-config
-    "<tab>c" 'eyebrowse-create-window-config
-    "<tab>n" 'eyebrowse-create-window-config
-    "<tab>d" 'eyebrowse-close-window-config
-    "<tab>k" 'eyebrowse-projectile-kill-buffer-and-window
-    "<tab>r" 'eyebrowse-rename-window-config
-    "<tab>[" 'eyebrowse-prev-window-config
-    "<tab>]" 'eyebrowse-next-window-config
+    "<tab><tab>" 'persp-switch
+    "<tab>." 'persp-switch
+
+    "<tab>c" 'persp-switch
+    "<tab>n" 'persp-switch
+    "<tab>d" 'persp-kill
+    "<tab>k" 'persp-kill
+    "<tab>r" 'persp-rename
+    "<tab>[" 'persp-prev
+    "<tab>]" 'persp-next
     ;; files
     "fc"  'editorconfig-find-current-editorconfig
     "fC"  'itecytony/copy-this-file
@@ -113,7 +104,7 @@
     "tvl"  'global-visual-line-mode
     "te"  'global-emojify-mode
     ;; projects
-    "pp"  'projectile-switch-project
+    "pp"  'projectile-persp-switch-project
     "pi"  'projectile-invalidate-cache
     "pt"  'projectile-run-vterm
     "pb"  'projectile-switch-to-buffer
