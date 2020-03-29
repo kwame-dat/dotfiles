@@ -1,6 +1,5 @@
 ;;; init-org.el --- Set up Org Mode
 ;;; Commentary:
-
 ;; Basic Org Mode configuration, assuming presence of Evil & Evil Leader.
 
 ;;;###autoload
@@ -34,27 +33,36 @@
 
 (setq org-src-fontify-natively t)
 
-(setq org-directory "~/Dropbox/org")
-(setq org-inbox-file "~/Dropbox/org/inbox.org")
+(setq org-directory "~/org")
 (setq org-agenda-files (quote (
-                               "~/Dropbox/org/todo.org"
-                               "~/Dropbox/org/calendar/personal.org"
-                               "~/Dropbox/org/calendar/shared.org"
-                               "~/Dropbox/org/calendar/spouse.org"
+                               "~/org/calendar/personal.org"
+                               "~/org/calendar/shared.org"
+                               "~/org/calendar/spouse.org"
+                               "~/org/todo-home.org"
+                               "~/org/todo-personal.org"
+                               "~/org/todo-spiritual.org"
+                               "~/org/todo-work.org"
                                )))
 
 (add-hook 'org-capture-mode-hook 'evil-insert-state)
 (setq org-capture-templates
-      '(("t" "Task" entry (file "~/Dropbox/org/inbox.org")
+      '(
+        ("t" "Inbox - Personal" entry (file "~/org/inbox-personal.org")
          "* TODO %?\n")
-        ("e" "Email" entry (file+headline "~/Dropbox/org/inbox.org" "Tasks")
+        ("w" "Inbox - Work" entry (file "~/org/inbox-work.org")
+         "* TODO %?\n")
+        ("h" "Inbox - Home" entry (file "~/org/inbox-home.org")
+         "* TODO %?\n")
+        ("s" "Inbox - Spiritual" entry (file "~/org/inbox-spiritual.org")
+         "* TODO %?\n")
+        ("e" "Email" entry (file+headline "~/org/inbox.org" "Tasks")
          "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
-        ("p" "Project" entry (file+headline "~/Dropbox/org/todo.org" "1Projects")
-         (file "~/Dropbox/org/templates/new-project-template.org"))
-        ("g" "Someday" entry (file+headline "~/Dropbox/org/someday.org" "Someday")
+        ("p" "Project" entry (file+headline "~/org/todo-personal.org" "1Projects")
+         (file "~/org/templates/new-project-template.org"))
+        ("g" "Someday" entry (file+headline "~/org/someday.org" "Someday")
          "* SOMEDAY %?\n")
-        ("l" "Log" entry (file+olp+datetree "~/Dropbox/org/log.org" "Log")
-         (file "~/Dropbox/org/templates/logtemplate.org"))))
+        ("l" "Log" entry (file+olp+datetree "~/org/log.org" "Log")
+         (file "~/org/templates/logtemplate.org"))))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -70,10 +78,9 @@
 
 (setq org-confirm-babel-evaluate nil)
 
-
 (use-package org
   :custom-face
-  (variable-pitch ((t (:family "Avenir"))))
+  ;; (variable-pitch ((t (:family "Avenir"))))
   (org-document-title ((t (:weight bold ))))
   (org-done ((t (:strike-through t :weight bold))))
   (org-headline-done ((t (:strike-through t))))

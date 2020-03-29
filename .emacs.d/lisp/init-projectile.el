@@ -4,8 +4,10 @@
 
 ;;; Code:
 (setq projectile-project-search-path '(
-                                       "~/Documents/2Areas"
-                                       "~/Documents/1Projects"
+                                       "~/Documents/Home"
+                                       "~/Documents/Personal"
+                                       "~/Documents/Spiritual"
+                                       "~/Documents/Work"
                                        "~/Repo/2Areas"
                                        "~/Repo/1Projects"
                                        ))
