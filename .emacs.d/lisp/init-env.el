@@ -1,7 +1,8 @@
 ;;; init-env.el --- Editing dotenv files -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; Code:
-(use-package dotenv-mode)
+(use-package dotenv-mode
+  :defer t)
 (add-to-list 'auto-mode-alist '("\\.env\\..*\\'" . dotenv-mode))
 
 (provide 'init-env)

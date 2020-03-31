@@ -2,10 +2,12 @@
 ;;; Commentary:
 ;;; Code:
 (use-package perspective
+  :ensure t
   :config
   (persp-mode))
 
-(use-package persp-projectile)
+(use-package persp-projectile
+  :ensure t)
 
 (provide 'init-workspace)
 ;;; init-workspace.el ends here

@@ -72,9 +72,6 @@
 
 (use-package evil-indent-textobject :ensure t)
 
-(use-package evil-mc :ensure t)
-(global-evil-mc-mode 1)
-(use-package evil-multiedit :ensure t)
 
 (use-package evil-collection
   :after evil

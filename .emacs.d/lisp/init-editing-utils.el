@@ -4,6 +4,7 @@
 ;;----------------------------------------------------------------------------
 ;; Essential settings.
 ;;----------------------------------------------------------------------------
+(blink-cursor-mode 0)
 (setq initial-major-mode 'org-mode)
 (setq-default buffer-file-coding-system 'utf-8-unix)
 (set-default-coding-systems 'utf-8-unix)
@@ -31,11 +32,6 @@
 (setq show-paren-delay 0)
 (setq display-line-numbers-type 'relative)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-
-(setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
-(setq-default left-fringe-width nil)
-(setq-default indicate-empty-lines t)
-(setq-default indent-tabs-mode nil)
 
 (setq visible-bell t)
 (setq vc-follow-symlinks t)
@@ -74,7 +70,6 @@
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it")
 
-(setq epg-gpg-program "gpg")
 (setq auth-sources '("~/.authinfo.gpg" "~/.authinfo"))
 
 ;; display date and time
@@ -100,15 +95,9 @@
 (setq-default tab-width 2)
 (setq-default c-basic-indent 2)
 
-(global-auto-revert-mode t)
+;; (global-auto-revert-mode t)
 (global-visual-line-mode 1)
 
-;; which-key
-(use-package which-key
-  :diminish which-key-mode
-  :config (which-key-mode))
-
-(use-package fullframe)
 
 (provide 'init-editing-utils)
 ;;; init-editing-utils.el ends here

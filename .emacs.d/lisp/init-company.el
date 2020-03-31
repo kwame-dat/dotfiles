@@ -1,29 +1,26 @@
 ;;; init-company.el --- Set up Auto completion
 ;;; Commentary:
 ;; Company to setup completion
-(setq
- company-global-modes
- '(not erc-mode message-mode help-mode gud-mode eshell-mode shell-mode vterm-mode))
-
-(setq company-minimum-prefix-length 3
-      company-idle-delay 0.0)
-
-(with-eval-after-load 'company
-  (define-key company-active-map (kbd "RET") #'company-complete-selection)
-  (define-key company-active-map (kbd "C-SPC") #'company-manual-begin))
-(define-key evil-insert-state-map (kbd "C-SPC") 'company-manual-begin)
-
 (use-package company
+  :defer t
   :init
-  (setq company-minimum-prefix-length 2
+  (setq company-minimum-prefix-length 3
         company-tooltip-limit 14
+        company-idle-delay 0.0
         company-dabbrev-downcase nil
         company-dabbrev-ignore-case nil
         company-dabbrev-code-other-buffers t
         company-tooltip-align-annotations t
         company-require-match 'never
         company-global-modes
-        '(not erc-mode message-mode help-mode gud-mode eshell-mode)
+        '(not
+          erc-mode
+          eshell-mode
+          gud-mode
+          help-mode
+          message-mode
+          shell-mode
+          vterm-mode)
         company-backends '(company-capf)
         company-frontends
         '(company-pseudo-tooltip-frontend
@@ -33,13 +30,14 @@
   (define-key company-active-map (kbd "ESC") 'company-abort)
   (define-key company-active-map (kbd "[tab]") 'company-complete)
   (define-key company-active-map (kbd "[return]") 'company-complete)
+  (define-key company-active-map (kbd "RET") #'company-complete-selection)
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
+  (define-key company-active-map (kbd "C-SPC") #'company-manual-begin)
+  (define-key evil-insert-state-map (kbd "C-SPC") 'company-manual-begin)
   (add-hook 'after-init-hook 'global-company-mode))
 
-
 (use-package company-box
-  :diminish company-box-mode
   :config
   (setq company-box-show-single-candidate t
         company-box-backends-colors nil
@@ -80,9 +78,6 @@
             (ElispFace     . ,(all-the-icons-material "format_paint"             :face 'all-the-icons-pink)))))
   :hook (company-mode . company-box-mode))
 
-(use-package company-lsp
-  :defer t
-  :custom (company-lsp-cache-candidates 'auto))
 
 (provide 'init-company)
 ;;; init-company.el ends here
