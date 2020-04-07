@@ -4,15 +4,14 @@
 ;;----------------------------------------------------------------------------
 ;; Calendar
 ;;----------------------------------------------------------------------------
-(use-package calfw :defer t)
-(use-package calfw-org :defer t)
-(use-package calfw-cal :defer t)
-(use-package calfw-ical :defer t)
+(use-package calfw)
+(use-package calfw-org)
+(use-package calfw-cal)
+(use-package calfw-ical)
 ;;----------------------------------------------------------------------------
 ;; Chat Slack
 ;;----------------------------------------------------------------------------
 (use-package slack
-  :defer t
   :init
   (setq slack-buffer-emojify t)
   (setq slack-prefer-current-team t)
@@ -22,14 +21,12 @@
 ;; Epub Reading Books
 ;;----------------------------------------------------------------------------
 (use-package nov
-  :defer t
   :init
   (setq nov-text-width t))
 
 (use-package visual-fill-column
   :init
-  (setq visual-fill-column-center-text t)
-  :defer t)
+  (setq visual-fill-column-center-text t))
 
 (add-hook 'nov-mode-hook 'visual-line-mode)
 (add-hook 'nov-mode-hook 'visual-fill-column-mode)

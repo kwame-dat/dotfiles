@@ -146,7 +146,6 @@
 (use-package ox-slimhtml)
 
 (use-package ox-clip
-  :defer t
   :config
   (evil-define-key 'visual org-mode-map (kbd "gy") 'ox-clip-formatted-copy))
 

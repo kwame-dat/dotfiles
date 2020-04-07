@@ -3,19 +3,16 @@
 ;;; Code:
 ;; css-mode
 (use-package css-mode
-  :defer t
   :config
   (setq css-indent-offset 2))
 
 ;; scss-mode
 (use-package scss-mode
-  :defer t
   :config
   (setq scss-compile-at-save nil))
 
 ;; less-css-mode
-(use-package less-css-mode
-  :defer t)
+(use-package less-css-mode)
 
 (provide 'init-css)
 ;;; init-css.el ends here

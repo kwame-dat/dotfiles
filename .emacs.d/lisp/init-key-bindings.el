@@ -214,6 +214,7 @@
     ",3" 'slack-message-embed-channel)
 
   ;; Dired
+  (evil-define-key 'normal global-map (kbd "-")       'dired-jump)
   (evil-define-key 'normal dired-mode-map
     (kbd "C-e") 'dired-toggle-read-only
     (kbd "j") 'dired-next-line

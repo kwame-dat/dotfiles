@@ -2,9 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 (use-package web-mode
-  :defer t
-  :ensure t
-  :diminish web-mode)
+  :ensure t)
 
 (provide 'init-web)
 ;;; init-web.el ends here

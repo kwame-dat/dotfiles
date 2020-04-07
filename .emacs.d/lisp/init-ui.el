@@ -7,7 +7,6 @@
   (load-theme 'doom-monokai-pro t))
 
 (use-package hl-todo
-  :defer t
   :init
   (setq hl-todo-keyword-faces
         '(("TODO"   . "#FF0000")
@@ -17,16 +16,13 @@
           ("STUB"   . "#1E90FF"))))
 
 ;; (mac-auto-operator-composition-mode)
-(set-frame-font "Dank Mono 18" nil t)
+(set-frame-font "Dank Mono 16" nil t)
 
-(use-package all-the-icons
-  :defer t)
+(use-package all-the-icons)
 
-(use-package all-the-icons-dired
-  :defer t)
+(use-package all-the-icons-dired)
 
 (use-package all-the-icons-ivy
-  :defer t
   :ensure t
   :config
   (all-the-icons-ivy-setup))

@@ -2,8 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package restclient
-  :defer t)
+(use-package restclient)
 
 (provide 'init-restclient)
 ;;; init-restclient.el ends here

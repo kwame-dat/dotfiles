@@ -3,7 +3,6 @@
 ;;; Code:
 ;; Completion framework
 (use-package swiper
-  :defer t
   :ensure t)
 
 (use-package flx
@@ -15,11 +14,9 @@
   :ensure t)
 
 (use-package counsel-projectile
-  :defer t
   :ensure t)
 
 (use-package ivy
-  :defer t
   :init
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) ")

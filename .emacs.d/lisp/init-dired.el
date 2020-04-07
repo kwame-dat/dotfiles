@@ -13,13 +13,11 @@
 (setq dired-recursive-deletes 'top)
 
 (use-package async
-  :defer t
   :ensure t
   :config
   (dired-async-mode 1))
 
 (use-package dired-narrow
-  :defer t
   :ensure t
   :config
   (bind-key "C-c C-n" #'dired-narrow)
@@ -27,14 +25,12 @@
   (bind-key "C-x C-N" #'dired-narrow-regexp))
 
 (use-package dired-subtree :ensure t
-  :defer t
   :after dired
   :config
   (bind-key "<tab>" #'dired-subtree-toggle dired-mode-map)
   (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
 
 (use-package dired-hide-dotfiles
-  :defer t
   :config
   (dired-hide-dotfiles-mode)
   (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))

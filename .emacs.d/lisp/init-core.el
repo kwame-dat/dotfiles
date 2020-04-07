@@ -15,7 +15,8 @@
 ;; Helping me find which key combination
 ;;----------------------------------------------------------------------------
 (use-package which-key
-  :defer t
+  :init
+  (setq which-key-idle-delay 0.40)
   :ensure t
   :config (which-key-mode))
 
@@ -23,20 +24,19 @@
 ;; Projectile
 ;;----------------------------------------------------------------------------
 (use-package projectile
-  :defer t
   :ensure t
   :init
   (setq projectile-project-search-path '(
-                                         "~/Documents/Home/2Areas"
-                                         "~/Documents/Personal/2Areas"
-                                         "~/Documents/Spiritual/2Areas"
-                                         "~/Documents/Work/2Areas"
                                          "~/Documents/Home/1Projects"
+                                         "~/Documents/Home/2Areas"
                                          "~/Documents/Personal/1Projects"
-                                         "~/Documents/Spiritual/1Projects"
+                                         "~/Documents/Personal/2Areas"
+                                         "~/Documents/Spiritual"
                                          "~/Documents/Work/1Projects"
+                                         "~/Documents/Work/2Areas"
                                          "~/Repo/2Areas"
                                          "~/Repo/1Projects"
+                                         "~/org"
                                          ))
   (setq projectile-completion-system 'ivy)
   (setq projectile-switch-project-action #'projectile-dired)

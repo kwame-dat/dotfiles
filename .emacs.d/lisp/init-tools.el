@@ -5,7 +5,6 @@
 ;; Debugger
 ;;----------------------------------------------------------------------------
 (use-package dap-mode
-  :defer t
   :ensure t
   :commands dap-mode
   :config
@@ -20,20 +19,16 @@
 ;;----------------------------------------------------------------------------
 ;; Docker
 ;;----------------------------------------------------------------------------
-(use-package dockerfile-mode
-  :defer t)
+(use-package dockerfile-mode)
 
-(use-package docker-compose-mode
-  :defer t)
+(use-package docker-compose-mode)
 
-(use-package docker
-  :defer t)
+(use-package docker)
 
 ;;----------------------------------------------------------------------------
 ;; EditorConfig
 ;;----------------------------------------------------------------------------
 (use-package editorconfig
-  :defer t
   :ensure t
   :config
   (editorconfig-mode 1))
@@ -42,7 +37,6 @@
 ;; Lookup
 ;;----------------------------------------------------------------------------
 (use-package synosaurus
-  :defer t
   :config
   (global-set-key (kbd "s-|") 'powerthesaurus-lookup-word-dwim))
 
@@ -50,7 +44,6 @@
 ;; LSP
 ;;----------------------------------------------------------------------------
 (use-package lsp-mode
-  :defer t
   :ensure t
   :init
   (setq lsp-enable-file-watchers nil
@@ -99,24 +92,19 @@
     (setq mode-line-format nil)))
 
 (use-package company-lsp
-  :defer t
   :ensure t
   :custom (company-lsp-cache-candidates 'auto))
 
 ;;----------------------------------------------------------------------------
 ;; Magit
 ;;----------------------------------------------------------------------------
-(use-package magit-gitflow
-  :defer t)
+(use-package magit-gitflow)
 
-(use-package magit-todos
-  :defer t)
+(use-package magit-todos)
 
-(use-package github-review
-  :defer t)
+(use-package github-review)
 
 (use-package magit
-  :defer t
   :init
   (setq magit-status-buffer-switch-function 'switch-to-buffer)
   (setq magit-push-always-verify nil)
@@ -127,26 +115,18 @@
   (add-hook 'with-editor-mode-hook 'evil-insert-state)
   :ensure t)
 
-(use-package yagist
-    :defer t)
+(use-package yagist)
 
-(use-package bug-reference-github
-    :defer t)
+(use-package bug-reference-github)
 
-(use-package github-clone
-    :defer t)
+(use-package github-clone)
 
 (use-package forge)
 (push '("github.thetrainline.com" "github.thetrainline.com/api/v3"
         "github.thetrainline.com" forge-github-repository)
         forge-alist)
 
-(use-package github-review
-  :defer t)
-
-
 (use-package git-gutter-fringe
-  :defer t
   :ensure t
   :init
   (setq git-gutter-fr:side 'right-fringe)
@@ -156,19 +136,16 @@
 ;;----------------------------------------------------------------------------
 ;; Pass
 ;;----------------------------------------------------------------------------
-(use-package pass
-  :defer t)
+(use-package pass)
 
-(use-package ivy-pass
-  :defer t)
+(use-package ivy-pass)
 
 ;;----------------------------------------------------------------------------
 ;; PDF
 ;;----------------------------------------------------------------------------
 (use-package pdf-tools
   :config
-  (setq-default pdf-view-display-size 'fit-page
-                pdf-view-use-scaling t
+  (setq-default pdf-view-use-scaling t
                 pdf-view-use-imagemagick nil)
   :ensure t
   :config (pdf-tools-install))
@@ -176,8 +153,7 @@
 ;;----------------------------------------------------------------------------
 ;; Redis
 ;;----------------------------------------------------------------------------
-(use-package eredis
-  :defer t)
+(use-package eredis)
 
 ;;----------------------------------------------------------------------------
 ;; macOs
@@ -187,11 +163,20 @@
 ;;----------------------------------------------------------------------------
 ;; Elastic Search
 ;;----------------------------------------------------------------------------
-(use-package es-mode
-  :defer t)
+(use-package es-mode)
 (autoload 'es-mode "es-mode.el"
   "Major mode for editing Elasticsearch queries" t)
 (add-to-list 'auto-mode-alist '("\\.es$" . es-mode))
+
+;;----------------------------------------------------------------------------
+;; Open Vidoes in VLC player please
+;;----------------------------------------------------------------------------
+(use-package openwith
+  :init
+  (setq openwith-associations '(("\\.mp4\\'" "vlc" (file))))
+  :config
+  (openwith-mode t))
+
 
 (provide 'init-tools)
 ;;; init-tools.el ends here

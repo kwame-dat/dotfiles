@@ -2,7 +2,6 @@
 ;;; Commentary:
 ;; Company to setup completion
 (use-package company
-  :defer t
   :init
   (setq company-minimum-prefix-length 3
         company-tooltip-limit 14

@@ -5,7 +5,6 @@
 (use-package csv-mode
   :init
   (setq csv-separators '("," ";" "|" " "))
-  :defer t
   :ensure t)
 
 (provide 'init-csv)

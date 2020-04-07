@@ -19,7 +19,6 @@
 (add-hook 'shell-mode-hook 'my-shell-mode-hook)
 
 (use-package vterm
-  :defer t
   :config
   (add-hook 'vterm-mode-hook
             (lambda ()
@@ -54,11 +53,9 @@
   (evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
   (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume))
 
-(use-package vterm-toggle
-  :defer t)
+(use-package vterm-toggle)
 
 (use-package shell-pop
-  :defer t
   :config
   (defun shell-pop--set-exit-action ()
     (if (string= shell-pop-internal-mode "eshell")

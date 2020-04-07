@@ -2,8 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package yaml-mode
-  :defer t)
+(use-package yaml-mode)
 (add-hook 'yaml-mode-hook 'display-line-numbers-mode)
 
 (provide 'init-yaml)
