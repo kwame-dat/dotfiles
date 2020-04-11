@@ -1,41 +1,58 @@
 [general]
-accounts = Netsells, Arksolutions
-maxsyncaccounts = 2
+accounts = Spiritual, Personal, Work
+maxsyncaccounts = 1
 pythonfile = ~/Repo/2Areas/Dotfiles/shell/+mu/lib.py
 
 autorefresh = 0.5
 quick = 10
 
-[Account Arksolutions]
-localrepository = LocalArksolutions
-remoterepository = RepositoryArksolutions
+[Account Spiritual]
+localrepository = LocalSpiritual
+remoterepository = RemoteSpiritual
 
-[Repository LocalArksolutions]
+[Repository LocalSpiritual]
 type = Maildir
-localfolders = ~/.mail/arksolutions.it
+localfolders = ~/.mail/spiritual
 
-[Repository RepositoryArksolutions]
-type = IMAP
-remotehosteval = get_pass("emails/arksolutions.it")["remotehost"]
-remoteusereval = get_pass("emails/arksolutions.it")["user"]
-remotepasseval = get_pass("emails/arksolutions.it")["password"]
-ssl = true
+[Repository RemoteSpiritual]
+type = Gmail
+remotehosteval = get_pass("spiritual/email/gmail.com")["remotehost"]
+remoteusereval = get_pass("spiritual/email/gmail.com")["user"]
+remotepasseval = get_pass("spiritual/email/gmail.com")["password"]
+ssl = yes
 maxconnections = 1
 sslcacertfile = /usr/local/etc/openssl/cert.pem
 
-[Account Netsells]
-localrepository = LocalNetsells
-remoterepository = RepositoryNetsells
+[Account Personal]
+localrepository = LocalPersonal
+remoterepository = RemotePersonal
 
-[Repository LocalNetsells]
+[Repository LocalPersonal]
 type = Maildir
-localfolders = ~/.mail/netsells.co.uk
+localfolders = ~/.mail/personal
 
-[Repository RepositoryNetsells]
+[Repository RemotePersonal]
 type = IMAP
-remotehosteval = get_pass("emails/netsells.co.uk")["remotehost"]
-remoteusereval = get_pass("emails/netsells.co.uk")["user"]
-remotepasseval = get_pass("emails/netsells.co.uk")["password"]
-ssl = true
+remotehosteval = get_pass("personal/email/arksolutions.it")["remotehost"]
+remoteusereval = get_pass("personal/email/arksolutions.it")["user"]
+remotepasseval = get_pass("personal/email/arksolutions.it")["password"]
+ssl = yes
+maxconnections = 1
+sslcacertfile = /usr/local/etc/openssl/cert.pem
+
+[Account Work]
+localrepository = LocalWork
+remoterepository = RemoteWork
+
+[Repository LocalWork]
+type = Maildir
+localfolders = ~/.mail/work
+
+[Repository RemoteWork]
+type = IMAP
+remotehosteval = get_pass("work/email/netsells.co.uk")["remotehost"]
+remoteusereval = get_pass("work/email/netsells.co.uk")["user"]
+remotepasseval = get_pass("work/email/netsells.co.uk")["password"]
+ssl = yes
 maxconnections = 1
 sslcacertfile = /usr/local/etc/openssl/cert.pem

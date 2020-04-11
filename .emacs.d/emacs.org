@@ -65,7 +65,7 @@
     - [[#shackle][=shackle=]]
     - [[#flycheck][=flycheck=]]
     - [[#lang][Lang]]
-    - [[#mu4e][Mu4e]]
+    - [[#mu4e][=mu4e=]]
     - [[#toc-org][Toc-org]]
   - [[#post-initialization][Post Initialization]]
 
@@ -382,6 +382,7 @@ previously compiled manually then all of the package initialization will still t
       (setq uniquify-after-kill-buffer-p t)
       (setq uniquify-ignore-buffers-re "^\\*")
     #+END_SRC
+    
 *** =evil=
 Install, automatically load, and enable evil. It's like vim.
 
@@ -416,7 +417,6 @@ Install, automatically load, and enable evil. It's like vim.
 #+END_SRC
 
 *** =general=
-
 #+BEGIN_SRC emacs-lisp
   (use-package general
     :demand t
@@ -428,7 +428,7 @@ Install, automatically load, and enable evil. It's like vim.
       :prefix "SPC")
 
     (general-create-definer my-local-leader-def
-      :prefix "SPC m")
+      :prefix ",")
 
     (my-leader-def 'normal 'override
       ;; application
@@ -442,15 +442,15 @@ Install, automatically load, and enable evil. It's like vim.
       "apr" 'password-store-rename
       "ape" 'password-store-edit
       ;; workspaces
-      "<tab><tab>" 'persp-switch
-      "<tab>." 'persp-switch
-      "<tab>c" 'persp-switch
-      "<tab>n" 'persp-switch
-      "<tab>d" 'persp-kill
-      "<tab>k" 'persp-kill
-      "<tab>r" 'persp-rename
-      "<tab>[" 'persp-prev
-      "<tab>]" 'persp-next
+      "<tab><tab>" 'eyebrowse-switch-to-window-config
+      "<tab>." 'eyebrowse-switch-back-and-forth
+      "<tab>c" 'eyebrowse-create-window-config
+      "<tab>n" 'eyebrowse-create-window-config
+      "<tab>d" 'eyebrowse-close-window-config
+      "<tab>k" 'eyebrowse-close-window-config-prompt
+      "<tab>r" 'eyebrowse-rename-window-config
+      "<tab>[" 'eyebrowse-prev-window-config
+      "<tab>]" 'eyebrowse-next-window-config
       ;; files
       "fc"  'editorconfig-find-current-editorconfig
       "fC"  'itecytony/copy-this-file
@@ -578,6 +578,7 @@ Install, automatically load, and enable evil. It's like vim.
   (general-def 'normal dired-mode-map
     "C-e" 'dired-toggle-read-only)
 #+END_SRC
+
 *** =ivy=
 Generic completion frontend that's just awesome! Let's install and enable it.
 
@@ -905,6 +906,7 @@ want is prioritized instead.
         '(define-key grep-mode-map
            (kbd "C-c C-c") 'wgrep-finish-edit))
     #+END_SRC
+   
 *** =desktop=
     #+BEGIN_SRC emacs-lisp :tangle no
       (use-package desktop
@@ -953,6 +955,7 @@ want is prioritized instead.
               minions-mode-line-delimiters '("" . ""))
         (minions-mode 1))
     #+END_SRC
+    
 *** =doom-themes=
     #+BEGIN_SRC emacs-lisp
       (use-package doom-themes
@@ -975,6 +978,7 @@ want is prioritized instead.
 
       (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
     #+END_SRC
+    
 *** =treemacs=
     #+BEGIN_SRC emacs-lisp :tangle no
       (use-package treemacs
@@ -1128,6 +1132,7 @@ want is prioritized instead.
         '(shell-pop-term-shell "/usr/bin/zsh")
         '(shell-pop-window-position "bottom")))
    #+END_SRC 
+   
 *** =docker=
     #+BEGIN_SRC emacs-lisp
       (use-package dockerfile-mode
@@ -1323,6 +1328,7 @@ functions we invoke regularly outside of magit is called.
       (+macos--open-with send-project-to-launchbar "LaunchBar"
                          (or (doom-project-root) default-directory))
     #+END_SRC
+    
 *** =es=
     #+BEGIN_SRC emacs-lisp
       (use-package es-mode)
@@ -1330,6 +1336,7 @@ functions we invoke regularly outside of magit is called.
         "Major mode for editing Elasticsearch queries" t)
       (add-to-list 'auto-mode-alist '("\\.es$" . es-mode))
     #+END_SRC
+    
 *** =openwith=
     #+BEGIN_SRC emacs-lisp
       (use-package openwith
@@ -1338,6 +1345,7 @@ functions we invoke regularly outside of magit is called.
         :config
         (openwith-mode t))
     #+END_SRC
+    
 *** =company=
     #+BEGIN_SRC emacs-lisp
       (use-package company
@@ -1542,6 +1550,7 @@ functions we invoke regularly outside of magit is called.
         :config
         (shackle-mode 1))
     #+END_SRC
+    
 *** =flycheck=
     #+BEGIN_SRC emacs-lisp
       (use-package flycheck
@@ -1558,6 +1567,7 @@ functions we invoke regularly outside of magit is called.
       (use-package flycheck-phpstan
         :ensure t)
     #+END_SRC
+    
 *** Lang
 **** =css= =scss= =less=
      #+BEGIN_SRC emacs-lisp
@@ -1573,11 +1583,13 @@ functions we invoke regularly outside of magit is called.
        ;; less-css-mode
        (use-package less-css-mode)
      #+END_SRC
+     
 **** =web=
      #+BEGIN_SRC emacs-lisp
        (use-package web-mode
          :ensure t)
      #+END_SRC
+     
 **** =javascript=
      #+BEGIN_SRC emacs-lisp
        (setq js-indent-level 2)
@@ -1591,16 +1603,19 @@ functions we invoke regularly outside of magit is called.
        (use-package typescript-mode)
        (use-package prettier-js)
      #+END_SRC
+     
 **** =yaml=
      #+BEGIN_SRC emacs-lisp
        (use-package yaml-mode)
        (add-hook 'yaml-mode-hook 'display-line-numbers-mode)
      #+END_SRC
+     
 **** =dotenv=
      #+BEGIN_SRC emacs-lisp
        (use-package dotenv-mode)
        (add-to-list 'auto-mode-alist '("\\.env\\..*\\'" . dotenv-mode))
      #+END_SRC
+     
 **** =csv=
      #+BEGIN_SRC emacs-lisp
        (use-package csv-mode
@@ -1608,6 +1623,7 @@ functions we invoke regularly outside of magit is called.
          (setq csv-separators '("," ";" "|" " "))
          :ensure t)
      #+END_SRC
+     
 **** =ledger=
      #+BEGIN_SRC emacs-lisp
        (use-package ledger-mode
@@ -1623,6 +1639,7 @@ functions we invoke regularly outside of magit is called.
        (my-local-leader-def 'normal ledger-mode-map
                             "a" 'ledger-add-transaction)
      #+END_SRC
+     
 **** =markdown=
      #+BEGIN_SRC emacs-lisp
        (use-package markdown-mode
@@ -1632,10 +1649,12 @@ functions we invoke regularly outside of magit is called.
                 ("\\.markdown\\'" . markdown-mode))
          :init (setq markdown-command "pandoc --no-highlight"))
      #+END_SRC
+     
 **** =restclient=
      #+BEGIN_SRC emacs-lisp
        (use-package restclient)
      #+END_SRC
+     
 **** =php=
     #+BEGIN_SRC emacs-lisp
       (use-package php-mode
@@ -1662,8 +1681,8 @@ functions we invoke regularly outside of magit is called.
         :ensure t)
     #+END_SRC
 
-*** Mu4e
-    #+BEGIN_SRC emacs-lisp :tangle no
+*** =mu4e=
+    #+BEGIN_SRC emacs-lisp
       (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
       (require 'mu4e)
 
@@ -1700,9 +1719,10 @@ functions we invoke regularly outside of magit is called.
             ("/Sent"        . ?s)))
 
       ;; the list of all of my e-mail addresses
-      (setq mu4e-user-mail-address-list '("tony@arksolutions.it"
-                                          "tony.ampomah@netsells.co.uk"
-                                          "tony.ampomah.jw@gmail.com"))
+      (setq mu4e-user-mail-address-list '(
+                                          "tony.ampomah.jw@gmail.com"
+                                          "tony@arksolutions.it"
+                                          "tony.ampomah@netsells.co.uk"))
 
       ;; the headers to show in the headers list -- a pair of a field
       ;; and its width, with `nil' meaning 'unlimited'
@@ -1743,7 +1763,26 @@ functions we invoke regularly outside of magit is called.
       ;; each context can set any number of variables (see :vars)
       ;; for example below here I'm using two different SMTP servers depending on identity
       (setq mu4e-contexts
-            `( ,(make-mu4e-context
+            `(
+              ,(make-mu4e-context
+                 :name "s tony.ampomah.jw@gmail.com"
+                 :enter-func (lambda () (mu4e-message "Enter tony.ampomah.jw@gmail.com context"))
+                 :leave-func (lambda () (mu4e-message "Leave tony.ampomah.jw@gmail.com context"))
+                 ;; we match based on the contact-fields of the message (that we are replying to)
+                 ;; https://www.djcbsoftware.nl/code/mu/mu4e/What-are-contexts.html#What-are-contexts
+                 :match-func (lambda (msg)
+                               (when msg
+                                 (mu4e-message-contact-field-matches msg
+                                                                     :to "tony.ampomah.jw@gmail.com")))
+                 :vars '( ( user-mail-address      . "tony.ampomah.jw@gmail.com"  )
+                          ( user-full-name         . "Tony Ampomah" )
+                          ( smtpmail-smtp-server   . "smtp.gmail.com" )
+                          ( mu4e-refile-folder . "/spiritual/4Archives")
+                          ( mu4e-compose-signature .
+                                                   (concat
+                                                    "Warm love\n"
+                                                    "Tony\n"))))
+              ,(make-mu4e-context
                  :name "p tony@arksolutions.it"
                  :enter-func (lambda () (mu4e-message "Enter tony@arksolutions.it context"))
                  :leave-func (lambda () (mu4e-message "Leave tony@arksolutions.it context"))
@@ -1756,7 +1795,7 @@ functions we invoke regularly outside of magit is called.
                  :vars '( ( user-mail-address      . "tony@arksolutions.it"  )
                           ( user-full-name         . "Tony Ampomah" )
                           ( smtpmail-smtp-server   . "smtp.zoho.com" )
-                          ( mu4e-refile-folder . "/arksolutions.it/4Archives")
+                          ( mu4e-refile-folder . "/personal/4Archives")
                           ( mu4e-compose-signature .
                                                    (concat
                                                     "Many thanks\n"
@@ -1774,7 +1813,7 @@ functions we invoke regularly outside of magit is called.
                  :vars '( ( user-mail-address       . "tony.ampomah@netsells.co.uk" )
                           ( user-full-name          . "Tony Ampomah" )
                           ( smtpmail-smtp-server    . "smtp.gmail.com" )
-                          ( mu4e-refile-folder . "/netsells.co.uk/4Archives")
+                          ( mu4e-refile-folder . "/work/4Archives")
                           ( mu4e-compose-signature  .
                                                     (concat
                                                      "Tony Ampomah\n"
@@ -1791,7 +1830,6 @@ functions we invoke regularly outside of magit is called.
 
       ;; no need to ask
       (setq mu4e-confirm-quit nil)
-
 
       ;; Use fancy icons
       (setq mu4e-headers-has-child-prefix '("+" . "")
@@ -1842,6 +1880,7 @@ functions we invoke regularly outside of magit is called.
       ;; display unread email on mode line
       ;; (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
     #+END_SRC
+    
 *** Toc-org
 Let's install and load the =toc-org= package after org mode is loaded. This is the
 package that automatically generates an up to date table of contents for us.
