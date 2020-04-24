@@ -3,9 +3,9 @@
 #+PROPERTY: header-args :tangle yes
 
 * Configuration
-:PROPERTIES:
-:VISIBILITY: children
-:END:
+  :PROPERTIES:
+  :VISIBILITY: children
+  :END:
 
 ** Table of Contents :TOC_3_gh:
 - [[#configuration][Configuration]]
@@ -15,12 +15,12 @@
     - [[#visibility-settings][Visibility Settings]]
     - [[#table-of-contents][Table of Contents]]
   - [[#personal-information][Personal Information]]
-  - [[#emacs-initialization][Emacs Initialization]]
+  - [[#emacs-initialisation][Emacs Initialisation]]
     - [[#settings][Settings]]
     - [[#sensible-defaults][Sensible defaults]]
     - [[#package-management][Package Management]]
   - [[#functions][Functions]]
-  - [[#super-keybonds][Super Keybonds]]
+  - [[#super-keybinding][Super Keybinding]]
   - [[#packages][Packages]]
     - [[#exec-path-from-shell][=exec-path-from-shell=]]
     - [[#uniquify][=uniquify=]]
@@ -29,19 +29,20 @@
     - [[#ivy][=ivy=]]
     - [[#counsel][=counsel=]]
     - [[#swiper][=swiper=]]
+    - [[#amx][=amx=]]
+    - [[#selectrum][=selectrum=]]
     - [[#projectile][=projectile=]]
     - [[#which-key][=which-key=]]
-    - [[#org][=org=]]
+    - [[#org-mode][=org-mode=]]
     - [[#calfw][=calfw=]]
     - [[#slack][=slack=]]
     - [[#nov][=nov=]]
     - [[#alert][=alert=]]
     - [[#wgrep][=wgrep=]]
-    - [[#desktop][=desktop=]]
-    - [[#eyebrowse][=eyebrowse=]]
+    - [[#perspective][=perspective=]]
     - [[#moody][=moody=]]
     - [[#minions][=minions=]]
-    - [[#doom-themes][=doom-themes=]]
+    - [[#base16-theme][=base16-theme=]]
     - [[#all-the-icons][=all-the-icons=]]
     - [[#treemacs][=treemacs=]]
     - [[#vterm][=vterm=]]
@@ -64,173 +65,171 @@
     - [[#evil-mc][=evil-mc=]]
     - [[#shackle][=shackle=]]
     - [[#flycheck][=flycheck=]]
+    - [[#dap-mode][=dap-mode=]]
     - [[#lang][Lang]]
     - [[#mu4e][=mu4e=]]
+    - [[#writeroom-mode][=writeroom-mode=]]
     - [[#toc-org][Toc-org]]
-  - [[#post-initialization][Post Initialization]]
+  - [[#post-initialisation][Post Initialisation]]
 
 ** About this file
-This is an Emacs literate configuration template. It contains the basic structure
-of a literate config along with some optimizations to ensure a fast load time.
+   This is my Emacs literate configuration
 
 ** Org File Tweaks
-There are a few tweaks included in this org file that make it a little easier to
-work with.
+   There are a few tweaks included in this org file that make it a little easier to
+   work with.
 
 *** Automatically Tangle
-First there is a property defined on the file:
+    First there is a property defined on the file:
 
-#+BEGIN_SRC :tangle no
+    #+BEGIN_SRC :tangle no
 header-args :tangle yes
-#+END_SRC
+    #+END_SRC
 
-This tells emacs to automatically tangle (include) all code blocks in this file when
-generating the code for the config, unless the code block explicitly includes
-=:tangle no= as the above code block does.
+    This tells emacs to automatically tangle (include) all code blocks in this file when
+    generating the code for the config, unless the code block explicitly includes
+    =:tangle no= as the above code block does.
 
 *** Visibility Settings
-Next we have a property defined on the [[Configuration][Configuration]] heading that defines the visibility
-that tells org to show it's direct children on startup. This way a clean outline of all
-sub headings under Configuration is shown each time this file is opened in org-mode.
+    Next we have a property defined on the [[Configuration][Configuration]] heading that defines the visibility
+    that tells org to show it's direct children on startup. This way a clean outline of all
+    sub headings under Configuration is shown each time this file is opened in org-mode.
 
 *** Table of Contents
-Finally, there is a [[Table of Contents][Table of Contents]] heading that includes the tag: =:TOC_3_gh:=. This
-tells an org-mode package =toc-org= to generate a table of contents under this heading
-that has a max depth of 3 and is created using Github-style hrefs. This table of contents
-is updated everytime the file is saved and makes for a functional table of contents that
-works property directly on github.
+    Finally, there is a [[Table of Contents][Table of Contents]] heading that includes the tag: =:TOC_3_gh:=. This
+    tells an org-mode package =toc-org= to generate a table of contents under this heading
+    that has a max depth of 3 and is created using Github-style hrefs. This table of contents
+    is updated everytime the file is saved and makes for a functional table of contents that
+    works property directly on github.
 
 ** Personal Information
-Let's set some variables with basic user information.
+   Let's set some variables with basic user information.
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it")
-#+END_SRC
+   #+END_SRC
 
-** Emacs Initialization
+** Emacs Initialisation
    
 *** Settings
-We're going to increase the gc-cons-threshold to a very high number to decrease the load and compile time.
-We'll lower this value significantly after initialization has completed. We don't want to keep this value
-too high or it will result in long GC pauses during normal usage.
+    We're going to increase the gc-cons-threshold to a very high number to decrease the load and compile time.
+    We'll lower this value significantly after initialization has completed. We don't want to keep this value
+    too high or it will result in long GC pauses during normal usage.
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (eval-and-compile
   (setq gc-cons-threshold 402653184
         gc-cons-percentage 0.6))
-#+END_SRC
+    #+END_SRC
 
-Disable certain byte compiler warnings to cut down on the noise.
+    Disable certain byte compiler warnings to cut down on the noise.
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (setq byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local))
-#+END_SRC
+    #+END_SRC
 
 *** Sensible defaults
-#+BEGIN_SRC emacs-lisp
-  (mac-auto-operator-composition-mode)
-  (set-frame-font "Dank Mono 16" nil t)
-  (blink-cursor-mode 0)
-  (setq initial-major-mode 'org-mode)
-  (setq-default buffer-file-coding-system 'utf-8-unix)
-  (set-default-coding-systems 'utf-8-unix)
-  (setq locale-coding-system 'utf-8-unix)
-  (prefer-coding-system 'utf-8-unix)
-  (setq load-prefer-newer t)
-  (setq
-   inhibit-startup-message t
-   inhibit-startup-screen t
-   sentence-end-double-space nil
-   confirm-kill-emacs 'y-or-n-p)
+    #+BEGIN_SRC emacs-lisp
+      (mac-auto-operator-composition-mode)
+      (set-frame-font "Dank Mono 14" nil t)
+      (blink-cursor-mode 0)
+      (recentf-mode 1)
+      (setq recentf-max-menu-items 25)
+      (setq recentf-max-saved-items 25)
+      (setq initial-major-mode 'org-mode)
+      (setq-default buffer-file-coding-system 'utf-8-unix)
+      (set-default-coding-systems 'utf-8-unix)
+      (setq locale-coding-system 'utf-8-unix)
+      (prefer-coding-system 'utf-8-unix)
+      (setq load-prefer-newer t)
+      (setq
+       inhibit-startup-message t
+       inhibit-startup-screen t
+       sentence-end-double-space nil
+       confirm-kill-emacs 'y-or-n-p)
 
-  (setq split-height-threshold 0)
-  (setq split-width-threshold nil)
-  (setq ring-bell-function 'ignore)
+      (setq split-height-threshold 0)
+      (setq split-width-threshold nil)
+      (setq ring-bell-function 'ignore)
 
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (when (boundp 'scroll-bar-mode)
-    (scroll-bar-mode -1))
+      (menu-bar-mode -1)
+      (tool-bar-mode -1)
+      (when (boundp 'scroll-bar-mode)
+        (scroll-bar-mode -1))
 
-  (set-window-scroll-bars (minibuffer-window) nil nil)
+      (set-window-scroll-bars (minibuffer-window) nil nil)
 
-  (show-paren-mode 1)
-  (setq show-paren-delay 0)
-  (setq display-line-numbers-type 'relative)
-  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+      (show-paren-mode 1)
+      (setq show-paren-delay 0)
+      (setq display-line-numbers-type 'relative)
+      (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
-  (setq visible-bell t)
-  (setq vc-follow-symlinks t)
-  (setq large-file-warning-threshold nil)
-  (setq split-width-threshold nil)
-  (setq custom-safe-themes t)
-  (column-number-mode t)
-  (setq tab-width 4)
-  (setq tramp-default-method "ssh")
+      (setq visible-bell t)
+      (setq vc-follow-symlinks t)
+      (setq large-file-warning-threshold nil)
+      (setq split-width-threshold nil)
+      (setq custom-safe-themes t)
+      (column-number-mode t)
+      (setq tab-width 4)
+      (setq tramp-default-method "ssh")
 
-  (electric-pair-mode 1)
+      (electric-pair-mode 1)
 
-  (setq delete-by-moving-to-trash t)
-  (defun system-move-file-to-trash (file)
-    "Use \"trash\" to move FILE to the system trash.
-                      When using Homebrew, install it using \"brew install trash\"."
-    (call-process (executable-find "trash")
-                  nil 0 nil
-                  file))
+      (setq delete-by-moving-to-trash t)
+      (defun system-move-file-to-trash (file)
+        "Use \"trash\" to move FILE to the system trash.
+                             When using Homebrew, install it using \"brew install trash\"."
+        (call-process (executable-find "trash")
+                      nil 0 nil
+                      file))
 
-  ;; Keep all backup and auto-save files in one directory
-  (setq backup-directory-alist '(("." . "~/.emacs.d/.cache/backups")))
-  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/.cache/auto-save-list/" t)))
+      ;; Keep all backup and auto-save files in one directory
+      (setq backup-directory-alist '(("." . "~/.emacs.d/.cache/backups")))
+      (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/.cache/auto-save-list/" t)))
 
-  (setq make-backup-files nil) ; stop creating backup~ files
-  (setq auto-save-default nil) ; stop creating #autosave# files
-  (setq create-lockfiles nil)  ; stop creating .# files
+      (setq make-backup-files nil) ; stop creating backup~ files
+      (setq auto-save-default nil) ; stop creating #autosave# files
+      (setq create-lockfiles nil)  ; stop creating .# files
 
 
-  ;; Allow "confusing" functions
-  (put 'narrow-to-region 'disabled nil)
-  (put 'dired-find-alternate-file 'disabled nil)
+      ;; Allow "confusing" functions
+      (put 'narrow-to-region 'disabled nil)
+      (put 'dired-find-alternate-file 'disabled nil)
 
-  (fset 'yes-or-no-p 'y-or-n-p)      ; y and n instead of yes and no everywhere else
+      (fset 'yes-or-no-p 'y-or-n-p)      ; y and n instead of yes and no everywhere else
 
-  (setq user-full-name "Tony Ampomah"
-        user-mail-address "tony@arksolutions.it")
+      (setq user-full-name "Tony Ampomah"
+            user-mail-address "tony@arksolutions.it")
 
-  (setq auth-sources '("~/.authinfo.gpg" "~/.authinfo"))
+      (setq auth-sources '("~/.authinfo.gpg" "~/.authinfo"))
 
-  ;; display date and time
-  (setq display-time-day-and-date t)
-  (setq display-time-format "%H:%M | %a %e %B %Y ")
-  (setq display-time-default-load-average nil)
-  (display-time-mode 1)
+      ;; start calendar from Monday
+      (setq calendar-week-start-day 1)
 
-  ;; start calendar from Monday
-  (setq calendar-week-start-day 1)
+      ;; Use spaces instead of tabs
+      (setq-default indent-tabs-mode nil)
+      (setq tab-width 2)
+      (setq js-indent-level 2)
+      (setq css-indent-offset 2)
+      (setq-default c-basic-offset 2)
+      (setq c-basic-offset 2)
+      (setq-default tab-width 2)
+      (setq-default c-basic-indent 2)
 
-  ;; Use spaces instead of tabs
-  (setq-default indent-tabs-mode nil)
-  (setq tab-width 2)
-  (setq js-indent-level 2)
-  (setq css-indent-offset 2)
-  (setq-default c-basic-offset 2)
-  (setq c-basic-offset 2)
-  (setq-default tab-width 2)
-  (setq-default c-basic-indent 2)
-
-  (global-visual-line-mode 1)
-#+END_SRC
+      (global-visual-line-mode 1)
+    #+END_SRC
 
 *** Package Management
 
 **** Package Settings
-We're going to set the =load-path= ourselves and avoid calling =(package-initilize)= (for
-performance reasons) so we need to set =package--init-file-ensured= to true to tell =package.el=
-to not automatically call it on our behalf. Additionally we're setting
-=package-enable-at-startup= to nil so that packages will not automatically be loaded for us since
-=use-package= will be handling that.
+     We're going to set the =load-path= ourselves and avoid calling =(package-initilize)= (for
+     performance reasons) so we need to set =package--init-file-ensured= to true to tell =package.el=
+     to not automatically call it on our behalf. Additionally we're setting
+     =package-enable-at-startup= to nil so that packages will not automatically be loaded for us since
+     =use-package= will be handling that.
 
-#+BEGIN_SRC emacs-lisp
+     #+BEGIN_SRC emacs-lisp
   (eval-and-compile
     (setq load-prefer-newer t
           package-user-dir "~/.emacs.d/elpa"
@@ -239,44 +238,44 @@ to not automatically call it on our behalf. Additionally we're setting
 
     (unless (file-directory-p package-user-dir)
       (make-directory package-user-dir t)))
-#+END_SRC
+     #+END_SRC
 
 **** Use-Package Settings
-Tell =use-package= to always defer loading packages unless explicitly told otherwise. This speeds up
-initialization significantly as many packages are only loaded later when they are explicitly used.
+     Tell =use-package= to always defer loading packages unless explicitly told otherwise. This speeds up
+     initialization significantly as many packages are only loaded later when they are explicitly used.
 
-#+BEGIN_SRC emacs-lisp
+     #+BEGIN_SRC emacs-lisp
   (setq use-package-always-defer t
         use-package-verbose t)
-#+END_SRC
+     #+END_SRC
 
 **** Manually Set Load Path
-We're going to set the load path ourselves so that we don't have to call =package-initialize= at
-runtime and incur a large performance hit. This load-path will actually be faster than the one
-created by =package-initialize= because it appends the elpa packages to the end of the load path.
-Otherwise any time a builtin package was required it would have to search all of third party paths
-first.
+     We're going to set the load path ourselves so that we don't have to call =package-initialize= at
+     runtime and incur a large performance hit. This load-path will actually be faster than the one
+     created by =package-initialize= because it appends the elpa packages to the end of the load path.
+     Otherwise any time a builtin package was required it would have to search all of third party paths
+     first.
 
-#+BEGIN_SRC emacs-lisp
+     #+BEGIN_SRC emacs-lisp
   (eval-and-compile
     (setq load-path (append load-path (directory-files package-user-dir t "^[^.]" t))))
-#+END_SRC
+     #+END_SRC
 
 **** Initialize Package Management
-Next we are going to require =package.el= and add our additional package archives, 'melpa' and 'org'.
-Afterwards we need to initialize our packages and then ensure that =use-package= is installed, which
-we promptly install if it's missing. Finally we load =use-package= and tell it to always install any
-missing packages.
+     Next we are going to require =package.el= and add our additional package archives, 'melpa' and 'org'.
+     Afterwards we need to initialize our packages and then ensure that =use-package= is installed, which
+     we promptly install if it's missing. Finally we load =use-package= and tell it to always install any
+     missing packages.
 
-Note that this entire block is wrapped in =eval-when-compile=. The effect of this is to perform all
-of the package initialization during compilation so that when byte compiled, all of this time consuming
-code is skipped. This can be done because the result of byte compiling =use-package= statements results
-in the macro being fully expanded at which point =use-package= isn't actually required any longer.
+     Note that this entire block is wrapped in =eval-when-compile=. The effect of this is to perform all
+     of the package initialization during compilation so that when byte compiled, all of this time consuming
+     code is skipped. This can be done because the result of byte compiling =use-package= statements results
+     in the macro being fully expanded at which point =use-package= isn't actually required any longer.
 
-Since the code is automatically compiled during runtime, if the configuration hasn't already been
-previously compiled manually then all of the package initialization will still take place at startup.
+     Since the code is automatically compiled during runtime, if the configuration hasn't already been
+     previously compiled manually then all of the package initialization will still take place at startup.
 
-#+BEGIN_SRC emacs-lisp
+     #+BEGIN_SRC emacs-lisp
   (eval-when-compile
     (require 'package)
 
@@ -291,53 +290,28 @@ previously compiled manually then all of the package initialization will still t
       (package-install 'use-package))
     (require 'use-package)
     (setq use-package-always-ensure t))
-#+END_SRC
+     #+END_SRC
 
 ** Functions
-#+BEGIN_SRC emacs-lisp
-    (defun itechytony/visit-emacs-config ()
-    (interactive)
-    (find-file "~/.emacs.d/emacs.org"))
+   #+BEGIN_SRC emacs-lisp
+  (defun itechytony/visit-emacs-config ()
+  (interactive)
+  (find-file "~/.emacs.d/emacs.org"))
 
-    (defun itechytony/visit-host-file ()
-    (interactive)
-    (find-file "/etc/hosts"))
+  (defun itechytony/visit-host-file ()
+  (interactive)
+  (find-file "/etc/hosts"))
 
-    (defun itechytony/find-in-notes ()
-    (interactive)
-    (counsel-find-file "~/Dropbox/org"))
+  (defun itechytony/find-in-notes ()
+  (interactive)
+  (counsel-find-file "~/Dropbox/org"))
+   #+END_SRC
 
-    (defun itechytony/find-in-documents ()
-    (interactive)
-    (counsel-find-file "~/Documents"))
-
-    (defun itechytony/find-projects-in-documents ()
-    (interactive)
-    (counsel-find-file "~/Documents/1Projects"))
-
-    (defun itechytony/find-areas-in-documents ()
-    (interactive)
-    (counsel-find-file "~/Documents/2Areas"))
-
-    (defun itechytony/find-resources-in-documents ()
-    (interactive)
-    (counsel-find-file "~/Documents/3Resources"))
-
-    (defun itechytony/visit-todo-list-file ()
-    (interactive)
-    (find-file "~/Dropbox/org/todo.org"))
-
-    (defun itechytony/visit-inbox ()
-    (interactive)
-    (find-file "~/Dropbox/org/inbox.org"))
-#+END_SRC
-
-** Super Keybonds
+** Super Keybinding
    #+BEGIN_SRC emacs-lisp
      (setq mac-option-modifier 'meta)
      (setq mac-command-modifier 'super)
 
-     ;; Keybonds
      (global-set-key [(super a)] 'mark-whole-buffer)
      (global-set-key [(super v)] 'yank)
      (global-set-key [(super c)] 'kill-ring-save)
@@ -347,7 +321,6 @@ previously compiled manually then all of the package initialization will still t
                      (lambda () (interactive) (delete-window)))
      (global-set-key [(super z)] 'undo)
 
-     (global-set-key (kbd "M-x") 'counsel-M-x)
      (global-set-key (kbd "s-r") 'counsel-imenu)
      (global-set-key (kbd "s-b") 'counsel-switch-buffer)
      (global-set-key (kbd "s-/") 'comment-line)
@@ -360,13 +333,14 @@ previously compiled manually then all of the package initialization will still t
      (global-set-key (kbd "s-p") 'projectile-switch-project)
      (global-set-key (kbd "s-P") 'counsel-M-x)
      (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
-     (global-set-key (kbd "s-k") 'kill-this-buffer)
+     (global-set-key (kbd "s-k") 'persp-kill-buffer*)
    #+END_SRC
 
 ** Packages
 *** =exec-path-from-shell=
     #+BEGIN_SRC emacs-lisp
       (use-package exec-path-from-shell
+        :demand t
         :init
         (setq exec-path-from-shell-check-startup-files nil))
       (when (memq window-system '(mac ns))
@@ -384,267 +358,365 @@ previously compiled manually then all of the package initialization will still t
     #+END_SRC
     
 *** =evil=
-Install, automatically load, and enable evil. It's like vim.
+    Install, automatically load, and enable evil. It's like vim.
 
-#+BEGIN_SRC emacs-lisp
-  (use-package evil
-    :demand t
-    :init
-    (setq evil-want-keybinding nil)
-    (setq evil-want-C-u-scroll t)
-    (setq evil-vsplit-window-right t)
-    (setq evil-split-window-below t)
-    (setq evil-want-abbrev-expand-on-insert-exit nil)
-    :ensure t
-    :config
-    (evil-mode 1))
+    #+BEGIN_SRC emacs-lisp
+      (use-package evil
+        :demand t
+        :init
+        (setq evil-want-keybinding nil)
+        (setq evil-want-C-u-scroll t)
+        (setq evil-vsplit-window-right t)
+        (setq evil-split-window-below t)
+        (setq evil-want-abbrev-expand-on-insert-exit nil)
+        :ensure t
+        :config
+        (evil-mode 1))
 
-  (use-package evil-surround
-    :ensure t
-    :config
-    (global-evil-surround-mode))
+      (use-package evil-surround
+        :demand t
+        :ensure t
+        :config
+        (global-evil-surround-mode))
 
-  (use-package evil-commentary
-    :ensure t
-    :config
-    (evil-commentary-mode))
+      (use-package evil-commentary
+        :demand t
+        :ensure t
+        :config
+        (evil-commentary-mode))
 
-  (use-package evil-collection
-    :demand t
-    :after evil
-    :config
-    (evil-collection-init))
-#+END_SRC
+      (use-package evil-collection
+        :demand t
+        :after evil
+        :config
+        (evil-collection-init))
+    #+END_SRC
 
 *** =general=
-#+BEGIN_SRC emacs-lisp
-  (use-package general
-    :demand t
-    :config
-    (require 'general)
-    (general-evil-setup)
+    #+BEGIN_SRC emacs-lisp
+      (use-package general
+        :demand t
+        :config
+        (require 'general)
+        (general-evil-setup)
 
-    (general-create-definer my-leader-def
-      :prefix "SPC")
+        (general-create-definer my-leader-def
+          :keymaps 'override
+          :prefix "SPC")
 
-    (general-create-definer my-local-leader-def
-      :prefix ",")
+        (general-create-definer my-local-leader-def
+          :keymaps 'override
+          :prefix ",")
 
-    (my-leader-def 'normal 'override
-      ;; application
-      "acs" 'slack-start
-      "acj" 'slack-channel-select
-      "acd" 'slack-im-select
-      "acq" 'slack-ws-close
-      "app" 'password-store-copy
-      "apf" 'password-store-get-field
-      "apd" 'password-store-remove
-      "apr" 'password-store-rename
-      "ape" 'password-store-edit
-      ;; workspaces
-      "<tab><tab>" 'eyebrowse-switch-to-window-config
-      "<tab>." 'eyebrowse-switch-back-and-forth
-      "<tab>c" 'eyebrowse-create-window-config
-      "<tab>n" 'eyebrowse-create-window-config
-      "<tab>d" 'eyebrowse-close-window-config
-      "<tab>k" 'eyebrowse-close-window-config-prompt
-      "<tab>r" 'eyebrowse-rename-window-config
-      "<tab>[" 'eyebrowse-prev-window-config
-      "<tab>]" 'eyebrowse-next-window-config
-      ;; files
-      "fc"  'editorconfig-find-current-editorconfig
-      "fC"  'itecytony/copy-this-file
-      "fR"  'projectile-recentf
-      "fD"  'itechytony/delete-this-file
-      "fd" 'dired
-      "ff"  'counsel-find-file
-      "fe"  '+default/find-in-emacsd
-      "fE"  '+default/browse-emacsd
-      "fF"  '+default/find-file-under-here
-      "fh"  'itechytony/visit-host-file
-      "fu"  'itechytony/sudo-find-file
-      "fU"  'itechytony/sudo-this-file
-      "fy"  'default/yank-buffer-filename
-      "fl"  'locate
-      "fp"  'itechytony/visit-emacs-config
-      "fr"  'recentf-open-files
-      "fs"  'save-buffer
-      "fS"  'write-file
-      "ft"  'itechytony/visit-todo-list-file
-      ;; buffers
-      "bb"  'counsel-switch-buffer
-      "bB"  'counsel-ibuffer
-      "bk"  'kill-this-buffer
-      "bd"  'kill-this-buffer
-      "bq"  'kill-buffer-and-window
-      ;; search
-      "sb" 'swiper-isearch
-      "sp" 'counsel-projectile-rg
-      ;; git
-      "gR"  'vc-revert
-      "gg"  'magit-status
-      "gb"  'magit-branch-checkout
-      "gR"  'vc-revert
-      "g/"  'magit-dispatch
-      "gD"  'magit-file-delete
-      "gB"  'magit-blame-addition
-      "gC"  'magit-clone
-      "gF"  'magit-fetch
-      "gL"  'magit-log
-      "gS"  'magit-stage-file
-      "gU"  'magit-unstage-file
-      ;; toggle
-      "ts"  'treemacs
-      "tc"  'company-mode
-      "tf"  'flycheck-mode
-      "tr"  'nlinum-mode
-      "ttl"  'toggle-truncate-lines
-      "tvl"  'global-visual-line-mode
-      "te"  'global-emojify-mode
-      ;; projects
-      "pp"  'projectile-switch-project
-      "pi"  'projectile-invalidate-cache
-      "pt"  'projectile-run-vterm
-      "pb"  'projectile-switch-to-buffer
-      "ps"  'counsel-projectile-rg
-      "pB"  'counsel-switch-buffer
-      "pd"  'projectile-discover-projects-in-search-path
-      ;; notes
-      "nf" 'itechytony/find-in-notes
-      "na" 'org-agenda
-      "nci" 'org-pomodoro
-      "nco" 'org-pomodoro-clock-break
-      "nn" 'itechytony/find-in-notes
-      "nn" 'org-capture
-      "nt" 'itechytony/visit-todo-list-file
-      "ni" 'itechytony/visit-inbox
-      "nv" 'org-search-view
-      ":"  'eval-expression
-      "cc"  'compile
-      "<SPC>"  'counsel-projectile-find-file
-      "/r"  'counsel-imenu
-      "/sp"  'counsel-rg
-      ;; insert
-      "ie" 'emoji-cheat-sheet-plus-insert
-      ;; window
-      "w"  'evil-window-map
-      ;; help
-      "h"  'help-map
-      ;; open application
-      "o-" 'dired-jump
-      "oc" 'cfw:open-org-calendar
-      "oo" '+macos/reveal-in-finder
-      "om" 'mu4e
-      "od"  'docker
-      "op"  'pass
-      "oe"  'es-command-center
-      "oe"  'es-command-center
-      "ot" 'shell-pop
-      "oT" 'vterm-toggle
-      "x"  'counsel-M-x)
-    )
+        (my-leader-def 'normal 'override
+          ;; application
+          "acs" 'slack-start
+          "acj" 'slack-channel-select
+          "acd" 'slack-im-select
+          "acq" 'slack-ws-close
+          "app" 'password-store-copy
+          "apf" 'password-store-get-field
+          "apd" 'password-store-remove
+          "apr" 'password-store-rename
+          "ape" 'password-store-edit
+          ;; workspaces
+          "<tab><tab>" 'persp-switch-last
+          "<tab>." 'persp-switch
+          "<tab>c" 'persp-switch
+          "<tab>n" 'persp-switch
+          "<tab>d" 'persp-kill
+          "<tab>k" 'persp-kill
+          "<tab>r" 'persp-rename
+          "<tab>[" 'persp-prev
+          "<tab>]" 'persp-next
+          "<tab>s" 'persp-state-save
+          "<tab>l" 'persp-state-load
+          ;; files
+          "fc"  'editorconfig-find-current-editorconfig
+          "fC"  'itecytony/copy-this-file
+          "fR"  'projectile-recentf
+          "fD"  'itechytony/delete-this-file
+          "fd" 'dired
+          "ff"  'counsel-find-file
+          "fe"  '(lambda() (interactive) (counsel-find-file "~/.emacs.d"))
+          "fE"  '(lambda() (interactive) (find-file "~/.emacs.d"))
+          "fh"  '(lambda() (interactive) (find-file "/etc/hosts"))
+          "fu"  'itechytony/sudo-find-file
+          "fU"  'itechytony/sudo-this-file
+          "fl"  'locate
+          "fp"  '(lambda() (interactive) (find-file "~/.emacs.d/emacs.org"))
+          "fr"  'recentf-open-files
+          "fs"  'save-buffer
+          "fS"  'write-file
+          ;; documents
+          ;; documents spiritual
+          "dsp" '(lambda() (interactive) (find-file "~/Documents/Spiritual/1Projects"))
+          "dsa" '(lambda() (interactive) (find-file "~/Documents/Spiritual/2Areas"))
+          "dsr" '(lambda() (interactive) (find-file "~/Documents/Spiritual/3Resources"))
+          "dsc" '(lambda() (interactive) (find-file "~/Documents/Spiritual/4Archives"))
+          ;; documents personal
+          "dpp" '(lambda() (interactive) (find-file "~/Documents/Personal/1Projects"))
+          "dpa" '(lambda() (interactive) (find-file "~/Documents/Personal/2Areas"))
+          "dpr" '(lambda() (interactive) (find-file "~/Documents/Personal/3Resources"))
+          "dpc" '(lambda() (interactive) (find-file "~/Documents/Personal/4Archives"))
+          ;; documents home
+          "dhp" '(lambda() (interactive) (find-file "~/Documents/Home/1Projects"))
+          "dha" '(lambda() (interactive) (find-file "~/Documents/Home/2Areas"))
+          "dhr" '(lambda() (interactive) (find-file "~/Documents/Home/3Resources"))
+          "dhc" '(lambda() (interactive) (find-file "~/Documents/Home/4Archives"))
+          ;; documents work
+          "dwp" '(lambda() (interactive) (find-file "~/Documents/Work/1Projects"))
+          "dwa" '(lambda() (interactive) (find-file "~/Documents/Work/2Areas"))
+          "dwr" '(lambda() (interactive) (find-file "~/Documents/Work/3Resources"))
+          "dwc" '(lambda() (interactive) (find-file "~/Documents/Work/4Archives"))
+          ;; buffers
+          "bb"  'counsel-switch-buffer
+          "bB"  'counsel-ibuffer
+          "bk"  'persp-kill-buffer*
+          ;; search
+          "sb" 'swiper-isearch
+          "sp" 'counsel-projectile-rg
+          ;; git
+          "gR"  'vc-revert
+          "gg"  'magit-status
+          "gb"  'magit-branch-checkout
+          "gR"  'vc-revert
+          "g/"  'magit-dispatch
+          "gD"  'magit-file-delete
+          "gB"  'magit-blame-addition
+          "gC"  'magit-clone
+          "gF"  'magit-fetch
+          "gL"  'magit-log
+          "gS"  'magit-stage-file
+          "gU"  'magit-unstage-file
+          ;; toggle
+          "ts"  'treemacs
+          "tc"  'company-mode
+          "tf"  'flycheck-mode
+          "tr"  'nlinum-mode
+          "ttl"  'toggle-truncate-lines
+          "tvl"  'global-visual-line-mode
+          "te"  'global-emojify-mode
+          ;; projects
+          "pp"  'projectile-persp-switch-project
+          "pi"  'projectile-invalidate-cache
+          "pt"  'projectile-run-vterm
+          "pb"  'projectile-switch-to-buffer
+          "ps"  'counsel-projectile-rg
+          "pc"  'projectile-compile-project
+          "pB"  'counsel-switch-buffer
+          "pd"  'projectile-discover-projects-in-search-path
+          ;; notes
+          "nf" 'itechytony/find-in-notes
+          "na" 'org-agenda
+          "nci" 'org-pomodoro
+          "nco" 'org-pomodoro-clock-break
+          "nn" 'org-capture
+          ;; notes spiritual
+          "nsi" '(lambda() (interactive) (find-file "~/org/inbox-spiritual.org"))
+          "nst" '(lambda() (interactive) (find-file "~/org/todo-spiritual.org"))
+          "nsg" '(lambda() (interactive) (find-file "~/org/goals-spiritual.org"))
+          "nsc" '(lambda() (interactive) (find-file "~/org/calendar/spiritual.org"))
+          ;; notes personal
+          "npi" '(lambda() (interactive) (find-file "~/org/inbox-personal.org"))
+          "npt" '(lambda() (interactive) (find-file "~/org/todo-personal.org"))
+          "npc" '(lambda() (interactive) (find-file "~/org/calendar/personal.org"))
+          "npg" '(lambda() (interactive) (find-file "~/org/goals-personal.org"))
+          ;; notes home
+          "nhi" '(lambda() (interactive) (find-file "~/org/inbox-home.org"))
+          "nht" '(lambda() (interactive) (find-file "~/org/todo-home.org"))
+          "nhg" '(lambda() (interactive) (find-file "~/org/goals-home.org"))
+          "nhc" '(lambda() (interactive) (find-file "~/org/calendar/home.org"))
+          ;; notes work
+          "nwi" '(lambda() (interactive) (find-file "~/org/inbox-work.org"))
+          "nwt" '(lambda() (interactive) (find-file "~/org/todo-work.org"))
+          "nwc" '(lambda() (interactive) (find-file "~/org/calendar/work.org"))
+          "nwg" '(lambda() (interactive) (find-file "~/org/goals-work.org"))
+          "ni" 'itechytony/visit-inbox
+          "nv" 'org-search-view
+          ":"  'eval-expression
+          "cc"  'compile
+          "<SPC>" 'projectile-find-file
+          "/r"  'counsel-imenu
+          "/sp"  'counsel-rg
+          ;; insert
+          "ie" 'emoji-cheat-sheet-plus-insert
+          ;; window
+          "w"  'evil-window-map
+          ;; help
+          "h"  'help-map
+          ;; open application
+          "o-" 'dired-jump
+          "oc" 'cfw:open-org-calendar
+          "oo" '+macos/reveal-in-finder
+          "om" 'mu4e
+          "od"  'docker
+          "op"  'pass
+          "oe"  'es-command-center
+          "oe"  'es-command-center
+          "ot" 'shell-pop
+          "oT" 'vterm-toggle
+          "x"  'counsel-M-x
+          ":" 'counsel-M-x-history
+          )
+        )
 
-  (general-def 'normal 'override
-    "C-j" 'evil-window-down
-    "C-h" 'evil-window-left
-    "C-k" 'evil-window-up
-    "C-l" 'evil-window-right)
+      (general-def 'normal 'override
+        "C-j" 'evil-window-down
+        "C-h" 'evil-window-left
+        "C-k" 'evil-window-up
+        "C-l" 'evil-window-right)
 
-  ;;   (evil-define-key 'normal global-map (kbd "-")       'dired-jump)
+      (general-def 'normal 'override
+        "-"       'dired-jump)
 
-  (my-local-leader-def 'normal php-mode-map
-    "tt" 'phpunit-current-test
-    "tp" 'phpunit-current-project
-    "tc" 'phpunit-current-class
-    "n" 'phpactor-create-new-class
-    "m" 'phpactor-move-class
-    "i" 'phpactor-import-class
-    "f" 'php-search-documentation
-    "r" 'counsel-imenu)
+      ;; org mode
+      (my-local-leader-def 'normal org-mode-map
+        "c" 'org-ctrl-c-ctrl-c
+        "t" 'org-todo
+        "s" 'org-schedule
+        "d" 'org-deadline
+        "a" 'org-agenda
+        "e" 'org-export-dispatch
+        "n" 'org-narrow-to-element
+        "w" 'widen
+        "r" 'org-refile)
 
-  ;; org mode
-  (my-local-leader-def 'normal org-mode-map
-    "c" 'org-ctrl-c-ctrl-c
-    "t" 'org-todo
-    "s" 'org-schedule
-    "d" 'org-deadline
-    "a" 'org-agenda
-    "e" 'org-export-dispatch
-    "n" 'org-narrow-to-element
-    "w" 'widen
-    "r" 'org-refile)
-
-  ;; Dired
-  (general-def 'normal dired-mode-map
-    "C-e" 'dired-toggle-read-only)
-#+END_SRC
+      ;; Dired
+      (general-def 'normal dired-mode-map
+        "." 'dired-hide-dotfiles-mode
+        "C-e" 'dired-toggle-read-only)
+    #+END_SRC
 
 *** =ivy=
-Generic completion frontend that's just awesome! Let's install and enable it.
+    Generic completion frontend that's just awesome! Let's install and enable it.
 
-#+BEGIN_SRC emacs-lisp
-(use-package ivy
-  :demand t
-  :init
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) ")
-  (setq enable-recursive-minibuffers t)
-  (setq ivy-initial-inputs-alist nil)
-  (setq ivy-on-del-error-function #'ignore)
-  (setq ivy-re-builders-alist
-        '((swiper . ivy--regex-plus)
-          (swiper-isearch . ivy--regex-plus)
-          (counsel-ag . ivy--regex-plus)
-          (counsel-rg . ivy--regex-plus)
-          (t      . ivy--regex-fuzzy)))
-  :config
-  (ivy-mode 1)
-  (evil-set-initial-state 'ivy-occur-grep-mode 'normal))
-#+END_SRC
+    #+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :demand t
+    :init
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "(%d/%d) ")
+    (setq enable-recursive-minibuffers t)
+    (setq ivy-initial-inputs-alist nil)
+    (setq ivy-on-del-error-function #'ignore)
+    ;; (setq ivy-re-builders-alist
+    ;;       '((swiper . ivy--regex-plus)
+    ;;         (swiper-isearch . ivy--regex-plus)
+    ;;         (counsel-ag . ivy--regex-plus)
+    ;;         (counsel-rg . ivy--regex-plus)
+    ;;         (t      . ivy--regex-fuzzy)))
+    ;; :config
+    (ivy-mode 1)
+    (evil-set-initial-state 'ivy-occur-grep-mode 'normal))
+
+  (use-package ivy-rich
+    :demand t
+    :ensure t
+    :after ivy
+    :config
+    (setq ivy-rich-path-style 'abbreviate)
+
+    (setcdr (assq t ivy-format-functions-alist)
+            #'ivy-format-function-line)
+    (ivy-rich-mode 1))
+
+  (use-package ivy-posframe
+    :ensure t
+    :after ivy
+    :diminish
+    :config
+    (setq ivy-posframe-parameters
+          '((left-fringe . 2)
+            (right-fringe . 2)
+            (internal-border-width . 2)
+            ))
+    (setq ivy-posframe-height-alist
+          '((swiper . 15)
+            (swiper-isearch . 15)
+            (t . 10)))
+    (setq ivy-posframe-display-functions-alist
+          '((complete-symbol . ivy-posframe-display-at-point)
+            (swiper . nil)
+            (swiper-isearch . nil)
+            (t . ivy-posframe-display-at-frame-center)))
+    (ivy-posframe-mode 1))
+    #+END_SRC
 
 *** =counsel=
-Counsel allows us to utilize ivy by replacing many built-in and common functions
-with richer versions. Let's install it!
+    Counsel allows us to utilize ivy by replacing many built-in and common functions
+    with richer versions. Let's install it!
 
-#+BEGIN_SRC emacs-lisp
-(use-package counsel-projectile)
-(use-package counsel
-  :demand t)
-#+END_SRC
+    #+BEGIN_SRC emacs-lisp
+  (use-package counsel-projectile)
+  (use-package counsel :demand t)
+  (use-package counsel-tramp
+    :commands counsel-tramp)
+    #+END_SRC
 
 *** =swiper=
-Swiper is an awesome searching utility with a quick preview. Let's install it and
-load it when =swiper= or =swiper-all= is called.
+    Swiper is an awesome searching utility with a quick preview. Let's install it and
+    load it when =swiper= or =swiper-all= is called.
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package swiper
   :commands (swiper swiper-all))
-#+END_SRC
+    #+END_SRC
 
+*** =amx=
+    #+BEGIN_SRC emacs-lisp
+      (use-package prescient
+        :demand t)
+      (use-package ivy-prescient
+        :demand t)
+      (use-package company-prescient
+        :demand t)
+      ;; (use-package selectrum-prescient
+      ;;   :demand t)
+
+      ;; (use-package amx
+      ;;   :demand t
+      ;;   :ensure t
+      ;;   :after ivy
+      ;;   :custom
+      ;;   (amx-backend 'auto)
+      ;;   (amx-save-file "~/.emacs.d/amx-items")
+      ;;   (amx-history-length 50)
+      ;;   (amx-show-key-bindings nil)
+      ;;   :config
+      ;;   (amx-mode 1))
+    #+END_SRC
+
+*** =selectrum=
+    #+BEGIN_SRC emacs-lisp
+      ;; (use-package selectrum
+      ;;   :demand t
+      ;;   :config
+      ;;   (selectrum-mode +1))
+    #+END_SRC
 *** =projectile=
-Projectile is a quick and easy project management package that "just works". We're
-going to install it and make sure it's loaded immediately.
+    Projectile is a quick and easy project management package that "just works". We're
+    going to install it and make sure it's loaded immediately.
 
-#+BEGIN_SRC emacs-lisp
-(use-package projectile
-  :demand t
-  :ensure t
-  :init
-  (setq projectile-project-search-path '(
-                                         "~/Documents/Home/1Projects"
-                                         "~/Documents/Home/2Areas"
-                                         "~/Documents/Personal/1Projects"
-                                         "~/Documents/Personal/2Areas"
-                                         "~/Documents/Spiritual"
-                                         "~/Documents/Work/1Projects"
-                                         "~/Documents/Work/2Areas"
-                                         "~/Repo/2Areas"
-                                         "~/Repo/1Projects"
-                                         ))
-  (setq projectile-completion-system 'ivy)
-  (setq projectile-switch-project-action #'projectile-dired)
-  (projectile-mode))
-#+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package projectile
+        :demand t
+        :ensure t
+        :init
+        (setq projectile-project-search-path '(
+                                               "~/Documents/Personal/2Areas"
+                                               "~/Documents/Home/1Projects"
+                                               "~/Documents/Home/2Areas"
+                                               "~/Documents/Spiritual/3Resources"
+                                               "~/Documents/Spiritual/2Areas"
+                                               "~/Documents/Work/2Areas"
+                                               "~/Repo/Personal/1Projects"
+                                               "~/Repo/Work/1Projects"
+                                               ))
+        (setq projectile-completion-system 'ivy)
+        (setq projectile-switch-project-action #'projectile-dired)
+        (projectile-mode))
+    #+END_SRC
 
 *** =which-key=
     #+BEGIN_SRC emacs-lisp
@@ -656,170 +728,169 @@ going to install it and make sure it's loaded immediately.
         :config (which-key-mode))
     #+END_SRC
 
-*** =org=
-Let's include a newer version of org-mode than the one that is built in. We're going
-to manually remove the org directories from the load path, to ensure the version we
-want is prioritized instead.
+*** =org-mode=
+    Let's include a newer version of org-mode than the one that is built in. We're going
+    to manually remove the org directories from the load path, to ensure the version we
+    want is prioritized instead.
 
-#+BEGIN_SRC emacs-lisp
-  (use-package org
-    :defer t
-    :ensure org-plus-contrib
-    :pin org
-    :custom-face
-    ;; (variable-pitch ((t (:family "Avenir"))))
-    (org-document-title ((t (:weight bold ))))
-    (org-done ((t (:strike-through t :weight bold))))
-    (org-headline-done ((t (:strike-through t))))
-    (org-level-1 ((t (:weight bold :height 1.2))))
-    (org-level-2 ((t (:weight normal :height 1.2))))
-    (org-level-3 ((t (:weight normal :height 1.2))))
-    (org-image-actual-width '(600))
-    :config
-    (add-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h 'append)
-    (setq org-todo-keywords
-          '((sequence "TODO(t)"
-                      "STARTED(s)"
-                      "WAITING(w)"
-                      "SOMEDAY(.)"
-                      "MAYBE(m)"
-                      "|"
-                      "DONE(d!)"
-                      "CANCELLED(c)"))))
+    #+BEGIN_SRC emacs-lisp
+      (use-package org
+        :ensure org-plus-contrib
+        :pin org
+        :custom-face
+        (variable-pitch ((t (:family "Avenir"))))
+        (org-document-title ((t (:weight bold ))))
+        (org-done ((t (:strike-through t :weight bold))))
+        (org-headline-done ((t (:strike-through t))))
+        (org-level-1 ((t (:weight bold :height 1.2))))
+        (org-level-2 ((t (:weight normal :height 1.2))))
+        (org-level-3 ((t (:weight normal :height 1.2))))
+        (org-image-actual-width '(600))
+        :config
+        (add-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h 'append)
+        (setq org-todo-keywords
+              '((sequence "TODO(t)"
+                          "STARTED(s)"
+                          "WAITING(w)"
+                          "SOMEDAY(.)"
+                          "MAYBE(m)"
+                          "|"
+                          "DONE(d!)"
+                          "CANCELLED(c)"))))
 
-  (defun +org-cycle-only-current-subtree-h (&optional arg)
-    (interactive "P")
-    (unless (eq this-command 'org-shifttab)
-      (save-excursion
-        (org-beginning-of-line)
-        (let (invisible-p)
-          (when (and (org-at-heading-p)
-                     (or org-cycle-open-archived-trees
-                         (not (member org-archive-tag (org-get-tags))))
-                     (or (not arg)
-                         (setq invisible-p (outline-invisible-p (line-end-position)))))
-            (unless invisible-p
-              (setq org-cycle-subtree-status 'subtree))
-            (org-cycle-internal-local)
-            t)))))
+      (defun +org-cycle-only-current-subtree-h (&optional arg)
+        (interactive "P")
+        (unless (eq this-command 'org-shifttab)
+          (save-excursion
+            (org-beginning-of-line)
+            (let (invisible-p)
+              (when (and (org-at-heading-p)
+                         (or org-cycle-open-archived-trees
+                             (not (member org-archive-tag (org-get-tags))))
+                         (or (not arg)
+                             (setq invisible-p (outline-invisible-p (line-end-position)))))
+                (unless invisible-p
+                  (setq org-cycle-subtree-status 'subtree))
+                (org-cycle-internal-local)
+                t)))))
 
-  (setq org-icalendar-include-todo t
-        org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due)
-        org-icalendar-use-scheduled '(event-if-todo event-if-not-todo todo-start)
-        org-icalendar-with-timestamps t)
-  (setq org-startup-truncated nil)
-  (setq org-agenda-inhibit-startup nil)
+      (setq org-icalendar-include-todo t
+            org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due)
+            org-icalendar-use-scheduled '(event-if-todo event-if-not-todo todo-start)
+            org-icalendar-with-timestamps t)
+      (setq org-startup-truncated nil)
+      (setq org-agenda-inhibit-startup nil)
 
-  (setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
+      (setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
 
-  (setq org-ellipsis "⤵")
+      (setq org-ellipsis "⤵")
 
-  (setq org-src-fontify-natively t)
+      (setq org-src-fontify-natively t)
 
-  (setq org-directory "~/org")
-  (setq org-agenda-files (quote (
-                                 "~/org/calendar/personal.org"
-                                 "~/org/calendar/shared.org"
-                                 "~/org/calendar/spouse.org"
-                                 "~/org/todo-home.org"
-                                 "~/org/todo-personal.org"
-                                 "~/org/todo-spiritual.org"
-                                 "~/org/todo-work.org"
-                                 )))
+      (setq org-directory "~/org")
+      (setq org-agenda-files (quote (
+                                     "~/org/calendar/personal.org"
+                                     "~/org/calendar/shared.org"
+                                     "~/org/calendar/spouse.org"
+                                     "~/org/todo-home.org"
+                                     "~/org/todo-personal.org"
+                                     "~/org/todo-spiritual.org"
+                                     "~/org/todo-work.org"
+                                     )))
 
-  (add-hook 'org-capture-mode-hook 'evil-insert-state)
-  (setq org-capture-templates
-        '(
-          ("t" "Inbox - Personal" entry (file "~/org/inbox-personal.org")
-           "* TODO %?\n")
-          ("w" "Inbox - Work" entry (file "~/org/inbox-work.org")
-           "* TODO %?\n")
-          ("h" "Inbox - Home" entry (file "~/org/inbox-home.org")
-           "* TODO %?\n")
-          ("s" "Inbox - Spiritual" entry (file "~/org/inbox-spiritual.org")
-           "* TODO %?\n")
-          ("e" "Email" entry (file+headline "~/org/inbox.org" "Tasks")
-           "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
-          ("p" "Project" entry (file+headline "~/org/todo-personal.org" "1Projects")
-           (file "~/org/templates/new-project-template.org"))
-          ("g" "Someday" entry (file+headline "~/org/someday.org" "Someday")
-           "* SOMEDAY %?\n")
-          ("l" "Log" entry (file+olp+datetree "~/org/log.org" "Log")
-           (file "~/org/templates/logtemplate.org"))))
+      (add-hook 'org-capture-mode-hook 'evil-insert-state)
+      (setq org-capture-templates
+            '(
+              ("t" "Inbox - Personal" entry (file "~/org/inbox-personal.org")
+               "* TODO %?\n")
+              ("w" "Inbox - Work" entry (file "~/org/inbox-work.org")
+               "* TODO %?\n")
+              ("h" "Inbox - Home" entry (file "~/org/inbox-home.org")
+               "* TODO %?\n")
+              ("s" "Inbox - Spiritual" entry (file "~/org/inbox-spiritual.org")
+               "* TODO %?\n")
+              ("e" "Email" entry (file+headline "~/org/inbox.org" "Tasks")
+               "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
+              ("p" "Project" entry (file+headline "~/org/todo-personal.org" "1Projects")
+               (file "~/org/templates/new-project-template.org"))
+              ("g" "Someday" entry (file+headline "~/org/someday.org" "Someday")
+               "* SOMEDAY %?\n")
+              ("l" "Log" entry (file+olp+datetree "~/org/log.org" "Log")
+               (file "~/org/templates/logtemplate.org"))))
 
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((R . t)
-     (emacs-lisp . t)
-     (latex . t)
-     (shell . t)
-     ;; (elasticsearch . t)
-     (ledger . t)
-     (python . t)
-     (ruby . t)
-     (sqlite . t)))
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((R . t)
+         (emacs-lisp . t)
+         (latex . t)
+         (shell . t)
+         ;; (elasticsearch . t)
+         (ledger . t)
+         (python . t)
+         (ruby . t)
+         (sqlite . t)))
 
-  (setq org-confirm-babel-evaluate nil)
+      (setq org-confirm-babel-evaluate nil)
 
-  (use-package ox-pandoc
-    :demand t)
+      (use-package ox-pandoc :demand t)
 
-  (use-package ox-jira
-    :demand t)
+      (use-package ox-jira
+        :demand t)
 
-  (use-package ox-slack
-    :demand t)
+      (use-package ox-slack :demand t)
 
-  (use-package ox-twbs
-    :demand t)
+      (use-package ox-twbs
+        :demand t)
 
-  (use-package ox-slimhtml
-    :demand t)
+      (use-package ox-slimhtml
+        :demand t)
 
-  (use-package org-pomodoro
-    :demand t
-    :config
-    (setq org-pomodoro-long-break-length 60)
-    (setq org-pomodoro-long-break-frequency 10))
+      (use-package org-pomodoro
+        :demand t
+        :config
+        (setq org-pomodoro-long-break-length 60)
+        (setq org-pomodoro-long-break-frequency 10))
 
-  (use-package evil-org
-    :demand t
-    :after org
-    :config
-    (add-hook 'org-mode-hook 'evil-org-mode)
-    (add-hook 'evil-org-mode-hook
-              (lambda ()
-                (evil-org-set-key-theme)))
-    (require 'evil-org-agenda)
-    (evil-org-agenda-set-keys))
+      (use-package evil-org
+        :demand t
+        :after org
+        :config
+        (add-hook 'org-mode-hook 'evil-org-mode)
+        (add-hook 'evil-org-mode-hook
+                  (lambda ()
+                    (evil-org-set-key-theme)))
+        (require 'evil-org-agenda)
+        (evil-org-agenda-set-keys))
 
-  ;; (setq jiralib-url "https://theampomahs.atlassian.net")
-  ;; (use-package org-jira)
+      ;; (setq jiralib-url "https://theampomahs.atlassian.net")
+      ;; (use-package org-jira)
 
-  (use-package org-evil
-    :config
-    (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "@" 'org-refile)
-    (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "#" 'org-add-note)
-    (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "+" 'org-shiftup)
-    (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "=" 'org-shiftdown))
+      (use-package org-evil
+        :config
+        (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "@" 'org-refile)
+        (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "#" 'org-add-note)
+        (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "+" 'org-shiftup)
+        (evil-define-minor-mode-key 'normal 'org-evil-heading-mode "=" 'org-shiftdown))
 
-  (use-package org-gcal
-    :demand t)
+      (use-package org-gcal
+        :demand t)
 
-  (use-package org-bullets
-    :demand t
-    :config
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+      (use-package org-bullets
+        :demand t
+        :config
+        (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
-  (use-package org-pdfview)
+      (use-package org-pdfview)
 
-  (use-package ob-restclient)
-#+END_SRC
+      (use-package ob-restclient)
+    #+END_SRC
 
 *** =calfw=
     #+BEGIN_SRC emacs-lisp
-      (use-package calfw)
-      (use-package calfw-org)
+      (use-package calfw
+        :demand t)
+      (use-package calfw-org
+        :demand t)
       (use-package calfw-cal)
       (use-package calfw-ical)
     #+END_SRC
@@ -832,54 +903,52 @@ want is prioritized instead.
         (setq slack-prefer-current-team t)
         :commands (slack-start))
 
-        (my-local-leader-def 'normal slack-mode-map
-          ",j" 'slack-channel-select
-          ",d" 'slack-im-select
-          ",p" 'slack-room-load-prev-messages
-          ",e" 'slack-message-edit
-          ",q" 'slack-ws-close
-          ",mm" 'slack-message-embed-mention
-          ",c" 'slack-message-embed-channel
-          ",k" 'slack-channel-select
-          ",@" 'slack-message-embed-mention
-          ",j" 'slack-channel-select
-          ",#" 'slack-message-embed-channel
-          ",u" 'slack-room-update-messages
-          ",q" 'slack-buffer-kill
-          ",ra" 'slack-message-add-reaction
-          ",rr" 'slack-message-remove-reaction
-          ",rs" 'slack-message-show-reaction-users
-          ",pl" 'slack-room-pins-list
-          ",pa" 'slack-message-pins-add
-          ",pr" 'slack-message-pins-remove
-          ",mm" 'slack-message-write-another-buffer
-          ",me" 'slack-message-edit
-          ",md" 'slack-message-delete
-          ",u" 'slack-room-update-messages
-          ",2" 'slack-message-embed-mention
-          ",3" 'slack-message-embed-channel
-          "\C-n" 'slack-buffer-goto-next-message
-          "\C-p" 'slack-buffer-goto-prev-message)
+      (my-local-leader-def 'normal slack-mode-map
+        "j" 'slack-channel-select
+        "d" 'slack-im-select
+        "e" 'slack-message-edit
+        "q" 'slack-ws-close
+        "mm" 'slack-message-embed-mention
+        "c" 'slack-message-embed-channel
+        "k" 'slack-channel-select
+        "@" 'slack-message-embed-mention
+        "j" 'slack-channel-select
+        "#" 'slack-message-embed-channel
+        "u" 'slack-room-update-messages
+        "q" 'slack-buffer-kill
+        "ra" 'slack-message-add-reaction
+        "rr" 'slack-message-remove-reaction
+        "rs" 'slack-message-show-reaction-users
+        "pl" 'slack-room-pins-list
+        "pa" 'slack-message-pins-add
+        "pr" 'slack-message-pins-remove
+        "mm" 'slack-message-write-another-buffer
+        "me" 'slack-message-edit
+        "md" 'slack-message-delete
+        "u" 'slack-room-update-messages
+        "2" 'slack-message-embed-mention
+        "3" 'slack-message-embed-channel
+        "\C-n" 'slack-buffer-goto-next-message
+        "\C-p" 'slack-buffer-goto-prev-message)
 
-        (my-local-leader-def 'normal slack-edit-message-mode-map
-          ",k" 'slack-message-cancel-edit
-          ",s" 'slack-message-send-from-buffer
-          ",2" 'slack-message-embed-mention
-          ",3" 'slack-message-embed-channel)
+      (my-local-leader-def 'normal slack-edit-message-mode-map
+        "k" 'slack-message-cancel-edit
+        "s" 'slack-message-send-from-buffer
+        "2" 'slack-message-embed-mention
+        "3" 'slack-message-embed-channel)
     #+END_SRC
 
 *** =nov=
     #+BEGIN_SRC emacs-lisp
-      (use-package nov
-        :init
-        (setq nov-text-width t))
+      (defun my-nov-font-setup ()
+        (face-remap-add-relative 'variable-pitch :family "Quicksand"
+                                 :height 1.3))
+      (use-package nov)
+      (setq writeroom-fullscreen-effect 'maximize-window)
 
-      (use-package visual-fill-column
-        :init
-        (setq visual-fill-column-center-text t))
-
+      (add-hook 'nov-mode-hook 'my-nov-font-setup)
       (add-hook 'nov-mode-hook 'visual-line-mode)
-      (add-hook 'nov-mode-hook 'visual-fill-column-mode)
+      (add-hook 'nov-mode-hook 'writeroom-mode)
       (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
       (add-to-list 'auto-mode-alist '("\\.jwpub\\'" . nov-mode))
     #+END_SRC
@@ -907,32 +976,27 @@ want is prioritized instead.
            (kbd "C-c C-c") 'wgrep-finish-edit))
     #+END_SRC
    
-*** =desktop=
-    #+BEGIN_SRC emacs-lisp :tangle no
-      (use-package desktop
-        :ensure nil
-        :hook
-        (after-init . desktop-read)
-        (after-init . desktop-save-mode))
-    #+END_SRC
-
-*** =eyebrowse=
+*** =perspective=
     #+BEGIN_SRC emacs-lisp
-      (use-package eyebrowse
+      (use-package perspective
         :demand t
+        :ensure t
+        :bind (("C-x b" . persp-switch-to-buffer*)
+               ("C-x k" . persp-kill-buffer*))
         :config
-        (progn
-          (define-key eyebrowse-mode-map (kbd "s-1") 'eyebrowse-switch-to-window-config-1)
-          (define-key eyebrowse-mode-map (kbd "s-2") 'eyebrowse-switch-to-window-config-2)
-          (define-key eyebrowse-mode-map (kbd "s-3") 'eyebrowse-switch-to-window-config-3)
-          (define-key eyebrowse-mode-map (kbd "s-4") 'eyebrowse-switch-to-window-config-4)
-          (define-key eyebrowse-mode-map (kbd "s-5") 'eyebrowse-switch-to-window-config-5)
-          (define-key eyebrowse-mode-map (kbd "s-6") 'eyebrowse-switch-to-window-config-6)
-          (define-key eyebrowse-mode-map (kbd "s-7") 'eyebrowse-switch-to-window-config-7)
-          (define-key eyebrowse-mode-map (kbd "s-8") 'eyebrowse-switch-to-window-config-8)
-          (define-key eyebrowse-mode-map (kbd "s-9") 'eyebrowse-switch-to-window-config-9)
-          (eyebrowse-mode t)
-          (setq eyebrowse-new-workspace t)))
+        (persp-mode))
+
+      (setq display-buffer-alist
+            '((".*" (display-buffer-reuse-window display-buffer-same-window))))
+
+      (setq display-buffer-reuse-frames t)         ; reuse windows in other frames
+      (setq even-window-sizes nil)                 ; display-buffer: avoid resizing
+
+      (setq persp-state-default-file "~/.emacs.d/workspace/default")
+      (add-hook 'kill-emacs-hook #'persp-state-save)
+      (use-package persp-projectile
+        :demand t
+        :ensure t)
     #+END_SRC
 
 *** =moody=
@@ -956,13 +1020,13 @@ want is prioritized instead.
         (minions-mode 1))
     #+END_SRC
     
-*** =doom-themes=
+*** =base16-theme=
     #+BEGIN_SRC emacs-lisp
       (use-package doom-themes
         :demand t
         :ensure t
         :config
-        (load-theme 'doom-dark+ t))
+        (load-theme 'doom-one t))
     #+END_SRC
 
 *** =all-the-icons=
@@ -980,7 +1044,7 @@ want is prioritized instead.
     #+END_SRC
     
 *** =treemacs=
-    #+BEGIN_SRC emacs-lisp :tangle no
+    #+BEGIN_SRC emacs-lisp
       (use-package treemacs
         :ensure t
         :init
@@ -1055,7 +1119,7 @@ want is prioritized instead.
     #+END_SRC
 
 *** =vterm=
-   #+BEGIN_SRC emacs-lisp :tangle no
+    #+BEGIN_SRC emacs-lisp
      (defun my-shell-mode-hook ()
        "Custom `shell-mode' behaviours."
        ;; Kill the buffer when the shell process exits.
@@ -1074,6 +1138,8 @@ want is prioritized instead.
      (add-hook 'shell-mode-hook 'my-shell-mode-hook)
 
      (use-package vterm
+       :demand t
+       :ensure t
        :config
        (add-hook 'vterm-mode-hook
                  (lambda ()
@@ -1108,9 +1174,11 @@ want is prioritized instead.
        (evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
        (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume))
 
-     (use-package vterm-toggle)
+     (use-package vterm-toggle
+       :ensure t)
 
      (use-package shell-pop
+       :ensure t
        :config
        (defun shell-pop--set-exit-action ()
          (if (string= shell-pop-internal-mode "eshell")
@@ -1129,9 +1197,9 @@ want is prioritized instead.
         '(shell-pop-shell-type (quote ("vterm" "*vterm*" (lambda nil (vterm)))))
         '(shell-pop-window-size 35)
         '(shell-pop-full-span t)
-        '(shell-pop-term-shell "/usr/bin/zsh")
+        '(shell-pop-term-shell "/usr/local/bin/fish")
         '(shell-pop-window-position "bottom")))
-   #+END_SRC 
+    #+END_SRC 
    
 *** =docker=
     #+BEGIN_SRC emacs-lisp
@@ -1215,8 +1283,8 @@ want is prioritized instead.
     #+END_SRC
 
 *** =magit=
-The magical git client. Let's load magit only when one of the several entry pont
-functions we invoke regularly outside of magit is called.
+    The magical git client. Let's load magit only when one of the several entry pont
+    functions we invoke regularly outside of magit is called.
     #+BEGIN_SRC emacs-lisp
       (use-package magit
         :init
@@ -1227,12 +1295,11 @@ functions we invoke regularly outside of magit is called.
         :config
         (use-package evil-magit :demand t)
         (use-package with-editor :demand t)
+        (use-package magit-todos :demand t)
+        (use-package magit-gitflow :demand t)
+
         (add-hook 'with-editor-mode-hook 'evil-insert-state)
         :ensure t)
-
-      (use-package magit-gitflow)
-
-      (use-package magit-todos)
 
       (use-package yagist)
 
@@ -1243,10 +1310,9 @@ functions we invoke regularly outside of magit is called.
       (use-package github-review)
 
       (use-package forge
-        :demand t)
-      (push '("github.thetrainline.com" "github.thetrainline.com/api/v3"
-              "github.thetrainline.com" forge-github-repository)
-            forge-alist)
+        :config
+        (add-to-list 'forge-alist '("github.thetrainline.com" "github.thetrainline.com/api/v3"
+                                    "github.thetrainline.com" forge-github-repository)))
 
       (use-package git-gutter-fringe
         :ensure t
@@ -1265,6 +1331,7 @@ functions we invoke regularly outside of magit is called.
 *** =pdf-tools=
     #+BEGIN_SRC emacs-lisp
       (use-package pdf-tools
+        :demand t
         :config
         (setq-default pdf-view-use-scaling t
                       pdf-view-use-imagemagick nil)
@@ -1385,6 +1452,7 @@ functions we invoke regularly outside of magit is called.
         (add-hook 'after-init-hook 'global-company-mode))
 
       (use-package company-box
+        :demand t
         :config
         (setq company-box-show-single-candidate t
               company-box-backends-colors nil
@@ -1458,9 +1526,9 @@ functions we invoke regularly outside of magit is called.
         (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
 
       (use-package dired-hide-dotfiles
+        :demand t
         :config
-        (dired-hide-dotfiles-mode)
-        (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
+        (dired-hide-dotfiles-mode))
     #+END_SRC
 
 *** =langtool=
@@ -1564,10 +1632,22 @@ functions we invoke regularly outside of magit is called.
               flycheck-phpcs-standard "PSR2")
         (global-flycheck-mode))
 
-      (use-package flycheck-phpstan
-        :ensure t)
     #+END_SRC
     
+*** =dap-mode=
+    #+BEGIN_SRC emacs-lisp
+      (use-package dap-mode
+        :ensure t
+        :commands dap-mode
+        :config
+        (dap-mode 1)
+        (require 'dap-ui)
+        (dap-ui-mode 1)
+        (require 'dap-lldb))
+      (dap-tooltip-mode 1)
+      (tooltip-mode 1)
+      (require 'dap-php)
+    #+END_SRC
 *** Lang
 **** =css= =scss= =less=
      #+BEGIN_SRC emacs-lisp
@@ -1587,7 +1667,56 @@ functions we invoke regularly outside of magit is called.
 **** =web=
      #+BEGIN_SRC emacs-lisp
        (use-package web-mode
-         :ensure t)
+         :ensure t
+         :mode "\\(?:\\(?:\\.\\(?:html\\|twig\\)\\)\\)\\'"
+         :config
+         (setq web-mode-attr-indent-offset 2
+               web-mode-code-indent-offset 2
+               web-mode-css-indent-offset 2
+               web-mode-indent-style 2
+               web-mode-markup-indent-offset 2
+               web-mode-sql-indent-offset 2)
+
+         (setq web-mode-ac-sources-alist
+               '(("php" . (ac-source-php-extras
+                           ac-source-yasnippet
+                           ac-source-gtags
+                           ac-source-abbrev
+                           ac-source-dictionary
+                           ac-source-words-in-same-mode-buffers))
+                 ("css" . (ac-source-css-property
+                           ac-source-abbrev
+                           ac-source-dictionary
+                           ac-source-words-in-same-mode-buffers))))
+
+         (add-hook 'web-mode-hook
+                   (lambda ()
+                     (setq web-mode-style-padding 2)
+                     (yas-minor-mode t)
+                     (emmet-mode)
+                     (flycheck-add-mode 'html-tidy 'web-mode)
+                     (flycheck-mode)))
+
+         (add-hook 'web-mode-before-auto-complete-hooks
+                   '(lambda ()
+                      (let ((web-mode-cur-language (web-mode-language-at-pos)))
+                        (if (string= web-mode-cur-language "php")
+                            (yas-activate-extra-mode 'php-mode)
+                          (yas-deactivate-extra-mode 'php-mode))
+                        (if (string= web-mode-cur-language "css")
+                            (setq emmet-use-css-transform t)
+                          (setq emmet-use-css-transform nil))))))
+
+       ;; (use-package web-mode
+       ;;   :ensure t)
+
+       ;; (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+       ;; (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+       ;; (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+       ;; (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+       ;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+       ;; (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+       ;; (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
      #+END_SRC
      
 **** =javascript=
@@ -1632,8 +1761,10 @@ functions we invoke regularly outside of magit is called.
          (setq ledger-highlight-xact-under-point nil
                ledger-use-iso-dates nil))
 
-       (use-package flycheck-ledger)
-       (use-package evil-ledger)
+       (use-package flycheck-ledger
+         :demand t)
+       (use-package evil-ledger
+         :demand t)
        (add-hook 'ledger-mode-hook 'display-line-numbers-mode)
 
        (my-local-leader-def 'normal ledger-mode-map
@@ -1656,20 +1787,27 @@ functions we invoke regularly outside of magit is called.
      #+END_SRC
      
 **** =php=
-    #+BEGIN_SRC emacs-lisp
+     #+BEGIN_SRC emacs-lisp
       (use-package php-mode
         :init
         (setq-default php-mode-coding-style 'psr2)
         :ensure t)
 
       (use-package phpactor
-        :commands phpactor-install-or-update
+        :commands (phpactor-install-or-update)
         :ensure t)
 
-      (use-package phpstan
-        :init
-        (setq-default phpstan-executable 'phpstan)
-        :ensure t)
+      ;; (use-package phpstan
+      ;;   :demand t
+      ;;   :init
+      ;;   (setq-default phpstan-executable 'phpstan)
+      ;;   :ensure t)
+
+      ;; (use-package flycheck-phpstan
+      ;;   :demand t
+      ;;   :ensure t)
+
+      (flycheck-add-next-checker 'lsp 'php-phpcs)
 
       (use-package phpunit
         :ensure t)
@@ -1677,9 +1815,25 @@ functions we invoke regularly outside of magit is called.
       (use-package php-cs-fixer
         :ensure t)
 
+      ;; (use-package phpcbf
+      ;;   :after php-mode
+      ;;   :commands (phpcbf)
+      ;;   :ensure t
+      ;;   :hook (php-mode . phpcbf-enable-on-save))
+
       (use-package psysh
         :ensure t)
-    #+END_SRC
+
+      (my-local-leader-def 'normal php-mode-map
+        "tt" 'phpunit-current-test
+        "tp" 'phpunit-current-project
+        "tc" 'phpunit-current-class
+        "n" 'phpactor-create-new-class
+        "m" 'phpactor-move-class
+        "i" 'phpactor-import-class
+        "f" 'php-search-documentation
+        "r" 'counsel-imenu)
+     #+END_SRC
 
 *** =mu4e=
     #+BEGIN_SRC emacs-lisp
@@ -1881,20 +2035,24 @@ functions we invoke regularly outside of magit is called.
       ;; (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
     #+END_SRC
     
+*** =writeroom-mode=
+    #+BEGIN_SRC emacs-lisp
+    (use-package writeroom-mode :ensure t)
+    #+END_SRC
 *** Toc-org
-Let's install and load the =toc-org= package after org mode is loaded. This is the
-package that automatically generates an up to date table of contents for us.
+    Let's install and load the =toc-org= package after org mode is loaded. This is the
+    package that automatically generates an up to date table of contents for us.
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package toc-org
   :after org
   :init (add-hook 'org-mode-hook #'toc-org-enable))
-#+END_SRC
+    #+END_SRC
 
-** Post Initialization
-Let's lower our GC thresholds back down to a sane level.
+** Post Initialisation
+   Let's lower our GC thresholds back down to a sane level.
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 (setq gc-cons-threshold 16777216
       gc-cons-percentage 0.1)
-#+END_SRC
+   #+END_SRC
