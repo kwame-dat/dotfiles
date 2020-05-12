@@ -1021,12 +1021,6 @@ header-args :tangle yes
         :config
         (persp-mode))
 
-      (setq display-buffer-alist
-            '((".*" (display-buffer-reuse-window display-buffer-same-window))))
-
-      (setq display-buffer-reuse-frames t)         ; reuse windows in other frames
-      (setq even-window-sizes nil)                 ; display-buffer: avoid resizing
-
       (use-package persp-projectile
         :demand t
         :ensure t)
