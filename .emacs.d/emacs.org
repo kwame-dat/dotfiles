@@ -638,6 +638,7 @@ header-args :tangle yes
 *** =amx=
     #+BEGIN_SRC emacs-lisp
       (use-package amx
+        :demand t
         :ensure t
         :after ivy
         :custom
