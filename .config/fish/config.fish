@@ -1,8 +1,5 @@
 set fish_greeting
 
-# fnm
-fnm env --multi | source
-
 # Composer export path
 export PATH="$PATH:$HOME/.composer/vendor/bin"
 
