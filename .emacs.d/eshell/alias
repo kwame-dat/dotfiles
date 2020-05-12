@@ -1,0 +1,32 @@
+# General
+alias lsr ls -lhSr $*
+alias ltr ls -lhtr $*
+alias la ls -lha $*
+alias l ls -lh $*
+alias p cd var/www $*
+alias e exit $*
+alias c clear $*
+
+# Laravel
+alias rl php artisan route:list $*
+alias art php artisan $*
+alias rl php artisan route:list $*
+alias m php artisan migrate $*
+alias dbm php artisan migrate $*
+alias dbs php artisan db:seed $*
+alias mf php artisan migrate:fresh $*
+alias mfs php artisan migrate:fresh --seed $*
+alias dbs php artisan db:seed $*
+alias pi php artisan passport:install $*
+alias tinker php artisan tinker $*
+
+# PHP Test
+alias t vendor/bin/phpunit $*
+alias tsd vendor/bin/phpunit --order-by=defects --stop-on-defect $*
+alias tc vendor/bin/phpunit --coverage-html='tests/coverage/html' $*
+alias tf vendor/bin/phpunit --filter $*
+
+# Composer
+alias cu composer update $*
+alias ci composer install $*
+alias cda composer dump-autoload $*
