@@ -448,25 +448,25 @@ header-args :tangle yes
           "fS"  'write-file
           ;; documents
           ;; documents spiritual
-          "dsp" '(lambda() (interactive) (find-file "~/Documents/Spiritual/1Projects"))
-          "dsa" '(lambda() (interactive) (find-file "~/Documents/Spiritual/2Areas"))
-          "dsr" '(lambda() (interactive) (find-file "~/Documents/Spiritual/3Resources"))
-          "dsc" '(lambda() (interactive) (find-file "~/Documents/Spiritual/4Archives"))
+          "dsp" '(lambda() (interactive) (find-file "~/Spiritual/1Projects"))
+          "dsa" '(lambda() (interactive) (find-file "~/Spiritual/2Areas"))
+          "dsr" '(lambda() (interactive) (find-file "~/Spiritual/3Resources"))
+          "dsc" '(lambda() (interactive) (find-file "~/Spiritual/4Archives"))
           ;; documents personal
-          "dpp" '(lambda() (interactive) (find-file "~/Documents/Personal/1Projects"))
-          "dpa" '(lambda() (interactive) (find-file "~/Documents/Personal/2Areas"))
-          "dpr" '(lambda() (interactive) (find-file "~/Documents/Personal/3Resources"))
-          "dpc" '(lambda() (interactive) (find-file "~/Documents/Personal/4Archives"))
+          "dpp" '(lambda() (interactive) (find-file "~/Personal/1Projects"))
+          "dpa" '(lambda() (interactive) (find-file "~/Personal/2Areas"))
+          "dpr" '(lambda() (interactive) (find-file "~/Personal/3Resources"))
+          "dpc" '(lambda() (interactive) (find-file "~/Personal/4Archives"))
           ;; documents home
-          "dhp" '(lambda() (interactive) (find-file "~/Documents/Home/1Projects"))
-          "dha" '(lambda() (interactive) (find-file "~/Documents/Home/2Areas"))
-          "dhr" '(lambda() (interactive) (find-file "~/Documents/Home/3Resources"))
-          "dhc" '(lambda() (interactive) (find-file "~/Documents/Home/4Archives"))
+          "dhp" '(lambda() (interactive) (find-file "~/Home/1Projects"))
+          "dha" '(lambda() (interactive) (find-file "~/Home/2Areas"))
+          "dhr" '(lambda() (interactive) (find-file "~/Home/3Resources"))
+          "dhc" '(lambda() (interactive) (find-file "~/Home/4Archives"))
           ;; documents work
-          "dwp" '(lambda() (interactive) (find-file "~/Documents/Work/1Projects"))
-          "dwa" '(lambda() (interactive) (find-file "~/Documents/Work/2Areas"))
-          "dwr" '(lambda() (interactive) (find-file "~/Documents/Work/3Resources"))
-          "dwc" '(lambda() (interactive) (find-file "~/Documents/Work/4Archives"))
+          "dwp" '(lambda() (interactive) (find-file "~/Work/1Projects"))
+          "dwa" '(lambda() (interactive) (find-file "~/Work/2Areas"))
+          "dwr" '(lambda() (interactive) (find-file "~/Work/3Resources"))
+          "dwc" '(lambda() (interactive) (find-file "~/Work/4Archives"))
           ;; buffers
           "bb"  'counsel-switch-buffer
           "bB"  'counsel-ibuffer
@@ -730,12 +730,12 @@ header-args :tangle yes
         :ensure t
         :init
         (setq projectile-project-search-path '(
-                                               "~/Documents/Personal/2Areas"
-                                               "~/Documents/Home/1Projects"
-                                               "~/Documents/Home/2Areas"
+                                               "~/Personal/2Areas"
+                                               "~/Home/1Projects"
+                                               "~/Home/2Areas"
                                                "~/Spiritual/3Resources"
                                                "~/Spiritual/2Areas"
-                                               "~/Documents/Work/2Areas"
+                                               "~/Work/2Areas"
                                                "~/Repo/Personal/2Areas"
                                                "~/Repo/Personal/1Projects"
                                                "~/Repo/Work/1Projects"
