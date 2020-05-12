@@ -736,6 +736,7 @@ header-args :tangle yes
                                                "~/Documents/Spiritual/3Resources"
                                                "~/Documents/Spiritual/2Areas"
                                                "~/Documents/Work/2Areas"
+                                               "~/Repo/Personal/2Areas"
                                                "~/Repo/Personal/1Projects"
                                                "~/Repo/Work/1Projects"
                                                ))
