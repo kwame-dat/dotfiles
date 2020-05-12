@@ -994,8 +994,6 @@ header-args :tangle yes
         :config
         (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
-      (use-package org-pdfview)
-
       (use-package ob-restclient)
 
       ;; org mode keybindings
