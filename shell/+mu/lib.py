@@ -4,7 +4,7 @@ from subprocess import check_output
 from re import sub
 
 def get_pass(account):
-    data = check_output("/usr/local/bin/pass " + account, shell=True).splitlines()
+    data = check_output("pass " + account, shell=True).splitlines()
     password = data[1]
     user = data[2]
     remotehost = data[3]

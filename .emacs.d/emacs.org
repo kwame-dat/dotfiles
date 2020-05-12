@@ -138,7 +138,7 @@ header-args :tangle yes
       (setq mouse-wheel-scroll-amount '(1))
       (setq mouse-wheel-progressive-speed nil)
 
-      (set-frame-font "Fira Code 14" nil t)
+      (set-frame-font "Fira Code 13" nil t)
 
       (setq initial-major-mode 'org-mode)
 
@@ -733,8 +733,8 @@ header-args :tangle yes
                                                "~/Documents/Personal/2Areas"
                                                "~/Documents/Home/1Projects"
                                                "~/Documents/Home/2Areas"
-                                               "~/Documents/Spiritual/3Resources"
-                                               "~/Documents/Spiritual/2Areas"
+                                               "~/Spiritual/3Resources"
+                                               "~/Spiritual/2Areas"
                                                "~/Documents/Work/2Areas"
                                                "~/Repo/Personal/2Areas"
                                                "~/Repo/Personal/1Projects"
@@ -1267,10 +1267,10 @@ header-args :tangle yes
         '(shell-pop-shell-type (quote ("vterm" "*vterm*" (lambda nil (vterm)))))
         '(shell-pop-window-size 35)
         '(shell-pop-full-span t)
-        '(shell-pop-term-shell "/usr/local/bin/fish")
+        '(shell-pop-term-shell "/usr/bin/fish")
         '(shell-pop-window-position "bottom")))
     #+END_SRC 
-   
+
 *** =docker=
     #+BEGIN_SRC emacs-lisp
       (use-package dockerfile-mode
