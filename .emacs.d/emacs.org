@@ -549,7 +549,7 @@ header-args :tangle yes
           "op"  'pass
           "oe"  'es-command-center
           "ot" 'shell-pop
-          "oT" 'vterm-toggle
+          "oT" 'vterm
           "x"  'counsel-M-x
           )
         )
