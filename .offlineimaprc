@@ -1,7 +1,7 @@
 [general]
 accounts = Spiritual, Personal, Work
 maxsyncaccounts = 1
-pythonfile = ~/Repo/Personal/2Areas/Dotfiles/shell/+mu/lib.py
+pythonfile = ~/Repo/Personal/2Areas/dotfiles/shell/+mu/lib.py
 
 autorefresh = 0.5
 quick = 10
@@ -12,7 +12,7 @@ remoterepository = RemoteSpiritual
 
 [Repository LocalSpiritual]
 type = Maildir
-localfolders = ~/.mail/spiritual
+localfolders = ~/Maildir/Spiritual
 
 [Repository RemoteSpiritual]
 type = Gmail
@@ -20,8 +20,9 @@ remotehosteval = get_pass("spiritual/email/gmail.com")["remotehost"]
 remoteusereval = get_pass("spiritual/email/gmail.com")["user"]
 remotepasseval = get_pass("spiritual/email/gmail.com")["password"]
 ssl = yes
-maxconnections = 1
-sslcacertfile = /usr/local/etc/openssl/cert.pem
+holdconnectionopen = true
+keepalive = 60
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
 [Account Personal]
 localrepository = LocalPersonal
@@ -29,7 +30,7 @@ remoterepository = RemotePersonal
 
 [Repository LocalPersonal]
 type = Maildir
-localfolders = ~/.mail/personal
+localfolders = ~/Maildir/Personal
 
 [Repository RemotePersonal]
 type = IMAP
@@ -37,8 +38,9 @@ remotehosteval = get_pass("personal/email/arksolutions.it")["remotehost"]
 remoteusereval = get_pass("personal/email/arksolutions.it")["user"]
 remotepasseval = get_pass("personal/email/arksolutions.it")["password"]
 ssl = yes
-maxconnections = 1
-sslcacertfile = /usr/local/etc/openssl/cert.pem
+holdconnectionopen = true
+keepalive = 60
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
 [Account Work]
 localrepository = LocalWork
@@ -46,7 +48,7 @@ remoterepository = RemoteWork
 
 [Repository LocalWork]
 type = Maildir
-localfolders = ~/.mail/work
+localfolders = ~/Maildir/Work
 
 [Repository RemoteWork]
 type = IMAP
@@ -54,5 +56,6 @@ remotehosteval = get_pass("work/email/netsells.co.uk")["remotehost"]
 remoteusereval = get_pass("work/email/netsells.co.uk")["user"]
 remotepasseval = get_pass("work/email/netsells.co.uk")["password"]
 ssl = yes
-maxconnections = 1
-sslcacertfile = /usr/local/etc/openssl/cert.pem
+holdconnectionopen = true
+keepalive = 60
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
