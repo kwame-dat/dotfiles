@@ -138,7 +138,7 @@ header-args :tangle yes
       (setq mouse-wheel-scroll-amount '(1))
       (setq mouse-wheel-progressive-speed nil)
 
-      (set-frame-font "Fira Code 13" nil t)
+      (set-frame-font "Fira Code 14" nil t)
 
       (setq initial-major-mode 'org-mode)
 
