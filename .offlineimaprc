@@ -52,9 +52,9 @@ localfolders = ~/Maildir/Work
 
 [Repository RemoteWork]
 type = IMAP
-remotehosteval = get_pass("work/email/netsells.co.uk")["remotehost"]
-remoteusereval = get_pass("work/email/netsells.co.uk")["user"]
-remotepasseval = get_pass("work/email/netsells.co.uk")["password"]
+remotehosteval = get_pass("work/netsells/email")["remotehost"]
+remoteusereval = get_pass("work/netsells/email")["user"]
+remotepasseval = get_pass("work/netsells/email")["password"]
 ssl = yes
 holdconnectionopen = true
 keepalive = 60
