@@ -413,7 +413,8 @@ header-args :tangle yes
           "acd" 'slack-im-select
           "acq" 'slack-ws-close
           "app" 'password-store-copy
-          "apf" 'password-store-get-field
+          "apc" 'password-store-copy
+          "apg" 'password-store-copy
           "apd" 'password-store-remove
           "apr" 'password-store-rename
           "ape" 'password-store-edit
