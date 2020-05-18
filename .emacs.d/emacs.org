@@ -30,11 +30,11 @@
     - [[#ivy][=ivy=]]
     - [[#counsel][=counsel=]]
     - [[#amx][=amx=]]
+    - [[#company-mode][=company-mode=]]
+    - [[#all-the-icons][=all-the-icons=]]
     - [[#lsp-mode][=lsp-mode=]]
     - [[#flycheck][=flycheck=]]
     - [[#projectile][=projectile=]]
-    - [[#all-the-icons][=all-the-icons=]]
-    - [[#company][=company=]]
     - [[#which-key][=which-key=]]
     - [[#org-mode][=org-mode=]]
     - [[#perspective][=perspective=]]
@@ -138,7 +138,7 @@ header-args :tangle yes
       (setq mouse-wheel-scroll-amount '(1))
       (setq mouse-wheel-progressive-speed nil)
 
-      (set-frame-font "Fira Code 14" nil t)
+      (set-frame-font "Jetbrains Mono 14" nil t)
 
       (setq initial-major-mode 'org-mode)
 
@@ -200,6 +200,9 @@ header-args :tangle yes
 
       (add-hook 'conf-space-mode-hook 'display-line-numbers-mode)
     #+END_SRC
+
+    #+RESULTS:
+    | display-line-numbers-mode |
 
 *** Database configuration
     #+BEGIN_SRC emacs-lisp
@@ -574,55 +577,49 @@ header-args :tangle yes
     Generic completion frontend that's just awesome! Let's install and enable it.
 
     #+BEGIN_SRC emacs-lisp
-  (use-package ivy
-    :demand t
-    :init
-    (setq ivy-use-virtual-buffers t)
-    (setq ivy-count-format "(%d/%d) ")
-    (setq enable-recursive-minibuffers t)
-    (setq ivy-initial-inputs-alist nil)
-    (setq ivy-on-del-error-function #'ignore)
-    ;; (setq ivy-re-builders-alist
-    ;;       '((swiper . ivy--regex-plus)
-    ;;         (swiper-isearch . ivy--regex-plus)
-    ;;         (counsel-ag . ivy--regex-plus)
-    ;;         (counsel-rg . ivy--regex-plus)
-    ;;         (t      . ivy--regex-fuzzy)))
-    ;; :config
-    (ivy-mode 1)
-    (evil-set-initial-state 'ivy-occur-grep-mode 'normal))
+      (use-package ivy
+        :demand t
+        :init
+        (setq ivy-use-virtual-buffers t)
+        (setq ivy-count-format "(%d/%d) ")
+        (setq enable-recursive-minibuffers t)
+        (setq ivy-initial-inputs-alist nil)
+        (setq ivy-on-del-error-function #'ignore)
+        :config
+        (ivy-mode 1)
+        (evil-set-initial-state 'ivy-occur-grep-mode 'normal))
 
-  (use-package ivy-rich
-    :demand t
-    :ensure t
-    :after ivy
-    :config
-    (setq ivy-rich-path-style 'abbreviate)
+      (use-package ivy-rich
+        :demand t
+        :ensure t
+        :after ivy
+        :config
+        (setq ivy-rich-path-style 'abbreviate)
 
-    (setcdr (assq t ivy-format-functions-alist)
-            #'ivy-format-function-line)
-    (ivy-rich-mode 1))
+        (setcdr (assq t ivy-format-functions-alist)
+                #'ivy-format-function-line)
+        (ivy-rich-mode 1))
 
-  (use-package ivy-posframe
-    :ensure t
-    :after ivy
-    :diminish
-    :config
-    (setq ivy-posframe-parameters
-          '((left-fringe . 2)
-            (right-fringe . 2)
-            (internal-border-width . 2)
-            ))
-    (setq ivy-posframe-height-alist
-          '((swiper . 15)
-            (swiper-isearch . 15)
-            (t . 10)))
-    (setq ivy-posframe-display-functions-alist
-          '((complete-symbol . ivy-posframe-display-at-point)
-            (swiper . nil)
-            (swiper-isearch . nil)
-            (t . ivy-posframe-display-at-frame-center)))
-    (ivy-posframe-mode 1))
+      (use-package ivy-posframe
+        :ensure t
+        :after ivy
+        :diminish
+        :config
+        (setq ivy-posframe-parameters
+              '((left-fringe . 2)
+                (right-fringe . 2)
+                (internal-border-width . 2)
+                ))
+        (setq ivy-posframe-height-alist
+              '((swiper . 15)
+                (swiper-isearch . 15)
+                (t . 10)))
+        (setq ivy-posframe-display-functions-alist
+              '((complete-symbol . ivy-posframe-display-at-point)
+                (swiper . nil)
+                (swiper-isearch . nil)
+                (t . ivy-posframe-display-at-frame-center)))
+        (ivy-posframe-mode 1))
     #+END_SRC
 
 *** =counsel=
@@ -649,6 +646,61 @@ header-args :tangle yes
         (amx-show-key-bindings nil)
         :config
         (amx-mode 1))
+    #+END_SRC
+    
+*** =company-mode=
+    #+BEGIN_SRC emacs-lisp
+      (use-package company
+        :demand t
+        :init
+        (setq company-minimum-prefix-length 3
+              company-tooltip-limit 14
+              company-idle-delay 0.0
+              company-dabbrev-downcase nil
+              company-dabbrev-ignore-case nil
+              company-dabbrev-code-other-buffers t
+              company-tooltip-align-annotations t
+              company-require-match 'never
+              company-global-modes
+              '(not
+                erc-mode
+                eshell-mode
+                gud-mode
+                help-mode
+                message-mode
+                shell-mode
+                vterm-mode)
+              company-backends '(company-capf)
+              company-frontends
+              '(company-pseudo-tooltip-frontend
+                company-echo-metadata-frontend))
+        :ensure t
+        :config
+        (define-key company-active-map (kbd "ESC") 'company-abort)
+        (define-key company-active-map (kbd "[tab]") 'company-complete)
+        (define-key company-active-map (kbd "[return]") 'company-complete)
+        (define-key company-active-map (kbd "RET") #'company-complete-selection)
+        (define-key company-active-map (kbd "C-n") 'company-select-next)
+        (define-key company-active-map (kbd "C-p") 'company-select-previous)
+        (define-key company-active-map (kbd "C-SPC") #'company-manual-begin)
+        (define-key evil-insert-state-map (kbd "C-SPC") 'company-manual-begin)
+        (add-hook 'after-init-hook 'global-company-mode))
+    #+END_SRC
+
+*** =all-the-icons=
+    #+BEGIN_SRC emacs-lisp
+      (use-package all-the-icons
+        :ensure t
+        :demand t)
+
+      (use-package all-the-icons-dired)
+
+      (use-package all-the-icons-ivy
+        :ensure t
+        :config
+        (all-the-icons-ivy-setup))
+
+      (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
     #+END_SRC
     
 *** =lsp-mode=
@@ -683,9 +735,7 @@ header-args :tangle yes
         (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
         :bind (:map lsp-ui-mode-map
                     ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-                    ([remap xref-find-references] . lsp-ui-peek-find-references)
-                    ("C-c u" . lsp-ui-imenu)
-                    ("M-i" . lsp-ui-doc-focus-frame))
+                    ([remap xref-find-references] . lsp-ui-peek-find-references))
         :custom
         (lsp-ui-doc-header t)
         (lsp-ui-doc-include-signature t)
@@ -693,16 +743,11 @@ header-args :tangle yes
         (lsp-ui-doc-border (face-foreground 'default))
         (lsp-ui-sideline-enable nil)
         (lsp-ui-sideline-ignore-duplicate t)
-        (lsp-ui-sideline-show-code-actions nil)
-        :config
-        ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
-        ;; https://github.com/emacs-lsp/lsp-ui/issues/243
-        (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
-          (setq mode-line-format nil)))
+        (lsp-ui-sideline-show-code-actions nil))
 
       (use-package company-lsp
         :ensure t
-        :custom (company-lsp-cache-candidates 'auto))
+        :custom (company-lsp-cache-candidates t))
     #+END_SRC
 
 *** =flycheck=
@@ -745,104 +790,6 @@ header-args :tangle yes
         (setq projectile-switch-project-action #'projectile-dired)
         (projectile-mode))
     #+END_SRC
-
-*** =all-the-icons=
-    #+BEGIN_SRC emacs-lisp
-      (use-package all-the-icons
-        :ensure t
-        :demand t)
-
-      (use-package all-the-icons-dired)
-
-      (use-package all-the-icons-ivy
-        :ensure t
-        :config
-        (all-the-icons-ivy-setup))
-
-      (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-    #+END_SRC
-    
-*** =company=
-    #+BEGIN_SRC emacs-lisp
-      (use-package company
-        :demand t
-        :init
-        (setq company-minimum-prefix-length 3
-              company-tooltip-limit 14
-              company-idle-delay 0.0
-              company-dabbrev-downcase nil
-              company-dabbrev-ignore-case nil
-              company-dabbrev-code-other-buffers t
-              company-tooltip-align-annotations t
-              company-require-match 'never
-              company-global-modes
-              '(not
-                erc-mode
-                eshell-mode
-                gud-mode
-                help-mode
-                message-mode
-                shell-mode
-                vterm-mode)
-              company-backends '(company-capf)
-              company-frontends
-              '(company-pseudo-tooltip-frontend
-                company-echo-metadata-frontend))
-        :ensure t
-        :config
-        (define-key company-active-map (kbd "ESC") 'company-abort)
-        (define-key company-active-map (kbd "[tab]") 'company-complete)
-        (define-key company-active-map (kbd "[return]") 'company-complete)
-        (define-key company-active-map (kbd "RET") #'company-complete-selection)
-        (define-key company-active-map (kbd "C-n") 'company-select-next)
-        (define-key company-active-map (kbd "C-p") 'company-select-previous)
-        (define-key company-active-map (kbd "C-SPC") #'company-manual-begin)
-        (define-key evil-insert-state-map (kbd "C-SPC") 'company-manual-begin)
-        (add-hook 'after-init-hook 'global-company-mode))
-
-      (use-package company-box
-        :demand t
-        :config
-        (setq company-box-show-single-candidate t
-              company-box-backends-colors nil
-              company-box-max-candidates 50
-              company-box-icons-alist 'company-box-icons-all-the-icons
-              company-box-icons-all-the-icons
-              (let ((all-the-icons-scale-factor 0.8))
-                `((Unknown       . ,(all-the-icons-material "find_in_page"             :face 'all-the-icons-purple))
-                  (Text          . ,(all-the-icons-material "text_fields"              :face 'all-the-icons-green))
-                  (Method        . ,(all-the-icons-material "functions"                :face 'all-the-icons-red))
-                  (Function      . ,(all-the-icons-material "functions"                :face 'all-the-icons-red))
-                  (Constructor   . ,(all-the-icons-material "functions"                :face 'all-the-icons-red))
-                  (Field         . ,(all-the-icons-material "functions"                :face 'all-the-icons-red))
-                  (Variable      . ,(all-the-icons-material "adjust"                   :face 'all-the-icons-blue))
-                  (Class         . ,(all-the-icons-material "class"                    :face 'all-the-icons-red))
-                  (Interface     . ,(all-the-icons-material "settings_input_component" :face 'all-the-icons-red))
-                  (Module        . ,(all-the-icons-material "view_module"              :face 'all-the-icons-red))
-                  (Property      . ,(all-the-icons-material "settings"                 :face 'all-the-icons-red))
-                  (Unit          . ,(all-the-icons-material "straighten"               :face 'all-the-icons-red))
-                  (Value         . ,(all-the-icons-material "filter_1"                 :face 'all-the-icons-red))
-                  (Enum          . ,(all-the-icons-material "plus_one"                 :face 'all-the-icons-red))
-                  (Keyword       . ,(all-the-icons-material "filter_center_focus"      :face 'all-the-icons-red))
-                  (Snippet       . ,(all-the-icons-material "short_text"               :face 'all-the-icons-red))
-                  (Color         . ,(all-the-icons-material "color_lens"               :face 'all-the-icons-red))
-                  (File          . ,(all-the-icons-material "insert_drive_file"        :face 'all-the-icons-red))
-                  (Reference     . ,(all-the-icons-material "collections_bookmark"     :face 'all-the-icons-red))
-                  (Folder        . ,(all-the-icons-material "folder"                   :face 'all-the-icons-red))
-                  (EnumMember    . ,(all-the-icons-material "people"                   :face 'all-the-icons-red))
-                  (Constant      . ,(all-the-icons-material "pause_circle_filled"      :face 'all-the-icons-red))
-                  (Struct        . ,(all-the-icons-material "streetview"               :face 'all-the-icons-red))
-                  (Event         . ,(all-the-icons-material "event"                    :face 'all-the-icons-red))
-                  (Operator      . ,(all-the-icons-material "control_point"            :face 'all-the-icons-red))
-                  (TypeParameter . ,(all-the-icons-material "class"                    :face 'all-the-icons-red))
-                  (Template      . ,(all-the-icons-material "short_text"               :face 'all-the-icons-green))
-                  (ElispFunction . ,(all-the-icons-material "functions"                :face 'all-the-icons-red))
-                  (ElispVariable . ,(all-the-icons-material "check_circle"             :face 'all-the-icons-blue))
-                  (ElispFeature  . ,(all-the-icons-material "stars"                    :face 'all-the-icons-orange))
-                  (ElispFace     . ,(all-the-icons-material "format_paint"             :face 'all-the-icons-pink)))))
-        :hook (company-mode . company-box-mode))
-    #+END_SRC
-
 *** =which-key=
     #+BEGIN_SRC emacs-lisp
       (use-package which-key
@@ -1619,8 +1566,9 @@ header-args :tangle yes
         :demand t
         :ensure t
         :config
-        (load-theme 'doom-one t))
+        (load-theme 'doom-tomorrow-night t))
     #+END_SRC
+
 *** =powerline=
     #+BEGIN_SRC emacs-lisp
       (use-package powerline
