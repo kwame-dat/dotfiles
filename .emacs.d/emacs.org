@@ -200,10 +200,6 @@ header-args :tangle yes
 
       (add-hook 'conf-space-mode-hook 'display-line-numbers-mode)
     #+END_SRC
-
-    #+RESULTS:
-    | display-line-numbers-mode |
-
 *** Database configuration
     #+BEGIN_SRC emacs-lisp
       (setq sql-connection-alist
@@ -322,10 +318,7 @@ header-args :tangle yes
                      (lambda () (interactive) (delete-window)))
      (global-set-key [(super z)] 'undo)
 
-     (global-set-key (kbd "s-r") 'counsel-imenu)
-     (global-set-key (kbd "s-b") 'counsel-switch-buffer)
      (global-set-key (kbd "s-/") 'comment-line)
-     (global-set-key (kbd "s-F") 'counsel-projectile-rg)
      (global-set-key (kbd "s-f") 'swiper-isearch)
      (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
      (global-set-key (kbd "s-o") (kbd "C-x o"))
@@ -544,6 +537,7 @@ header-args :tangle yes
           "w"  'evil-window-map
           ;; help
           "h"  'help-map
+          "r" 'counsel-imenu
           ;; open application
           "o-" 'dired-jump
           "oc" 'cfw:open-org-calendar
@@ -572,10 +566,8 @@ header-args :tangle yes
         "." 'dired-hide-dotfiles-mode
         "C-e" 'dired-toggle-read-only)
     #+END_SRC
-
 *** =ivy=
     Generic completion frontend that's just awesome! Let's install and enable it.
-
     #+BEGIN_SRC emacs-lisp
       (use-package ivy
         :demand t
@@ -621,7 +613,6 @@ header-args :tangle yes
                 (t . ivy-posframe-display-at-frame-center)))
         (ivy-posframe-mode 1))
     #+END_SRC
-
 *** =counsel=
     Counsel allows us to utilize ivy by replacing many built-in and common functions
     with richer versions. Let's install it!
@@ -1569,7 +1560,6 @@ header-args :tangle yes
         :config
         (load-theme 'doom-tomorrow-night t))
     #+END_SRC
-
 *** =powerline=
     #+BEGIN_SRC emacs-lisp
       (use-package powerline
