@@ -37,7 +37,7 @@
     - [[#projectile][=projectile=]]
     - [[#which-key][=which-key=]]
     - [[#org-mode][=org-mode=]]
-    - [[#perspective][=perspective=]]
+    - [[#eyebrowse][=eyebrowse=]]
     - [[#calfw][=calfw=]]
     - [[#slack][=slack=]]
     - [[#nov][=nov=]]
@@ -327,7 +327,7 @@ header-args :tangle yes
      (global-set-key (kbd "s-p") 'projectile-switch-project)
      (global-set-key (kbd "s-P") 'counsel-M-x)
      (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
-     (global-set-key (kbd "s-k") 'persp-kill-buffer*)
+     (global-set-key (kbd "s-k") 'kill-buffer)
    #+END_SRC
 
 ** Packages
@@ -415,17 +415,15 @@ header-args :tangle yes
           "apr" 'password-store-rename
           "ape" 'password-store-edit
           ;; workspaces
-          "<tab><tab>" 'persp-switch-last
-          "<tab>." 'persp-switch
-          "<tab>c" 'persp-switch
-          "<tab>n" 'persp-switch
-          "<tab>d" 'persp-kill
-          "<tab>k" 'persp-kill
-          "<tab>r" 'persp-rename
-          "<tab>[" 'persp-prev
-          "<tab>]" 'persp-next
-          "<tab>s" 'persp-state-save
-          "<tab>l" 'persp-state-load
+          "<tab><tab>" 'eyebrowse-new-workspace
+          "<tab>." 'eyebrowse-switch-to-window-config
+          "<tab>c" 'eyebrowse-create-window-config
+          "<tab>n" 'eyebrowse-create-window-config
+          "<tab>d" 'eyebrowse-close-window-config
+          "<tab>k" 'eyebrowse-close-window-config
+          "<tab>r" 'eyebrowse-rename-window-config
+          "<tab>[" 'eyebrowse-prev-window-config
+          "<tab>]" 'eyebrowse-next-window-config
           ;; files
           "fc"  'editorconfig-find-current-editorconfig
           "fC"  'itecytony/copy-this-file
@@ -493,7 +491,7 @@ header-args :tangle yes
           "tvl"  'global-visual-line-mode
           "te"  'global-emojify-mode
           ;; projects
-          "pp"  'projectile-persp-switch-project
+          "pp"  'projectile-switch-project
           "pi"  'projectile-invalidate-cache
           "pt"  'projectile-run-vterm
           "pb"  'projectile-switch-to-buffer
@@ -566,6 +564,7 @@ header-args :tangle yes
         "." 'dired-hide-dotfiles-mode
         "C-e" 'dired-toggle-read-only)
     #+END_SRC
+
 *** =ivy=
     Generic completion frontend that's just awesome! Let's install and enable it.
     #+BEGIN_SRC emacs-lisp
@@ -950,19 +949,24 @@ header-args :tangle yes
         "r" 'org-refile)
     #+END_SRC
    
-*** =perspective=
+*** =eyebrowse=
     #+BEGIN_SRC emacs-lisp
-      (use-package perspective
+      (use-package eyebrowse
         :demand t
-        :ensure t
-        :bind (("C-x b" . persp-switch-to-buffer*)
-               ("C-x k" . persp-kill-buffer*))
-        :config
-        (persp-mode))
-
-      (use-package persp-projectile
-        :demand t
-        :ensure t)
+        :diminish eyebrowse-mode
+        :config (progn
+                  (define-key eyebrowse-mode-map (kbd "M-1") 'eyebrowse-switch-to-window-config-1)
+                  (define-key eyebrowse-mode-map (kbd "M-2") 'eyebrowse-switch-to-window-config-2)
+                  (define-key eyebrowse-mode-map (kbd "M-3") 'eyebrowse-switch-to-window-config-3)
+                  (define-key eyebrowse-mode-map (kbd "M-4") 'eyebrowse-switch-to-window-config-4)
+                  (define-key eyebrowse-mode-map (kbd "M-5") 'eyebrowse-switch-to-window-config-5)
+                  (define-key eyebrowse-mode-map (kbd "M-6") 'eyebrowse-switch-to-window-config-6)
+                  (define-key eyebrowse-mode-map (kbd "M-7") 'eyebrowse-switch-to-window-config-7)
+                  (define-key eyebrowse-mode-map (kbd "M-8") 'eyebrowse-switch-to-window-config-8)
+                  (define-key eyebrowse-mode-map (kbd "M-9") 'eyebrowse-switch-to-window-config-9)
+                  (define-key eyebrowse-mode-map (kbd "M-0") 'eyebrowse-switch-to-window-config-0)
+                  (eyebrowse-mode t)
+                  (setq eyebrowse-new-workspace t)))
     #+END_SRC
 
 *** =calfw=
