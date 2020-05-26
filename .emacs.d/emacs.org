@@ -65,8 +65,9 @@
     - [[#writeroom-mode][=writeroom-mode=]]
     - [[#speed-type][=speed-type=]]
     - [[#engine-mode][=engine-mode=]]
-    - [[#doom-themes][=doom-themes=]]
+    - [[#base16-theme][=base16-theme=]]
     - [[#powerline][=powerline=]]
+    - [[#diminish][=diminish=]]
     - [[#lang][Lang]]
     - [[#mu4e][=mu4e=]]
     - [[#toc-org][Toc-org]]
@@ -1556,27 +1557,37 @@ header-args :tangle yes
       (engine-mode t)
     #+END_SRC
 
-*** =doom-themes=
+*** =base16-theme=
     #+BEGIN_SRC emacs-lisp
-      (use-package doom-themes
+      (use-package base16-theme
         :demand t
         :ensure t
         :config
-        (load-theme 'doom-tomorrow-night t))
+        (load-theme 'base16-tomorrow-night t))
     #+END_SRC
 *** =powerline=
     #+BEGIN_SRC emacs-lisp
       (use-package powerline
         :demand t
-        :ensure t)
+        :ensure t
+        :config
+        (powerline-default-theme))
 
       (use-package powerline-evil
         :ensure t
         :demand t)
 
-      (powerline-default-theme)
-
-      (use-package diminish :ensure t)
+      (use-package airline-themes
+        :ensure t
+        :demand t
+        :config
+        (load-theme 'airline-base16_tomorrow))
+    #+END_SRC
+*** =diminish=
+    #+BEGIN_SRC emacs-lisp
+      (use-package diminish
+        :ensure t
+        :demand t)
       (diminish 'evil-org-mode)
       (diminish 'ivy-mode)
       (diminish 'subword-mode)
