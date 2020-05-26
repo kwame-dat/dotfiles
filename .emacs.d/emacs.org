@@ -1802,17 +1802,10 @@ header-args :tangle yes
       (setq mu4e-view-show-addresses 't)
 
       ;; path to my mail directory
-      (setq mu4e-maildir "~/.mail")
+      (setq mu4e-maildir "~/Maildir")
 
       ;; path to saving attachments
       (setq mu4e-attachment-dir "~/Downloads")
-
-      ;; the next are relative to `mu4e-maildir'
-      ;; instead of strings, they can be functions too, see
-      ;; their docstring or the chapter 'Dynamic folders'
-      (setq mu4e-sent-folder   "/Sent"
-            mu4e-drafts-folder "/Drafts"
-            mu4e-trash-folder  "/Trash")
 
       ;; the maildirs you use frequently; access them with 'j' ('jump')
       (setq   mu4e-maildir-shortcuts
@@ -1879,11 +1872,15 @@ header-args :tangle yes
                  :vars '( ( user-mail-address      . "tony@arksolutions.it"  )
                           ( user-full-name         . "Tony Ampomah" )
                           ( smtpmail-smtp-server   . "smtp.zoho.com" )
-                          ( mu4e-refile-folder . "/personal/4Archives")
+                          ( mu4e-refile-folder . "/Personal/4Archives")
+                          ( mu4e-trash-folder . "/Personal/Trash")
+                          ( mu4e-sent-folder . "/Personal/Sent")
+                          ( mu4e-drafts-folder . "/Personal/Drafts")
                           ( mu4e-compose-signature .
                                                    (concat
                                                     "Many thanks\n"
                                                     "Tony\n"))))
+
 
                ,(make-mu4e-context
                  :name "w tony.ampomah@netsells.co.uk"
@@ -1897,7 +1894,10 @@ header-args :tangle yes
                  :vars '( ( user-mail-address       . "tony.ampomah@netsells.co.uk" )
                           ( user-full-name          . "Tony Ampomah" )
                           ( smtpmail-smtp-server    . "smtp.gmail.com" )
-                          ( mu4e-refile-folder . "/work/4Archives")
+                          ( mu4e-refile-folder . "/Work/4Archives")
+                          ( mu4e-trash-folder . "/Work/[Gmail].Bin")
+                          ( mu4e-sent-folder . "/Work/[Gmail].Sent Mail")
+                          ( mu4e-drafts-folder . "/Work/[Gmail].Drafts")
                           ( mu4e-compose-signature  .
                                                     (concat
                                                      "Tony Ampomah\n"
@@ -1917,7 +1917,10 @@ header-args :tangle yes
                  :vars '( ( user-mail-address      . "tony.ampomah.jw@gmail.com"  )
                           ( user-full-name         . "Tony Ampomah" )
                           ( smtpmail-smtp-server   . "smtp.gmail.com" )
-                          ( mu4e-refile-folder . "/spiritual/4Archives")
+                          ( mu4e-refile-folder . "/Spiritual/4Archives")
+                          ( mu4e-trash-folder . "/Spiritual/[Gmail].Trash")
+                          ( mu4e-sent-folder . "/Spiritual/[Gmail].Sent Mail")
+                          ( mu4e-drafts-folder . "/Spiritual/[Gmail].Drafts")
                           ( mu4e-compose-signature .
                                                    (concat
                                                     "Warm love\n"
