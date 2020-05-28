@@ -444,25 +444,25 @@ header-args :tangle yes
           "fS"  'write-file
           ;; documents
           ;; documents spiritual
-          "dsp" '(lambda() (interactive) (find-file "~/Documents/Spiritual/1Projects"))
-          "dsa" '(lambda() (interactive) (find-file "~/Documents/Spiritual/2Areas"))
-          "dsr" '(lambda() (interactive) (find-file "~/Documents/Spiritual/3Resources"))
-          "dsc" '(lambda() (interactive) (find-file "~/Documents/Spiritual/4Archives"))
+          "dsp" '(lambda() (interactive) (find-file "~/Google Drive/Spiritual/1Projects"))
+          "dsa" '(lambda() (interactive) (find-file "~/Google Drive/Spiritual/2Areas"))
+          "dsr" '(lambda() (interactive) (find-file "~/Google Drive/Spiritual/3Resources"))
+          "dsc" '(lambda() (interactive) (find-file "~/Google Drive/Spiritual/4Archives"))
           ;; documents personal
-          "dpp" '(lambda() (interactive) (find-file "~/Documents/Personal/1Projects"))
-          "dpa" '(lambda() (interactive) (find-file "~/Documents/Personal/2Areas"))
-          "dpr" '(lambda() (interactive) (find-file "~/Documents/Personal/3Resources"))
-          "dpc" '(lambda() (interactive) (find-file "~/Documents/Personal/4Archives"))
+          "dpp" '(lambda() (interactive) (find-file "~/Google Drive/Personal/1Projects"))
+          "dpa" '(lambda() (interactive) (find-file "~/Google Drive/Personal/2Areas"))
+          "dpr" '(lambda() (interactive) (find-file "~/Google Drive/Personal/3Resources"))
+          "dpc" '(lambda() (interactive) (find-file "~/Google Drive/Personal/4Archives"))
           ;; documents home
-          "dhp" '(lambda() (interactive) (find-file "~/Documents/Home/1Projects"))
-          "dha" '(lambda() (interactive) (find-file "~/Documents/Home/2Areas"))
-          "dhr" '(lambda() (interactive) (find-file "~/Documents/Home/3Resources"))
-          "dhc" '(lambda() (interactive) (find-file "~/Documents/Home/4Archives"))
+          "dhp" '(lambda() (interactive) (find-file "~/Google Drive/Home/1Projects"))
+          "dha" '(lambda() (interactive) (find-file "~/Google Drive/Home/2Areas"))
+          "dhr" '(lambda() (interactive) (find-file "~/Google Drive/Home/3Resources"))
+          "dhc" '(lambda() (interactive) (find-file "~/Google Drive/Home/4Archives"))
           ;; documents work
-          "dwp" '(lambda() (interactive) (find-file "~/Documents/Work/1Projects"))
-          "dwa" '(lambda() (interactive) (find-file "~/Documents/Work/2Areas"))
-          "dwr" '(lambda() (interactive) (find-file "~/Documents/Work/3Resources"))
-          "dwc" '(lambda() (interactive) (find-file "~/Documents/Work/4Archives"))
+          "dwp" '(lambda() (interactive) (find-file "~/Google Drive/Work/1Projects"))
+          "dwa" '(lambda() (interactive) (find-file "~/Google Drive/Work/2Areas"))
+          "dwr" '(lambda() (interactive) (find-file "~/Google Drive/Work/3Resources"))
+          "dwc" '(lambda() (interactive) (find-file "~/Google Drive/Work/4Archives"))
           ;; buffers
           "bb"  'counsel-switch-buffer
           "bB"  'counsel-ibuffer
@@ -644,7 +644,7 @@ header-args :tangle yes
       (use-package company
         :demand t
         :init
-        (setq company-minimum-prefix-length 3
+        (setq company-minimum-prefix-length 1
               company-tooltip-limit 14
               company-idle-delay 0.0
               company-dabbrev-downcase nil
@@ -677,7 +677,6 @@ header-args :tangle yes
         (define-key evil-insert-state-map (kbd "C-SPC") 'company-manual-begin)
         (add-hook 'after-init-hook 'global-company-mode))
     #+END_SRC
-
 *** =all-the-icons=
     #+BEGIN_SRC emacs-lisp
       (use-package all-the-icons
@@ -767,12 +766,12 @@ header-args :tangle yes
         :ensure t
         :init
         (setq projectile-project-search-path '(
-                                               "~/Documents/Personal/2Areas"
-                                               "~/Documents/Home/1Projects"
-                                               "~/Documents/Home/2Areas"
-                                               "~/Documents/Spiritual/3Resources"
-                                               "~/Documents/Spiritual/2Areas"
-                                               "~/Documents/Work/2Areas"
+                                               "~/Google Drive/Personal/2Areas"
+                                               "~/Google Drive/Home/1Projects"
+                                               "~/Google Drive/Home/2Areas"
+                                               "~/Google Drive/Spiritual/3Resources"
+                                               "~/Google Drive/Spiritual/2Areas"
+                                               "~/Google Drive/Work/2Areas"
                                                "~/Repo/Personal/2Areas"
                                                "~/Repo/Personal/1Projects"
                                                "~/Repo/Work/1Projects"
