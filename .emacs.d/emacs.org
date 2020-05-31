@@ -320,7 +320,6 @@ header-args :tangle yes
      (global-set-key [(super z)] 'undo)
 
      (global-set-key (kbd "s-/") 'comment-line)
-     (global-set-key (kbd "s-f") 'swiper-isearch)
      (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
      (global-set-key (kbd "s-o") (kbd "C-x o"))
      (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
@@ -528,8 +527,7 @@ header-args :tangle yes
           ":"  'eval-expression
           "cc"  'compile
           "<SPC>" 'projectile-find-file
-          "/r"  'counsel-imenu
-          "/sp"  'counsel-rg
+          "/"  'swiper
           ;; insert
           "ie" 'emoji-cheat-sheet-plus-insert
           ;; window
