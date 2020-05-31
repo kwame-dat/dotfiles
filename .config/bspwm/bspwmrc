@@ -1,0 +1,34 @@
+#! /bin/sh
+
+#### AUTOSTART ####
+sxhkd &
+picom -CGb &
+nitrogen --restore &
+nm-applet &
+pamac-tray &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+xset r rate 185 100 &
+xcape -e 'Caps_Lock=Escape' &
+setxkbmap -option 'caps:ctrl_modifier' &
+$HOME/.config/polybar/launch.sh &
+xrandr --dpi 120 &
+
+
+bspc monitor -d I II III IV V VI VII VIII IX X
+
+bspc config border_width         2
+bspc config window_gap           4
+
+bspc config split_ratio          0.50
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+bspc config top_padding          30
+
+bspc rule -a Emacs desktop='^1' state=tiled
+bspc rule -a Vivaldi desktop='^2'
+bspc rule -a Gimp desktop='^8' state=floating follow=on
+bspc rule -a Slack desktop='^9'
+bspc rule -a Spotify desktop='^10'
+bspc rule -a mplayer2 state=floating
+bspc rule -a Kupfer.py focus=on
+bspc rule -a Screenkey manage=off

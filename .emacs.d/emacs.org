@@ -775,6 +775,7 @@ header-args :tangle yes
                                                "~/Repo/Personal/2Areas"
                                                "~/Repo/Personal/1Projects"
                                                "~/Repo/Work/1Projects"
+                                               "~/Dropbox/org"
                                                ))
         (setq projectile-completion-system 'ivy)
         (setq projectile-switch-project-action #'projectile-dired)
@@ -1562,7 +1563,7 @@ header-args :tangle yes
         :demand t
         :ensure t
         :config
-        (load-theme 'base16-tomorrow-night t))
+        (load-theme 'base16-nord t))
     #+END_SRC
 *** =powerline=
     #+BEGIN_SRC emacs-lisp
@@ -1580,7 +1581,7 @@ header-args :tangle yes
         :ensure t
         :demand t
         :config
-        (load-theme 'airline-base16_tomorrow))
+        (load-theme 'airline-base16_nord))
     #+END_SRC
 *** =diminish=
     #+BEGIN_SRC emacs-lisp
