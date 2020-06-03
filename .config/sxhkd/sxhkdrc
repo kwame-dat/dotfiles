@@ -12,7 +12,7 @@ super + shift + Escape
 
 # program launcher
 super + space
-	rofi -combi-modi drun,window,ssh -show combi -modi combi
+	rofi -combi-modi drun,window,ssh -show combi -modi combi -line-padding 4 -width 25 -padding 30 -hide-scrollbar -show-icons -drun-icon-theme "Papirus"
 
 #
 # bspwm hotkeys
