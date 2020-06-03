@@ -1561,7 +1561,7 @@ header-args :tangle yes
         :demand t
         :ensure t
         :config
-        (load-theme 'base16-nord t))
+        (load-theme 'base16-tomorrow-night t))
     #+END_SRC
 *** =powerline=
     #+BEGIN_SRC emacs-lisp
@@ -1579,7 +1579,7 @@ header-args :tangle yes
         :ensure t
         :demand t
         :config
-        (load-theme 'airline-base16_nord))
+        (load-theme 'airline-base16_tomorrow))
     #+END_SRC
 *** =diminish=
     #+BEGIN_SRC emacs-lisp
