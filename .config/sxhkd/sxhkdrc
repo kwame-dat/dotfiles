@@ -18,9 +18,13 @@ super + space
 # bspwm hotkeys
 #
 
-# quit/restart bspwm
-super + shift + {q,r}
-	bspc {quit,wm -r}
+# restart bspwm
+super + shift + r
+	bspc wm -r
+
+# quit bspwm
+super + ctrl + q
+	bspc quit
 
 # close and kill
 super + {_,shift + }q
