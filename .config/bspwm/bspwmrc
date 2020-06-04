@@ -7,7 +7,7 @@ xrandr --dpi 120 &
 nitrogen --restore &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 $HOME/.config/polybar/launch.sh &
-xset r rate 200 80 &
+xset r rate 220 80 &
 
 bspc monitor -d 1 2 3 4 5 6 7 8 9 0
 
@@ -40,7 +40,7 @@ bspc config urgent_border_color 	      "#dd2727"
 
 
 bspc rule -a Emacs desktop='^1' state=tiled
-bspc rule -a Chromium desktop='^2'
+bspc rule -a Vivaldi desktop='^2'
 bspc rule -a Zoom desktop='^8'
 bspc rule -a Skype desktop='^8'
 bspc rule -a Slack desktop='^9'
