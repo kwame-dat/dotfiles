@@ -764,12 +764,12 @@ header-args :tangle yes
         :ensure t
         :init
         (setq projectile-project-search-path '(
-                                               "~/Google Drive/Personal/2Areas"
-                                               "~/Google Drive/Home/1Projects"
-                                               "~/Google Drive/Home/2Areas"
-                                               "~/Google Drive/Spiritual/3Resources"
-                                               "~/Google Drive/Spiritual/2Areas"
-                                               "~/Google Drive/Work/2Areas"
+                                               "~/Sync/Documents/Personal/2Areas"
+                                               "~/Sync/Documents/Home/1Projects"
+                                               "~/Sync/Documents/Home/2Areas"
+                                               "~/Sync/Documents/Spiritual/3Resources"
+                                               "~/Sync/Documents/Spiritual/2Areas"
+                                               "~/Sync/Documents/Work/2Areas"
                                                "~/Repo/Personal/2Areas"
                                                "~/Repo/Personal/1Projects"
                                                "~/Repo/Work/1Projects"
