@@ -3,7 +3,6 @@
 #### AUTOSTART ####
 sxhkd &
 picom -CGb &
-xrandr --dpi 120 &
 nitrogen --restore &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 $HOME/.config/polybar/launch.sh &
