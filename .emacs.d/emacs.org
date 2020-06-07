@@ -302,7 +302,7 @@ header-args :tangle yes
 
   (defun itechytony/find-in-notes ()
   (interactive)
-  (counsel-find-file "~/Dropbox/org"))
+  (counsel-find-file "~/Sync/org"))
    #+END_SRC
 
 ** Super Keybinding
@@ -500,29 +500,29 @@ header-args :tangle yes
           "pB"  'counsel-switch-buffer
           "pd"  'projectile-discover-projects-in-search-path
           ;; notes
-          "nf" '(lambda() (interactive) (counsel-find-file "~/Dropbox/org"))
-          "n." '(lambda() (interactive) (counsel-find-file "~/Dropbox/org"))
-          "ni" '(lambda() (interactive) (find-file "~/Dropbox/org/inbox.org"))
+          "nf" '(lambda() (interactive) (counsel-find-file "~/Sync/org"))
+          "n." '(lambda() (interactive) (counsel-find-file "~/Sync/org"))
+          "ni" '(lambda() (interactive) (find-file "~/Sync/org/inbox.org"))
           "na" 'org-agenda
           "nci" 'org-pomodoro
           "nco" 'org-pomodoro-clock-break
           "nn" 'org-capture
           ;; notes spiritual
-          "nst" '(lambda() (interactive) (find-file "~/Dropbox/org/todo-spiritual.org"))
-          "nsg" '(lambda() (interactive) (find-file "~/Dropbox/org/goals-spiritual.org"))
-          "nsc" '(lambda() (interactive) (find-file "~/Dropbox/org/calendar/spiritual.org"))
+          "nst" '(lambda() (interactive) (find-file "~/Sync/org/todo-spiritual.org"))
+          "nsg" '(lambda() (interactive) (find-file "~/Sync/org/goals-spiritual.org"))
+          "nsc" '(lambda() (interactive) (find-file "~/Sync/org/calendar/spiritual.org"))
           ;; notes personal
-          "npt" '(lambda() (interactive) (find-file "~/Dropbox/org/todo-personal.org"))
-          "npc" '(lambda() (interactive) (find-file "~/Dropbox/org/calendar/personal.org"))
-          "npg" '(lambda() (interactive) (find-file "~/Dropbox/org/goals-personal.org"))
+          "npt" '(lambda() (interactive) (find-file "~/Sync/org/todo-personal.org"))
+          "npc" '(lambda() (interactive) (find-file "~/Sync/org/calendar/personal.org"))
+          "npg" '(lambda() (interactive) (find-file "~/Sync/org/goals-personal.org"))
           ;; notes home
-          "nht" '(lambda() (interactive) (find-file "~/Dropbox/org/todo-home.org"))
-          "nhg" '(lambda() (interactive) (find-file "~/Dropbox/org/goals-home.org"))
-          "nhc" '(lambda() (interactive) (find-file "~/Dropbox/org/calendar/home.org"))
+          "nht" '(lambda() (interactive) (find-file "~/Sync/org/todo-home.org"))
+          "nhg" '(lambda() (interactive) (find-file "~/Sync/org/goals-home.org"))
+          "nhc" '(lambda() (interactive) (find-file "~/Sync/org/calendar/home.org"))
           ;; notes work
-          "nwt" '(lambda() (interactive) (find-file "~/Dropbox/org/todo-work.org"))
-          "nwc" '(lambda() (interactive) (find-file "~/Dropbox/org/calendar/work.org"))
-          "nwg" '(lambda() (interactive) (find-file "~/Dropbox/org/goals-work.org"))
+          "nwt" '(lambda() (interactive) (find-file "~/Sync/org/todo-work.org"))
+          "nwc" '(lambda() (interactive) (find-file "~/Sync/org/calendar/work.org"))
+          "nwg" '(lambda() (interactive) (find-file "~/Sync/org/goals-work.org"))
           "nv" 'org-search-view
           ":"  'eval-expression
           "cc"  'compile
@@ -773,7 +773,7 @@ header-args :tangle yes
                                                "~/Repo/Personal/2Areas"
                                                "~/Repo/Personal/1Projects"
                                                "~/Repo/Work/1Projects"
-                                               "~/Dropbox/org"
+                                               "~/Sync/org"
                                                ))
         (setq projectile-completion-system 'ivy)
         (setq projectile-switch-project-action #'projectile-dired)
@@ -844,30 +844,30 @@ header-args :tangle yes
 
       (setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
 
-      (setq org-directory "~/Dropbox/org")
+      (setq org-directory "~/Sync/org")
       (setq org-agenda-files (quote (
-                                     "~/Dropbox/org/calendar/personal.org"
-                                     "~/Dropbox/org/calendar/shared.org"
-                                     "~/Dropbox/org/todo-home.org"
-                                     "~/Dropbox/org/todo-personal.org"
-                                     "~/Dropbox/org/todo-spiritual.org"
-                                     "~/Dropbox/org/todo-work.org"
-                                     "~/Dropbox/org/jira/DELREP.org"
+                                     "~/Sync/org/calendar/personal.org"
+                                     "~/Sync/org/calendar/shared.org"
+                                     "~/Sync/org/todo-home.org"
+                                     "~/Sync/org/todo-personal.org"
+                                     "~/Sync/org/todo-spiritual.org"
+                                     "~/Sync/org/todo-work.org"
+                                     "~/Sync/org/jira/DELREP.org"
                                      )))
 
       (add-hook 'org-capture-mode-hook 'evil-insert-state)
       (setq org-capture-templates
             '(
-              ("i" "Inbox" entry (file "~/Dropbox/org/inbox.org")
+              ("i" "Inbox" entry (file "~/Sync/org/inbox.org")
                "* TODO %?\n")
-              ("m" "Email" entry (file+headline "~/Dropbox/org/inbox.org" "Emails")
+              ("m" "Email" entry (file+headline "~/Sync/org/inbox.org" "Emails")
                "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
-              ("p" "Project" entry (file+headline "~/Dropbox/org/todo-personal.org" "1Projects")
-               (file "~/Dropbox/org/templates/new-project-template.org"))
-              ("s" "Someday" entry (file+headline "~/Dropbox/org/someday.org" "Someday")
+              ("p" "Project" entry (file+headline "~/Sync/org/todo-personal.org" "1Projects")
+               (file "~/Sync/org/templates/new-project-template.org"))
+              ("s" "Someday" entry (file+headline "~/Sync/org/someday.org" "Someday")
                "* SOMEDAY %?\n")
-              ("l" "Log" entry (file+olp+datetree "~/Dropbox/org/log.org" "Log")
-               (file "~/Dropbox/org/templates/logtemplate.org"))))
+              ("l" "Log" entry (file+olp+datetree "~/Sync/org/log.org" "Log")
+               (file "~/Sync/org/templates/logtemplate.org"))))
 
       (org-babel-do-load-languages
        'org-babel-load-languages
@@ -920,7 +920,7 @@ header-args :tangle yes
         (defalias 'getf 'cl-getf)
         :after org
         :config
-        (setq org-jira-working-dir "~/Dropbox/org/jira")
+        (setq org-jira-working-dir "~/Sync/org/jira")
         :ensure t
         :demand t)
 
