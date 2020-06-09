@@ -40,7 +40,8 @@ bspc config urgent_border_color 	      "#dd2727"
 
 
 bspc rule -a Emacs desktop='^1' state=tiled
-bspc rule -a Vivaldi desktop='^2'
+bspc rule -a qutebrowser desktop='^2'
+bspc rule -a DBeaver desktop='^3'
 bspc rule -a Zoom desktop='^8'
 bspc rule -a Skype desktop='^8'
 bspc rule -a Slack desktop='^9'
