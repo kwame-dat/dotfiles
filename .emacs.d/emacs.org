@@ -565,47 +565,55 @@ header-args :tangle yes
 *** =ivy=
     Generic completion frontend that's just awesome! Let's install and enable it.
     #+BEGIN_SRC emacs-lisp
-      (use-package ivy
-        :init
-        (setq ivy-use-virtual-buffers t)
-        (setq ivy-count-format "(%d/%d) ")
-        (setq enable-recursive-minibuffers t)
-        (setq ivy-initial-inputs-alist nil)
-        (setq ivy-on-del-error-function #'ignore)
-        :config
-        (ivy-mode 1)
-        (evil-set-initial-state 'ivy-occur-grep-mode 'normal))
+(use-package ivy
+  :init
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  (setq enable-recursive-minibuffers t)
+  (setq ivy-initial-inputs-alist nil)
+  (setq ivy-on-del-error-function #'ignore)
+  :config
+  (ivy-mode 1)
+  (evil-set-initial-state 'ivy-occur-grep-mode 'normal))
 
-      (use-package ivy-rich
-        :ensure t
-        :after ivy
-        :config
-        (setq ivy-rich-path-style 'abbreviate)
+(use-package ivy-rich
+  :ensure t
+  :after ivy
+  :config
+  (setq ivy-rich-path-style 'abbreviate)
 
-        (setcdr (assq t ivy-format-functions-alist)
-                #'ivy-format-function-line)
-        (ivy-rich-mode 1))
+  (setcdr (assq t ivy-format-functions-alist)
+          #'ivy-format-function-line)
+  (ivy-rich-mode 1))
 
-      (use-package ivy-posframe
-        :ensure t
-        :after ivy
-        :diminish
-        :config
-        (setq ivy-posframe-parameters
-              '((left-fringe . 2)
-                (right-fringe . 2)
-                (internal-border-width . 2)
-                ))
-        (setq ivy-posframe-height-alist
-              '((swiper . 15)
-                (swiper-isearch . 15)
-                (t . 10)))
-        (setq ivy-posframe-display-functions-alist
-              '((complete-symbol . ivy-posframe-display-at-point)
-                (swiper . nil)
-                (swiper-isearch . nil)
-                (t . ivy-posframe-display-at-frame-center)))
-        (ivy-posframe-mode 1))
+(use-package all-the-icons-ivy-rich
+  :ensure t
+  :init (all-the-icons-ivy-rich-mode 1))
+
+
+(use-package ivy-posframe
+  :ensure t
+  :after ivy
+  :diminish
+  :config
+  (setq ivy-posframe-parameters
+        '((left-fringe . 2)
+          (right-fringe . 2)
+          (internal-border-width . 2)
+          ))
+  (setq ivy-posframe-height-alist
+        '((swiper . 15)
+          (swiper-isearch . 15)
+          (t . 10)))
+  (setq ivy-posframe-display-functions-alist
+        '((complete-symbol . ivy-posframe-display-at-point)
+          (swiper . nil)
+          (swiper-isearch . nil)
+          (t . ivy-posframe-display-at-frame-center)))
+  (ivy-posframe-mode 1))
+
+(use-package all-the-icons-ivy
+  :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
     #+END_SRC
 *** =counsel=
     Counsel allows us to utilize ivy by replacing many built-in and common functions
@@ -922,19 +930,42 @@ header-args :tangle yes
            (ruby . t)
            (sqlite . t)))
 
-        (setq org-confirm-babel-evaluate nil)
+        (setq-default
+         ;; Don't monopolize the whole frame just for the agenda
+         org-agenda-window-setup 'current-window
+         org-agenda-skip-unavailable-files t
+         ;; Move the agenda to show the previous 3 days and the next 7 days for a bit
+         ;; better context instead of just the current week which is a bit confusing
+         ;; on, for example, a sunday
+         org-agenda-span 10
+         org-agenda-start-on-weekday nil
+         org-agenda-start-day "-3d")
 
-        ;; org mode keybindings
-        (my-local-leader-def 'normal org-mode-map
-          "c" 'org-ctrl-c-ctrl-c
-          "t" 'org-todo
-          "s" 'org-schedule
-          "d" 'org-deadline
-          "a" 'org-agenda
-          "e" 'org-export-dispatch
-          "n" 'org-narrow-to-element
-          "w" 'widen
-          "r" 'org-refile))
+
+        (setq org-src-preserve-indentation t  ; use native major-mode indentation
+              org-src-tab-acts-natively t     ; we do this ourselves
+              ;; You don't need my permission (just be careful, mkay?)
+              org-confirm-babel-evaluate nil
+              org-link-elisp-confirm-function nil
+              ;; Show src buffer in popup, and don't monopolize the frame
+              org-src-window-setup 'other-window
+              ;; Our :lang common-lisp module uses sly, so...
+              org-babel-lisp-eval-fn #'sly-eval)
+
+        ;; I prefer C-c C-c over C-c ' (more consistent)
+        (define-key org-src-mode-map (kbd "C-c C-c") #'org-edit-src-exit))
+
+      ;; org mode keybindings
+      (my-local-leader-def 'normal org-mode-map
+        "c" 'org-ctrl-c-ctrl-c
+        "t" 'org-todo
+        "s" 'org-schedule
+        "d" 'org-deadline
+        "a" 'org-agenda
+        "e" 'org-export-dispatch
+        "n" 'org-narrow-to-element
+        "w" 'widen
+        "r" 'org-refile)
 
       (use-package ox-pandoc
         :init (add-to-list 'org-export-backends 'pandoc))
