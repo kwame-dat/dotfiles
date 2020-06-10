@@ -133,8 +133,6 @@ header-args :tangle yes
 
 *** Sensible default
     #+BEGIN_SRC emacs-lisp
-      (load "~/.emacs.d/lisp/my-abbrev.el")
-
       (setq scroll-conservatively 101)
       (setq mouse-wheel-scroll-amount '(1))
       (setq mouse-wheel-progressive-speed nil)
@@ -187,8 +185,6 @@ header-args :tangle yes
 
       (setq inhibit-startup-message t)
       (setq initial-scratch-message nil)
-
-      (setq confirm-kill-emacs 'y-or-n-p)
 
       (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -334,7 +330,7 @@ header-args :tangle yes
 *** =exec-path-from-shell=
     #+BEGIN_SRC emacs-lisp
       (use-package exec-path-from-shell
-        :demand t
+        ;; :demand t
         :init
         (setq exec-path-from-shell-check-startup-files nil))
       (when (memq window-system '(mac ns))
@@ -564,11 +560,12 @@ header-args :tangle yes
         "C-e" 'dired-toggle-read-only)
     #+END_SRC
 
+    #+RESULTS:
+
 *** =ivy=
     Generic completion frontend that's just awesome! Let's install and enable it.
     #+BEGIN_SRC emacs-lisp
       (use-package ivy
-        :demand t
         :init
         (setq ivy-use-virtual-buffers t)
         (setq ivy-count-format "(%d/%d) ")
@@ -580,7 +577,6 @@ header-args :tangle yes
         (evil-set-initial-state 'ivy-occur-grep-mode 'normal))
 
       (use-package ivy-rich
-        :demand t
         :ensure t
         :after ivy
         :config
@@ -640,7 +636,6 @@ header-args :tangle yes
 *** =company-mode=
     #+BEGIN_SRC emacs-lisp
       (use-package company
-        :demand t
         :init
         (setq company-minimum-prefix-length 1
               company-tooltip-limit 14
@@ -678,10 +673,10 @@ header-args :tangle yes
 *** =all-the-icons=
     #+BEGIN_SRC emacs-lisp
       (use-package all-the-icons
-        :ensure t
-        :demand t)
+        :ensure t)
 
-      (use-package all-the-icons-dired)
+      (use-package all-the-icons-dired
+        :diminish all-the-icons-dired-mode)
 
       (use-package all-the-icons-ivy
         :ensure t
@@ -694,7 +689,6 @@ header-args :tangle yes
 *** =lsp-mode=
     #+BEGIN_SRC emacs-lisp
       (use-package lsp-mode
-        :demand t
         :ensure t
         :init
         (setq lsp-enable-file-watchers nil
@@ -751,8 +745,11 @@ header-args :tangle yes
               flycheck-phpcs-standard "PSR12")
         (global-flycheck-mode))
 
-      (flycheck-add-next-checker 'lsp 'php-phpcs)
+      ;; (flycheck-add-next-checker 'lsp 'php-phpcs)
     #+END_SRC
+
+    #+RESULTS:
+    : t
 
 *** =projectile=
     Projectile is a quick and easy project management package that "just works". We're
@@ -785,7 +782,7 @@ header-args :tangle yes
       (use-package which-key
         :demand t
         :init
-        (setq which-key-idle-delay 0.40)
+        (setq which-key-idle-delay 0.30)
         :ensure t
         :config (which-key-mode))
     #+END_SRC
@@ -796,29 +793,6 @@ header-args :tangle yes
     want is prioritized instead.
 
     #+BEGIN_SRC emacs-lisp
-      (use-package org
-        :ensure org-plus-contrib
-        :custom-face
-        (variable-pitch ((t (:family "Avenir"))))
-        (org-document-title ((t (:weight bold ))))
-        (org-done ((t (:strike-through t :weight bold))))
-        (org-headline-done ((t (:strike-through t))))
-        (org-level-1 ((t (:weight bold :height 1.2))))
-        (org-level-2 ((t (:weight normal :height 1.2))))
-        (org-level-3 ((t (:weight normal :height 1.2))))
-        (org-image-actual-width '(600))
-        :config
-        (add-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h 'append)
-        (setq org-todo-keywords
-              '((sequence "TODO(t)"
-                          "STARTED(s)"
-                          "WAITING(w)"
-                          "SOMEDAY(.)"
-                          "MAYBE(m)"
-                          "|"
-                          "DONE(d!)"
-                          "CANCELLED(c)"))))
-
       (defun +org-cycle-only-current-subtree-h (&optional arg)
         (interactive "P")
         (unless (eq this-command 'org-shifttab)
@@ -835,123 +809,221 @@ header-args :tangle yes
                 (org-cycle-internal-local)
                 t)))))
 
-      (setq org-icalendar-include-todo t
-            org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due)
-            org-icalendar-use-scheduled '(event-if-todo event-if-not-todo todo-start)
-            org-icalendar-with-timestamps t)
-      (setq org-startup-truncated nil)
-      (setq org-agenda-inhibit-startup nil)
+      (defun +org-init-appearance-h ()
+        "Configures the UI for `org-mode'."
+        (setq org-indirect-buffer-display 'current-window
+              org-eldoc-breadcrumb-separator " → "
+              org-enforce-todo-dependencies t
+              org-entities-user
+              '(("flat"  "\\flat" nil "" "" "266D" "♭")
+                ("sharp" "\\sharp" nil "" "" "266F" "♯"))
+              org-fontify-quote-and-verse-blocks t
+              org-fontify-whole-heading-line t
+              org-footnote-auto-label 'plain
+              org-hide-leading-stars t
+              org-image-actual-width nil
+              org-priority-faces
+              '((?A . error)
+                (?B . warning)
+                (?C . success))
+              org-startup-indented t
+              org-tags-column 0
+              org-use-sub-superscripts '{})
 
-      (setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
+        (setq org-refile-targets
+              '((nil :maxlevel . 3)
+                (org-agenda-files :maxlevel . 3))
+              ;; Without this, completers like ivy/helm are only given the first level of
+              ;; each outline candidates. i.e. all the candidates under the "Tasks" heading
+              ;; are just "Tasks/". This is unhelpful. We want the full path to each refile
+              ;; target! e.g. FILE/Tasks/heading/subheading
+              org-refile-use-outline-path 'file
+              org-outline-path-complete-in-steps nil)
 
-      (setq org-directory "~/Sync/org")
-      (setq org-agenda-files (quote (
-                                     "~/Sync/org/calendar/personal.org"
-                                     "~/Sync/org/calendar/shared.org"
-                                     "~/Sync/org/todo-home.org"
-                                     "~/Sync/org/todo-personal.org"
-                                     "~/Sync/org/todo-spiritual.org"
-                                     "~/Sync/org/todo-work.org"
-                                     "~/Sync/org/jira/DELREP.org"
-                                     )))
+        (plist-put org-format-latex-options :scale 1.5) ; larger previews
 
-      (add-hook 'org-capture-mode-hook 'evil-insert-state)
-      (setq org-capture-templates
-            '(
-              ("i" "Inbox" entry (file "~/Sync/org/inbox.org")
-               "* TODO %?\n")
-              ("m" "Email" entry (file+headline "~/Sync/org/inbox.org" "Emails")
-               "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
-              ("p" "Project" entry (file+headline "~/Sync/org/todo-personal.org" "1Projects")
-               (file "~/Sync/org/templates/new-project-template.org"))
-              ("s" "Someday" entry (file+headline "~/Sync/org/someday.org" "Someday")
-               "* SOMEDAY %?\n")
-              ("l" "Log" entry (file+olp+datetree "~/Sync/org/log.org" "Log")
-               (file "~/Sync/org/templates/logtemplate.org"))))
+        (setq org-todo-keywords
+              '((sequence
+                 "TODO(t)"  ; A task that needs doing & is ready to do
+                 "PROJ(p)"  ; A project, which usually contains other tasks
+                 "STRT(s)"  ; A task that is in progress
+                 "WAIT(w)"  ; Something external is holding up this task
+                 "HOLD(h)"  ; This task is paused/on hold because of me
+                 "|"
+                 "DONE(d)"  ; Task successfully completed
+                 "KILL(k)") ; Task was cancelled, aborted or is no longer applicable
+                (sequence
+                 "[ ](T)"   ; A task that needs doing
+                 "[-](S)"   ; Task is in progress
+                 "[?](W)"   ; Task is being held up or paused
+                 "|"
+                 "[X](D)")) ; Task was completed
+              org-todo-keyword-faces
+              '(("[-]"  . +org-todo-active)
+                ("STRT" . +org-todo-active)
+                ("[?]"  . +org-todo-onhold)
+                ("WAIT" . +org-todo-onhold)
+                ("HOLD" . +org-todo-onhold)
+                ("PROJ" . +org-todo-project)))
 
-      (org-babel-do-load-languages
-       'org-babel-load-languages
-       '((R . t)
-         (emacs-lisp . t)
-         (latex . t)
-         (shell . t)
-         (ledger . t)
-         (python . t)
-         (sql . t)
-         (ruby . t)
-         (sqlite . t)))
+        (set-pretty-symbols 'org-mode
+                            :name "#+NAME:"
+                            :name "#+name:"
+                            :src_block "#+BEGIN_SRC"
+                            :src_block "#+begin_src"
+                            :src_block_end "#+END_SRC"
+                            :src_block_end "#+end_src"
+                            :quote "#+BEGIN_QUOTE"
+                            :quote "#+begin_quote"
+                            :quote_end "#+END_QUOTE"
+                            :quote_end "#+end_quote"))
 
-      (setq org-confirm-babel-evaluate nil)
+      (use-package org
+        :ensure org-plus-contrib
+        :custom-face
+        (variable-pitch ((t (:family "Avenir"))))
+        (org-document-title ((t (:weight bold ))))
+        (org-done ((t (:strike-through t :weight bold))))
+        (org-headline-done ((t (:strike-through t))))
+        (org-level-1 ((t (:weight bold :height 1.2))))
+        (org-level-2 ((t (:weight normal :height 1.2))))
+        (org-level-3 ((t (:weight normal :height 1.2))))
+        (org-image-actual-width '(600))
+        :preface
+        (add-hook 'org-load-hook #'+org-init-appearance-h)
 
-      (use-package ox-pandoc :demand t)
+        :config
+        (add-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h 'append)
+
+        (setq org-icalendar-include-todo t
+              org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due)
+              org-icalendar-use-scheduled '(event-if-todo event-if-not-todo todo-start)
+              org-icalendar-with-timestamps t)
+        (setq org-startup-truncated nil)
+        (setq org-agenda-inhibit-startup nil)
+
+        (setq org-directory "~/Sync/org")
+        (setq org-agenda-files (quote (
+                                       "~/Sync/org/calendar/personal.org"
+                                       "~/Sync/org/calendar/shared.org"
+                                       "~/Sync/org/todo-home.org"
+                                       "~/Sync/org/todo-personal.org"
+                                       "~/Sync/org/todo-spiritual.org"
+                                       "~/Sync/org/todo-work.org"
+                                       "~/Sync/org/jira/DELREP.org"
+                                       )))
+
+        (add-hook 'org-capture-mode-hook 'evil-insert-state)
+        (setq org-capture-templates
+              '(
+                ("i" "Inbox" entry (file "~/Sync/org/inbox.org")
+                 "* TODO %?\n")
+                ("m" "Email" entry (file+headline "~/Sync/org/inbox.org" "Emails")
+                 "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
+                ("p" "Project" entry (file+headline "~/Sync/org/todo-personal.org" "1Projects")
+                 (file "~/Sync/org/templates/new-project-template.org"))
+                ("s" "Someday" entry (file+headline "~/Sync/org/someday.org" "Someday")
+                 "* SOMEDAY %?\n")
+                ("l" "Log" entry (file+olp+datetree "~/Sync/org/log.org" "Log")
+                 (file "~/Sync/org/templates/logtemplate.org"))))
+
+        (org-babel-do-load-languages
+         'org-babel-load-languages
+         '((R . t)
+           (emacs-lisp . t)
+           (latex . t)
+           (shell . t)
+           (ledger . t)
+           (python . t)
+           (sql . t)
+           (ruby . t)
+           (sqlite . t)))
+
+        (setq org-confirm-babel-evaluate nil)
+
+        ;; org mode keybindings
+        (my-local-leader-def 'normal org-mode-map
+          "c" 'org-ctrl-c-ctrl-c
+          "t" 'org-todo
+          "s" 'org-schedule
+          "d" 'org-deadline
+          "a" 'org-agenda
+          "e" 'org-export-dispatch
+          "n" 'org-narrow-to-element
+          "w" 'widen
+          "r" 'org-refile))
+
+      (use-package ox-pandoc
+        :init (add-to-list 'org-export-backends 'pandoc))
 
       (use-package ox-jira
-        :demand t)
+        :init (add-to-list 'org-export-backends 'jira))
 
-      (use-package ox-slack :demand t)
+      (use-package ox-slack
+        :init (add-to-list 'org-export-backends 'slack))
 
       (use-package ox-twbs
-        :demand t)
+        :init (add-to-list 'org-export-backends 'twbs))
 
       (use-package ox-slimhtml
-        :demand t)
+        :init (add-to-list 'org-export-backends 'slimhtml))
 
       (use-package org-pomodoro
-        :demand t
+        :commands (org-mode org-pomodoro-mode)
         :config
         (setq org-pomodoro-long-break-length 60)
         (setq org-pomodoro-long-break-frequency 10))
 
       (use-package evil-org
-        :demand t
         :after org
+        :hook (org-mode . evil-org-mode)
         :config
-        (add-hook 'org-mode-hook 'evil-org-mode)
         (add-hook 'evil-org-mode-hook
                   (lambda ()
                     (evil-org-set-key-theme)))
         (require 'evil-org-agenda)
         (evil-org-agenda-set-keys))
 
-      (setq jiralib-url "https://jira.thetrainline.com")
-
       (use-package org-jira
         :init
+        (setq jiralib-url "https://jira.thetrainline.com")
         (defalias 'getf 'cl-getf)
+        :hook (org-mode . org-jira-mode)
         :after org
         :config
         (setq org-jira-working-dir "~/Sync/org/jira")
-        :ensure t
-        :demand t)
+        :ensure t)
 
-      (use-package org-evil :demand t)
+      (use-package org-evil
+        :hook (org-mode . org-evil-mode))
 
-      (use-package org-gcal :demand t)
-
-      (use-package org-bullets
-        :demand t
-        :config
-        (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+      (use-package org-gcal)
 
       (use-package ob-restclient)
 
-      ;; org mode keybindings
-      (my-local-leader-def 'normal org-mode-map
-        "c" 'org-ctrl-c-ctrl-c
-        "t" 'org-todo
-        "s" 'org-schedule
-        "d" 'org-deadline
-        "a" 'org-agenda
-        "e" 'org-export-dispatch
-        "n" 'org-narrow-to-element
-        "w" 'widen
-        "r" 'org-refile)
+      (use-package org-superstar ; "prettier" bullets
+        :hook (org-mode . org-superstar-mode)
+        :config
+        ;; Make leading stars truly invisible, by rendering them as spaces!
+        (setq org-superstar-leading-bullet ?\s
+              org-superstar-leading-fallback ?\s
+              org-hide-leading-stars nil)
+        ;; Don't do anything special for item bullets or TODOs by default; these slow
+        ;; down larger org buffers.
+        (setq org-superstar-prettify-item-bullets nil
+              org-superstar-special-todo-items nil
+              ;; ...but configure it in case the user wants it later
+              org-superstar-todo-bullet-alist
+              '(("TODO" . 9744)
+                ("[ ]"  . 9744)
+                ("DONE" . 9745)
+                ("[X]"  . 9745))))
+
     #+END_SRC
    
 *** =eyebrowse=
     #+BEGIN_SRC emacs-lisp
       (use-package eyebrowse
-        :demand t
         :diminish eyebrowse-mode
         :config (progn
                   (define-key eyebrowse-mode-map (kbd "M-1") 'eyebrowse-switch-to-window-config-1)
@@ -1132,85 +1204,85 @@ header-args :tangle yes
 
 *** =vterm=
     #+BEGIN_SRC emacs-lisp
-     (defun my-shell-mode-hook ()
-       "Custom `shell-mode' behaviours."
-       ;; Kill the buffer when the shell process exits.
-       (let* ((proc (get-buffer-process (current-buffer)))
-              (sentinel (process-sentinel proc)))
-         (set-process-sentinel
-          proc
-          `(lambda (process signal)
-             ;; Call the original process sentinel first.
-             (funcall #',sentinel process signal)
-             ;; Kill the buffer on an exit signal.
-             (and (memq (process-status process) '(exit signal))
-                  (buffer-live-p (process-buffer process))
-                  (kill-buffer (process-buffer process)))))))
+      (defun my-shell-mode-hook ()
+        "Custom `shell-mode' behaviours."
+        ;; Kill the buffer when the shell process exits.
+        (let* ((proc (get-buffer-process (current-buffer)))
+               (sentinel (process-sentinel proc)))
+          (set-process-sentinel
+           proc
+           `(lambda (process signal)
+              ;; Call the original process sentinel first.
+              (funcall #',sentinel process signal)
+              ;; Kill the buffer on an exit signal.
+              (and (memq (process-status process) '(exit signal))
+                   (buffer-live-p (process-buffer process))
+                   (kill-buffer (process-buffer process)))))))
 
-     (add-hook 'shell-mode-hook 'my-shell-mode-hook)
+      (add-hook 'shell-mode-hook 'my-shell-mode-hook)
 
-     (use-package vterm
-       :demand t
-       :ensure t
-       :config
-       (add-hook 'vterm-mode-hook
-                 (lambda ()
-                   (setq-local evil-insert-state-cursor 'box)
-                   (evil-insert-state)))
-       (define-key vterm-mode-map [return]                      #'vterm-send-return)
+      (use-package vterm
+        :ensure t
+        :config
+        ;; :commands (vterm vterm-mode)
+        (add-hook 'vterm-mode-hook
+                  (lambda ()
+                    (setq-local evil-insert-state-cursor 'box)
+                    (evil-insert-state)))
+        (define-key vterm-mode-map [return]                      #'vterm-send-return)
 
-       (setq vterm-keymap-exceptions nil)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-e")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-f")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-a")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-v")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-b")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-w")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-u")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-n")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-m")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-p")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-j")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-k")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-r")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-t")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-g")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-c")      #'vterm--self-insert)
-       (evil-define-key 'insert vterm-mode-map (kbd "C-SPC")    #'vterm--self-insert)
-       (evil-define-key 'normal vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
-       (evil-define-key 'normal vterm-mode-map (kbd ",c")       #'multi-libvterm)
-       (evil-define-key 'normal vterm-mode-map (kbd ",n")       #'multi-libvterm-next)
-       (evil-define-key 'normal vterm-mode-map (kbd ",p")       #'multi-libvterm-prev)
-       (evil-define-key 'normal vterm-mode-map (kbd "i")        #'evil-insert-resume)
-       (evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
-       (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume))
+        (setq vterm-keymap-exceptions nil)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-e")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-f")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-a")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-v")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-b")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-w")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-u")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-n")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-m")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-p")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-j")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-k")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-r")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-t")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-g")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-c")      #'vterm--self-insert)
+        (evil-define-key 'insert vterm-mode-map (kbd "C-SPC")    #'vterm--self-insert)
+        (evil-define-key 'normal vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
+        (evil-define-key 'normal vterm-mode-map (kbd ",c")       #'multi-libvterm)
+        (evil-define-key 'normal vterm-mode-map (kbd ",n")       #'multi-libvterm-next)
+        (evil-define-key 'normal vterm-mode-map (kbd ",p")       #'multi-libvterm-prev)
+        (evil-define-key 'normal vterm-mode-map (kbd "i")        #'evil-insert-resume)
+        (evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
+        (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume))
 
-     (use-package vterm-toggle
-       :ensure t)
+      (use-package vterm-toggle
+        :ensure t)
 
-     (use-package shell-pop
-       :ensure t
-       :config
-       (defun shell-pop--set-exit-action ()
-         (if (string= shell-pop-internal-mode "eshell")
-             (add-hook 'eshell-exit-hook 'shell-pop--kill-and-delete-window nil t)
-           (let ((process (get-buffer-process (current-buffer))))
-             (when process
-               (set-process-sentinel
-                process
-                (lambda (_proc change)
-                  (when (string-match-p "\\(?:finished\\|exited\\)" change)
-                    (if (one-window-p)
-                        (switch-to-buffer shell-pop-last-buffer)
-                      (kill-buffer-and-window)))))))))
+      (use-package shell-pop
+        :ensure t
+        :config
+        (defun shell-pop--set-exit-action ()
+          (if (string= shell-pop-internal-mode "eshell")
+              (add-hook 'eshell-exit-hook 'shell-pop--kill-and-delete-window nil t)
+            (let ((process (get-buffer-process (current-buffer))))
+              (when process
+                (set-process-sentinel
+                 process
+                 (lambda (_proc change)
+                   (when (string-match-p "\\(?:finished\\|exited\\)" change)
+                     (if (one-window-p)
+                         (switch-to-buffer shell-pop-last-buffer)
+                       (kill-buffer-and-window)))))))))
 
-       (custom-set-variables
-        '(shell-pop-shell-type (quote ("vterm" "*vterm*" (lambda nil (vterm)))))
-        '(shell-pop-window-size 35)
-        '(shell-pop-full-span t)
-        '(shell-pop-term-shell "/usr/bin/fish")
-        '(shell-pop-window-position "bottom")))
+        (custom-set-variables
+         '(shell-pop-shell-type (quote ("vterm" "*vterm*" (lambda nil (vterm)))))
+         '(shell-pop-window-size 35)
+         '(shell-pop-full-span t)
+         '(shell-pop-term-shell "/usr/bin/fish")
+         '(shell-pop-window-position "bottom")))
     #+END_SRC 
 
 *** =docker=
@@ -1290,7 +1362,7 @@ header-args :tangle yes
 *** =pdf-tools=
     #+BEGIN_SRC emacs-lisp
       (use-package pdf-tools
-        :demand t
+        :mode ("\\.[pP][dD][fF]\\'" . pdf-view-mode)
         :config
         (setq-default pdf-view-use-scaling t
                       pdf-view-use-imagemagick nil)
@@ -1404,7 +1476,6 @@ header-args :tangle yes
         (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
 
       (use-package dired-hide-dotfiles
-        :demand t
         :config
         (dired-hide-dotfiles-mode))
     #+END_SRC
@@ -1448,6 +1519,7 @@ header-args :tangle yes
       (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
       (add-hook 'text-mode-hook 'flyspell-mode)
       (global-set-key (kbd "s-\\") 'ispell-word)
+      
       (use-package define-word
         :config
         (global-set-key (kbd "M-\\") 'define-word-at-point))
@@ -1584,8 +1656,7 @@ header-args :tangle yes
 *** =diminish=
     #+BEGIN_SRC emacs-lisp
       (use-package diminish
-        :ensure t
-        :demand t)
+        :ensure t)
       (diminish 'evil-org-mode)
       (diminish 'ivy-mode)
       (diminish 'subword-mode)
@@ -1623,6 +1694,7 @@ header-args :tangle yes
          :ensure t)
 
        (use-package phpactor
+         :hook (php-mode . phpactor-mode)
          :commands (phpactor-install-or-update)
          :ensure t)
 
@@ -1764,18 +1836,40 @@ header-args :tangle yes
      #+BEGIN_SRC emacs-lisp
        (use-package ledger-mode
          :init
+         (setq ledger-clear-whole-transactions 1
+               ledger-mode-should-check-version nil)
          (setq ledger-post-amount-alignment-column 70)
          (setq ledger-highlight-xact-under-point nil
                ledger-use-iso-dates nil))
 
        (use-package flycheck-ledger
-         :demand t)
+         :hook (ledger-mode . evil-ledger-mode))
+
        (use-package evil-ledger
-         :demand t)
+         :hook (ledger-mode . evil-ledger-mode))
        (add-hook 'ledger-mode-hook 'display-line-numbers-mode)
 
        (my-local-leader-def 'normal ledger-mode-map
-                            "a" 'ledger-add-transaction)
+         "a" 'ledger-add-transaction
+         "]]" #'ledger-navigate-next-xact-or-directive
+         "[[" #'ledger-navigate-prev-xact-or-directive)
+
+       (my-local-leader-def 'normal ledger-report-mode-map
+         "q"   #'ledger-report-quit
+         "RET" #'ledger-report-edit-report
+         "gd"  #'ledger-report-visit-source
+         "gr"  #'ledger-report-redo)
+
+       (my-local-leader-def 'normal ledger-mode-map
+         "a" #'ledger-add-transaction
+         "t" #'ledger-toggle-current
+         "d" #'ledger-delete-current-transaction
+         "r" #'ledger-report
+         "R" #'ledger-reconcile
+         "s" #'ledger-sort-region
+         "S" #'ledger-schedule-upcoming
+         "gs" #'ledger-display-ledger-stats
+         "b" #'ledger-display-balance-at-point)
      #+END_SRC
      
 **** =markdown=
@@ -2025,3 +2119,4 @@ header-args :tangle yes
 (setq gc-cons-threshold 16777216
       gc-cons-percentage 0.1)
    #+END_SRC
+   
