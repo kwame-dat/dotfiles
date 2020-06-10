@@ -1491,11 +1491,9 @@ functions we invoke regularly outside of magit is called.
   (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
 
 (use-package dired-hide-dotfiles
+  :hook (dired-mode . dired-hide-dotfiles-mode)
   :config
   (dired-hide-dotfiles-mode))
-
-(my-local-leader-def 'normal dired-hide-dotfiles-mode
-  "." 'dired-hide-details-mode)
 #+END_SRC
 
 *** =langtool=
