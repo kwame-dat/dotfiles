@@ -469,7 +469,6 @@ Install, automatically load, and enable evil. It's like vim.
     "gR"  'vc-revert
     "gg"  'magit-status
     "gb"  'magit-branch-checkout
-    "gR"  'vc-revert
     "g/"  'magit-dispatch
     "gD"  'magit-file-delete
     "gB"  'magit-blame-addition
@@ -990,6 +989,7 @@ want is prioritized instead.
   (setq org-pomodoro-long-break-frequency 10))
 
 (use-package evil-org
+  :diminish evil-org-mode
   :after org
   :hook (org-mode . evil-org-mode)
   :config
@@ -1000,6 +1000,7 @@ want is prioritized instead.
   (evil-org-agenda-set-keys))
 
 (use-package org-jira
+  :diminish org-jira-mode
   :init
   (setq jiralib-url "https://jira.thetrainline.com")
   (defalias 'getf 'cl-getf)
@@ -1491,6 +1492,7 @@ functions we invoke regularly outside of magit is called.
   (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
 
 (use-package dired-hide-dotfiles
+  :diminish dired-hide-dotfiles-mode
   :hook (dired-mode . dired-hide-dotfiles-mode)
   :config
   (dired-hide-dotfiles-mode))
