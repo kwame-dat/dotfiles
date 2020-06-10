@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: abstract method
+# key: apub
+# --
+abstract public function $1($2)$3

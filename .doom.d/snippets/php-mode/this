@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: $this
+# key: $
+# condition: t
+# --
+$this->$0
