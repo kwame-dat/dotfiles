@@ -809,8 +809,20 @@ header-args :tangle yes
                 (org-cycle-internal-local)
                 t)))))
 
-      (defun +org-init-appearance-h ()
-        "Configures the UI for `org-mode'."
+      (use-package org
+        :ensure org-plus-contrib
+        :custom-face
+        (variable-pitch ((t (:family "Avenir"))))
+        (org-document-title ((t (:weight bold ))))
+        (org-done ((t (:strike-through t :weight bold))))
+        (org-headline-done ((t (:strike-through t))))
+        (org-level-1 ((t (:weight bold :height 1.2))))
+        (org-level-2 ((t (:weight normal :height 1.2))))
+        (org-level-3 ((t (:weight normal :height 1.2))))
+        (org-image-actual-width '(600))
+
+        :config
+        (add-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h 'append)
         (setq org-indirect-buffer-display 'current-window
               org-eldoc-breadcrumb-separator " → "
               org-enforce-todo-dependencies t
@@ -840,8 +852,6 @@ header-args :tangle yes
               org-refile-use-outline-path 'file
               org-outline-path-complete-in-steps nil)
 
-        (plist-put org-format-latex-options :scale 1.5) ; larger previews
-
         (setq org-todo-keywords
               '((sequence
                  "TODO(t)"  ; A task that needs doing & is ready to do
@@ -866,34 +876,7 @@ header-args :tangle yes
                 ("HOLD" . +org-todo-onhold)
                 ("PROJ" . +org-todo-project)))
 
-        (set-pretty-symbols 'org-mode
-                            :name "#+NAME:"
-                            :name "#+name:"
-                            :src_block "#+BEGIN_SRC"
-                            :src_block "#+begin_src"
-                            :src_block_end "#+END_SRC"
-                            :src_block_end "#+end_src"
-                            :quote "#+BEGIN_QUOTE"
-                            :quote "#+begin_quote"
-                            :quote_end "#+END_QUOTE"
-                            :quote_end "#+end_quote"))
-
-      (use-package org
-        :ensure org-plus-contrib
-        :custom-face
-        (variable-pitch ((t (:family "Avenir"))))
-        (org-document-title ((t (:weight bold ))))
-        (org-done ((t (:strike-through t :weight bold))))
-        (org-headline-done ((t (:strike-through t))))
-        (org-level-1 ((t (:weight bold :height 1.2))))
-        (org-level-2 ((t (:weight normal :height 1.2))))
-        (org-level-3 ((t (:weight normal :height 1.2))))
-        (org-image-actual-width '(600))
-        :preface
-        (add-hook 'org-load-hook #'+org-init-appearance-h)
-
-        :config
-        (add-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h 'append)
+        (plist-put org-format-latex-options :scale 1.5) ; larger previews
 
         (setq org-icalendar-include-todo t
               org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due)
@@ -1020,7 +1003,7 @@ header-args :tangle yes
                 ("[X]"  . 9745))))
 
     #+END_SRC
-   
+
 *** =eyebrowse=
     #+BEGIN_SRC emacs-lisp
       (use-package eyebrowse
