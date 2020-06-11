@@ -35,7 +35,6 @@
     - [[#company-prescient][=company-prescient=]]
     - [[#company-box][=company-box=]]
     - [[#company-dict][=company-dict=]]
-    - [[#company-tng][=company-tng=]]
     - [[#all-the-icons][=all-the-icons=]]
     - [[#lsp-mode][=lsp-mode=]]
     - [[#flycheck][=flycheck=]]
@@ -781,19 +780,6 @@ with richer versions. Let's install it!
 #+BEGIN_SRC emacs-lisp
 (use-package company-dict
   :defer t)
-#+END_SRC
-*** =company-tng=
-#+BEGIN_SRC emacs-lisp
-(use-package company-tng
-  :after-call post-self-insert-hook
-  :config
-  (add-to-list 'company-frontends 'company-tng-frontend)
-  (define-key! company-active-map
-    "RET"       nil
-    [return]    nil
-    "TAB"       #'company-select-next
-    [tab]       #'company-select-next
-    [backtab]   #'company-select-previous))
 #+END_SRC
 *** =all-the-icons=
 #+BEGIN_SRC emacs-lisp
