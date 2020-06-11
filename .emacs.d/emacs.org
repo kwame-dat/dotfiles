@@ -26,11 +26,16 @@
     - [[#exec-path-from-shell][=exec-path-from-shell=]]
     - [[#uniquify][=uniquify=]]
     - [[#evil][=evil=]]
+    - [[#evil-mc][=evil-mc=]]
     - [[#general][=general=]]
     - [[#ivy][=ivy=]]
     - [[#counsel][=counsel=]]
     - [[#amx][=amx=]]
     - [[#company-mode][=company-mode=]]
+    - [[#company-prescient][=company-prescient=]]
+    - [[#company-box][=company-box=]]
+    - [[#company-dict][=company-dict=]]
+    - [[#company-tng][=company-tng=]]
     - [[#all-the-icons][=all-the-icons=]]
     - [[#lsp-mode][=lsp-mode=]]
     - [[#flycheck][=flycheck=]]
@@ -59,7 +64,6 @@
     - [[#langtool][=langtool=]]
     - [[#flyspell][=flyspell=]]
     - [[#yasnippet][=yasnippet=]]
-    - [[#evil-mc][=evil-mc=]]
     - [[#shackle][=shackle=]]
     - [[#dap-mode][=dap-mode=]]
     - [[#writeroom-mode][=writeroom-mode=]]
@@ -330,7 +334,7 @@ previously compiled manually then all of the package initialization will still t
 *** =exec-path-from-shell=
 #+BEGIN_SRC emacs-lisp
 (use-package exec-path-from-shell
-  ;; :demand t
+  :demand t
   :init
   (setq exec-path-from-shell-check-startup-files nil))
 (when (memq window-system '(mac ns))
@@ -352,6 +356,7 @@ Install, automatically load, and enable evil. It's like vim.
 
 #+BEGIN_SRC emacs-lisp
 (use-package evil
+  :diminish evil-mode
   :demand t
   :init
   (setq evil-want-keybinding nil)
@@ -364,23 +369,40 @@ Install, automatically load, and enable evil. It's like vim.
   (evil-mode 1))
 
 (use-package evil-surround
+  :diminish evil-surround-mode
   :demand t
   :ensure t
   :config
   (global-evil-surround-mode))
 
 (use-package evil-commentary
+  :diminish evil-commentary-mode
   :demand t
   :ensure t
   :config
   (evil-commentary-mode))
 
 (use-package evil-collection
+  :diminish evil-collection-mode
   :demand t
   :after evil
   :config
   (evil-collection-init))
 #+END_SRC
+
+*** =evil-mc=
+#+BEGIN_SRC emacs-lisp
+(use-package evil-mc
+  :diminish evil-mc-mode
+  :ensure t
+  :config
+  (global-evil-mc-mode 1))
+
+(use-package evil-multiedit
+  :ensure t)
+#+END_SRC
+
+#+RESULTS:
 
 *** =general=
 #+BEGIN_SRC emacs-lisp
@@ -565,6 +587,7 @@ Install, automatically load, and enable evil. It's like vim.
 Generic completion frontend that's just awesome! Let's install and enable it.
 #+BEGIN_SRC emacs-lisp
 (use-package ivy
+  :diminish ivy-mode
   :init
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) ")
@@ -645,12 +668,9 @@ with richer versions. Let's install it!
 (use-package company
   :demand t
   :init
-  (setq company-minimum-prefix-length 1
+  (setq company-idle-delay 0.25
+        company-minimum-prefix-length 2
         company-tooltip-limit 14
-        company-idle-delay 0.0
-        company-dabbrev-downcase nil
-        company-dabbrev-ignore-case nil
-        company-dabbrev-code-other-buffers t
         company-tooltip-align-annotations t
         company-require-match 'never
         company-global-modes
@@ -662,10 +682,27 @@ with richer versions. Let's install it!
           message-mode
           shell-mode
           vterm-mode)
-        company-backends '(company-capf)
-        company-frontends
-        '(company-pseudo-tooltip-frontend
-          company-echo-metadata-frontend))
+        company-frontends '(company-pseudo-tooltip-frontend
+                            company-echo-metadata-frontend)
+
+        ;; Buffer-local backends will be computed when loading a major mode, so
+        ;; only specify a global default here.
+        company-backends  '(company-capf)
+
+        ;; Company overrides `company-active-map' based on
+        ;; `company-auto-complete-chars'; no magic please!
+        company-auto-complete-chars nil
+
+        ;; Only search the current buffer for `company-dabbrev' (a backend that
+        ;; suggests text your open buffers). This prevents Company from causing
+        ;; lag once you have a lot of buffers open.
+        company-dabbrev-other-buffers nil
+        ;; Make `company-dabbrev' fully case-sensitive, to improve UX with
+        ;; domain-specific words with particular casing.
+        company-dabbrev-ignore-case nil
+        company-dabbrev-downcase nil)
+
+  
   :ensure t
   :config
   (define-key company-active-map (kbd "ESC") 'company-abort)
@@ -677,6 +714,86 @@ with richer versions. Let's install it!
   (define-key company-active-map (kbd "C-SPC") #'company-manual-begin)
   (define-key evil-insert-state-map (kbd "C-SPC") 'company-manual-begin)
   (add-hook 'after-init-hook 'global-company-mode))
+#+END_SRC
+*** =company-prescient=
+#+BEGIN_SRC emacs-lisp
+(use-package company-prescient
+  :hook (company-mode . company-prescient-mode)
+  :config
+  (prescient-persist-mode +1))
+#+END_SRC
+*** =company-box=
+#+BEGIN_SRC emacs-lisp
+(use-package company-box
+  :hook (company-mode . company-box-mode)
+  :config
+  (setq company-box-show-single-candidate t
+        company-box-backends-colors nil
+        company-box-max-candidates 50
+        company-box-icons-alist 'company-box-icons-all-the-icons
+        company-box-icons-functions
+        (cons #'+company-box-icons--elisp-fn
+              (delq 'company-box-icons--elisp
+                    company-box-icons-functions))
+        company-box-icons-all-the-icons
+        (let ((all-the-icons-scale-factor 0.8))
+          `((Unknown       . ,(all-the-icons-material "find_in_page"             :face 'all-the-icons-purple))
+            (Text          . ,(all-the-icons-material "text_fields"              :face 'all-the-icons-green))
+            (Method        . ,(all-the-icons-material "functions"                :face 'all-the-icons-red))
+            (Function      . ,(all-the-icons-material "functions"                :face 'all-the-icons-red))
+            (Constructor   . ,(all-the-icons-material "functions"                :face 'all-the-icons-red))
+            (Field         . ,(all-the-icons-material "functions"                :face 'all-the-icons-red))
+            (Variable      . ,(all-the-icons-material "adjust"                   :face 'all-the-icons-blue))
+            (Class         . ,(all-the-icons-material "class"                    :face 'all-the-icons-red))
+            (Interface     . ,(all-the-icons-material "settings_input_component" :face 'all-the-icons-red))
+            (Module        . ,(all-the-icons-material "view_module"              :face 'all-the-icons-red))
+            (Property      . ,(all-the-icons-material "settings"                 :face 'all-the-icons-red))
+            (Unit          . ,(all-the-icons-material "straighten"               :face 'all-the-icons-red))
+            (Value         . ,(all-the-icons-material "filter_1"                 :face 'all-the-icons-red))
+            (Enum          . ,(all-the-icons-material "plus_one"                 :face 'all-the-icons-red))
+            (Keyword       . ,(all-the-icons-material "filter_center_focus"      :face 'all-the-icons-red))
+            (Snippet       . ,(all-the-icons-material "short_text"               :face 'all-the-icons-red))
+            (Color         . ,(all-the-icons-material "color_lens"               :face 'all-the-icons-red))
+            (File          . ,(all-the-icons-material "insert_drive_file"        :face 'all-the-icons-red))
+            (Reference     . ,(all-the-icons-material "collections_bookmark"     :face 'all-the-icons-red))
+            (Folder        . ,(all-the-icons-material "folder"                   :face 'all-the-icons-red))
+            (EnumMember    . ,(all-the-icons-material "people"                   :face 'all-the-icons-red))
+            (Constant      . ,(all-the-icons-material "pause_circle_filled"      :face 'all-the-icons-red))
+            (Struct        . ,(all-the-icons-material "streetview"               :face 'all-the-icons-red))
+            (Event         . ,(all-the-icons-material "event"                    :face 'all-the-icons-red))
+            (Operator      . ,(all-the-icons-material "control_point"            :face 'all-the-icons-red))
+            (TypeParameter . ,(all-the-icons-material "class"                    :face 'all-the-icons-red))
+            (Template      . ,(all-the-icons-material "short_text"               :face 'all-the-icons-green))
+            (ElispFunction . ,(all-the-icons-material "functions"                :face 'all-the-icons-red))
+            (ElispVariable . ,(all-the-icons-material "check_circle"             :face 'all-the-icons-blue))
+            (ElispFeature  . ,(all-the-icons-material "stars"                    :face 'all-the-icons-orange))
+            (ElispFace     . ,(all-the-icons-material "format_paint"             :face 'all-the-icons-pink)))))
+
+  (defun +company-box-icons--elisp-fn (candidate)
+    (when (derived-mode-p 'emacs-lisp-mode)
+      (let ((sym (intern candidate)))
+        (cond ((fboundp sym)  'ElispFunction)
+              ((boundp sym)   'ElispVariable)
+              ((featurep sym) 'ElispFeature)
+              ((facep sym)    'ElispFace))))))
+#+END_SRC
+*** =company-dict=
+#+BEGIN_SRC emacs-lisp
+(use-package company-dict
+  :defer t)
+#+END_SRC
+*** =company-tng=
+#+BEGIN_SRC emacs-lisp
+(use-package company-tng
+  :after-call post-self-insert-hook
+  :config
+  (add-to-list 'company-frontends 'company-tng-frontend)
+  (define-key! company-active-map
+    "RET"       nil
+    [return]    nil
+    "TAB"       #'company-select-next
+    [tab]       #'company-select-next
+    [backtab]   #'company-select-previous))
 #+END_SRC
 *** =all-the-icons=
 #+BEGIN_SRC emacs-lisp
@@ -743,6 +860,7 @@ with richer versions. Let's install it!
 *** =flycheck=
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
+  :diminish flycheck-mode
   :ensure t
   :init
   (setq flycheck-emacs-lisp-load-path 'inherit
@@ -765,6 +883,7 @@ going to install it and make sure it's loaded immediately.
 
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
+  :diminish projectile-mode
   :demand t
   :ensure t
   :init
@@ -788,6 +907,7 @@ going to install it and make sure it's loaded immediately.
 *** =which-key=
 #+BEGIN_SRC emacs-lisp
 (use-package which-key
+  :diminish which-key-mode
   :demand t
   :init
   (setq which-key-idle-delay 0.30)
@@ -1040,6 +1160,7 @@ want is prioritized instead.
 *** =eyebrowse=
 #+BEGIN_SRC emacs-lisp
 (use-package eyebrowse
+  :demand t
   :diminish eyebrowse-mode
   :config (progn
             (define-key eyebrowse-mode-map (kbd "M-1") 'eyebrowse-switch-to-window-config-1)
@@ -1474,6 +1595,7 @@ functions we invoke regularly outside of magit is called.
 (setq dired-recursive-deletes 'top)
 
 (use-package async
+  :diminish dired-async-mode
   :ensure t
   :config
   (dired-async-mode 1))
@@ -1523,6 +1645,7 @@ functions we invoke regularly outside of magit is called.
   (setq ispell-program-name "aspell"))
 
 (use-package flyspell
+  :diminish flyspell-mode
   :delight
   :hook ((markdown-mode org-mode text-mode) . flyspell-mode)
   (prog-mode . flyspell-prog-mode)
@@ -1552,13 +1675,6 @@ functions we invoke regularly outside of magit is called.
   (setq yas-snippet-dirs
         '("~/.emacs.d/snippets"))
   (yas-global-mode 1))
-#+END_SRC
-
-*** =evil-mc=
-#+BEGIN_SRC emacs-lisp
-(use-package evil-mc :ensure t)
-(global-evil-mc-mode 1)
-(use-package evil-multiedit :ensure t)
 #+END_SRC
 
 *** =shackle=
@@ -1675,20 +1791,11 @@ functions we invoke regularly outside of magit is called.
 #+BEGIN_SRC emacs-lisp
 (use-package diminish
   :ensure t)
-(diminish 'evil-org-mode)
-(diminish 'ivy-mode)
 (diminish 'subword-mode)
 (diminish 'mixed-pitch-mode)
 (diminish 'indented-text-mode)
-(diminish 'yas-minor-mode)
-(diminish 'projectile-mode)
 (diminish 'undo-tree-mode)
-(diminish 'flycheck-mode)
-(diminish 'flyspell-mode)
-(diminish 'which-key-mode)
 (diminish 'eldoc-mode)
-(diminish 'dired-async-mode)
-(diminish 'evil-mc-mode)
 (diminish 'company-box-mode)
 (diminish 'evil-commentary-mode)
 (diminish 'org-src-mode)
