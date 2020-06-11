@@ -724,6 +724,7 @@ with richer versions. Let's install it!
 *** =company-box=
 #+BEGIN_SRC emacs-lisp
 (use-package company-box
+  :diminish company-box-mode
   :hook (company-mode . company-box-mode)
   :config
   (setq company-box-show-single-candidate t
@@ -1805,7 +1806,6 @@ functions we invoke regularly outside of magit is called.
   :ensure t)
 
 (use-package phpactor
-  :hook (php-mode . phpactor-mode)
   :commands (phpactor-install-or-update)
   :ensure t)
 
