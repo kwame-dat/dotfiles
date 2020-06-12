@@ -593,6 +593,9 @@ Generic completion frontend that's just awesome! Let's install and enable it.
   (setq enable-recursive-minibuffers t)
   (setq ivy-initial-inputs-alist nil)
   (setq ivy-on-del-error-function #'ignore)
+  (setq ivy-re-builders-alist
+        '((swiper . regexp-quote)
+          (t      . ivy--regex-fuzzy)))
   :config
   (ivy-mode 1)
   (evil-set-initial-state 'ivy-occur-grep-mode 'normal))
@@ -636,6 +639,7 @@ Generic completion frontend that's just awesome! Let's install and enable it.
 (use-package all-the-icons-ivy
   :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
 #+END_SRC
+
 *** =counsel=
 Counsel allows us to utilize ivy by replacing many built-in and common functions
 with richer versions. Let's install it!
@@ -881,6 +885,10 @@ going to install it and make sure it's loaded immediately.
                                          "~/Sync/Documents/Spiritual/3Resources"
                                          "~/Sync/Documents/Spiritual/2Areas"
                                          "~/Sync/Documents/Work/2Areas"
+                                         "~/Sync/Notes/Home"
+                                         "~/Sync/Notes/Spiritual"
+                                         "~/Sync/Notes/Personal"
+                                         "~/Sync/Notes/Work"
                                          "~/Repo/Personal/2Areas"
                                          "~/Repo/Personal/1Projects"
                                          "~/Repo/Work/1Projects"
