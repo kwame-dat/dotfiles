@@ -95,12 +95,14 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 # Open applications on specific workspaces
 assign [class="Emacs"] $ws1
 assign [class="qutebrowser"] $ws2
-assign [class="Terminal"] $ws3
-assign [class="Zoom"] $ws8
-assign [class="Cisco Anyconnect Secure Mobility Client"] $ws7
+assign [class="Google-chrome"] $ws2
+assign [class="firefox"] $ws2
+assign [class="Gnome-terminal"] $ws3
+assign [class="zoom"] $ws8
+assign [class="Cisco AnyConnect Secure Mobility Client"] $ws7
 assign [class="Slack"] $ws9
-assign [class="WhatsApp"] $ws9
-assign [class="Spotify"] $ws10
+assign [class="whatsapp-nativefier-d52542"] $ws9
+assign [class="spotify"] $ws10
 
 # Open specific applications in floating mode
 for_window [title="alsamixer"] floating enable border pixel 1
