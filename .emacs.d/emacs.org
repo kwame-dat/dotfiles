@@ -140,7 +140,7 @@ Disable certain byte compiler warnings to cut down on the noise.
 (setq mouse-wheel-scroll-amount '(1))
 (setq mouse-wheel-progressive-speed nil)
 
-(set-frame-font "Jetbrains Mono 18" nil t)
+(set-frame-font "Jetbrains Mono 10" nil t)
 
 (setq initial-major-mode 'org-mode)
 
