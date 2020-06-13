@@ -9,5 +9,5 @@ killall -q polybar
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
 # Launch bar1 and bar2
-polybar -c ~/.config/polybar/config-t6.ini main &
-polybar -c ~/.config/polybar/config-t6.ini bottom &
+polybar -c ~/.config/polybar/config-t2.ini top &
+polybar -c ~/.config/polybar/config-t2.ini bottom &
