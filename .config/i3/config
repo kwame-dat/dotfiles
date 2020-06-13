@@ -97,7 +97,6 @@ assign [class="Emacs"] $ws1
 assign [class="qutebrowser"] $ws2
 assign [class="Google-chrome"] $ws2
 assign [class="firefox"] $ws2
-assign [class="Gnome-terminal"] $ws3
 assign [class="zoom"] $ws8
 assign [class="Cisco AnyConnect Secure Mobility Client"] $ws7
 assign [class="Slack"] $ws9
@@ -170,7 +169,7 @@ mode "resize" {
 }
 
 # Lock screen
-bindsym $mod+Shift+l exec --no-startup-id blurlock
+bindsym $mod+Ctrl+q exec --no-startup-id i3lock
 
 
 # Color palette used for the terminal ( ~/.Xresources file )
