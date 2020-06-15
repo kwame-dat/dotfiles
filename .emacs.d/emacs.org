@@ -593,9 +593,6 @@ Generic completion frontend that's just awesome! Let's install and enable it.
   (setq enable-recursive-minibuffers t)
   (setq ivy-initial-inputs-alist nil)
   (setq ivy-on-del-error-function #'ignore)
-  (setq ivy-re-builders-alist
-        '((swiper . regexp-quote)
-          (t      . ivy--regex-fuzzy)))
   :config
   (ivy-mode 1)
   (evil-set-initial-state 'ivy-occur-grep-mode 'normal))
@@ -639,7 +636,6 @@ Generic completion frontend that's just awesome! Let's install and enable it.
 (use-package all-the-icons-ivy
   :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
 #+END_SRC
-
 *** =counsel=
 Counsel allows us to utilize ivy by replacing many built-in and common functions
 with richer versions. Let's install it!
@@ -1762,7 +1758,7 @@ functions we invoke regularly outside of magit is called.
   :demand t
   :ensure t
   :config
-  (load-theme 'base16-tomorrow-night t))
+  (load-theme 'base16-material t))
 #+END_SRC
 *** =powerline=
 #+BEGIN_SRC emacs-lisp
@@ -1780,7 +1776,7 @@ functions we invoke regularly outside of magit is called.
   :ensure t
   :demand t
   :config
-  (load-theme 'airline-base16_tomorrow))
+  (load-theme 'airline-doom-one))
 #+END_SRC
 *** =diminish=
 #+BEGIN_SRC emacs-lisp
