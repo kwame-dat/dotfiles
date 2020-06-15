@@ -19,8 +19,8 @@ floating_modifier $mod
 focus_follows_mouse no
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+d layout toggle split
+bindsym $mod+Shift+s layout stacking
+bindsym $mod+Shift+d layout toggle split
 
 
 bindsym $mod+Return exec alacritty
@@ -31,8 +31,10 @@ bindsym $mod+space --release exec "rofi -combi-modi drun,window,ssh -show combi 
 bindsym $mod+q kill
 
 bindsym $mod+Ctrl+p exec pavucontrol
-bindsym $mod+Ctrl+b exec gnome-terminal -e 'bmenu'
-bindsym $mod+Print --release exec --no-startup-id flameshot gui
+bindsym $mod+Ctrl+e exec Emacs
+bindsym $mod+Ctrl+t exec alacritty
+bindsym $mod+Ctrl+b exec alacritty -e 'bmenu'
+bindsym $mod+Ctrl+s --release exec --no-startup-id flameshot gui
 
 
 bindsym $mod+h focus left
@@ -48,11 +50,8 @@ bindsym $mod+Shift+Right move right
 bindsym $mod+z split toggle
 bindsym $mod+Shift+space floating toggle
 
-bindsym $mod+Shift+minus move scratchpad
-bindsym $mod+minus scratchpad show
-
-bindsym $mod+Ctrl+Right workspace next
-bindsym $mod+Ctrl+Left workspace prev
+bindsym $mod+Ctrl+h workspace next
+bindsym $mod+Ctrl+l workspace prev
 
 # Workspace names
 # Eg: set $ws1 1:mail
@@ -66,7 +65,6 @@ set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
-set $ws10 "10"
 
 # Switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -78,7 +76,6 @@ bindsym $mod+6 workspace number $ws6
 bindsym $mod+7 workspace number $ws7
 bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
-bindsym $mod+0 workspace number $ws10
 
 # Move to workspace with focused container
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -90,18 +87,17 @@ bindsym $mod+Shift+6 move container to workspace number $ws6
 bindsym $mod+Shift+7 move container to workspace number $ws7
 bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
-bindsym $mod+Shift+0 move container to workspace number $ws10
 
 # Open applications on specific workspaces
 assign [class="Emacs"] $ws1
 assign [class="qutebrowser"] $ws2
 assign [class="Google-chrome"] $ws2
 assign [class="firefox"] $ws2
-assign [class="zoom"] $ws8
+assign [class="zoom"] $ws7
 assign [class="Cisco AnyConnect Secure Mobility Client"] $ws7
-assign [class="Slack"] $ws9
-assign [class="whatsapp-nativefier-d52542"] $ws9
-assign [class="spotify"] $ws10
+assign [class="Slack"] $ws8
+assign [class="whatsapp-nativefier-d52542"] $ws8
+assign [class="spotify"] $ws9
 
 # Open specific applications in floating mode
 for_window [title="alsamixer"] floating enable border pixel 5
@@ -157,11 +153,10 @@ mode "$mode_system" {
 # Resize window (you can also use the mouse for that)
 bindsym $mod+r mode "resize"
 mode "resize" {
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
 
         # exit resize mode: Enter or Escape
         bindsym Return mode "default"
