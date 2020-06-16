@@ -943,7 +943,7 @@ going to install it and make sure it's loaded immediately.
                                          "~/Repo/Personal/2Areas"
                                          "~/Repo/Personal/1Projects"
                                          "~/Repo/Work/1Projects"
-                                         "~/Sync/org"
+                                         "~/Sync"
                                          ))
   (setq projectile-completion-system 'ivy)
   (setq projectile-switch-project-action #'projectile-dired)
