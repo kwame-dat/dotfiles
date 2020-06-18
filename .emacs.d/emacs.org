@@ -323,7 +323,7 @@ previously compiled manually then all of the package initialization will still t
 (global-set-key (kbd "s-o") (kbd "C-x o"))
 (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
 (global-set-key (kbd "s-w") (kbd "C-x 0"))
-(global-set-key (kbd "s-p") 'projectile-switch-project)
+(global-set-key (kbd "s-p") 'projectile-find-file)
 (global-set-key (kbd "s-P") 'counsel-M-x)
 (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
 (global-set-key (kbd "s-k") 'kill-buffer)
@@ -2149,10 +2149,10 @@ functions we invoke regularly outside of magit is called.
           :vars '( ( user-mail-address      . "tony@arksolutions.it"  )
                    ( user-full-name         . "Tony Ampomah" )
                    ( smtpmail-smtp-server   . "smtp.zoho.com" )
-                   ( mu4e-refile-folder . "/Personal/4Archives")
-                   ( mu4e-trash-folder . "/Personal/Trash")
-                   ( mu4e-sent-folder . "/Personal/Sent")
-                   ( mu4e-drafts-folder . "/Personal/Drafts")
+                   ( mu4e-refile-folder . "/tony@arksolutions.it/4Archives")
+                   ( mu4e-trash-folder . "/tony@arksolutions.it/Trash")
+                   ( mu4e-sent-folder . "/tony@arksolutions.it/Sent")
+                   ( mu4e-drafts-folder . "/tony@arksolutions.it/Drafts")
                    ( mu4e-compose-signature .
                                             (concat
                                              "Many thanks\n"
@@ -2171,10 +2171,10 @@ functions we invoke regularly outside of magit is called.
           :vars '( ( user-mail-address       . "tony.ampomah@netsells.co.uk" )
                    ( user-full-name          . "Tony Ampomah" )
                    ( smtpmail-smtp-server    . "smtp.gmail.com" )
-                   ( mu4e-refile-folder . "/Work/4Archives")
-                   ( mu4e-trash-folder . "/Work/[Gmail].Bin")
-                   ( mu4e-sent-folder . "/Work/[Gmail].Sent Mail")
-                   ( mu4e-drafts-folder . "/Work/[Gmail].Drafts")
+                   ( mu4e-refile-folder . "/tony.ampomah@netsells.co.uk/4Archives")
+                   ( mu4e-trash-folder . "/tony.ampomah@netsells.co.uk/[Gmail].Bin")
+                   ( mu4e-sent-folder . "/tony.ampomah@netsells.co.uk/[Gmail].Sent Mail")
+                   ( mu4e-drafts-folder . "/tony.ampomah@netsells.co.uk/[Gmail].Drafts")
                    ( mu4e-compose-signature  .
                                              (concat
                                               "Tony Ampomah\n"
