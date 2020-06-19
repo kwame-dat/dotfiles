@@ -324,7 +324,7 @@ previously compiled manually then all of the package initialization will still t
 (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
 (global-set-key (kbd "s-w") (kbd "C-x 0"))
 (global-set-key (kbd "s-p") 'projectile-find-file)
-(global-set-key (kbd "s-P") 'counsel-M-x)
+(global-set-key (kbd "s-P") 'projectile-switch-project)
 (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
 (global-set-key (kbd "s-k") 'kill-buffer)
 (global-set-key (kbd "s-s") 'save-buffer)
@@ -333,7 +333,7 @@ previously compiled manually then all of the package initialization will still t
 ** Font
 #+BEGIN_SRC emacs-lisp
 (setq itechytony/default-font "Jetbrains Mono")
-(setq itechytony/default-font-size 12)
+(setq itechytony/default-font-size 14)
 (setq itechytony/current-font-size itechytony/default-font-size)
 
 (setq itechytony/font-change-increment 1.1)
@@ -1813,7 +1813,7 @@ functions we invoke regularly outside of magit is called.
   :demand t
   :ensure t
   :config
-  (load-theme 'base16-material t))
+  (load-theme 'base16-tomorrow-night t))
 #+END_SRC
 *** =powerline=
 #+BEGIN_SRC emacs-lisp
@@ -1831,7 +1831,7 @@ functions we invoke regularly outside of magit is called.
   :ensure t
   :demand t
   :config
-  (load-theme 'airline-doom-one))
+  (load-theme 'airline-base16_tomorrow))
 #+END_SRC
 *** =diminish=
 #+BEGIN_SRC emacs-lisp
@@ -2114,7 +2114,7 @@ functions we invoke regularly outside of magit is called.
 ;; use "true" for the command (this is the default)
 ;; when I press U in the main view, or C-c C-u elsewhere,
 ;; this command is called, followed by the mu indexer
-(setq mu4e-get-mail-command "offlineimap")
+(setq mu4e-get-mail-command "offlineimap_parallel.sh")
 
 ;; not using smtp-async yet
 ;; some of these variables will get overridden by the contexts
