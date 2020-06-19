@@ -53,3 +53,9 @@ alias das="docker-compose exec workspace php artisan db:seed"
 
 # Docker
 alias ds="docker ps"
+
+# Emacs
+alias emc="emacsclient -c"
+
+export VISUAL="emacsclient -c"
+export EDITOR="emacsclient -t"
