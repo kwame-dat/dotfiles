@@ -31,7 +31,8 @@ bindsym $mod+space --release exec "rofi -combi-modi drun,window,ssh -show combi 
 bindsym $mod+q kill
 
 bindsym $mod+Ctrl+p exec pavucontrol
-bindsym $mod+Ctrl+e exec Emacs
+bindsym $mod+Ctrl+e exec emacsclient -c -a ''
+bindsym $mod+Ctrl+m emacsclient -c -a '' --eval '(mu4e)'
 bindsym $mod+Ctrl+t exec alacritty
 bindsym $mod+Ctrl+b exec alacritty -e 'bmenu'
 bindsym $mod+Ctrl+s --release exec --no-startup-id flameshot gui
@@ -284,6 +285,7 @@ exec --no-startup-id blueman-applet
 exec --no-startup-id volumeicon
 exec --no-startup-id pulseaudio
 exec --no-startup-id pa-applet
+exec --no-startup-id /usr/bin/emacs --daemon
 # Increase key repeat
 exec --no-startup-id xset r rate 220 80 &
 exec --no-startup-id xsetroot -cursor_name left_ptr
