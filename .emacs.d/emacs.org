@@ -373,11 +373,11 @@ other, future frames."
              (floor (/ itechytony/current-font-size itechytony/font-change-increment))))
   (itechytony/set-font-size))
 
-(define-key global-map (kbd "s-0") 'itechytony/reset-font-size)
-(define-key global-map (kbd "s-+") 'itechytony/increase-font-size)
-(define-key global-map (kbd "s-=") 'itechytony/increase-font-size)
-(define-key global-map (kbd "s-_") 'itechytony/decrease-font-size)
-(define-key global-map (kbd "s--") 'itechytony/decrease-font-size)
+(define-key global-map (kbd "C-0") 'itechytony/reset-font-size)
+(define-key global-map (kbd "C-+") 'itechytony/increase-font-size)
+(define-key global-map (kbd "C-=") 'itechytony/increase-font-size)
+(define-key global-map (kbd "C-_") 'itechytony/decrease-font-size)
+(define-key global-map (kbd "C--") 'itechytony/decrease-font-size)
 
 (itechytony/reset-font-size)
 #+END_SRC
