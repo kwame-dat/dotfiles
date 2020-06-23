@@ -30,7 +30,8 @@ bindsym $mod+Shift+f fullscreen toggle
 bindsym $mod+space --release exec "rofi -combi-modi drun,window,ssh -show combi -modi combi"
 bindsym $mod+q kill
 
-bindsym $mod+Ctrl+p exec pavucontrol
+bindsym $mod+Ctrl+p exec rofi-pass
+bindsym $mod+Ctrl+c exec rofi -show calc -modi calc -no-show-match -no-sort
 bindsym $mod+Ctrl+e exec emacsclient -c -a ''
 bindsym $mod+Ctrl+m emacsclient -c -a '' --eval '(mu4e)'
 bindsym $mod+Ctrl+t exec alacritty
