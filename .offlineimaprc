@@ -1,7 +1,7 @@
 [general]
 accounts = tony.ampomah.jw@gmail.com, tony@arksolutions.it, tony.ampomah@netsells.co.uk, tony.ampomah@thetrainline.com
 maxsyncaccounts = 1
-pythonfile = ~/Repo/Personal/2Areas/dotfiles/shell/+mu/lib.py
+pythonfile = ~/Repo/Personal/2Areas/dotfiles/shell/mu/lib.py
 
 autorefresh = 0.5
 quick = 10
