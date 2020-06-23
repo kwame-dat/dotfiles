@@ -21,7 +21,7 @@
     - [[#database-configuration][Database configuration]]
     - [[#package-management][Package Management]]
   - [[#functions][Functions]]
-  - [[#super-keybinding][Super Keybinding]]
+  - [[#general-keybinding][General Keybinding]]
   - [[#font][Font]]
   - [[#packages][Packages]]
     - [[#exec-path-from-shell][=exec-path-from-shell=]]
@@ -303,7 +303,7 @@ previously compiled manually then all of the package initialization will still t
   (counsel-find-file "~/Sync/org"))
 #+END_SRC
 
-** Super Keybinding
+** General Keybinding
 #+BEGIN_SRC emacs-lisp
 (setq mac-option-modifier 'meta)
 (setq mac-command-modifier 'super)
@@ -328,12 +328,16 @@ previously compiled manually then all of the package initialization will still t
 (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
 (global-set-key (kbd "s-k") 'kill-buffer)
 (global-set-key (kbd "s-s") 'save-buffer)
+
+(global-set-key (kbd "C-S-v") 'yank)
+(global-set-key (kbd "C-S-c") 'kill-ring-save)
+(global-set-key (kbd "M-x") 'counsel-M-x)
 #+END_SRC
 
 ** Font
 #+BEGIN_SRC emacs-lisp
 (setq itechytony/default-font "Jetbrains Mono")
-(setq itechytony/default-font-size 12)
+(setq itechytony/default-font-size 11)
 (setq itechytony/current-font-size itechytony/default-font-size)
 
 (setq itechytony/font-change-increment 1.1)
@@ -466,6 +470,17 @@ Install, automatically load, and enable evil. It's like vim.
   (require 'general)
   (general-evil-setup)
 
+  (general-define-key
+   :states 'insert
+   "C-x C-l"    'company-whole-lines
+   "C-x C-k"    'company-dict-or-keywords
+   "C-x C-f"    'company-files
+   "C-x C-]"    'company-etags
+   "C-x s"      'company-ispell
+   "C-x C-s"    'company-yasnippet
+   "C-x C-o"    'company-capf
+   "C-x C-n"    'company-dabbrev)
+
   (general-create-definer my-leader-def
     :keymaps 'override
     :prefix "SPC")
@@ -597,7 +612,7 @@ Install, automatically load, and enable evil. It's like vim.
     "nv" 'org-search-view
     ":"  'eval-expression
     "cc"  'compile
-    "<SPC>" 'projectile-find-file
+    "<SPC>" 'counsel-projectile-find-file
     "/"  'swiper
     ;; insert
     "ie" 'emoji-cheat-sheet-plus-insert
@@ -634,8 +649,6 @@ Install, automatically load, and enable evil. It's like vim.
   "." 'dired-hide-dotfiles-mode
   "C-e" 'dired-toggle-read-only)
 #+END_SRC
-
-#+RESULTS:
 
 *** =ivy=
 Generic completion frontend that's just awesome! Let's install and enable it.
@@ -1984,7 +1997,8 @@ functions we invoke regularly outside of magit is called.
      
 **** =yaml=
 #+BEGIN_SRC emacs-lisp
-(use-package yaml-mode)
+(use-package yaml-mode
+  :mode "Procfile\\'")
 (add-hook 'yaml-mode-hook 'display-line-numbers-mode)
 #+END_SRC
      
@@ -2064,6 +2078,7 @@ functions we invoke regularly outside of magit is called.
 *** =mu4e=
 #+BEGIN_SRC emacs-lisp
 (require 'mu4e)
+(setq mu4e-view-prefer-html nil)
 
 ;; I want my format=flowed thank you very much
 ;; mu4e sets up visual-line-mode and also fill (M-q) to do the right thing
@@ -2269,6 +2284,7 @@ functions we invoke regularly outside of magit is called.
 ;; display unread email on mode line
 (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
 #+END_SRC
+
 *** Toc-org
 Let's install and load the =toc-org= package after org mode is loaded. This is the
 package that automatically generates an up to date table of contents for us.
