@@ -2296,7 +2296,7 @@ package that automatically generates an up to date table of contents for us.
 #+END_SRC
 ** Load secrets
 #+BEGIN_SRC emacs-lisp
-(load "~/.emacs.d/lisp/secrets.el")
+(load "~/Sync/Documents/Personal/3Resources/Keys/secrets.el")
 #+END_SRC
 ** Post Initialisation
 Let's lower our GC thresholds back down to a sane level.
