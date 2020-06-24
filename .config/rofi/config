@@ -2,8 +2,7 @@ rofi.theme: android_notification
 rofi.terminal: gnome-terminal
 rofi.ssh-client: ssh
 rofi.ssh-command: {terminal} -- {ssh-client} {host}
-rofi.dpi: 140
-rofi.width: 25
+rofi.dpi: 200
 rofi.line-padding: 4
 rofi.padding: 30
 rofi.hide-scrollbar: true
