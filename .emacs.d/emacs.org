@@ -951,6 +951,7 @@ going to install it and make sure it's loaded immediately.
                                          "~/Sync/Documents/Personal/2Areas"
                                          "~/Sync/Documents/Home/1Projects"
                                          "~/Sync/Documents/Home/2Areas"
+                                         "~/Sync/Documents/Home/3Resources"
                                          "~/Sync/Documents/Spiritual/3Resources"
                                          "~/Sync/Documents/Spiritual/2Areas"
                                          "~/Sync/Documents/Work/2Areas"
