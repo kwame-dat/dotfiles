@@ -12,5 +12,3 @@ settings:
     global: 20
   qt.highdpi:
     global: true
-  zoom.default:
-    global: 120%

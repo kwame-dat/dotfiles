@@ -3,14 +3,14 @@
 set $mod Mod4
 
 # Configure border style <normal|1pixel|pixel xx|none|pixel>
-new_window pixel 5
+new_window pixel 2
 new_float normal
 
 # Hide borders
 hide_edge_borders none
 
 # Window title font
-font xft:URWGothic-Book 14
+font xft:URWGothic-Book 10
 
 # Use Mouse+$mod to drag floating windows
 floating_modifier $mod
@@ -27,19 +27,11 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+Shift+w exec google-chrome-stable
 bindsym $mod+Shift+f fullscreen toggle
 
-bindsym $mod+space --release exec "rofi -combi-modi drun,window,ssh -show combi -modi combi"
+bindsym $mod+space --release exec "rofi -combi-modi drun,window,ssh,calc -show combi -modi combi"
 bindsym $mod+q kill
-
-bindsym $mod+Ctrl+p exec rofi-pass
-bindsym $mod+Ctrl+c exec rofi -show calc -modi calc -no-show-match -no-sort
-bindsym $mod+Ctrl+e exec emacsclient -c -a ''
-bindsym $mod+Ctrl+m emacsclient -c -a '' --eval '(mu4e)'
-bindsym $mod+Ctrl+t exec alacritty
-bindsym $mod+Ctrl+b exec alacritty -e 'bmenu'
-bindsym $mod+Ctrl+s --release exec --no-startup-id flameshot gui
+bindsym $mod+Shift+q xkill
 
 bindsym $mod+Tab workspace back_and_forth
-
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -96,6 +88,7 @@ bindsym $mod+Shift+9 move container to workspace number $ws9
 assign [class="Emacs"] $ws1
 assign [class="qutebrowser"] $ws2
 assign [class="Google-chrome"] $ws2
+assign [class="Chromium"] $ws2
 assign [class="firefox"] $ws2
 assign [class="Cisco AnyConnect Secure Mobility Client"] $ws6
 assign [class="zoom"] $ws7
@@ -104,10 +97,10 @@ assign [class="whatsapp-nativefier-d52542"] $ws8
 assign [class="spotify"] $ws9
 
 # Open specific applications in floating mode
-for_window [title="alsamixer"] floating enable border pixel 5
+for_window [title="alsamixer"] floating enable border pixel 2
 for_window [class="calamares"] floating enable border normal
 for_window [title="File Transfer*"] floating enable
-for_window [class="Galculator"] floating enable border pixel 5
+for_window [class="Galculator"] floating enable border pixel 2
 for_window [class="GParted"] floating enable border normal
 for_window [class="Lightdm-settings"] floating enable
 for_window [class="Lxappearance"] floating enable sticky enable border normal
@@ -132,18 +125,17 @@ for_window [urgent=latest] focus
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # Set shut down, restart and locking features
-bindsym $mod+Ctrl+Delete mode "$mode_system"
+bindsym $mod+Ctrl+BackSpace mode "$mode_system"
+bindsym $mod+Shift+e mode "$mode_system"
 set $mode_system (e)xit, switch_(u)ser, (h)ibernate, (r)eboot, (s)hutdown
 mode "$mode_system" {
-    bindsym u exec --no-startup-id i3exit switch_user, mode "default"
-    bindsym e exec --no-startup-id i3exit logout, mode "default"
-    bindsym h exec --no-startup-id i3exit hibernate, mode "default"
-    bindsym r exec --no-startup-id i3exit reboot, mode "default"
-    bindsym s exec --no-startup-id i3exit shutdown, mode "default"
+    bindsym u exec --no-startup-id i3 exit switch_user, mode "default"
+    bindsym e exec --no-startup-id i3 exit logout, mode "default"
+    bindsym h exec --no-startup-id i3 exit hibernate, mode "default"
+    bindsym r exec --no-startup-id i3 exit reboot, mode "default"
+    bindsym s exec --no-startup-id i3 exit shutdown, mode "default"
 
     # exit system mode: "Enter" or "Escape"
     bindsym Return mode "default"
@@ -276,17 +268,23 @@ bindsym XF86AudioPrev exec playerctl previous
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id nitrogen --restore; sleep 1; compton -b
 exec --no-startup-id nm-applet
-exec --no-startup-id xfce4-power-manager
 exec --no-startup-id pamac-tray
-exec --no-startup-id blueman-applet
-exec --no-startup-id volumeicon
+exec --no-startup-id xfce4-power-manager
 exec --no-startup-id pulseaudio
-exec --no-startup-id pa-applet
-exec --no-startup-id /usr/bin/emacs --daemon
+exec --no-startup-id blueman-applet
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
 # Increase key repeat
 exec --no-startup-id xset r rate 220 80 &
 exec --no-startup-id xsetroot -cursor_name left_ptr
+# exec_always --no-startup-id ff-theme-util
+# exec_always --no-startup-id fix_xcursor
 
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-exec_always --no-startup-id ff-theme-util
-exec_always --no-startup-id fix_xcursor
+
+# Launcing apps quicker
+bindsym $mod+Ctrl+p exec rofi-pass
+bindsym $mod+Ctrl+e exec emacsclient -c -a ''
+bindsym $mod+Ctrl+m emacsclient -c --eval '(mu4e)'
+bindsym $mod+Ctrl+t exec alacritty
+bindsym $mod+Ctrl+b exec alacritty -e 'bmenu'
+bindsym $mod+Ctrl+s --release exec --no-startup-id flameshot gui

@@ -3,6 +3,7 @@ include-file = ~/.config/polybar/colors.ini
 include-file = ~/.config/polybar/modules.ini
 
 [bar/main]
+monitor = ${env:MONITOR:}
 dpi = 150
 width = 100%
 height = 45
@@ -17,8 +18,8 @@ foreground = ${colors.foreground}
 line-size = 3
 line-color = #f00
 
-border-size = 4
-border-color = #00000000
+; border-size = 10
+; border-color = #00000000
 
 padding-left = 0
 padding-right = 0
@@ -26,13 +27,13 @@ padding-right = 0
 module-margin-left = 2
 module-margin-right = 2
 
-font-0 = "Terminus (TTF):size=14;2"
-font-1 = "Siji:size=14;2"
-font-2 = Iosevka Nerd Font:style=Medium:size=14;3
+font-0 = "Terminus (TTF):size=12;2"
+font-1 = "Siji:size=12;2"
+font-2 = Iosevka Nerd Font:style=Medium:size=12;3
 
 modules-left = i3 cpu temperature memory filesystem spotify
 modules-center = xwindow
-modules-right = pub-ip networkspeedup networkspeeddown pavolume xkeyboard battery date
+modules-right = networkspeedup networkspeeddown pavolume xkeyboard battery date
 
 tray-position = right
 tray-padding = 3
@@ -54,7 +55,7 @@ screenchange-reload = true
 ;compositing-border = over
 
 [global/wm]
-margin-top = 5
+margin-top = 0
 margin-bottom = 5
 
 ; vim:ft=dosini
