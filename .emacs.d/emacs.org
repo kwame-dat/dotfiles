@@ -198,6 +198,11 @@ Disable certain byte compiler warnings to cut down on the noise.
 (setq create-lockfiles nil)  ; stop creating .# files
 
 (add-hook 'conf-space-mode-hook 'display-line-numbers-mode)
+(defun my/disable-scroll-bars (frame)
+  (modify-frame-parameters frame
+                           '((vertical-scroll-bars . nil)
+                             (horizontal-scroll-bars . nil))))
+(add-hook 'after-make-frame-functions 'my/disable-scroll-bars)
 #+END_SRC
 *** Database configuration
 #+BEGIN_SRC emacs-lisp
