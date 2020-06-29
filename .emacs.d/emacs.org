@@ -1872,7 +1872,6 @@ functions we invoke regularly outside of magit is called.
 (diminish 'visual-line-mode)
 (diminish 'abbrev-mode)
 (diminish 'subword-mode)
-(diminish 'all-the-icons-dired-mode)
 #+END_SRC
 *** Lang
 **** =php=
