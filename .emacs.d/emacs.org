@@ -305,7 +305,7 @@ previously compiled manually then all of the package initialization will still t
 
 (defun itechytony/find-in-notes ()
   (interactive)
-  (counsel-find-file "~/Sync/org"))
+  (counsel-find-file "~/Nextcloud/org"))
 #+END_SRC
 
 ** General Keybinding
@@ -591,29 +591,29 @@ Install, automatically load, and enable evil. It's like vim.
     "pB"  'counsel-switch-buffer
     "pd"  'projectile-discover-projects-in-search-path
     ;; notes
-    "nf" '(lambda() (interactive) (counsel-find-file "~/Sync/org"))
-    "n." '(lambda() (interactive) (counsel-find-file "~/Sync/org"))
-    "ni" '(lambda() (interactive) (find-file "~/Sync/org/inbox.org"))
+    "nf" '(lambda() (interactive) (counsel-find-file "~/Nextcloud/org"))
+    "n." '(lambda() (interactive) (counsel-find-file "~/Nextcloud/org"))
+    "ni" '(lambda() (interactive) (find-file "~/Nextcloud/org/inbox.org"))
     "na" 'org-agenda
     "nci" 'org-pomodoro
     "nco" 'org-pomodoro-clock-break
     "nn" 'org-capture
     ;; notes spiritual
-    "nst" '(lambda() (interactive) (find-file "~/Sync/org/todo-spiritual.org"))
-    "nsg" '(lambda() (interactive) (find-file "~/Sync/org/goals-spiritual.org"))
-    "nsc" '(lambda() (interactive) (find-file "~/Sync/org/calendar/spiritual.org"))
+    "nst" '(lambda() (interactive) (find-file "~/Nextcloud/org/todo-spiritual.org"))
+    "nsg" '(lambda() (interactive) (find-file "~/Nextcloud/org/goals-spiritual.org"))
+    "nsc" '(lambda() (interactive) (find-file "~/Nextcloud/org/calendar/spiritual.org"))
     ;; notes personal
-    "npt" '(lambda() (interactive) (find-file "~/Sync/org/todo-personal.org"))
-    "npc" '(lambda() (interactive) (find-file "~/Sync/org/calendar/personal.org"))
-    "npg" '(lambda() (interactive) (find-file "~/Sync/org/goals-personal.org"))
+    "npt" '(lambda() (interactive) (find-file "~/Nextcloud/org/todo-personal.org"))
+    "npc" '(lambda() (interactive) (find-file "~/Nextcloud/org/calendar/personal.org"))
+    "npg" '(lambda() (interactive) (find-file "~/Nextcloud/org/goals-personal.org"))
     ;; notes home
-    "nht" '(lambda() (interactive) (find-file "~/Sync/org/todo-home.org"))
-    "nhg" '(lambda() (interactive) (find-file "~/Sync/org/goals-home.org"))
-    "nhc" '(lambda() (interactive) (find-file "~/Sync/org/calendar/home.org"))
+    "nht" '(lambda() (interactive) (find-file "~/Nextcloud/org/todo-home.org"))
+    "nhg" '(lambda() (interactive) (find-file "~/Nextcloud/org/goals-home.org"))
+    "nhc" '(lambda() (interactive) (find-file "~/Nextcloud/org/calendar/home.org"))
     ;; notes work
-    "nwt" '(lambda() (interactive) (find-file "~/Sync/org/todo-work.org"))
-    "nwc" '(lambda() (interactive) (find-file "~/Sync/org/calendar/work.org"))
-    "nwg" '(lambda() (interactive) (find-file "~/Sync/org/goals-work.org"))
+    "nwt" '(lambda() (interactive) (find-file "~/Nextcloud/org/todo-work.org"))
+    "nwc" '(lambda() (interactive) (find-file "~/Nextcloud/org/calendar/work.org"))
+    "nwg" '(lambda() (interactive) (find-file "~/Nextcloud/org/goals-work.org"))
     "nv" 'org-search-view
     ":"  'eval-expression
     "cc"  'compile
@@ -948,21 +948,21 @@ going to install it and make sure it's loaded immediately.
   :ensure t
   :init
   (setq projectile-project-search-path '(
-                                         "~/Sync/Documents/Personal/2Areas"
-                                         "~/Sync/Documents/Home/1Projects"
-                                         "~/Sync/Documents/Home/2Areas"
-                                         "~/Sync/Documents/Home/3Resources"
-                                         "~/Sync/Documents/Spiritual/3Resources"
-                                         "~/Sync/Documents/Spiritual/2Areas"
-                                         "~/Sync/Documents/Work/2Areas"
-                                         "~/Sync/Notes/Home"
-                                         "~/Sync/Notes/Spiritual"
-                                         "~/Sync/Notes/Personal"
-                                         "~/Sync/Notes/Work"
+                                         "~/Nextcloud/Documents/Personal/2Areas"
+                                         "~/Nextcloud/Documents/Home/1Projects"
+                                         "~/Nextcloud/Documents/Home/2Areas"
+                                         "~/Nextcloud/Documents/Home/3Resources"
+                                         "~/Nextcloud/Documents/Spiritual/3Resources"
+                                         "~/Nextcloud/Documents/Spiritual/2Areas"
+                                         "~/Nextcloud/Documents/Work/2Areas"
+                                         "~/Nextcloud/Notes/Home"
+                                         "~/Nextcloud/Notes/Spiritual"
+                                         "~/Nextcloud/Notes/Personal"
+                                         "~/Nextcloud/Notes/Work"
                                          "~/Repo/Personal/2Areas"
                                          "~/Repo/Personal/1Projects"
                                          "~/Repo/Work/1Projects"
-                                         "~/Sync"
+                                         "~/Nextcloud"
                                          ))
   (setq projectile-completion-system 'ivy)
   (setq projectile-switch-project-action #'projectile-dired)
@@ -1078,30 +1078,30 @@ want is prioritized instead.
   (setq org-startup-truncated nil)
   (setq org-agenda-inhibit-startup nil)
 
-  (setq org-directory "~/Sync/org")
+  (setq org-directory "~/Nextcloud/org")
   (setq org-agenda-files (quote (
-                                 "~/Sync/org/calendar/personal.org"
-                                 "~/Sync/org/calendar/shared.org"
-                                 "~/Sync/org/todo-home.org"
-                                 "~/Sync/org/todo-personal.org"
-                                 "~/Sync/org/todo-spiritual.org"
-                                 "~/Sync/org/todo-work.org"
-                                 "~/Sync/org/jira/DELREP.org"
+                                 "~/Nextcloud/org/calendar/personal.org"
+                                 "~/Nextcloud/org/calendar/shared.org"
+                                 "~/Nextcloud/org/todo-home.org"
+                                 "~/Nextcloud/org/todo-personal.org"
+                                 "~/Nextcloud/org/todo-spiritual.org"
+                                 "~/Nextcloud/org/todo-work.org"
+                                 "~/Nextcloud/org/jira/DELREP.org"
                                  )))
 
   (add-hook 'org-capture-mode-hook 'evil-insert-state)
   (setq org-capture-templates
         '(
-          ("i" "Inbox" entry (file "~/Sync/org/inbox.org")
+          ("i" "Inbox" entry (file "~/Nextcloud/org/inbox.org")
            "* TODO %?\n")
-          ("m" "Email" entry (file+headline "~/Sync/org/inbox.org" "Emails")
+          ("m" "Email" entry (file+headline "~/Nextcloud/org/inbox.org" "Emails")
            "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
-          ("p" "Project" entry (file+headline "~/Sync/org/todo-personal.org" "1Projects")
-           (file "~/Sync/org/templates/new-project-template.org"))
-          ("s" "Someday" entry (file+headline "~/Sync/org/someday.org" "Someday")
+          ("p" "Project" entry (file+headline "~/Nextcloud/org/todo-personal.org" "1Projects")
+           (file "~/Nextcloud/org/templates/new-project-template.org"))
+          ("s" "Someday" entry (file+headline "~/Nextcloud/org/someday.org" "Someday")
            "* SOMEDAY %?\n")
-          ("l" "Log" entry (file+olp+datetree "~/Sync/org/log.org" "Log")
-           (file "~/Sync/org/templates/logtemplate.org"))))
+          ("l" "Log" entry (file+olp+datetree "~/Nextcloud/org/log.org" "Log")
+           (file "~/Nextcloud/org/templates/logtemplate.org"))))
 
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -1192,7 +1192,7 @@ want is prioritized instead.
   :hook (org-mode . org-jira-mode)
   :after org
   :config
-  (setq org-jira-working-dir "~/Sync/org/jira")
+  (setq org-jira-working-dir "~/Nextcloud/org/jira")
   :ensure t)
 
 (use-package org-evil
@@ -2301,7 +2301,7 @@ package that automatically generates an up to date table of contents for us.
 #+END_SRC
 ** Load secrets
 #+BEGIN_SRC emacs-lisp
-(load "~/Sync/Documents/Personal/3Resources/Keys/secrets.el")
+(load "~/Nextcloud/Documents/Personal/3Resources/Keys/secrets.el")
 #+END_SRC
 ** Post Initialisation
 Let's lower our GC thresholds back down to a sane level.
