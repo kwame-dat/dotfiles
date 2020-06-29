@@ -27,7 +27,7 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+Shift+w exec google-chrome-stable
 bindsym $mod+Shift+f fullscreen toggle
 
-bindsym $mod+space --release exec "rofi -combi-modi drun,window,ssh,calc -show combi -modi combi"
+bindsym $mod+space --release exec "rofi -show combi"
 bindsym $mod+q kill
 bindsym $mod+Shift+q xkill
 
@@ -295,4 +295,5 @@ bindsym $mod+Ctrl+e exec emacsclient -c -a ''
 bindsym $mod+Ctrl+m emacsclient -c --eval '(mu4e)'
 bindsym $mod+Ctrl+t exec alacritty
 bindsym $mod+Ctrl+b exec alacritty -e 'bmenu'
+bindsym $mod+Ctrl+c exec rofi -show calc
 bindsym $mod+Ctrl+s --release exec --no-startup-id flameshot gui
