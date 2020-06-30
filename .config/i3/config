@@ -289,7 +289,6 @@ exec --no-startup-id xsetroot -cursor_name left_ptr
 # Launcing apps quicker
 bindsym $mod+Ctrl+p exec rofi-pass
 bindsym $mod+Ctrl+e exec emacsclient -c -a ''
-bindsym $mod+Ctrl+m emacsclient -c --eval '(mu4e)'
 bindsym $mod+Ctrl+t exec alacritty
 bindsym $mod+Ctrl+b exec qutebrowser
 bindsym $mod+Ctrl+m exec alacritty -e 'bmenu'
