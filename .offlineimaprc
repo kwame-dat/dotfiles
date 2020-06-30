@@ -1,5 +1,5 @@
 [general]
-accounts = tony.ampomah.jw@gmail.com, tony@arksolutions.it, tony.ampomah@netsells.co.uk, tony.ampomah@thetrainline.com
+accounts = jw, arksolutions, netsells, thetrainline
 maxsyncaccounts = 1
 pythonfile = ~/Repo/Personal/2Areas/dotfiles/shell/mu/lib.py
 
@@ -8,15 +8,15 @@ quick = 10
 
 # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
-[Account tony.ampomah.jw@gmail.com]
-localrepository = tony.ampomah.jw@gmail.com_local
-remoterepository = tony.ampomah.jw@gmail.com_remote
+[Account jw]
+localrepository = jw_local
+remoterepository = jw_remote
 
-[Repository tony.ampomah.jw@gmail.com_local]
+[Repository jw_local]
 type = Maildir
-localfolders = ~/Maildir/tony.ampomah.jw@gmail.com
+localfolders = ~/Maildir/jw
 
-[Repository tony.ampomah.jw@gmail.com_remote]
+[Repository jw_remote]
 type = Gmail
 remotehosteval = get_pass("spiritual/email/gmail.com")["remotehost"]
 remoteusereval = get_pass("spiritual/email/gmail.com")["user"]
@@ -28,15 +28,15 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
 # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
-[Account tony@arksolutions.it]
-localrepository = tony@arksolutions.it_local
-remoterepository = tony@arksolutions.it_remote
+[Account arksolutions]
+localrepository = arksolutions_local
+remoterepository = arksolutions_remote
 
-[Repository tony@arksolutions.it_local]
+[Repository arksolutions_local]
 type = Maildir
-localfolders = ~/Maildir/tony@arksolutions.it
+localfolders = ~/Maildir/arksolutions
 
-[Repository tony@arksolutions.it_remote]
+[Repository arksolutions_remote]
 type = IMAP
 remotehosteval = get_pass("personal/email/arksolutions.it")["remotehost"]
 remoteusereval = get_pass("personal/email/arksolutions.it")["user"]
@@ -48,15 +48,15 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
 # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
-[Account tony.ampomah@netsells.co.uk]
-localrepository = tony.ampomah@netsells.co.uk_local
-remoterepository = tony.ampomah@netsells.co.uk_remote
+[Account netsells]
+localrepository = netsells_local
+remoterepository = netsells_remote
 
-[Repository tony.ampomah@netsells.co.uk_local]
+[Repository netsells_local]
 type = Maildir
-localfolders = ~/Maildir/tony.ampomah@netsells.co.uk
+localfolders = ~/Maildir/netsells
 
-[Repository tony.ampomah@netsells.co.uk_remote]
+[Repository netsells_remote]
 type = IMAP
 remotehosteval = get_pass("work/netsells/email")["remotehost"]
 remoteusereval = get_pass("work/netsells/email")["user"]
@@ -68,15 +68,15 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
 # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
-[Account tony.ampomah@thetrainline.com]
-localrepository = tony.ampomah@thetrainline.com_local
-remoterepository = tony.ampomah@thetrainline.com_remote
+[Account thetrainline]
+localrepository = thetrainline_local
+remoterepository = thetrainline_remote
 
-[Repository tony.ampomah@thetrainline.com_local]
+[Repository thetrainline_local]
 type = Maildir
-localfolders = ~/Maildir/tony.ampomah@thetrainline.com
+localfolders = ~/Maildir/thetrainline
 
-[Repository tony.ampomah@thetrainline.com_remote]
+[Repository thetrainline_remote]
 type = IMAP
 ssl = yes
 readonly = true
@@ -84,5 +84,5 @@ remotehosteval = get_pass("work/ttl/email")["remotehost"]
 remoteusereval = get_pass("work/ttl/email")["user"]
 remotepasseval = get_pass("work/ttl/email")["password"]
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-folderfilter = lambda folder: folder in [ 'Sent', 'INBOX', 'Archive' ]
+folderfilter = lambda folder: folder in ['Archive' , 'Contacts', 'Deleted Items', 'Drafts', 'INBOX', 'Junk Email', 'Outbox', 'Sent Items' ]
 # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
