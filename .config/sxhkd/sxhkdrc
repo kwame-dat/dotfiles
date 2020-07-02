@@ -4,7 +4,7 @@
 
 # terminal emulator
 super + Return
-	gnome-terminal
+	alacritty
 
 ## make sxhkd reload its configuration files:
 super + shift + Escape
@@ -12,7 +12,7 @@ super + shift + Escape
 
 # program launcher
 super + space
-	rofi -combi-modi drun,window,ssh -show combi -modi combi -line-padding 4 -width 25 -padding 30 -hide-scrollbar -show-icons -drun-icon-theme "Papirus"
+	rofi -show combi
 
 #
 # bspwm hotkeys
@@ -23,7 +23,7 @@ super + shift + r
 	bspc wm -r
 
 # quit bspwm
-super + ctrl + q
+super + shift + e
 	bspc quit
 
 # close and kill
