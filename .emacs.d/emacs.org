@@ -306,6 +306,16 @@ previously compiled manually then all of the package initialization will still t
 (defun itechytony/find-in-notes ()
   (interactive)
   (counsel-find-file "~/Nextcloud/org"))
+
+(defun open-terminal-in-projectile-root ()
+  (interactive)
+  (let ((workdir (if (projectile-project-root)
+                     (projectile-project-root)
+                   (projectile-project-root))))
+    (call-process-shell-command
+     (concat "gnome-terminal –working-directory="workdir) nil 0)))
+
+(global-set-key (kbd "C-c t") 'open-terminal-in-workdir)
 #+END_SRC
 
 ** General Keybinding
@@ -333,6 +343,8 @@ previously compiled manually then all of the package initialization will still t
 (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
 (global-set-key (kbd "s-k") 'kill-buffer)
 (global-set-key (kbd "s-s") 'save-buffer)
+(global-set-key (kbd "§") 'shell-pop)
+
 
 (global-set-key (kbd "C-S-v") 'yank)
 (global-set-key (kbd "C-S-c") 'kill-ring-save)
@@ -635,7 +647,7 @@ Install, automatically load, and enable evil. It's like vim.
     "op"  'pass
     "oe"  'es-command-center
     "ot" 'shell-pop
-    "oT" 'vterm
+    "oT" 'open-terminal-in-projectile-root
     "x"  'counsel-M-x
     )
   )
@@ -955,14 +967,9 @@ going to install it and make sure it's loaded immediately.
                                          "~/Nextcloud/Documents/Spiritual/3Resources"
                                          "~/Nextcloud/Documents/Spiritual/2Areas"
                                          "~/Nextcloud/Documents/Work/2Areas"
-                                         "~/Nextcloud/Notes/Home"
-                                         "~/Nextcloud/Notes/Spiritual"
-                                         "~/Nextcloud/Notes/Personal"
-                                         "~/Nextcloud/Notes/Work"
                                          "~/Repo/Personal/2Areas"
                                          "~/Repo/Personal/1Projects"
                                          "~/Repo/Work/1Projects"
-                                         "~/Nextcloud"
                                          ))
   (setq projectile-completion-system 'ivy)
   (setq projectile-switch-project-action #'projectile-dired)
@@ -1425,7 +1432,8 @@ want is prioritized instead.
 (use-package vterm
   :ensure t
   :config
-  ;; :commands (vterm vterm-mode)
+  (setq vterm-shell "/usr/bin/fish")
+  (setq vterm-kill-buffer-on-exit t)
   (add-hook 'vterm-mode-hook
             (lambda ()
               (setq-local evil-insert-state-cursor 'box)
@@ -1477,14 +1485,17 @@ want is prioritized instead.
                (if (one-window-p)
                    (switch-to-buffer shell-pop-last-buffer)
                  (kill-buffer-and-window)))))))))
+  )
 
-  (custom-set-variables
-   '(shell-pop-shell-type (quote ("vterm" "*vterm*" (lambda nil (vterm)))))
-   '(shell-pop-window-size 35)
-   '(shell-pop-full-span t)
-   '(shell-pop-term-shell "/usr/bin/fish")
-   '(shell-pop-window-position "bottom")))
+(custom-set-variables
+ '(shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
+ '(shell-pop-window-size 45)
+ '(shell-pop-full-span t)
+ '(shell-pop-term-shell "/usr/bin/fish")
+ '(shell-pop-window-position "bottom"))
 #+END_SRC 
+
+#+RESULTS:
 
 *** =docker=
 #+BEGIN_SRC emacs-lisp
@@ -1697,7 +1708,7 @@ functions we invoke regularly outside of magit is called.
 #+END_SRC
 
 *** =flyspell=
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package flyspell-correct)
 
 (use-package flyspell-correct-popup)
@@ -1729,6 +1740,8 @@ functions we invoke regularly outside of magit is called.
   :config
   (global-set-key (kbd "M-\\") 'define-word-at-point))
 #+END_SRC
+
+#+RESULTS:
 
 *** =yasnippet=
 #+BEGIN_SRC emacs-lisp
@@ -2226,6 +2239,50 @@ functions we invoke regularly outside of magit is called.
          ;; everything else goes to /archive
          (t  "/archive"))))
 
+;; Empty the initial bookmark list
+(setq mu4e-bookmarks '())
+
+;; for searches
+(defvar d-spam "NOT (maildir:/arksolutions/Spam OR maildir:/netsells/[Gmail].Spam OR maildir:/jw/[Gmail].Spam OR maildir:/thetrainline/\"Junk E-Mail\" OR maildir:/thetrainline/\"Deleted Items\")")
+
+; All archived folders
+(defvar d-archive "NOT (maildir:/arksolutions/4Archives OR maildir:/jw/4Archives OR maildir:/netsells/[Gmail].4Archives OR maildir:/thetrainline/Archive)")
+
+(defvar inbox-folders (string-join '("maildir:/arksolutions/INBOX"
+                                     "maildir:/netsells/INBOX"
+                                     "maildir:/jw/INBOX"
+                                     "maildir:/thetrainline/INBOX")
+                                   " OR "))
+
+(defvar draft-folders (string-join '("maildir:/arksolutions/Drafts"
+                                     "maildir:/netsells/[Gmail].Drafts"
+                                     "maildir:/jw/[Gmail].Drafts"
+                                     "maildir:/thetrainline/Drafts")
+                                   " OR "))
+
+(defvar spam-folders (string-join '("maildir:/arksolutions/Spam"
+                                     "maildir:/netsells/[Gmail].Spam"
+                                     "maildir:/jw/[Gmail].Spam"
+                                     "maildir:/thetrainline/Junk Email")
+                                  " OR "))
+
+(add-to-list 'mu4e-bookmarks
+             '((concat d-spam " AND date:today..now")                  "Today's messages"     ?t))
+(add-to-list 'mu4e-bookmarks
+             '((concat d-spam " AND date:7d..now")                     "Last 7 days"          ?w))
+(add-to-list 'mu4e-bookmarks
+             '((concat d-spam " AND flag:flagged")                     "Flagged"              ?f))
+(add-to-list 'mu4e-bookmarks
+             '((concat d-spam " AND mime:image/*")                     "Messages with images" ?p))
+(add-to-list 'mu4e-bookmarks
+             '(spam-folders "All spambuckets"     ?S))
+(add-to-list 'mu4e-bookmarks
+             '(draft-folders "All drafts"     ?d))
+(add-to-list 'mu4e-bookmarks
+             '(inbox-folders "All inbox mails"     ?i))
+(add-to-list 'mu4e-bookmarks
+             '((concat d-spam d-archive " AND (flag:unread OR flag:flagged) AND NOT flag:trashed")
+               "Unread messages"      ?u))
 
 ;; use org structures and tables in message mode
 (add-hook 'message-mode-hook 'turn-on-orgstruct++)
