@@ -9,6 +9,6 @@ settings:
   content.notifications:
     https://www.youtube.com: false
   fonts.web.size.default:
-    global: 20
+    global: 14
   qt.highdpi:
     global: true
