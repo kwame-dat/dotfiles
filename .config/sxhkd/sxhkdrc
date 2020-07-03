@@ -44,23 +44,17 @@ super + g
 
 #
 # state/flags
-#
 
 # set the window state
 # super + {t,shift + t,s,f}
 # bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
 
-super + f
-  bspc node -t ~fullscreen
-
-# set the node flags
-super + ctrl + {m,x,y,z}
-	bspc node -g {marked,locked,sticky,private}
+super + shift + f
+  bspc node -t \~fullscreen
 
 #
 # focus/swap
 #
-
 # focus the node in the given direction
 super + {_,shift + }{h,j,k,l}
 	bspc node -{f,s} {west,south,north,east}
@@ -100,8 +94,8 @@ super + ctrl + {h,j,k,l}
 	bspc node -p {west,south,north,east}
 
 # preselect the ratio
-super + ctrl + {1-9}
-	bspc node -o 0.{1-9}
+# super + ctrl + {1-9}
+# 	bspc node -o 0.{1-9}
 
 # cancel the preselection for the focused node
 super + ctrl + space
@@ -145,3 +139,18 @@ XF86AudioNext
 
 XF86AudioPrev
   playerctl previous
+
+super + ctrl + p
+  rofi-pass
+super + ctrl + e
+  emacsclient -c -a ''
+super + ctrl + t
+  alacritty
+super + ctrl + b
+  qutebrowser
+super + ctrl + m
+  alacritty -e 'bmenu'
+super + ctrl + c
+  rofi -show calc
+super + ctrl + s
+  flameshot gui

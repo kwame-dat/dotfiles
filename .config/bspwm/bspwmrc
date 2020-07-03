@@ -2,19 +2,25 @@
 
 #### AUTOSTART ####
 sxhkd &
-picom -CGb &
+xrdb ~/.Xresources &
+picom -b --experimental-backends &
 nitrogen --restore &
+pulseaudio &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+nm-applet &
+pamac-tray &
+xfce4-power-manager &
+blueman-applet &
 $HOME/.config/polybar/launch.sh &
 xset r rate 220 80 &
 xsetroot -cursor_name left_ptr &
 
 bspc monitor -d 1 2 3 4 5 6 7 8 9 0
 
-bspc config border_width                  2
+bspc config border_width                  3
 bspc config window_gap                    10
-bspc config top_padding                   30
-bspc config bottom_padding                30
+bspc config top_padding                   40
+bspc config bottom_padding                0
 bspc config left_padding                  0
 bspc config right_padding                 0
 bspc config single_monocle                false
@@ -40,12 +46,19 @@ bspc config urgent_border_color 	      "#dd2727"
 
 
 bspc rule -a Emacs desktop='^1' state=tiled
-bspc rule -a qutebrowser desktop='^2'
-bspc rule -a DBeaver desktop='^3'
-bspc rule -a Zoom desktop='^8'
-bspc rule -a Skype desktop='^8'
+bspc rule -a qutebrowser desktop='^2' state=tiled
+bspc rule -a Google-chrome desktop='^3'
+bspc rule -a firefox desktop='^3'
+bspc rule -a DBeaver desktop='^4'
+bspc rule -a Insomnia desktop='^5'
+bspc rule -a Postman desktop='^5'
+bspc rule -a zoom desktop='^7'
+bspc rule -a Skype desktop='^7'
+bspc rule -a whatsapp-nativefier-d52542 desktop='^8'
+bspc rule -a Signal desktop='^8'
 bspc rule -a Slack desktop='^9'
-bspc rule -a WhatsApp desktop='^9'
 bspc rule -a Spotify desktop='^0'
-bspc rule -a Kupfer.py focus=on
-bspc rule -a Screenkey manage=off
+# bspc rule -a Kupfer.py focus=on
+# bspc rule -a Screenkey manage=off
+# bspc rule -a VirtualBox state=floating
+# bspc rule -a \* node=.floating layer=above

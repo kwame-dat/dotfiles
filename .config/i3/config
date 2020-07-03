@@ -22,7 +22,6 @@ focus_follows_mouse no
 bindsym $mod+Shift+s layout stacking
 bindsym $mod+Shift+d layout toggle split
 
-
 bindsym $mod+Return exec alacritty
 bindsym $mod+Shift+w exec google-chrome-stable
 bindsym $mod+Shift+f fullscreen toggle
