@@ -960,13 +960,6 @@ going to install it and make sure it's loaded immediately.
   :ensure t
   :init
   (setq projectile-project-search-path '(
-                                         "~/Nextcloud/Documents/Personal/2Areas"
-                                         "~/Nextcloud/Documents/Home/1Projects"
-                                         "~/Nextcloud/Documents/Home/2Areas"
-                                         "~/Nextcloud/Documents/Home/3Resources"
-                                         "~/Nextcloud/Documents/Spiritual/3Resources"
-                                         "~/Nextcloud/Documents/Spiritual/2Areas"
-                                         "~/Nextcloud/Documents/Work/2Areas"
                                          "~/Repo/Personal/2Areas"
                                          "~/Repo/Personal/1Projects"
                                          "~/Repo/Work/1Projects"
