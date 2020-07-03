@@ -12,3 +12,6 @@ settings:
     global: 16
   qt.highdpi:
     global: true
+  url.searchengines:
+    global:
+      DEFAULT: https://www.google.com/search?hl=en&q={}
