@@ -3,21 +3,21 @@ set fish_greeting
 # Composer export path
 export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 
-
 # General
 alias e="exit"
 alias c="clear"
 alias h="cd ~/"
 alias o="open ."
-alias desk="cd ~/Desktop"
-alias db="cd ~/Databases"
 alias down="cd ~/Downloads"
-alias rr="source $ZSH/oh-my-zsh.sh"
-alias r="cd ~/Repo/"
 alias ckh="rm -rf ~/.ssh/known_hosts"
 alias getKey="pbcopy < ~/.ssh/id_rsa.pub"
-alias flushdns="dscacheutil -flushcache;sudo killall -HUP mDNSResponder;say flushed"
-alias ios="cd /Applications/Xcode.app/Contents/Developer/Applications && open -n Simulator.app"
+
+# Repo
+alias r="cd ~/Repo/"
+alias wp="cd ~/Repo/Work/1Projects"
+alias wa="cd ~/Repo/Work/2Areas"
+alias pp="cd ~/Repo/Personal/1Projects"
+alias pa="cd ~/Repo/Personal/2Areas"
 
 # Composer
 alias cu="composer update"
@@ -28,7 +28,6 @@ alias cda="composer dump-autoload"
 alias dcu="docker-compose exec workspace composer update"
 alias dci="docker-compose exec workspace composer install"
 alias dcda="docker-compose exec workspace composer dump-autoload"
-
 
 # PHP Test
 alias t="vendor/bin/phpunit"
@@ -41,10 +40,15 @@ alias dtc="docker-compose exec workspace ./vendor/bin/phpunit --coverage-html='t
 alias dtf="docker-compose exec workspace ./vendor/bin/phpunit --filter"
 
 # Laravel
-alias a="php artisan"
+alias art="php artisan"
+alias rl="php artisan route:list"
+alias m="php artisan migrate"
+alias dbs="php artisan db:seed"
+alias mf="php artisan migrate:fresh"
+alias mfs="php artisan migrate:fresh --seed"
+alias pi="php artisan passport:install"
+alias tinker="php artisan tinker"
 alias at="php artisan tinker"
-alias am="php artisan migrate"
-alias as="php artisan db:seed"
 
 # Laravel | Docker Commands
 alias da="docker-compose exec workspace php artisan"
@@ -57,6 +61,5 @@ alias ds="docker ps"
 
 # Emacs
 alias emc="emacsclient -c"
-
 export VISUAL="emacsclient -c"
 export EDITOR="emacsclient -t"
