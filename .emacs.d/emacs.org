@@ -354,7 +354,7 @@ previously compiled manually then all of the package initialization will still t
 ** Font
 #+BEGIN_SRC emacs-lisp
 (setq itechytony/default-font "Jetbrains Mono")
-(setq itechytony/default-font-size 11)
+(setq itechytony/default-font-size 9)
 (setq itechytony/current-font-size itechytony/default-font-size)
 
 (setq itechytony/font-change-increment 1.1)
@@ -2057,14 +2057,6 @@ functions we invoke regularly outside of magit is called.
 (my-local-leader-def 'normal ledger-mode-map
   "hd" #'ledger-delete-current-transaction
   "a" #'ledger-add-transaction
-  "t" #'ledger-toggle-current
-  "d" #'ledger-delete-current-transaction
-  "r" #'ledger-report
-  "R" #'ledger-reconcile
-  "s" #'ledger-sort-region
-  "S" #'ledger-schedule-upcoming
-  "gs" #'ledger-display-ledger-stats
-  "b" #'ledger-display-balance-at-point)
   "b" #'ledger-post-edit-amount
   "c" #'ledger-toggle-current
   "C" #'ledger-mode-clean-buffer
