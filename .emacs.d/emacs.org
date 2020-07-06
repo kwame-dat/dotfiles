@@ -1702,6 +1702,7 @@ functions we invoke regularly outside of magit is called.
 
 *** =flyspell=
 #+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
 (use-package flyspell-correct)
 
 (use-package flyspell-correct-popup)
@@ -2029,6 +2030,7 @@ functions we invoke regularly outside of magit is called.
 **** =ledger=
 #+BEGIN_SRC emacs-lisp
 (use-package ledger-mode
+  :mode ("\\.\\(ledger\\|ldg\\)\\'" . ledger-mode)
   :init
   (setq ledger-clear-whole-transactions 1
         ledger-mode-should-check-version nil)
@@ -2037,7 +2039,8 @@ functions we invoke regularly outside of magit is called.
         ledger-use-iso-dates nil))
 
 (use-package flycheck-ledger
-  :hook (ledger-mode . evil-ledger-mode))
+  :demand t
+  :hook (ledger-mode . flycheck-mode))
 
 (use-package evil-ledger
   :hook (ledger-mode . evil-ledger-mode))
@@ -2055,6 +2058,7 @@ functions we invoke regularly outside of magit is called.
   "gr"  #'ledger-report-redo)
 
 (my-local-leader-def 'normal ledger-mode-map
+  "hd" #'ledger-delete-current-transaction
   "a" #'ledger-add-transaction
   "t" #'ledger-toggle-current
   "d" #'ledger-delete-current-transaction
@@ -2064,6 +2068,16 @@ functions we invoke regularly outside of magit is called.
   "S" #'ledger-schedule-upcoming
   "gs" #'ledger-display-ledger-stats
   "b" #'ledger-display-balance-at-point)
+  "b" #'ledger-post-edit-amount
+  "c" #'ledger-toggle-current
+  "C" #'ledger-mode-clean-buffer
+  "l" #'ledger-display-ledger-stats
+  "p" #'ledger-display-balance-at-point
+  "q" #'ledger-post-align-xact
+  "r" #'ledger-reconcile
+  "R" #'ledger-report
+  "t" #'ledger-insert-effective-date
+  "y" #'ledger-set-year)
 #+END_SRC
      
 **** =markdown=
