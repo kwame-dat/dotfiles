@@ -5,6 +5,7 @@ sxhkd &
 xrdb ~/.Xresources &
 picom -b --experimental-backends &
 nitrogen --restore &
+dunst &
 pulseaudio &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 nm-applet &
@@ -14,6 +15,7 @@ blueman-applet &
 $HOME/.config/polybar/launch.sh &
 xset r rate 220 80 &
 xsetroot -cursor_name left_ptr &
+emacs --daemon
 
 bspc monitor -d 1 2 3 4 5 6 7 8 9 0
 
@@ -45,8 +47,8 @@ bspc config presel_feedback_color	      "#5e81ac"
 bspc config urgent_border_color 	      "#dd2727"
 
 
-bspc rule -a Emacs desktop='^1' state=tiled
-bspc rule -a qutebrowser desktop='^2' state=tiled
+bspc rule -a Emacs desktop='^1' state=tiled follow=on
+bspc rule -a qutebrowser desktop='^2' state=tiled follow=on
 bspc rule -a Google-chrome desktop='^3'
 bspc rule -a firefox desktop='^3'
 bspc rule -a DBeaver desktop='^4'
