@@ -354,7 +354,7 @@ previously compiled manually then all of the package initialization will still t
 ** Font
 #+BEGIN_SRC emacs-lisp
 (setq itechytony/default-font "Jetbrains Mono")
-(setq itechytony/default-font-size 9)
+(setq itechytony/default-font-size 10)
 (setq itechytony/current-font-size itechytony/default-font-size)
 
 (setq itechytony/font-change-increment 1.1)
@@ -402,8 +402,6 @@ other, future frames."
 
 (itechytony/reset-font-size)
 #+END_SRC
-
-#+RESULTS:
 
 ** Packages
 *** =exec-path-from-shell=
@@ -963,6 +961,7 @@ going to install it and make sure it's loaded immediately.
                                          "~/Repo/Personal/2Areas"
                                          "~/Repo/Personal/1Projects"
                                          "~/Repo/Work/1Projects"
+                                         "~/Nextcloud"
                                          ))
   (setq projectile-completion-system 'ivy)
   (setq projectile-switch-project-action #'projectile-dired)

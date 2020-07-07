@@ -44,11 +44,6 @@ super + g
 
 #
 # state/flags
-
-# set the window state
-# super + {t,shift + t,s,f}
-# bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
-
 super + shift + f
   bspc node -t \~fullscreen
 
