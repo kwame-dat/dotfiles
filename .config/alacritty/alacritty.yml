@@ -1,23 +1,19 @@
 # Configuration for Alacritty, the GPU enhanced terminal emulator
+env:
+  TERM: xterm-256color
 font:
   normal:
     family: Jetbrains Mono
-    # family: "Fira Code"
-    # family: "Source Code Pro"
-    # style: Retina
+    style: Retina
 
   # The bold font face
   bold:
     family: Jetbrains Mono
-    # family: "Fira Code"
-    # family: "Source Code Pro"
 
   # The italic font face
   italic:
     family: Jetbrains Mono
-    # family: "Fira Code"
-    # family: "Source Code Pro"
-    # style: "Medium Italic"
+    style: "Medium Italic"
 
   # Point size of the font
   size: 10.0
@@ -35,21 +31,7 @@ font:
     x: 0
     y: 0
 
-  # Thin stroke font rendering (macOS only)
-  #
-  # Thin strokes are suitable for retina displays, but for non-retina you
-  # probably want this set to false.
-  #
-  # macOS >= 10.14.x:
-  #
-  # If the font quality on non-retina display looks bad then set
-  # `use_thin_strokes` to `true` and enable font smoothing by running the
-  # following command:
-  #   `defaults write -g CGFontRenderingFontSmoothingDisabled -bool NO`
-  #
-  # This is a global setting and will require a log out or restart to take
-  # effect.
-  use_thin_strokes: true
+  use_thin_strokes: false
 
 # When true, bold text is drawn using the bright variant of colors.
 draw_bold_text_with_bright_colors: false
@@ -319,19 +301,6 @@ selection:
 
   # When set to `true`, selected text will be copied to the primary clipboard.
   save_to_clipboard: false
-
-# Mouse bindings
-#
-# Available fields:
-# - mouse
-# - action
-# - mods (optional)
-#
-# Values for `mouse`:
-# - Middle
-# - Left
-# - Right
-# - Numeric identifier such as `5`
 #
 # All available `mods` and `action` values are documented in the key binding
 # section.
@@ -364,29 +333,3 @@ shell:
   program: /usr/bin/fish
   # args:
   #   - --command=tmux
-
-# debug:
-  # Should display the render timer
-  # render_timer: false
-
-  # Keep the log file after quitting Alacritty.
-  # persistent_logging: false
-
-  # Log level
-  #
-  # Values for `log_level`:
-  #   - None
-  #   - Error
-  #   - Warn
-  #   - Info
-  #   - Debug
-  #   - Trace
-  # log_level: None
-
-  # Print all received window events.
-  # print_events: false
-
-  # Record all characters and escape sequences as test data.
-  # ref_test: false
-
-# vim: nospell
