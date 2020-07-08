@@ -48,6 +48,7 @@ alias mf="php artisan migrate:fresh"
 alias mfs="php artisan migrate:fresh --seed"
 alias pi="php artisan passport:install"
 alias tinker="php artisan tinker"
+alias dusk="php artisan dusk"
 alias at="php artisan tinker"
 
 # Laravel | Docker Commands
