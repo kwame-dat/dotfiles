@@ -506,10 +506,10 @@ Install, automatically load, and enable evil. It's like vim.
 
   (my-leader-def 'normal 'override
     ;; application
-    "acs" 'slack-start
-    "acj" 'slack-channel-select
-    "acd" 'slack-im-select
-    "acq" 'slack-ws-close
+    "ass" 'slack-start
+    "asj" 'slack-channel-select
+    "asd" 'slack-im-select
+    "asq" 'slack-ws-close
     "app" 'password-store-copy
     "apc" 'password-store-copy
     "apg" 'password-store-copy
