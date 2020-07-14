@@ -7,9 +7,10 @@
 config_version: 2
 settings:
   content.notifications:
+    https://www.reddit.com: true
     https://www.youtube.com: false
   fonts.web.size.default:
-    global: 16
+    global: 14
   qt.highdpi:
     global: true
   url.searchengines:

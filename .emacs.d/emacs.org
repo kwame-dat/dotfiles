@@ -354,7 +354,7 @@ previously compiled manually then all of the package initialization will still t
 ** Font
 #+BEGIN_SRC emacs-lisp
 (setq itechytony/default-font "Jetbrains Mono")
-(setq itechytony/default-font-size 10)
+(setq itechytony/default-font-size 8)
 (setq itechytony/current-font-size itechytony/default-font-size)
 
 (setq itechytony/font-change-increment 1.1)
@@ -885,6 +885,7 @@ with richer versions. Let's install it!
 #+BEGIN_SRC emacs-lisp
 (use-package lsp-mode
   :ensure t
+  :demand t
   :init
   (setq lsp-enable-file-watchers nil
         lsp-auto-guess-root t
@@ -941,7 +942,7 @@ with richer versions. Let's install it!
         flycheck-phpcs-standard "PSR12")
   (global-flycheck-mode))
 
-;; (flycheck-add-next-checker 'lsp 'php-phpcs)
+(flycheck-add-next-checker 'lsp 'php-phpcs)
 #+END_SRC
 
 #+RESULTS:
@@ -1676,12 +1677,6 @@ functions we invoke regularly outside of magit is called.
   :config
   (bind-key "<tab>" #'dired-subtree-toggle dired-mode-map)
   (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
-
-(use-package dired-hide-dotfiles
-  :diminish dired-hide-dotfiles-mode
-  :hook (dired-mode . dired-hide-dotfiles-mode)
-  :config
-  (dired-hide-dotfiles-mode))
 #+END_SRC
 
 *** =langtool=
@@ -1834,8 +1829,9 @@ functions we invoke regularly outside of magit is called.
   :demand t
   :ensure t
   :config
-  (load-theme 'base16-tomorrow-night t))
+  (load-theme 'base16-material-palenight t))
 #+END_SRC
+
 *** =powerline=
 #+BEGIN_SRC emacs-lisp
 (use-package powerline
@@ -1852,8 +1848,9 @@ functions we invoke regularly outside of magit is called.
   :ensure t
   :demand t
   :config
-  (load-theme 'airline-base16_tomorrow))
+  (load-theme 'airline-doom-one))
 #+END_SRC
+
 *** =diminish=
 #+BEGIN_SRC emacs-lisp
 (use-package diminish

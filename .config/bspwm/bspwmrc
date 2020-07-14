@@ -12,6 +12,7 @@ nm-applet &
 pamac-tray &
 xfce4-power-manager &
 blueman-applet &
+nextcloud &
 xset r rate 220 80 &
 xsetroot -cursor_name left_ptr &
 $HOME/.config/polybar/launch.sh &

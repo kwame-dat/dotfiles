@@ -19,29 +19,21 @@ https://wiki.thetrainline.com/display/VUL/ATC+Calendar TRAINLINE ATC CALENDAR
 Https://wiki.thetrainline.com/pages/viewpage.action?spaceKey=DR&title=Railguard+Development+Workflow TRAINLINE RAILGUARD DEVELOPMENT WORKFLOW
 https://wiki.thetrainline.com/display/DR/Chrome+Extension TRAINLINE CHROME EXTENSION
 https://rdwa.thetrainline.com/RDWeb/Pages/en-US/login.aspx?ReturnUrl=/RDWeb/Pages/en-US/Default.aspx - TRAINLINE RDP
-
 https://netsells.atlassian.net/secure/Dashboard.jspa NETSELLS JIRA DASHBOARD
 https://netsells.atlassian.net/browse/INT-2 NETSELLS JIRA PEER SUPPORT
 https://my.15five.com/report/current/ NETSELLS 15FIVE
 https://netsells.peoplehr.net/Pages/LeftSegment/Dashboard.aspx NETSELLS PEOPLE HR
 https://github.com/netsells NETSELLS GITHUB
 https://docify.netsells.tools/?sso_token=9d1f14e0-1a75-11ea-8898-01aba121ddc5 NETSELLS
-
-http://dev.railguard.thetrainline.com/admin/login DEV
 https://railguard.thetrainline.com/admin/login PRODUCTION
-https://c54-railguardcore-thetrainline.ttlnonprod.com/ C54
-https://c53-railguardcore-thetrainline.ttlnonprod.com/ C53
-https://c99-railguardcore-thetrainline.ttlnonprod.com/ C99
-https://st1-railguardcore-thetrainline.ttlnonprod.com/ ST1
-
 http://freesuggestionbox.com/pub/zudoeku NETSELLS SUGGESTION BOX
 https://netsells.perkbox.com/perks/discover NETSELLS PERKBOX
 https://10.0.1.2:5001/ NETSELLS NAS Synology DiskStation
 https://assets.netsells.tools/ NETSELLS ASSETS
-https://mailtrap.io/inboxes/802698/messages/1570364626
-
+https://mailtrap.io/inboxes/802698/messages/1570364626 
 http://192.168.1.1/ firewall
 http://192.168.1.2/cgi-bin/dispatcher.cgi?cmd=0 switch
 http://192.168.1.3/Main unraid
 http://192.168.1.4/start.htm ap1
 http://192.168.1.5/cgi-bin/webproc ap2
+https://www.reddit.com/r/emacs/comments/hnf3cw/my_orgmode_agenda_much_better_now_with_category/ My org-mode agenda, much better now with category icons! : emacs

@@ -4,7 +4,7 @@ env:
 font:
   normal:
     family: Jetbrains Mono
-    style: Retina
+    # style: Retina
 
   # The bold font face
   bold:
@@ -16,7 +16,7 @@ font:
     style: "Medium Italic"
 
   # Point size of the font
-  size: 10.0
+  size: 8.0
 
   # Offset is the extra space around each character. offset.y can be thought of
   # as modifying the linespacing, and offset.x as modifying the letter spacing.
@@ -40,41 +40,52 @@ draw_bold_text_with_bright_colors: false
 # and cursor.background colors, otherwise invert the colors of the cursor.
 # custom_cursor_colors: false
 
-# Colors (Tomorrow Night)
 colors:
   # Default colors
   primary:
-    background: '#1d1f21'
-    foreground: '#c5c8c6'
+    background: '0x292d3e'
+    foreground: '0x959dcb'
 
   # Colors the cursor will use if `custom_cursor_colors` is true
   cursor:
-    text: '#1d1f21'
-    cursor: '#ffffff'
+    text: '0x292d3e'
+    cursor: '0x959dcb'
 
   # Normal colors
   normal:
-    black:   '#1d1f21'
-    red:     '#cc6666'
-    green:   '#b5bd68'
-    yellow:  '#e6c547'
-    blue:    '#81a2be'
-    magenta: '#b294bb'
-    cyan:    '#70c0ba'
-    white:   '#373b41'
+    black:   '0x292d3e'
+    red:     '0xf07178'
+    green:   '0xc3e88d'
+    yellow:  '0xffcb6b'
+    blue:    '0x82aaff'
+    magenta: '0xc792ea'
+    cyan:    '0x89ddff'
+    white:   '0x959dcb'
 
   # Bright colors
   bright:
-    black:   '#666666'
-    red:     '#ff3334'
-    green:   '#9ec400'
-    yellow:  '#f0c674'
-    blue:    '#81a2be'
-    magenta: '#b77ee0'
-    cyan:    '#54ced6'
-    white:   '#282a2e'  #
-  indexed_colors: []
+    black:   '0x676e95'
+    red:     '0xf07178'
+    green:   '0xc3e88d'
+    yellow:  '0xffcb6b'
+    blue:    '0x82aaff'
+    magenta: '0xc792ea'
+    cyan:    '0x89ddff'
+    white:   '0xffffff'
 
+  indexed_colors:
+    - { index: 16, color: '0xf78c6c' }
+    - { index: 17, color: '0xff5370' }
+    - { index: 18, color: '0x444267' }
+    - { index: 19, color: '0x32374d' }
+    - { index: 20, color: '0x8796b0' }
+    - { index: 21, color: '0x959dcb' }
+  # Indexed Colors
+  #
+  # The indexed colors include all colors from 16 to 256.
+  # When these are not set, they're filled with sensible defaults.
+  #indexed_colors:
+  #  - { index: 16, color: '0x000000' }
 # Visual Bell
 #
 # Any time the BEL code is received, Alacritty "rings" the visual bell. Once

@@ -4,7 +4,7 @@ include-file = ~/.config/polybar/modules.ini
 
 [bar/main]
 monitor = ${env:MONITOR:}
-dpi = 155
+dpi = 140
 width = 100%
 height = 35
 ;offset-x = 2%
@@ -31,17 +31,16 @@ font-0 = "Terminus (TTF):size=9;2"
 font-1 = "Siji:size=9;2"
 font-2 = Iosevka Nerd Font:style=Medium:size=9;3
 
-modules-left = bspwm cpu temperature memory filesystem
+modules-left = i3 cpu temperature memory filesystem
 modules-center = xwindow
 modules-right = networkspeedup networkspeeddown pavolume xkeyboard battery date
 
 tray-position = right
-tray-padding = 3
-;tray-transparent = true
-;tray-background = #0063ff
+tray-padding = 4
+; tray-transparent = true
 
-wm-restack = bspwm
-override-redirect = false
+wm-restack = i3
+; override-redirect = false
 
 
 [settings]
