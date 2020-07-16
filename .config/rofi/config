@@ -2,8 +2,9 @@ rofi.theme: slate
 rofi.terminal: alacritty
 rofi.ssh-client: ssh
 rofi.ssh-command: {terminal} -- {ssh-client} {host}
-rofi.dpi: 155
+rofi.dpi: 200
 rofi.hide-scrollbar: true
 rofi.show-icons: true
-rofi.font: Ubuntu 14
+rofi.font: Ubuntu 18
+rofi.modi:                           combi,calc:qalc -t
 rofi.combi-modi: drun,window,ssh

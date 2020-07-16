@@ -69,7 +69,7 @@
     - [[#writeroom-mode][=writeroom-mode=]]
     - [[#speed-type][=speed-type=]]
     - [[#engine-mode][=engine-mode=]]
-    - [[#base16-theme][=base16-theme=]]
+    - [[#atom-one-dark-theme][=atom-one-dark-theme=]]
     - [[#powerline][=powerline=]]
     - [[#diminish][=diminish=]]
     - [[#lang][Lang]]
@@ -315,7 +315,17 @@ previously compiled manually then all of the package initialization will still t
     (call-process-shell-command
      (concat "alacritty --working-directory "workdir) nil 0)))
 
-(global-set-key (kbd "C-c t") 'open-terminal-in-workdir)
+(defun sudo-find-file (file-name)
+  "Like find file, but opens the file as root."
+  (interactive "FSudo Find File: ")
+  (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
+    (find-file tramp-file-name)))
+
+(defadvice ido-find-file (after find-file-sudo activate)
+  "Find file as root if necessary."
+  (unless (and buffer-file-name
+               (file-writable-p buffer-file-name))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 #+END_SRC
 
 ** General Keybinding
@@ -354,7 +364,7 @@ previously compiled manually then all of the package initialization will still t
 ** Font
 #+BEGIN_SRC emacs-lisp
 (setq itechytony/default-font "Jetbrains Mono")
-(setq itechytony/default-font-size 8)
+(setq itechytony/default-font-size 10)
 (setq itechytony/current-font-size itechytony/default-font-size)
 
 (setq itechytony/font-change-increment 1.1)
@@ -402,6 +412,8 @@ other, future frames."
 
 (itechytony/reset-font-size)
 #+END_SRC
+
+#+RESULTS:
 
 ** Packages
 *** =exec-path-from-shell=
@@ -944,9 +956,6 @@ with richer versions. Let's install it!
 
 (flycheck-add-next-checker 'lsp 'php-phpcs)
 #+END_SRC
-
-#+RESULTS:
-: t
 
 *** =projectile=
 Projectile is a quick and easy project management package that "just works". We're
@@ -1823,13 +1832,13 @@ functions we invoke regularly outside of magit is called.
 (engine-mode t)
 #+END_SRC
 
-*** =base16-theme=
+*** =atom-one-dark-theme=
 #+BEGIN_SRC emacs-lisp
-(use-package base16-theme
+(use-package atom-one-dark-theme
   :demand t
   :ensure t
   :config
-  (load-theme 'base16-material-palenight t))
+  (load-theme 'atom-one-dark t))
 #+END_SRC
 
 *** =powerline=
@@ -2212,6 +2221,24 @@ functions we invoke regularly outside of magit is called.
 (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
 (add-hook 'mu4e-compose-mode-hook (lambda ()
                                     (ispell-change-dictionary "en_GB")))
+
+(setq mu4e-trash-folder
+      (lambda (msg)
+        (cond
+         ((string-match "^/arksolutions.*"
+                        (mu4e-message-field msg :maildir))
+          "/arksolutions/Trash")
+         ((string-match "^/netsells*"
+                        (mu4e-message-field msg :maildir))
+          "/netsells/[Gmail].Bin")
+         ((string-match "^/thetrainline*"
+                        (mu4e-message-field msg :maildir))
+          "/thetrainline/Deleted Items")
+         ((string-match "^/jw.*"
+                        (mu4e-message-field msg :maildir))
+          "/jw/[Gmail].Trash")
+         ;; everything else goes to /archive
+         (t  "/archive"))))
 
 (setq mu4e-refile-folder
       (lambda (msg)
