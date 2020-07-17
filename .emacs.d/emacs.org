@@ -69,7 +69,7 @@
     - [[#writeroom-mode][=writeroom-mode=]]
     - [[#speed-type][=speed-type=]]
     - [[#engine-mode][=engine-mode=]]
-    - [[#atom-one-dark-theme][=atom-one-dark-theme=]]
+    - [[#color-theme-sanityinc-tomorrow][=color-theme-sanityinc-tomorrow=]]
     - [[#powerline][=powerline=]]
     - [[#diminish][=diminish=]]
     - [[#lang][Lang]]
@@ -363,8 +363,8 @@ previously compiled manually then all of the package initialization will still t
 
 ** Font
 #+BEGIN_SRC emacs-lisp
-(setq itechytony/default-font "Jetbrains Mono")
-(setq itechytony/default-font-size 10)
+(setq itechytony/default-font "Ubuntu Mono")
+(setq itechytony/default-font-size 13)
 (setq itechytony/current-font-size itechytony/default-font-size)
 
 (setq itechytony/font-change-increment 1.1)
@@ -412,8 +412,6 @@ other, future frames."
 
 (itechytony/reset-font-size)
 #+END_SRC
-
-#+RESULTS:
 
 ** Packages
 *** =exec-path-from-shell=
@@ -1701,7 +1699,6 @@ functions we invoke regularly outside of magit is called.
 #+END_SRC
 
 *** =flyspell=
-#+BEGIN_SRC emacs-lisp :tangle no
 #+BEGIN_SRC emacs-lisp
 (use-package flyspell-correct)
 
@@ -1734,8 +1731,6 @@ functions we invoke regularly outside of magit is called.
   :config
   (global-set-key (kbd "M-\\") 'define-word-at-point))
 #+END_SRC
-
-#+RESULTS:
 
 *** =yasnippet=
 #+BEGIN_SRC emacs-lisp
@@ -1832,13 +1827,13 @@ functions we invoke regularly outside of magit is called.
 (engine-mode t)
 #+END_SRC
 
-*** =atom-one-dark-theme=
+*** =color-theme-sanityinc-tomorrow=
 #+BEGIN_SRC emacs-lisp
-(use-package atom-one-dark-theme
+(use-package color-theme-sanityinc-tomorrow
   :demand t
   :ensure t
   :config
-  (load-theme 'atom-one-dark t))
+  (load-theme 'sanityinc-tomorrow-night t))
 #+END_SRC
 
 *** =powerline=
@@ -1857,7 +1852,7 @@ functions we invoke regularly outside of magit is called.
   :ensure t
   :demand t
   :config
-  (load-theme 'airline-doom-one))
+  (load-theme 'airline-base16_tomorrow))
 #+END_SRC
 
 *** =diminish=

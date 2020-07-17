@@ -10,7 +10,7 @@
     transparency = 0
     notification_height = 30
     separator_height = 2
-    padding = 15
+    padding = 30
     horizontal_padding = 20
     frame_color = "#aaaaaa"
     separator_color = frame
@@ -18,7 +18,7 @@
     idle_threshold = 120
 
 ### Text ###
-    font= Roboto Mono for Powerline 8
+    font= Ubunto Ubuntu 10
     markup = full
     format = "<b>%s</b>\n%b"
     alignment = center
@@ -54,17 +54,17 @@
     context = ctrl+shirt+period
 
 [urgency_low]
-    background = "#222222"
+    background = "#1d1f21"
     foreground = "#888888"
     timeout = 10
 
 [urgency_normal]
-    background = "#285577"
+    background = "#1d1f21"
     foreground = "#ffffff"
     timeout = 10
 
 [urgency_critical]
-    background = "#900000"
+    background = "#1d1f21"
     foreground = "#ffffff"
     frame_color = "#ff0000"
     timeout = 0

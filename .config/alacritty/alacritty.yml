@@ -3,20 +3,20 @@ env:
   TERM: xterm-256color
 font:
   normal:
-    family: Jetbrains Mono
+    family: Ubuntu Mono
     # style: Retina
 
   # The bold font face
   bold:
-    family: Jetbrains Mono
+    family: Ubuntu Mono
 
   # The italic font face
   italic:
-    family: Jetbrains Mono
+    family: Ubuntu Mono
     style: "Medium Italic"
 
   # Point size of the font
-  size: 10.0
+  size: 12.0
 
   # Offset is the extra space around each character. offset.y can be thought of
   # as modifying the linespacing, and offset.x as modifying the letter spacing.
@@ -40,47 +40,40 @@ draw_bold_text_with_bright_colors: false
 # and cursor.background colors, otherwise invert the colors of the cursor.
 # custom_cursor_colors: false
 
+# Colors (Tomorrow Night)
 colors:
   # Default colors
   primary:
-    background: '0x292d3e'
-    foreground: '0x959dcb'
+    background: '0x1d1f21'
+    foreground: '0xc5c8c6'
 
   # Colors the cursor will use if `custom_cursor_colors` is true
   cursor:
-    text: '0x292d3e'
-    cursor: '0x959dcb'
+    text: '0x1d1f21'
+    cursor: '0xffffff'
 
   # Normal colors
   normal:
-    black:   '0x292d3e'
-    red:     '0xf07178'
-    green:   '0xc3e88d'
-    yellow:  '0xffcb6b'
-    blue:    '0x82aaff'
-    magenta: '0xc792ea'
-    cyan:    '0x89ddff'
-    white:   '0x959dcb'
+    black:   '0x1d1f21'
+    red:     '0xcc6666'
+    green:   '0xb5bd68'
+    yellow:  '0xe6c547'
+    blue:    '0x81a2be'
+    magenta: '0xb294bb'
+    cyan:    '0x70c0ba'
+    white:   '0x373b41'
 
   # Bright colors
   bright:
-    black:   '0x676e95'
-    red:     '0xf07178'
-    green:   '0xc3e88d'
-    yellow:  '0xffcb6b'
-    blue:    '0x82aaff'
-    magenta: '0xc792ea'
-    cyan:    '0x89ddff'
-    white:   '0xffffff'
-
-  indexed_colors:
-    - { index: 16, color: '0xf78c6c' }
-    - { index: 17, color: '0xff5370' }
-    - { index: 18, color: '0x444267' }
-    - { index: 19, color: '0x32374d' }
-    - { index: 20, color: '0x8796b0' }
-    - { index: 21, color: '0x959dcb' }
-  # Indexed Colors
+    black:   '0x666666'
+    red:     '0xff3334'
+    green:   '0x9ec400'
+    yellow:  '0xf0c674'
+    blue:    '0x81a2be'
+    magenta: '0xb77ee0'
+    cyan:    '0x54ced6'
+    white:   '0x282a2e'
+ # Indexed Colors
   #
   # The indexed colors include all colors from 16 to 256.
   # When these are not set, they're filled with sensible defaults.
