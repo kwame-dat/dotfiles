@@ -181,7 +181,8 @@ Disable certain byte compiler warnings to cut down on the noise.
 (show-paren-mode 1)
 (setq show-paren-delay 0)
 
-(setq auth-sources '("~/.authinfo.gpg" "~/.authinfo"))
+(setq auth-sources
+    '((:source "~/.authinfo.gpg")))
 
 (global-visual-line-mode 1)
 
@@ -2142,7 +2143,7 @@ functions we invoke regularly outside of magit is called.
      (smtpmail-smtp-user "tony@arksolutions.it")
      (smtpmail-smtp-server "smtp.zoho.com")
      (smtpmail-stream-type starttls)
-     (smtpmail-smtp-service 25))
+     (smtpmail-smtp-service 587))
     ("netsells"
      (user-full-name  "Tony Ampomah")
      (mu4e-compose-signature (concat "Tony Ampomah\n"
@@ -2153,7 +2154,7 @@ functions we invoke regularly outside of magit is called.
      (mu4e-drafts-folder "/netsells/[Gmail].Drafts")
      (mu4e-trash-folder "/netsells/[Gmail].Bin")
      (user-mail-address "tony.ampomah@netsells.co.uk")
-     (smtpmail-default-smtp-server "smtps.zhaw.ch")
+     (smtpmail-default-smtp-server "smtp.gmail.com")
      (smtpmail-smtp-server "smtp.gmail.com")
      (smtpmail-local-domain "gmail.com")
      (smtpmail-smtp-user "tony.ampomah@netsells.co.uk")
@@ -2174,7 +2175,7 @@ functions we invoke regularly outside of magit is called.
      (smtpmail-smtp-user "tony.ampomah.jw@gmail.com")
      (smtpmail-smtp-server "smtp.gmail.com")
      (smtpmail-stream-type starttls)
-     (smtpmail-smtp-service 25))
+     (smtpmail-smtp-service 587))
     ("trainline"
      (user-full-name  "Tony Ampomah")
      (mu4e-compose-signature-auto-include nil)
@@ -2187,7 +2188,7 @@ functions we invoke regularly outside of magit is called.
      (smtpmail-smtp-user "tony.ampomah@thetrainline.com")
      (smtpmail-smtp-server "smtp.outlook.com")
      (smtpmail-stream-type starttls)
-     (smtpmail-smtp-service 25))))
+     (smtpmail-smtp-service 587))))
 
 ;; Whenever a new mail is to be composed, change all relevant
 ;; configuration variables to the respective account. This method is
