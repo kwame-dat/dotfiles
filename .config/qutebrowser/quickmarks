@@ -13,7 +13,7 @@ tc https://hydra.tools.trainline.com/favorite
 dev http://dev.railguard.test/admin/login
 c53 https://c53-railguardcore-thetrainline.ttlnonprod.com/admin/login
 c54 https://c54-railguardcore-thetrainline.ttlnonprod.com/admin/login
-c99 https://c99-railguardcore-thetrainline.ttlnonprod.com/admin/login
+c99 https://c99-railguardcore.service.ttlnonprod.local/admin/login
 st1 https://st1-railguardcore-thetrainline.ttlnonprod.com/admin/login
 production https://railguard.thetrainline.com/admin/login 
 kb https://kibana-common.thetrainline.com/
