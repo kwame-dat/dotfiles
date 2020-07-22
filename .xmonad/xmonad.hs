@@ -87,6 +87,30 @@ import XMonad.Hooks.ManageDocks
 -- certain contrib modules.
 --
 
+-------------------------------------------------------------------------------
+-- Colors - monokai like palette
+-------------------------------------------------------------------------------
+--
+black      = "#272822"
+grayD      = "#3e3d31"
+red        = "#e03a3a"
+maroon     = "#f92672"
+green      = "#3ae03a"
+greenL     = "#a6e22e"
+blue       = "#63b8ff"
+blueD      = "#1e90ff"
+orange     = "#fd971f"
+yellow     = "#e6db74"
+magenta    = "#fd5ff0"
+violet     = "#ae81ff"
+cyan       = "#a1efe4"
+cyanD      = "#3ae0e0"
+gray       = "#64645e"
+white      = "#f9f9f2"
+textColor  = "#fffacd"
+textColorA = "#ffdead"
+
+
 myFont :: String
 myFont = "xft:Ubuntu:bold:size=9:antialias=true:hinting=true"
 
@@ -119,10 +143,8 @@ myNormColor   = "#292d3e"  -- Border color of normal windows
 myFocusColor :: String
 myFocusColor  = "#bbc5ff"  -- Border color of focused windows
 
--- modMask lets you specify which modkey you want to use. The default
--- is mod1Mask ("left alt").  You may also consider using mod3Mask
--- ("right alt"), which does not conflict with emacs keybindings. The
--- "windows key" is usually mod4Mask.
+myBar :: String
+myBar = "/usr/bin/xmobar ~/.xmobarrc"
 
 
 windowCount :: X (Maybe String)
@@ -140,7 +162,20 @@ myModMask       = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+emacsWS         = " <fn=4>\xf679</fn> "
+webWS           = " <fn=4>\xf55f</fn> "
+dbWS            = " <fn=4>\xf120</fn> "
+restClientWs    = " <fn=4>\xf54c</fn> "
+mediaWS         = " <fn=4>\xf630</fn> "
+socialWS        = " <fn=4>\xf075</fn> "
+toolsWS         = " <fn=4>\xf568</fn> "
+chatWS          = " <fn=4>\xf075</fn> "
+musicWs         = " <fn=4>\xf6fa</fn> "
+
+myWorkspaces :: [String]
+myWorkspaces =  [emacsWS, webWS, dbWS, restClientWs, mediaWS, socialWS, toolsWS, chatWS, musicWs]
+
+-- myWorkspaces    = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
@@ -243,8 +278,20 @@ myEventHook = mempty
 
 ------------------------------------------------------------------------
 -- Status bars and logging
-myLogHook = return ()
-
+myLogHook xmprocs =  dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP
+  $ xmobarPP {
+      ppOutput          = hPutStrLn xmprocs
+    , ppCurrent         = xmobarColor greenL ""
+    , ppHidden          = xmobarColor orange ""
+    , ppTitle           = xmobarColor gray "" . shorten 80
+    , ppUrgent          = xmobarColor maroon ""
+    , ppLayout          = xmobarColor blue ""
+    , ppOrder           = \(ws:l:t:_) -> [ws,l,t]                  -- workspace, layout, title
+    , ppSep             = "  |  "                                  -- separator to use between different log sections
+    , ppWsSep           = " "
+    -- , ppHiddenNoWindows = showWsNames                           -- To show all hidden workspaces
+    -- , ppVisibleNoWindows = Nothing                              -- To define how should look visible workspaces without windows
+}
 ------------------------------------------------------------------------
 -- Startup hook
 myStartupHook :: X ()
@@ -366,19 +413,16 @@ myKeys =
 
 main :: IO ()
 main = do
-    xmproc <- spawnPipe ("xmobar $HOME/.xmobarrc")
-    xmonad $ ewmh $ docks $ defaults {
-	logHook = dynamicLogWithPP $ xmobarPP {
-	    ppOutput = hPutStrLn xmproc
-	   ,ppVisible = xmobarColor "#7F7F7F" "" 
-	   ,ppTitle = xmobarColor "#222222" "" 
-	   ,ppCurrent = xmobarColor "#2E9AFE" ""
-           ,ppHidden  = xmobarColor "#7F7F7F" ""
-	   ,ppLayout = xmobarColor"#7F7F7F" ""
-           ,ppUrgent = xmobarColor "#900000" "" . wrap "[" "]" 
-        }
-	, manageHook = manageDocks <+> myManageHook
-	, startupHook = myStartupHook
+  xmprocs <- spawnPipe myBar
+  xmonad
+    $ docks
+    $ ewmh defaults {
+    logHook = composeAll [
+         ewmhDesktopsLogHook
+        , myLogHook xmprocs
+        ]
+    , focusedBorderColor = myFocusedBorderColor
+    , normalBorderColor  = myNormalBorderColor
     }
 
 defaults = def 
@@ -400,7 +444,6 @@ defaults = def
         layoutHook         = myLayoutHook,
         manageHook         = myManageHook,
         handleEventHook    = myEventHook,
-        logHook            = myLogHook,
         startupHook        = myStartupHook
 
 
