@@ -644,6 +644,7 @@ Install, automatically load, and enable evil. It's like vim.
     "ie" 'emoji-cheat-sheet-plus-insert
     ;; window
     "w"  'evil-window-map
+    "wd" (kbd "C-x 0")
     ;; help
     "h"  'help-map
     "r" 'counsel-imenu
