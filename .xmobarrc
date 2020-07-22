@@ -6,7 +6,7 @@ Config {
                         , "xft:FontAwesome5Brands:pixelsize=16:antialias=false"
                         , "xft:FontAwesome5Free:style=Solid:pixelsize=16:antialias=true"]
    , bgColor          = "#1d1f21"
-   , alpha            = 205                            -- 0 is transparent, 255 is opaque. 255 -> xmobar bgcolor, xmonad.hs xmobarPP bgcolor on
+   , alpha            = 225                            -- 0 is transparent, 255 is opaque. 255 -> xmobar bgcolor, xmonad.hs xmobarPP bgcolor on
    , fgColor          = "#f9f9f2"
    , position         = TopSize C 100 40
    , border           = BottomB                       -- TopB, TopBM, BottomB, BottomBM, FullB, FullBM or NoBorder (default). TopBM=TopBorderMargin
@@ -30,26 +30,27 @@ Config {
                              , "-S" ,       "<fn=1>\xf04d</fn>"
                              ] 10
         -- network activity monitor (dynamic interface resolution)
-        , Run DynNetwork     [ "--template" , "<fn=1>\xf1eb</fn> <fc=#f9f9f2>↓</fc><rx> <fc=#ff0000>↑</fc><tx>"
+        , Run DynNetwork     [ "--template" , "<fc=#f9f9f2><fn=1>\xf019</fn></fc>  <rx>      <fc=#f9f9f2><fn=1>\xf093</fn></fc>  <tx>"
                              , "--Low"      , "50000"       -- units: B/s
                              , "--High"     , "1000000"       -- units: B/s
-                             , "--low"      , "#797979"
-                             , "--normal"   , "#fd971f"
+                             , "--low"      , "#f9f9f2"
+                             , "--normal"   , "#f9f9f2"
                              , "--high"     , "#A6E22E"
+                             , "-S"         ,  "True"
                              ] 10
         --memory usage monitor
-        , Run Memory         [ "--template" ,"<fn=1>\xf538</fn> Mem: <usedratio>%"
+        , Run Memory         [ "--template" ,"<fn=1>\xf538</fn>  Mem: <usedratio>%"
                              , "--Low"      , "19"        -- units: %
                              , "--High"     , "65"        -- units: %
                              , "--low"      , "#A6E22E"
-                             , "--normal"   , "#fd971f"
+                             , "--normal"   , "#f9f9f2"
                              , "--high"     , "#e03a3a"
                              ] 10
 
         -- Ram used number and percent
         , Run Cpu [
             "-t",
-            "<fn=1>\xf108</fn> Cpu: <total>%",
+            "<fn=1>\xf108</fn>  Cpu: <total>%",
             "-H",
             "50",
             "--high",
@@ -58,7 +59,7 @@ Config {
 
           -- battery monitor
         , Run Battery
-          [ "-t", " <acstatus>"
+          [ "-t", "<acstatus>"
           , "-L", "20"
           , "-H", "85"
           , "-l", "#ff0000"
@@ -66,11 +67,11 @@ Config {
           , "-h", "#3ae03a"
           , "--" -- battery specific options
             -- discharging status
-          , "-o"  , " <left>% (<timeleft>) <watts>W"
+          , "-o","<left>% (<timeleft>) <watts>W"
             -- AC "on" status
-          , "-O"  , "<fn=1>\xf1e6</fn> <left>%"
+          , "-O","<fn=1>\xf1e6</fn> <left>%"
             -- charged status
-          , "-i"  , "<fc=#3ae03a><fn=1>\xf0e7</fn></fc>"
+          , "-i","<fc=#3ae03a><fn=1>\xf0e7</fn></fc>"
           , "--off-icon-pattern", "<fn=1>\xf1e6</fn>"
           , "--on-icon-pattern", "<fn=1>\xf1e6</fn>"
           , "-H"   , "16"
@@ -81,11 +82,10 @@ Config {
           , "-l"	, "#a6e22e" -- power lower than the -L threshold
           ] 10
           -- time and date indicator
-        , Run Date           "<fn=1>\xf073</fn> %a<fc=#fd971f> %H:%M</fc> " "date" 10
-          -- keyboard layout indicator
-        , Run Kbd            [("gb"         , "<fn=1>\xf11c</fn><fc=#797979> Gb</fc>")]
+        , Run Date           "<fn=1>\xf073</fn> %a<fc=#f9f9f2> %H:%M</fc> " "date" 10
+        , Run Kbd            [("gb(mac)"         , "<fn=1>\xf11c</fn><fc=#f9f9f2>  Gb</fc>")]
         , Run StdinReader   -- xmonad workspace : layout : title
 
         ]
-   , template         = " %StdinReader% }  <action=`mpc toggle`>%mpd%</action> { <action=`networkmanager_dmenu`>%dynnetwork%</action> | %cpu% | %memory% | %kbd% | %battery% | %date%"
+   , template         = " %StdinReader% } { <action=`networkmanager_dmenu`>%dynnetwork%</action>      %cpu%      %memory%      %volume%    %kbd%      %battery%      %date%  "
    }
