@@ -1,43 +1,27 @@
 Config {
    -- appearance
-     font             = "xft:Ubuntu:size=12:antialias=true:hinting=true:bold,xft:Ubuntu:size=12:bold:antialias=true"
-   , additionalFonts  = ["xft:FontAwesome5Free:style=Solid:pixelsize=18:antialias=true"
-                        , "xft:FontAwesome5Free:pixelsize=13:antialias=true"
-                        , "xft:FontAwesome5Brands:pixelsize=14:antialias=false"
-                        , "xft:FontAwesome5Free:style=Solid:pixelsize=18:antialias=true"]
-   , bgColor          = "#272822"
-   , alpha            = 255                            -- 0 is transparent, 255 is opaque. 255 -> xmobar bgcolor, xmonad.hs xmobarPP bgcolor on
-   , fgColor          = "#797979"
-   , position         = TopSize C 100 24
+     font             = "xft:Ubuntu:size=9:antialias=true:hinting=true,xft:Ubuntu:size=9:antialias=true"
+   , additionalFonts  = ["xft:FontAwesome5Free:style=Solid:pixelsize=16:antialias=true"
+                        , "xft:FontAwesome5Free:pixelsize=16:antialias=true"
+                        , "xft:FontAwesome5Brands:pixelsize=16:antialias=false"
+                        , "xft:FontAwesome5Free:style=Solid:pixelsize=16:antialias=true"]
+   , bgColor          = "#1d1f21"
+   , alpha            = 205                            -- 0 is transparent, 255 is opaque. 255 -> xmobar bgcolor, xmonad.hs xmobarPP bgcolor on
+   , fgColor          = "#f9f9f2"
+   , position         = TopSize C 100 40
    , border           = BottomB                       -- TopB, TopBM, BottomB, BottomBM, FullB, FullBM or NoBorder (default). TopBM=TopBorderMargin
-   , borderColor      = "#595959"
+   , borderColor      = "#63b8ff"
+   , borderWidth      = 2
 
    -- layout
    , sepChar          =  "%"   -- delineator between plugin names and straight text
    , alignSep         = "}{"  -- separator between left-right alignment
-   , template         = " %StdinReader% }  <action=`mpc toggle`>%mpd%</action> { <action=`networkmanager_dmenu`>%dynnetwork%</action>  <action=`urxvt -e htop`>%memory%</action>  <action=`setxkbmap -layout 'dvorak, us, ru' -option 'grp:alt_shift_toggle,caps:escape'`>%kbd%</action>  %battery%  %date%"
-   -- general behavior
    , lowerOnStart     = True    -- send to bottom of window stack on start
    , hideOnStart      = False   -- start with window unmapped (hidden)
    , allDesktops      = True    -- show on all desktops
    , overrideRedirect = True    -- If you're running xmobar in a tiling window manager, you might need to set this option to False so that it behaves as a docked application. In my conf works with True.
    , pickBroadest     = False   -- choose widest display (multi-monitor)
    , persistent       = True    -- enable/disable hiding (True = disabled)
-
-   -- plugins
-   --   Numbers can be automatically colored according to their value. xmobar
-   --   decides color based on a three-tier/two-cutoff system, controlled by
-   --   command options:
-   --     --Low sets the low cutoff
-   --     --High sets the high cutoff
-   --
-   --     --low sets the color below --Low cutoff
-   --     --normal sets the color between --Low and --High cutoffs
-   --     --High sets the color above --High cutoff
-   --
-   --   The --template option controls how the plugin is displayed. Text
-   --   color can be set by enclosing in <fc></fc> tags. For more details
-   --   see http://projects.haskell.org/xmobar/#system-monitor-plugins.
    , commands =
         -- music monitor
         [Run MPD            [ "--template", "<fn=1>\xf58f</fn> <fc=#f92672><title></fc> - <fc=#66d9ef><artist></fc> |<flags>| <fc=#A6E22E> <remaining> </fc><statei>"
@@ -46,7 +30,7 @@ Config {
                              , "-S" ,       "<fn=1>\xf04d</fn>"
                              ] 10
         -- network activity monitor (dynamic interface resolution)
-        , Run DynNetwork     [ "--template" , "<fn=1>\xf1eb</fn> <fc=#3ae03a>↓</fc><rx> <fc=#ff0000>↑</fc><tx>"
+        , Run DynNetwork     [ "--template" , "<fn=1>\xf1eb</fn> <fc=#f9f9f2>↓</fc><rx> <fc=#ff0000>↑</fc><tx>"
                              , "--Low"      , "50000"       -- units: B/s
                              , "--High"     , "1000000"       -- units: B/s
                              , "--low"      , "#797979"
@@ -54,16 +38,27 @@ Config {
                              , "--high"     , "#A6E22E"
                              ] 10
         --memory usage monitor
-        , Run Memory         [ "--template" ,"<fn=1>\xf538</fn> <usedratio>%"
+        , Run Memory         [ "--template" ,"<fn=1>\xf538</fn> Mem: <usedratio>%"
                              , "--Low"      , "19"        -- units: %
                              , "--High"     , "65"        -- units: %
                              , "--low"      , "#A6E22E"
                              , "--normal"   , "#fd971f"
                              , "--high"     , "#e03a3a"
                              ] 10
+
+        -- Ram used number and percent
+        , Run Cpu [
+            "-t",
+            "<fn=1>\xf108</fn> Cpu: <total>%",
+            "-H",
+            "50",
+            "--high",
+            "red"
+            ] 20
+
           -- battery monitor
         , Run Battery
-          [ "-t", "|| <acstatus>"
+          [ "-t", " <acstatus>"
           , "-L", "20"
           , "-H", "85"
           , "-l", "#ff0000"
@@ -88,10 +83,9 @@ Config {
           -- time and date indicator
         , Run Date           "<fn=1>\xf073</fn> %a<fc=#fd971f> %H:%M</fc> " "date" 10
           -- keyboard layout indicator
-        , Run Kbd            [ ("us(dvorak)" , "<fn=1>\xf11c</fn><fc=#f92672> Dv</fc>")
-                             , ("ru"         , "<fn=1>\xf11c</fn><fc=#8B82f0> Ru</fc>")
-                             , ("us"         , "<fn=1>\xf11c</fn><fc=#797979> Us</fc>")
-                             ]
-         , Run StdinReader   -- xmonad workspace : layout : title
+        , Run Kbd            [("gb"         , "<fn=1>\xf11c</fn><fc=#797979> Gb</fc>")]
+        , Run StdinReader   -- xmonad workspace : layout : title
+
         ]
+   , template         = " %StdinReader% }  <action=`mpc toggle`>%mpd%</action> { <action=`networkmanager_dmenu`>%dynnetwork%</action> | %cpu% | %memory% | %kbd% | %battery% | %date%"
    }
