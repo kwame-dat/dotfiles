@@ -162,18 +162,18 @@ myModMask       = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-emacsWS         = " <fn=4>\xf679</fn> "
-webWS           = " <fn=4>\xf55f</fn> "
-dbWS            = " <fn=4>\xf120</fn> "
-restClientWs    = " <fn=4>\xf54c</fn> "
-mediaWS         = " <fn=4>\xf630</fn> "
-socialWS        = " <fn=4>\xf075</fn> "
-toolsWS         = " <fn=4>\xf568</fn> "
-chatWS          = " <fn=4>\xf075</fn> "
-musicWs         = " <fn=4>\xf6fa</fn> "
+emacs         = " <fn=4>\xf121</fn> "
+web           = " <fn=4>\xf0ac</fn> "
+dbclient      = " <fn=4>\xf1c0</fn> "
+restClient    = " <fn=4>\xf25b</fn> "
+videoCalls    = " <fn=4>\xf03d</fn> "
+gaming        = " <fn=4>\xf11b</fn> "
+tools         = " <fn=4>\xf568</fn> "
+chat          = " <fn=4>\xf075</fn> "
+music         = " <fn=4>\xf001</fn> "
 
 myWorkspaces :: [String]
-myWorkspaces =  [emacsWS, webWS, dbWS, restClientWs, mediaWS, socialWS, toolsWS, chatWS, musicWs]
+myWorkspaces =  [emacs, web, dbclient, restClient, videoCalls, gaming, tools, chat, music]
 
 -- myWorkspaces    = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
@@ -281,16 +281,14 @@ myEventHook = mempty
 myLogHook xmprocs =  dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP
   $ xmobarPP {
       ppOutput          = hPutStrLn xmprocs
-    , ppCurrent         = xmobarColor greenL ""
-    , ppHidden          = xmobarColor orange ""
-    , ppTitle           = xmobarColor gray "" . shorten 80
+    , ppCurrent         = xmobarColor blue ""
+    , ppHidden          = xmobarColor white ""
+    , ppTitle           = xmobarColor white "" . shorten 80
     , ppUrgent          = xmobarColor maroon ""
     , ppLayout          = xmobarColor blue ""
     , ppOrder           = \(ws:l:t:_) -> [ws,l,t]                  -- workspace, layout, title
     , ppSep             = "  |  "                                  -- separator to use between different log sections
     , ppWsSep           = " "
-    -- , ppHiddenNoWindows = showWsNames                           -- To show all hidden workspaces
-    -- , ppVisibleNoWindows = Nothing                              -- To define how should look visible workspaces without windows
 }
 ------------------------------------------------------------------------
 -- Startup hook
@@ -386,6 +384,11 @@ myKeys =
         , ("M-C-m", spawn "emacsclient -c -a '' --eval '(mu4e)'")            -- mu4e emacs email client
         , ("M-C-t", spawn "emacsclient -c -a '' --eval '(org-agenda)'")      -- emacs agenda todo list
 
+
+    -- Others
+        , ("M-C-s", spawn "flameshot gui")
+        , ("M-C-p", spawn "rofi-pass")
+
     --- My Applications (Super+Alt+Key)
         , ("M-M1-a", spawn (myTerminal ++ " -e ncpamixer"))
         , ("M-M1-e", spawn (myTerminal ++ " -e neomutt"))
@@ -400,13 +403,12 @@ myKeys =
         , ("M-M1-y", spawn (myTerminal ++ " -e youtube-viewer"))
 
     -- Multimedia Keys
-        , ("<XF86AudioPlay>", spawn "cmus toggle")
-        , ("<XF86AudioPrev>", spawn "cmus prev")
-        , ("<XF86AudioNext>", spawn "cmus next")
+        , ("<XF86AudioPlay>", spawn "playerctl play-pause")
+        , ("<XF86AudioPrev>", spawn "playerctl previous")
+        , ("<XF86AudioNext>", spawn "playerctl next")
         , ("<XF86AudioMute>",   spawn "amixer set Master toggle")  -- Bug prevents it from toggling correctly in 12.04.
         , ("<XF86AudioLowerVolume>", spawn "amixer set Master 5%- unmute")
         , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 5%+ unmute")
-        , ("<XF86Calculator>", runOrRaise "gcalctool" (resource =? "gcalctool"))
         ]
           where nonNSP          = WSIs (return (\ws -> W.tag ws /= "nsp"))
                 nonEmptyNonNSP  = WSIs (return (\ws -> isJust (W.stack ws) && W.tag ws /= "nsp"))
