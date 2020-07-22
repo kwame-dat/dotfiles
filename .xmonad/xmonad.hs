@@ -55,8 +55,8 @@ import XMonad.Layout.ThreeColumns
 import XMonad.Layout.LayoutModifier
 import XMonad.Layout.LimitWindows (limitWindows, increaseLimit, decreaseLimit)
 import XMonad.Layout.Magnifier
-import XMonad.Layout.MultiToggle (mkToggle, single, EOT(EOT), (??))
-import XMonad.Layout.MultiToggle.Instances (StdTransformers(NBFULL, MIRROR, NOBORDERS))
+import XMonad.Layout.MultiToggle
+import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed (renamed, Rename(Replace))
 import XMonad.Layout.ShowWName
@@ -199,7 +199,7 @@ spirals  = renamed [Replace "spirals"]
 ------------------------------------------------------------------------
 -- Layouts:
 myLayoutHook = avoidStruts $ mouseResize $ windowArrange $ T.toggleLayouts floats $
-               mkToggle (NBFULL ?? NOBORDERS ?? EOT) myDefaultLayout
+               mkToggle (NOBORDERS ?? FULL ?? EOT) myDefaultLayout
              where
                myDefaultLayout =     tall
                                  ||| noBorders monocle
@@ -282,6 +282,9 @@ myKeys =
 
     -- Open my preferred terminal
         , ("M-<Return>", spawn myTerminal)
+
+    -- Toggle full screen
+        , ("M-S-f", sendMessage $ MT.Toggle FULL)
 
     -- Windows
         , ("M-q", kill1)                           -- Kill the currently focused client
