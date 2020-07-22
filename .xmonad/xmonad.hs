@@ -249,6 +249,7 @@ myLogHook = return ()
 -- Startup hook
 myStartupHook :: X ()
 myStartupHook = do
+          spawnOnce "xsetroot -cursor_name left_ptr &"
           spawnOnce "xset r rate 220 80 &"
           spawnOnce "nitrogen --restore &"
           spawnOnce "dunst"
