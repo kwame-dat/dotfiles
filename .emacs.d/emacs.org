@@ -2304,11 +2304,6 @@ functions we invoke regularly outside of magit is called.
 ;; view HTML email in browser
 (add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
 
-(use-package mu4e-alert)
-
-(mu4e-alert-set-default-style 'libnotify)
-(add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
-
 ;; display unread email on mode line
 (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
 #+END_SRC
