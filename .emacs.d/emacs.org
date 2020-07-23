@@ -364,8 +364,8 @@ previously compiled manually then all of the package initialization will still t
 
 ** Font
 #+BEGIN_SRC emacs-lisp
-(setq itechytony/default-font "Ubuntu Mono")
-(setq itechytony/default-font-size 13)
+(setq itechytony/default-font "Jetbrains Mono")
+(setq itechytony/default-font-size 10)
 (setq itechytony/current-font-size itechytony/default-font-size)
 
 (setq itechytony/font-change-increment 1.1)
