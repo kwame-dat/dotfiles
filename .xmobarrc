@@ -57,6 +57,14 @@ Config {
             "red"
             ] 20
 
+       , Run Volume "default" "Master"
+           [ "-t", "<status>", "--"
+           , "--on", "<fc=#859900><fn=1>\xf028</fn> <volume>%</fc>"
+           , "--onc", "#859900"
+           , "--off", "<fc=#dc322f><fn=1>\xf026</fn> MUTE</fc>"
+           , "--offc", "#dc322f"
+           ] 1
+
           -- battery monitor
         , Run Battery
           [ "-t", "<acstatus>"
