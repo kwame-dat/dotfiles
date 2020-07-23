@@ -598,7 +598,7 @@ Install, automatically load, and enable evil. It's like vim.
     "ts"  'treemacs
     "tc"  'company-mode
     "tf"  'flycheck-mode
-    "tr"  'nlinum-mode
+    "tr"  'display-line-numbers
     "ttl"  'toggle-truncate-lines
     "tvl"  'global-visual-line-mode
     "te"  'global-emojify-mode
@@ -1091,10 +1091,7 @@ want is prioritized instead.
   (setq org-agenda-files (quote (
                                  "~/Nextcloud/org/calendar/personal.org"
                                  "~/Nextcloud/org/calendar/shared.org"
-                                 "~/Nextcloud/org/todo-home.org"
-                                 "~/Nextcloud/org/todo-personal.org"
-                                 "~/Nextcloud/org/todo-spiritual.org"
-                                 "~/Nextcloud/org/todo-work.org"
+                                 "~/Nextcloud/org/todo.org"
                                  "~/Nextcloud/org/jira/DELREP.org"
                                  )))
 
@@ -2327,7 +2324,7 @@ package that automatically generates an up to date table of contents for us.
 #+END_SRC
 ** Load secrets
 #+BEGIN_SRC emacs-lisp
-(load "~/Nextcloud/Documents/Personal/3Resources/Keys/secrets.el")
+(load "~/Nextcloud/Documents/3Resources/Personal : Keys/secrets.el")
 #+END_SRC
 ** Post Initialisation
 Let's lower our GC thresholds back down to a sane level.
