@@ -287,8 +287,8 @@ myLogHook xmprocs =  dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP
     , ppUrgent          = xmobarColor maroon ""
     , ppLayout          = xmobarColor blue ""
     , ppOrder           = \(ws:l:t:_) -> [ws,l,t]                  -- workspace, layout, title
-    , ppSep             = "   "                                  -- separator to use between different log sections
-    , ppWsSep           = "   "
+    , ppSep             = " "                                  -- separator to use between different log sections
+    , ppWsSep           = ""
 }
 ------------------------------------------------------------------------
 -- Startup hook
