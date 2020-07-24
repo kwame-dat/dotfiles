@@ -294,6 +294,8 @@ myLogHook xmprocs =  dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP
 -- Startup hook
 myStartupHook :: X ()
 myStartupHook = do
+          spawnOnce "xcape -e 'Caps_Lock=Escape' &"
+          spawnOnce "setxkbmap -option 'caps:ctrl_modifier' &"
           spawnOnce "xsetroot -cursor_name left_ptr &"
           spawnOnce "xset r rate 220 80 &"
           spawnOnce "nitrogen --restore &"

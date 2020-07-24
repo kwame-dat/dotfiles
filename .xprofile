@@ -1,2 +1,0 @@
-xcape -e 'Caps_Lock=Escape' &
-setxkbmap -option 'caps:ctrl_modifier' &
