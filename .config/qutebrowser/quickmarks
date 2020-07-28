@@ -18,3 +18,5 @@ st1 https://st1-railguardcore-thetrainline.ttlnonprod.com/admin/login
 production https://railguard.thetrainline.com/admin/login 
 kb https://kibana-common.thetrainline.com/
 kbp https://kibana-prod.thetrainline.com/login?next=%2Fs%2Fhydra---railguard%2Fapp%2Fkibana#/discover?_g=()
+cmsb https://jira.thetrainline.com/secure/RapidBoard.jspa?rapidView=1435&projectKey=DELREP&view=detail&selectedIssue=DELREP-1420
+recb https://jira.thetrainline.com/secure/RapidBoard.jspa?rapidView=1499
