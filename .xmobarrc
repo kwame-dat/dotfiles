@@ -6,7 +6,7 @@ Config {
                         , "xft:FontAwesome5Brands:pixelsize=16:antialias=false"
                         , "xft:FontAwesome5Free:style=Solid:pixelsize=16:antialias=true"]
    , bgColor          = "#1d1f21"
-   , alpha            = 225                            -- 0 is transparent, 255 is opaque. 255 -> xmobar bgcolor, xmonad.hs xmobarPP bgcolor on
+   , alpha            = 255                            -- 0 is transparent, 255 is opaque. 255 -> xmobar bgcolor, xmonad.hs xmobarPP bgcolor on
    , fgColor          = "#f9f9f2"
    , position         = TopSize C 100 40
    , border           = BottomB                       -- TopB, TopBM, BottomB, BottomBM, FullB, FullBM or NoBorder (default). TopBM=TopBorderMargin
