@@ -215,9 +215,10 @@ mySpacing' i = spacingRaw True (Border i i i i) True (Border i i i i) True
 -- Defining a bunch of layouts
 tall     = renamed [Replace "tall"]
            $ limitWindows 12
-           $ mySpacing 8
+           $ mySpacing 10
            $ ResizableTall 1 (3/100) (1/2) []
 monocle  = renamed [Replace "monocle"]
+           $ mySpacing 10
            $ limitWindows 20 Full
 floats   = renamed [Replace "floats"]
            $ limitWindows 20 simplestFloat
