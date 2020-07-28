@@ -2319,7 +2319,7 @@ package that automatically generates an up to date table of contents for us.
 #+END_SRC
 ** Load secrets
 #+BEGIN_SRC emacs-lisp
-(load "~/Nextcloud/Documents/3Resources/Personal : Keys/secrets.el")
+(load "~/Nextcloud/Documents/3Resources/P:Keys/secrets.el")
 #+END_SRC
 ** Post Initialisation
 Let's lower our GC thresholds back down to a sane level.
