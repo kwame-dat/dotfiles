@@ -615,26 +615,11 @@ Install, automatically load, and enable evil. It's like vim.
     "nf" '(lambda() (interactive) (counsel-find-file "~/Nextcloud/org"))
     "n." '(lambda() (interactive) (counsel-find-file "~/Nextcloud/org"))
     "ni" '(lambda() (interactive) (find-file "~/Nextcloud/org/inbox.org"))
+    "nt" '(lambda() (interactive) (find-file "~/Nextcloud/org/todo.org"))
     "na" 'org-agenda
     "nci" 'org-pomodoro
     "nco" 'org-pomodoro-clock-break
     "nn" 'org-capture
-    ;; notes spiritual
-    "nst" '(lambda() (interactive) (find-file "~/Nextcloud/org/todo-spiritual.org"))
-    "nsg" '(lambda() (interactive) (find-file "~/Nextcloud/org/goals-spiritual.org"))
-    "nsc" '(lambda() (interactive) (find-file "~/Nextcloud/org/calendar/spiritual.org"))
-    ;; notes personal
-    "npt" '(lambda() (interactive) (find-file "~/Nextcloud/org/todo-personal.org"))
-    "npc" '(lambda() (interactive) (find-file "~/Nextcloud/org/calendar/personal.org"))
-    "npg" '(lambda() (interactive) (find-file "~/Nextcloud/org/goals-personal.org"))
-    ;; notes home
-    "nht" '(lambda() (interactive) (find-file "~/Nextcloud/org/todo-home.org"))
-    "nhg" '(lambda() (interactive) (find-file "~/Nextcloud/org/goals-home.org"))
-    "nhc" '(lambda() (interactive) (find-file "~/Nextcloud/org/calendar/home.org"))
-    ;; notes work
-    "nwt" '(lambda() (interactive) (find-file "~/Nextcloud/org/todo-work.org"))
-    "nwc" '(lambda() (interactive) (find-file "~/Nextcloud/org/calendar/work.org"))
-    "nwg" '(lambda() (interactive) (find-file "~/Nextcloud/org/goals-work.org"))
     "nv" 'org-search-view
     ":"  'eval-expression
     "cc"  'compile
