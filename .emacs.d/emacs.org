@@ -555,26 +555,10 @@ Install, automatically load, and enable evil. It's like vim.
     "fs"  'save-buffer
     "fS"  'write-file
     ;; documents
-    ;; documents spiritual
-    "dsp" '(lambda() (interactive) (find-file "~/Google Drive/Spiritual/1Projects"))
-    "dsa" '(lambda() (interactive) (find-file "~/Google Drive/Spiritual/2Areas"))
-    "dsr" '(lambda() (interactive) (find-file "~/Google Drive/Spiritual/3Resources"))
-    "dsc" '(lambda() (interactive) (find-file "~/Google Drive/Spiritual/4Archives"))
-    ;; documents personal
-    "dpp" '(lambda() (interactive) (find-file "~/Google Drive/Personal/1Projects"))
-    "dpa" '(lambda() (interactive) (find-file "~/Google Drive/Personal/2Areas"))
-    "dpr" '(lambda() (interactive) (find-file "~/Google Drive/Personal/3Resources"))
-    "dpc" '(lambda() (interactive) (find-file "~/Google Drive/Personal/4Archives"))
-    ;; documents home
-    "dhp" '(lambda() (interactive) (find-file "~/Google Drive/Home/1Projects"))
-    "dha" '(lambda() (interactive) (find-file "~/Google Drive/Home/2Areas"))
-    "dhr" '(lambda() (interactive) (find-file "~/Google Drive/Home/3Resources"))
-    "dhc" '(lambda() (interactive) (find-file "~/Google Drive/Home/4Archives"))
-    ;; documents work
-    "dwp" '(lambda() (interactive) (find-file "~/Google Drive/Work/1Projects"))
-    "dwa" '(lambda() (interactive) (find-file "~/Google Drive/Work/2Areas"))
-    "dwr" '(lambda() (interactive) (find-file "~/Google Drive/Work/3Resources"))
-    "dwc" '(lambda() (interactive) (find-file "~/Google Drive/Work/4Archives"))
+    "dp" '(lambda() (interactive) (find-file "~/Nextcloud/Documents/1Projects"))
+    "da" '(lambda() (interactive) (find-file "~/Nextcloud/Documents/2Areas"))
+    "dr" '(lambda() (interactive) (find-file "~/Nextcloud/Documents/3Resources"))
+    "dc" '(lambda() (interactive) (find-file "~/Nextcloud/Documents/4Archives"))
     ;; buffers
     "bb"  'counsel-switch-buffer
     "bB"  'counsel-ibuffer
@@ -953,9 +937,8 @@ going to install it and make sure it's loaded immediately.
   :ensure t
   :init
   (setq projectile-project-search-path '(
-                                         "~/Repo/Personal/2Areas"
-                                         "~/Repo/Personal/1Projects"
-                                         "~/Repo/Work/1Projects"
+                                         "~/Repo/2Areas"
+                                         "~/Repo/1Projects"
                                          "~/Nextcloud"
                                          ))
   (setq projectile-completion-system 'ivy)
