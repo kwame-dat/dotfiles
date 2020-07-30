@@ -1,10 +1,10 @@
 Config {
    -- appearance
      font             = "xft:Ubuntu Mono:size=10:antialias=true:hinting=true,xft:Ubuntu Mono:size=10:antialias=true"
-   , additionalFonts  = ["xft:FontAwesome5Free:style=Solid:size=10:antialias=true"
-                        , "xft:FontAwesome5Free:size=10:antialias=true"
-                        , "xft:FontAwesome5Brands:size=10:antialias=false"
-                        , "xft:FontAwesome5Free:style=Solid:size=10:antialias=true"]
+   , additionalFonts  = ["xft:FontAwesome5Free:style=Solid:size=8:antialias=true"
+                        , "xft:FontAwesome5Free:size=8:antialias=true"
+                        , "xft:FontAwesome5Brands:size=8:antialias=false"
+                        , "xft:FontAwesome5Free:style=Solid:size=8:antialias=true"]
    , bgColor          = "#1d1f21"
    , alpha            = 255                            -- 0 is transparent, 255 is opaque. 255 -> xmobar bgcolor, xmonad.hs xmobarPP bgcolor on
    , fgColor          = "#f9f9f2"
