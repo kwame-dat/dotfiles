@@ -5,7 +5,7 @@ rofi.ssh-command: {terminal} -- {ssh-client} {host}
 rofi.dpi: 150
 rofi.hide-scrollbar: true
 rofi.show-icons: true
-rofi.font: Jetbrains Mono 16
+rofi.font: Ubuntu 14
 rofi.modi:                           combi,calc:qalc -t
 rofi.combi-modi: drun,window,ssh
 rofi.width:                          40

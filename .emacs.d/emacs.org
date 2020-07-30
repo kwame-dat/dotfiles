@@ -302,7 +302,11 @@ previously compiled manually then all of the package initialization will still t
 
 (defun itechytony/visit-host-file ()
   (interactive)
-  (find-file "/etc/hosts"))
+  (find-file "/sudo:root@localhost:/etc/hosts"))
+
+(defun itechytony/access-unraid ()
+  (interactive)
+  (find-file "/ssh:root@192.168.1.3:/"))
 
 (defun itechytony/find-in-notes ()
   (interactive)
@@ -364,8 +368,8 @@ previously compiled manually then all of the package initialization will still t
 
 ** Font
 #+BEGIN_SRC emacs-lisp
-(setq itechytony/default-font "Jetbrains Mono")
-(setq itechytony/default-font-size 10)
+(setq itechytony/default-font "Ubuntu Mono")
+(setq itechytony/default-font-size 12)
 (setq itechytony/current-font-size itechytony/default-font-size)
 
 (setq itechytony/font-change-increment 1.1)
@@ -2287,7 +2291,7 @@ package that automatically generates an up to date table of contents for us.
 #+END_SRC
 ** Load secrets
 #+BEGIN_SRC emacs-lisp
-(load "~/Nextcloud/Documents/3Resources/P:Keys/secrets.el")
+(load "~/Nextcloud/Documents/3Resources/Keys/secrets.el")
 #+END_SRC
 ** Post Initialisation
 Let's lower our GC thresholds back down to a sane level.
