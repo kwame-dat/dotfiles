@@ -144,7 +144,7 @@ myFocusColor :: String
 myFocusColor  = "#bbc5ff"  -- Border color of focused windows
 
 myBar :: String
-myBar = "/usr/bin/xmobar ~/.xmobarrc"
+myBar = "/usr/bin/xmobar ~/.config/xmobar/xmobar.hs"
 
 
 windowCount :: X (Maybe String)
