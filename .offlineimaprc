@@ -1,7 +1,7 @@
 [general]
 accounts = jw, arksolutions, netsells, thetrainline
 maxsyncaccounts = 1
-pythonfile = ~/Repo/Personal/2Areas/dotfiles/shell/mu/lib.py
+pythonfile = ~/Repo/2Areas/dotfiles/shell/mu/lib.py
 
 autorefresh = 0.5
 quick = 10
