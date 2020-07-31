@@ -1552,7 +1552,8 @@ functions we invoke regularly outside of magit is called.
 
 *** =eredis=
 #+BEGIN_SRC emacs-lisp
-(use-package eredis)
+(use-package eredis
+  :demand t)
 #+END_SRC
 
 *** =macos=
