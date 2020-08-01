@@ -373,8 +373,8 @@ myKeys =
         , ("M-S-<KP_Subtract>", shiftTo Prev nonNSP >> moveTo Prev nonNSP)  -- Shifts focused window to prev ws
 
     -- Scratchpads
-        , ("M-C-<Return>", namedScratchpadAction myScratchPads "terminal")
-        , ("M-C-c", namedScratchpadAction myScratchPads "mocp")
+        , ("M-C-<Return>", namedScratchpadAction myScratchPads "alacritty")
+        -- , ("M-C-c", namedScratchpadAction myScratchPads "mocp")
 
     -- Controls for mocp music player.
         , ("M-u p", spawn "mocp --play")
@@ -391,6 +391,8 @@ myKeys =
     -- Others
         , ("M-C-s", spawn "flameshot gui")
         , ("M-C-p", spawn "rofi-pass")
+        , ("M-C-b", spawn "alacritty -e 'bmenu'")
+        , ("M-C-c", spawn "rofi -show calc")
 
     --- My Applications (Super+Alt+Key)
         , ("M-M1-a", spawn (myTerminal ++ " -e ncpamixer"))
