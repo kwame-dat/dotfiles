@@ -69,7 +69,6 @@
     - [[#writeroom-mode][=writeroom-mode=]]
     - [[#speed-type][=speed-type=]]
     - [[#engine-mode][=engine-mode=]]
-    - [[#color-theme-sanityinc-tomorrow][=color-theme-sanityinc-tomorrow=]]
     - [[#gruvbox-theme][=gruvbox-theme=]]
     - [[#powerline][=powerline=]]
     - [[#diminish][=diminish=]]
@@ -1863,15 +1862,6 @@ functions we invoke regularly outside of magit is called.
   "https://www.youtube.com/results?search_query=%s")
 
 (engine-mode t)
-#+END_SRC
-
-*** =color-theme-sanityinc-tomorrow=
-#+BEGIN_SRC emacs-lisp
-(use-package color-theme-sanityinc-tomorrow
-  :demand t
-  :ensure t
-  :config
-  (load-theme 'sanityinc-tomorrow-night t))
 #+END_SRC
 
 *** =gruvbox-theme=
