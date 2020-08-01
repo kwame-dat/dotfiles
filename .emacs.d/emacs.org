@@ -70,6 +70,7 @@
     - [[#speed-type][=speed-type=]]
     - [[#engine-mode][=engine-mode=]]
     - [[#color-theme-sanityinc-tomorrow][=color-theme-sanityinc-tomorrow=]]
+    - [[#gruvbox-theme][=gruvbox-theme=]]
     - [[#powerline][=powerline=]]
     - [[#diminish][=diminish=]]
     - [[#lang][Lang]]
@@ -204,6 +205,8 @@ Disable certain byte compiler warnings to cut down on the noise.
                            '((vertical-scroll-bars . nil)
                              (horizontal-scroll-bars . nil))))
 (add-hook 'after-make-frame-functions 'my/disable-scroll-bars)
+
+(recentf-mode 1)
 #+END_SRC
 *** Database configuration
 #+BEGIN_SRC emacs-lisp
@@ -368,14 +371,13 @@ previously compiled manually then all of the package initialization will still t
 
 ** Font
 #+BEGIN_SRC emacs-lisp
-(setq itechytony/default-font "Ubuntu Mono")
-(setq itechytony/default-font-size 12)
+(setq itechytony/default-font "Fira Code")
+(setq itechytony/default-font-size 10)
 (setq itechytony/current-font-size itechytony/default-font-size)
 
 (setq itechytony/font-change-increment 1.1)
 
 (defun itechytony/font-code ()
-  "Return a string representing the current font (like \"Inconsolata-14\")."
   (concat itechytony/default-font "-" (number-to-string itechytony/current-font-size)))
 
 (defun itechytony/set-font-size ()
@@ -418,6 +420,72 @@ other, future frames."
 (itechytony/reset-font-size)
 #+END_SRC
 
+Ligature workaround
+#+BEGIN_SRC emacs-lisp
+(defun fira-code-mode--make-alist (list)
+  "Generate prettify-symbols alist from LIST."
+  (let ((idx -1))
+    (mapcar
+     (lambda (s)
+       (setq idx (1+ idx))
+       (let* ((code (+ #Xe100 idx))
+          (width (string-width s))
+          (prefix ())
+          (suffix '(?\s (Br . Br)))
+          (n 1))
+     (while (< n width)
+       (setq prefix (append prefix '(?\s (Br . Bl))))
+       (setq n (1+ n)))
+     (cons s (append prefix suffix (list (decode-char 'ucs code))))))
+     list)))
+
+(defconst fira-code-mode--ligatures
+  '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\"
+    "{-" "[]" "::" ":::" ":=" "!!" "!=" "!==" "-}"
+    "--" "---" "-->" "->" "->>" "-<" "-<<" "-~"
+    "#{" "#[" "##" "###" "####" "#(" "#?" "#_" "#_("
+    ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*"
+    "/**" "/=" "/==" "/>" "//" "///" "&&" "||" "||="
+    "|=" "|>" "^=" "$>" "++" "+++" "+>" "=:=" "=="
+    "===" "==>" "=>" "=>>" "<=" "=<<" "=/=" ">-" ">="
+    ">=>" ">>" ">>-" ">>=" ">>>" "<*" "<*>" "<|" "<|>"
+    "<$" "<$>" "<!--" "<-" "<--" "<->" "<+" "<+>" "<="
+    "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<" "<~"
+    "<~~" "</" "</>" "~@" "~-" "~=" "~>" "~~" "~~>" "%%"
+    "x" ":" "+" "+" "*"))
+
+(defvar fira-code-mode--old-prettify-alist)
+
+(defun fira-code-mode--enable ()
+  "Enable Fira Code ligatures in current buffer."
+  (setq-local fira-code-mode--old-prettify-alist prettify-symbols-alist)
+  (setq-local prettify-symbols-alist (append (fira-code-mode--make-alist fira-code-mode--ligatures) fira-code-mode--old-prettify-alist))
+  (prettify-symbols-mode t))
+
+(defun fira-code-mode--disable ()
+  "Disable Fira Code ligatures in current buffer."
+  (setq-local prettify-symbols-alist fira-code-mode--old-prettify-alist)
+  (prettify-symbols-mode -1))
+
+(define-minor-mode fira-code-mode
+  "Fira Code ligatures minor mode"
+  :lighter " Fira Code"
+  (setq-local prettify-symbols-unprettify-at-point 'right-edge)
+  (if fira-code-mode
+      (fira-code-mode--enable)
+    (fira-code-mode--disable)))
+
+(defun fira-code-mode--setup ()
+  "Setup Fira Code Symbols"
+  (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol"))
+
+(provide 'fira-code-mode)
+
+(add-hook 'prog-mode-hook 'fira-code-mode)
+(add-hook 'text-mode 'fira-code-mode)
+(add-hook 'org-mode 'fira-code-mode)
+(add-hook 'markdown-mode 'fira-code-mode)
+#+END_SRC
 ** Packages
 *** =exec-path-from-shell=
 #+BEGIN_SRC emacs-lisp
@@ -550,7 +618,7 @@ Install, automatically load, and enable evil. It's like vim.
     "ff"  'counsel-find-file
     "fe"  '(lambda() (interactive) (counsel-find-file "~/.emacs.d"))
     "fE"  '(lambda() (interactive) (find-file "~/.emacs.d"))
-    "fh"  '(lambda() (interactive) (find-file "/etc/hosts"))
+    "fh"  'itechytony/visit-host-file
     "fu"  'itechytony/sudo-find-file
     "fU"  'itechytony/sudo-this-file
     "fl"  'locate
@@ -984,6 +1052,7 @@ want is prioritized instead.
           t)))))
 
 (use-package org
+  :demand t
   :ensure org-plus-contrib
   :custom-face
   (variable-pitch ((t (:family "Avenir"))))
@@ -1508,22 +1577,19 @@ functions we invoke regularly outside of magit is called.
   (use-package with-editor :demand t)
   (use-package magit-todos :demand t)
   (use-package magit-gitflow :demand t)
+  (use-package yagist :demand t)
+  (use-package bug-reference-github :demand t)
+  (use-package github-clone :demand t)
+  (use-package github-review :demand t)
+  (use-package forge
+    :demand t
+    :config
+    (add-to-list 'forge-alist '("github.thetrainline.com" "github.thetrainline.com/api/v3"
+                                "github.thetrainline.com" forge-github-repository)))
 
   (add-hook 'with-editor-mode-hook 'evil-insert-state)
   :ensure t)
 
-(use-package yagist)
-
-(use-package bug-reference-github)
-
-(use-package github-clone)
-
-(use-package github-review)
-
-(use-package forge
-  :config
-  (add-to-list 'forge-alist '("github.thetrainline.com" "github.thetrainline.com/api/v3"
-                              "github.thetrainline.com" forge-github-repository)))
 
 (use-package git-gutter-fringe
   :ensure t
@@ -1808,6 +1874,14 @@ functions we invoke regularly outside of magit is called.
   (load-theme 'sanityinc-tomorrow-night t))
 #+END_SRC
 
+*** =gruvbox-theme=
+#+BEGIN_SRC emacs-lisp
+(use-package gruvbox-theme
+  :demand t
+  :ensure t
+  :config
+  (load-theme 'gruvbox-dark-hard t))
+#+END_SRC
 *** =powerline=
 #+BEGIN_SRC emacs-lisp
 (use-package powerline
@@ -1824,7 +1898,7 @@ functions we invoke regularly outside of magit is called.
   :ensure t
   :demand t
   :config
-  (load-theme 'airline-base16_tomorrow))
+  (load-theme 'airline-base16_gruvbox_dark_hard))
 #+END_SRC
 
 *** =diminish=
