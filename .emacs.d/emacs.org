@@ -72,6 +72,7 @@
     - [[#gruvbox-theme][=gruvbox-theme=]]
     - [[#powerline][=powerline=]]
     - [[#diminish][=diminish=]]
+    - [[#mixed-pitch][Mixed pitch]]
     - [[#lang][Lang]]
     - [[#mu4e][=mu4e=]]
     - [[#toc-org][Toc-org]]
@@ -1054,7 +1055,7 @@ want is prioritized instead.
   :demand t
   :ensure org-plus-contrib
   :custom-face
-  (variable-pitch ((t (:family "Avenir"))))
+  (variable-pitch ((t (:family "Source Sans Pro"))))
   (org-document-title ((t (:weight bold ))))
   (org-done ((t (:strike-through t :weight bold))))
   (org-headline-done ((t (:strike-through t))))
@@ -1913,6 +1914,15 @@ functions we invoke regularly outside of magit is called.
 (diminish 'abbrev-mode)
 (diminish 'subword-mode)
 #+END_SRC
+*** Mixed pitch 
+#+BEGIN_SRC emacs-lisp
+(use-package mixed-pitch
+  :ensure t
+  :demand t
+  :hook
+  ;; If you want it in all text modes:
+  (text-mode . mixed-pitch-mode))
+#+END_SRC
 *** Lang
 **** =php=
 #+BEGIN_SRC emacs-lisp
@@ -2356,8 +2366,10 @@ package that automatically generates an up to date table of contents for us.
 #+END_SRC
 ** Load secrets
 #+BEGIN_SRC emacs-lisp
-(load "~/Nextcloud/Documents/3Resources/Keys/secrets.el")
+(when (file-exists-p "~/Nextcloud/Documents/3Resources/Keys/secrets.el")
+    (load "~/Nextcloud/Documents/3Resources/Keys/secrets.el"))
 #+END_SRC
+
 ** Post Initialisation
 Let's lower our GC thresholds back down to a sane level.
 
