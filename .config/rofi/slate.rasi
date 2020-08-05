@@ -1,6 +1,6 @@
 * {
-  background-color: #1d1f21;
-  border-color: #1d1f21;
+  background-color: #292d3e;
+  border-color: #292d3e;
   text-color: #8ca0aa;
   spacing: 0;
 }
@@ -19,7 +19,7 @@ textbox {
   background-color: #2e343f;
   border: 0 0 1px 0;
   border-color: #282C33;
-  padding: 8px 16px;
+  padding: 8px 20px;
 }
 
 entry {
@@ -34,7 +34,7 @@ listview {
 
 element {
   border: 0 0 1px 0;
-  padding: 16px;
+  padding: 20px;
 }
 
 element selected {

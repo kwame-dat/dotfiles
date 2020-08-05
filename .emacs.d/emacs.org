@@ -69,7 +69,7 @@
     - [[#writeroom-mode][=writeroom-mode=]]
     - [[#speed-type][=speed-type=]]
     - [[#engine-mode][=engine-mode=]]
-    - [[#gruvbox-theme][=gruvbox-theme=]]
+    - [[#base16-theme][base16-theme]]
     - [[#powerline][=powerline=]]
     - [[#diminish][=diminish=]]
     - [[#mixed-pitch][Mixed pitch]]
@@ -371,7 +371,7 @@ previously compiled manually then all of the package initialization will still t
 
 ** Font
 #+BEGIN_SRC emacs-lisp
-(setq itechytony/default-font "Fira Code")
+(setq itechytony/default-font "Dank Mono")
 (setq itechytony/default-font-size 10)
 (setq itechytony/current-font-size itechytony/default-font-size)
 
@@ -421,7 +421,7 @@ other, future frames."
 #+END_SRC
 
 Ligature workaround
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (defun fira-code-mode--make-alist (list)
   "Generate prettify-symbols alist from LIST."
   (let ((idx -1))
@@ -1865,13 +1865,13 @@ functions we invoke regularly outside of magit is called.
 (engine-mode t)
 #+END_SRC
 
-*** =gruvbox-theme=
+*** base16-theme
 #+BEGIN_SRC emacs-lisp
-(use-package gruvbox-theme
+(use-package base16-theme
   :demand t
   :ensure t
   :config
-  (load-theme 'gruvbox-dark-hard t))
+  (load-theme 'base16-material-palenight))
 #+END_SRC
 *** =powerline=
 #+BEGIN_SRC emacs-lisp
@@ -1889,7 +1889,7 @@ functions we invoke regularly outside of magit is called.
   :ensure t
   :demand t
   :config
-  (load-theme 'airline-base16_gruvbox_dark_hard))
+  (load-theme 'airline-base16_nord))
 #+END_SRC
 
 *** =diminish=
@@ -2298,51 +2298,6 @@ functions we invoke regularly outside of magit is called.
           "/jw/4Archives")
          ;; everything else goes to /archive
          (t  "/archive"))))
-
-;; Empty the initial bookmark list
-(setq mu4e-bookmarks '())
-
-;; for searches
-(defvar d-spam "NOT (maildir:/arksolutions/Spam OR maildir:/netsells/[Gmail].Spam OR maildir:/jw/[Gmail].Spam OR maildir:/thetrainline/\"Junk E-Mail\" OR maildir:/thetrainline/\"Deleted Items\")")
-
-; All archived folders
-(defvar d-archive "NOT (maildir:/arksolutions/4Archives OR maildir:/jw/4Archives OR maildir:/netsells/[Gmail].4Archives OR maildir:/thetrainline/Archive)")
-
-(defvar inbox-folders (string-join '("maildir:/arksolutions/INBOX"
-                                     "maildir:/netsells/INBOX"
-                                     "maildir:/jw/INBOX"
-                                     "maildir:/thetrainline/INBOX")
-                                   " OR "))
-
-(defvar draft-folders (string-join '("maildir:/arksolutions/Drafts"
-                                     "maildir:/netsells/[Gmail].Drafts"
-                                     "maildir:/jw/[Gmail].Drafts"
-                                     "maildir:/thetrainline/Drafts")
-                                   " OR "))
-
-(defvar spam-folders (string-join '("maildir:/arksolutions/Spam"
-                                     "maildir:/netsells/[Gmail].Spam"
-                                     "maildir:/jw/[Gmail].Spam"
-                                     "maildir:/thetrainline/Junk Email")
-                                  " OR "))
-
-(add-to-list 'mu4e-bookmarks
-             '((concat d-spam " AND date:today..now")                  "Today's messages"     ?t))
-(add-to-list 'mu4e-bookmarks
-             '((concat d-spam " AND date:7d..now")                     "Last 7 days"          ?w))
-(add-to-list 'mu4e-bookmarks
-             '((concat d-spam " AND flag:flagged")                     "Flagged"              ?f))
-(add-to-list 'mu4e-bookmarks
-             '((concat d-spam " AND mime:image/*")                     "Messages with images" ?p))
-(add-to-list 'mu4e-bookmarks
-             '(spam-folders "All spambuckets"     ?S))
-(add-to-list 'mu4e-bookmarks
-             '(draft-folders "All drafts"     ?d))
-(add-to-list 'mu4e-bookmarks
-             '(inbox-folders "All inbox mails"     ?i))
-(add-to-list 'mu4e-bookmarks
-             '((concat d-spam d-archive " AND (flag:unread OR flag:flagged) AND NOT flag:trashed")
-               "Unread messages"      ?u))
 
 ;; use org structures and tables in message mode
 (add-hook 'message-mode-hook 'turn-on-orgstruct++)

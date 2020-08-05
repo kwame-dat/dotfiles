@@ -1,458 +1,357 @@
-  -- Base
-import XMonad
 import System.IO
 import System.Exit
-import qualified XMonad.StackSet as W
 
-    -- Actions
-import XMonad.Actions.CopyWindow (kill1, killAllOtherCopies)
-import XMonad.Actions.CycleWS (moveTo, shiftTo, WSType(..), nextScreen, prevScreen)
-import XMonad.Actions.GridSelect
-import XMonad.Actions.MouseResize
-import XMonad.Actions.Promote
-import XMonad.Actions.RotSlaves (rotSlavesDown, rotAllDown)
-import qualified XMonad.Actions.TreeSelect as TS
-import XMonad.Actions.WindowGo (runOrRaise)
+import XMonad
+import XMonad.Hooks.SetWMName
+import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.ManageHelpers(doFullFloat, doCenterFloat, isFullscreen, isDialog)
+import XMonad.Config.Desktop
+import XMonad.Config.Azerty
+import XMonad.Util.Run(spawnPipe)
+import XMonad.Actions.SpawnOn
+import XMonad.Util.EZConfig (additionalKeys, additionalMouseBindings)
+import XMonad.Actions.CycleWS
 import XMonad.Actions.WithAll (sinkAll, killAll)
-import qualified XMonad.Actions.Search as S
+import XMonad.Hooks.UrgencyHook
+import qualified Codec.Binary.UTF8.String as UTF8
 
-    -- Data
-import Data.Char (isSpace)
-import Data.Monoid
-import Data.Maybe (isJust)
-import Data.Tree
-import qualified Data.Map as M
-
-    -- Hooks
-import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten, PP(..))
-import XMonad.Hooks.EwmhDesktops  -- for some fullscreen events, also for xcomposite in obs.
-import XMonad.Hooks.FadeInactive
-import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, manageDocks, ToggleStruts(..))
-import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat)
-import XMonad.Hooks.ServerMode
-import XMonad.Hooks.SetWMName
-import XMonad.Hooks.WorkspaceHistory
-
-    -- Hooks
-import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten, PP(..))
-import XMonad.Hooks.EwmhDesktops  -- for some fullscreen events, also for xcomposite in obs.
-import XMonad.Hooks.FadeInactive
-import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, manageDocks, ToggleStruts(..))
-import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat)
-import XMonad.Hooks.ServerMode
-import XMonad.Hooks.SetWMName
-import XMonad.Hooks.WorkspaceHistory
-
-    -- Layouts
-import XMonad.Layout.GridVariants (Grid(Grid))
-import XMonad.Layout.SimplestFloat
-import XMonad.Layout.Spiral
+import XMonad.Layout.Spacing
+import XMonad.Layout.Gaps
 import XMonad.Layout.ResizableTile
-import XMonad.Layout.Tabbed
+---import XMonad.Layout.NoBorders
+import XMonad.Layout.Fullscreen (fullscreenFull)
+import XMonad.Layout.Cross(simpleCross)
+import XMonad.Layout.Spiral(spiral)
 import XMonad.Layout.ThreeColumns
-
-    -- Layouts modifiers
-import XMonad.Layout.LayoutModifier
-import XMonad.Layout.LimitWindows (limitWindows, increaseLimit, decreaseLimit)
-import XMonad.Layout.Magnifier
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
-import XMonad.Layout.NoBorders
-import XMonad.Layout.Renamed (renamed, Rename(Replace))
-import XMonad.Layout.ShowWName
-import XMonad.Layout.Spacing
-import XMonad.Layout.WindowArranger (windowArrange, WindowArrangerMsg(..))
-import qualified XMonad.Layout.ToggleLayouts as T (toggleLayouts, ToggleLayout(Toggle))
-import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
-
-    -- Prompt
-import XMonad.Prompt
-import XMonad.Prompt.Input
-import XMonad.Prompt.FuzzyMatch
-import XMonad.Prompt.Man
-import XMonad.Prompt.Pass
-import XMonad.Prompt.Shell (shellPrompt)
-import XMonad.Prompt.Ssh
-import XMonad.Prompt.XMonad
-import Control.Arrow (first)
-
-    -- Utilities
-import XMonad.Util.EZConfig (additionalKeysP)
-import XMonad.Util.NamedScratchpad
-import XMonad.Util.Run (runProcessWithInput, safeSpawn, spawnPipe)
-import XMonad.Util.SpawnOnce
-import XMonad.Hooks.ManageDocks
-
--- The preferred terminal program, which is used in a binding below and by
--- certain contrib modules.
---
-
--------------------------------------------------------------------------------
--- Colors - monokai like palette
--------------------------------------------------------------------------------
---
-black      = "#272822"
-grayD      = "#3e3d31"
-red        = "#e03a3a"
-maroon     = "#f92672"
-green      = "#3ae03a"
-greenL     = "#a6e22e"
-blue       = "#63b8ff"
-blueD      = "#1e90ff"
-orange     = "#fd971f"
-yellow     = "#e6db74"
-magenta    = "#fd5ff0"
-violet     = "#ae81ff"
-cyan       = "#a1efe4"
-cyanD      = "#3ae0e0"
-gray       = "#64645e"
-white      = "#f9f9f2"
-textColor  = "#fffacd"
-textColorA = "#ffdead"
+import XMonad.Layout.IndependentScreens
 
 
-myFont :: String
-myFont = "xft:Ubuntu:bold:size=9:antialias=true:hinting=true"
+import XMonad.Layout.CenteredMaster(centerMaster)
 
-myTerminal :: String
-myTerminal      = "alacritty"
-
-myBrowser :: String
-myBrowser = "qutebrowser "               
-
-myEditor :: String
-myEditor = "emacsclient -c -a emacs "  -- Sets emacs as editor for tree select
+import Graphics.X11.ExtraTypes.XF86
+import qualified XMonad.StackSet as W
+import qualified Data.Map as M
+import qualified Data.ByteString as B
+import Control.Monad (liftM2)
+import qualified DBus as D
+import qualified DBus.Client as D
 
 
--- Whether focus follows the mouse pointer.
-myFocusFollowsMouse :: Bool
-myFocusFollowsMouse = True
-
--- Whether clicking on a window to focus also passes the click to the window
-myClickJustFocuses :: Bool
-myClickJustFocuses = False
-
--- Width of the window border in pixels.
---
-myBorderWidth   = 2
-
-
-myNormColor :: String
-myNormColor   = "#292d3e"  -- Border color of normal windows
-
-myFocusColor :: String
-myFocusColor  = "#bbc5ff"  -- Border color of focused windows
-
-myBar :: String
-myBar = "/usr/bin/xmobar ~/.config/xmobar/xmobar.hs"
-
-
-windowCount :: X (Maybe String)
-windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
-
---
-myModMask       = mod4Mask
-
--- The default number of workspaces (virtual screens) and their names.
--- By default we use numeric strings, but any string may be used as a
--- workspace name. The number of workspaces is determined by the length
--- of this list.
---
--- A tagging example:
---
--- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
---
-emacs         = " <fn=4>\xf121</fn> "
-web           = " <fn=4>\xf0ac</fn> "
-dbclient      = " <fn=4>\xf1c0</fn> "
-restClient    = " <fn=4>\xf25b</fn> "
-videoCalls    = " <fn=4>\xf03d</fn> "
-gaming        = " <fn=4>\xf11b</fn> "
-tools         = " <fn=4>\xf568</fn> "
-chat          = " <fn=4>\xf075</fn> "
-music         = " <fn=4>\xf001</fn> "
-
-myWorkspaces :: [String]
-myWorkspaces =  [emacs, web, dbclient, restClient, videoCalls, gaming, tools, chat, music]
-
--- myWorkspaces    = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-
--- Border colors for unfocused and focused windows, respectively.
---
-myNormalBorderColor  = "#dddddd"
-myFocusedBorderColor = "#ff0000"
-
-myScratchPads :: [NamedScratchpad]
-myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
-                , NS "mocp" spawnMocp findMocp manageMocp
-                ]
-  where
-    spawnTerm  = myTerminal ++ " -n scratchpad"
-    findTerm   = resource =? "scratchpad"
-    manageTerm = customFloating $ W.RationalRect l t w h
-               where
-                 h = 0.9
-                 w = 0.9
-                 t = 0.95 -h
-                 l = 0.95 -w
-    spawnMocp  = myTerminal ++ " -n mocp 'mocp'"
-    findMocp   = resource =? "mocp"
-    manageMocp = customFloating $ W.RationalRect l t w h
-               where
-                 h = 0.9
-                 w = 0.9
-                 t = 0.95 -h
-                 l = 0.95 -w
-
-mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
-mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
-
--- Below is a variation of the above except no borders are applied
--- if fewer than two windows. So a single window has no gaps.
-mySpacing' :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
-mySpacing' i = spacingRaw True (Border i i i i) True (Border i i i i) True
-
--- Defining a bunch of layouts
-tall     = renamed [Replace "tall"]
-           $ limitWindows 12
-           $ mySpacing 10
-           $ ResizableTall 1 (3/100) (1/2) []
-monocle  = renamed [Replace "monocle"]
-           $ mySpacing 10
-           $ limitWindows 20 Full
-floats   = renamed [Replace "floats"]
-           $ limitWindows 20 simplestFloat
-grid     = renamed [Replace "grid"]
-           $ limitWindows 12
-           $ mySpacing 8
-           $ mkToggle (single MIRROR)
-           $ Grid (16/10)
-spirals  = renamed [Replace "spirals"]
-           $ mySpacing' 8
-           $ spiral (6/7)
-
-
-------------------------------------------------------------------------
--- Layouts:
-myLayoutHook = avoidStruts $ mouseResize $ windowArrange $ T.toggleLayouts floats $
-               mkToggle (NOBORDERS ?? FULL ?? EOT) myDefaultLayout
-             where
-               myDefaultLayout =     tall
-                                 ||| noBorders monocle
-                                 ||| grid
-
-------------------------------------------------------------------------
--- Window rules:
-
-myManageHook :: XMonad.Query (Data.Monoid.Endo WindowSet)
-myManageHook = composeAll
-     -- using 'doShift ( myWorkspaces !! 7)' sends program to workspace 8!
-     -- I'm doing it this way because otherwise I would have to write out
-     -- the full name of my workspaces.
-     [
-       className =? "Emacs"                                   --> doShift ( myWorkspaces !! 0 )
-     , className =? "calibre"                                 --> doShift ( myWorkspaces !! 0 )
-     , className =? "qutebrowser"                             --> doShift ( myWorkspaces !! 1 )
-     , className =? "Google-chrome"                           --> doShift ( myWorkspaces !! 1 )
-     , className =? "firefox"                                 --> doShift ( myWorkspaces !! 1 )
-     , className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 2 )
-     , className =? "Insomnia"                                --> doShift ( myWorkspaces !! 3 )
-     , className =? "Postman"                                 --> doShift ( myWorkspaces !! 3 )
-     , className =? "zoom"                                    --> doShift ( myWorkspaces !! 4 )
-     , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 4 )
-     , className =? "obs"                                     --> doShift ( myWorkspaces !! 6 )
-     , className =? "Cisco AnyConnect Secure Mobility Client" --> doShift ( myWorkspaces !! 6 )
-     , className =? "vlc"                                     --> doShift ( myWorkspaces !! 7 )
-     , className =? "whatsapp-nativefier-d52542"              --> doShift ( myWorkspaces !! 7 )
-     , className =? "Signal"                                  --> doShift ( myWorkspaces !! 7 )
-     , className =? "Slack"                                   --> doShift ( myWorkspaces !! 7 )
-     , className =? "Spotify"                                 --> doShift ( myWorkspaces !! 8 )
-     , className =? "Gimp"                                    --> doFloat
-     , title     =? "Oracle VM VirtualBox Manager"            --> doFloat
-     , (className =? "firefox" <&&> resource =? "Dialog")     --> doFloat  -- Float Firefox Dialog
-     ] <+> namedScratchpadManageHook myScratchPads
-
-------------------------------------------------------------------------
--- Event handling
-
-myEventHook = mempty
-
-------------------------------------------------------------------------
--- Status bars and logging
-myLogHook xmprocs =  dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP
-  $ xmobarPP {
-      ppOutput          = hPutStrLn xmprocs
-    , ppCurrent         = xmobarColor blue ""
-    , ppHidden          = xmobarColor white ""
-    , ppTitle           = xmobarColor white "" . shorten 80
-    , ppUrgent          = xmobarColor maroon ""
-    , ppLayout          = xmobarColor blue ""
-    , ppOrder           = \(ws:l:t:_) -> [ws,l,t]                  -- workspace, layout, title
-    , ppSep             = " "                                  -- separator to use between different log sections
-    , ppWsSep           = ""
-}
-------------------------------------------------------------------------
--- Startup hook
-myStartupHook :: X ()
 myStartupHook = do
-          spawnOnce "xcape -e 'Caps_Lock=Escape' &"
-          spawnOnce "setxkbmap -option 'caps:ctrl_modifier' &"
-          spawnOnce "xsetroot -cursor_name left_ptr &"
-          spawnOnce "xset r rate 220 80 &"
-          spawnOnce "nitrogen --restore &"
-          spawnOnce "dunst"
-          spawnOnce "picom &"
-          spawnOnce "nm-applet &"
-          spawnOnce "volumeicon &"
-          spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &"
-          spawnOnce "trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 --tint 0x292d3e --height 22 &"
-          spawnOnce "/usr/bin/emacs --daemon &"
+    spawn "$HOME/.xmonad/scripts/autostart.sh"
+    setWMName "LG3D"
 
-myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
+-- colours
+normBord = "#4c566a"
+focdBord = "#5e81ac"
+fore     = "#DEE3E0"
+back     = "#282c34"
+winType  = "#c678dd"
+
+--mod4Mask= super key
+--mod1Mask= alt key
+--controlMask= ctrl key
+--shiftMask= shift key
+
+myModMask = mod4Mask
+encodeCChar = map fromIntegral . B.unpack
+myFocusFollowsMouse = True
+myBorderWidth = 2
+myWorkspaces    = ["\61612","\61899","\61947","\61635","\61502","\61501","\61705","\61564","\62150","\61872"]
+--myWorkspaces    = ["1","2","3","4","5","6","7","8","9","10"]
+--myWorkspaces    = ["I","II","III","IV","V","VI","VII","VIII","IX","X"]
+
+myBaseConfig = desktopConfig
+
+-- window manipulations
+myManageHook = composeAll . concat $
+    [ [isDialog --> doCenterFloat]
+    , [className =? c --> doCenterFloat | c <- myCFloats]
+    , [title =? t --> doFloat | t <- myTFloats]
+    , [resource =? r --> doFloat | r <- myRFloats]
+    , [resource =? i --> doIgnore | i <- myIgnores]
+    , [className =? "Emacs"                                   --> doShift ( myWorkspaces !! 0 )]
+    , [className =? "calibre"                                 --> doShift ( myWorkspaces !! 0 )]
+    , [className =? "qutebrowser"                             --> doShift ( myWorkspaces !! 1 )]
+    , [className =? "Google-chrome"                           --> doShift ( myWorkspaces !! 1 )]
+    , [className =? "Brave-browser"                           --> doShift ( myWorkspaces !! 1 )]
+    , [className =? "firefox"                                 --> doShift ( myWorkspaces !! 1 )]
+    , [className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 2 )]
+    , [className =? "Insomnia"                                --> doShift ( myWorkspaces !! 3 )]
+    , [className =? "Postman"                                 --> doShift ( myWorkspaces !! 3 )]
+    , [className =? "zoom"                                    --> doShift ( myWorkspaces !! 4 )]
+    , [className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 4 )]
+    , [className =? "obs"                                     --> doShift ( myWorkspaces !! 6 )]
+    , [className =? "Cisco AnyConnect Secure Mobility Client" --> doShift ( myWorkspaces !! 6 )]
+    , [className =? "vlc"                                     --> doShift ( myWorkspaces !! 7 )]
+    , [className =? "whatsapp-nativefier-d52542"              --> doShift ( myWorkspaces !! 7 )]
+    , [className =? "Signal"                                  --> doShift ( myWorkspaces !! 7 )]
+    , [className =? "Slack"                                   --> doShift ( myWorkspaces !! 7 )]
+    , [className =? "Spotify"                                 --> doShift ( myWorkspaces !! 8 )]
+    ]
+    where
+    -- doShiftAndGo = doF . liftM2 (.) W.greedyView W.shift
+    myCFloats = ["Arandr", "Galculator", "Nitrogen", "mpv", "Xfce4-terminal"]
+    myTFloats = ["Downloads", "Save As..."]
+    myRFloats = []
+    myIgnores = ["desktop_window"]
+    -- my1Shifts = ["Chromium", "Vivaldi-stable", "Firefox"]
+    -- my2Shifts = []
+    -- my3Shifts = ["Inkscape"]
+    -- my4Shifts = []
+    -- my5Shifts = ["Gimp", "feh"]
+    -- my6Shifts = ["vlc", "mpv"]
+    -- my7Shifts = ["Virtualbox"]
+    -- my8Shifts = ["Thunar"]
+    -- my9Shifts = []
+    -- my10Shifts = ["discord"]
+
+
+
+
+myLayout = spacingRaw True (Border 0 5 5 5) True (Border 5 5 5 5) True $ avoidStruts $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ tiled ||| Mirror tiled ||| spiral (6/7)  ||| ThreeColMid 1 (3/100) (1/2) ||| Full
+    where
+        tiled = Tall nmaster delta tiled_ratio
+        nmaster = 1
+        delta = 3/100
+        tiled_ratio = 1/2
+
+
+myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     -- mod-button1, Set the window to floating mode and move by dragging
-    [ ((modm, button1), (\w -> focus w >> mouseMoveWindow w
-                                       >> windows W.shiftMaster))
+    [ ((modMask, 1), (\w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster))
 
     -- mod-button2, Raise the window to the top of the stack
-    , ((modm, button2), (\w -> focus w >> windows W.shiftMaster))
+    , ((modMask, 2), (\w -> focus w >> windows W.shiftMaster))
 
     -- mod-button3, Set the window to floating mode and resize by dragging
-    , ((modm, button3), (\w -> focus w >> mouseResizeWindow w
-                                       >> windows W.shiftMaster))
+    , ((modMask, 3), (\w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster))
+
     ]
 
-myKeys :: [(String, X ())]
-myKeys =
-    -- Xmonad
-        [ ("M-S-r", spawn "xmonad --recompile; xmonad --restart")
-        , ("M-S-e", io exitSuccess)                  -- Quits xmonad
 
-    -- Open my preferred terminal
-        , ("M-<Return>", spawn myTerminal)
+-- keys config
 
-    -- Toggle full screen
-        , ("M-S-f", sendMessage $ MT.Toggle FULL)
+myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
+  ----------------------------------------------------------------------
+  -- SUPER + FUNCTION KEYS
 
-    -- Windows
-        , ("M-q", kill1)                           -- Kill the currently focused client
-        , ("M-S-q", killAll)                         -- Kill all windows on current workspace
+  [
+    ((modMask, xK_f), sendMessage $ Toggle NBFULL)
+  , ((modMask, xK_q), kill )
+  , ((modMask, xK_Escape), spawn $ "xkill" )
+  , ((modMask, xK_Return), spawn $ "alacritty" )
+  , ((modMask, xK_space), spawn $ "rofi -show combi" )
 
-    -- Windows navigation
-        , ("M-m", windows W.focusMaster)     -- Move focus to the master window
-        , ("M-j", windows W.focusDown)       -- Move focus to the next window
-        , ("M-k", windows W.focusUp)         -- Move focus to the prev window
-        --, ("M-S-m", windows W.swapMaster)    -- Swap the focused window and the master window
-        , ("M-S-j", windows W.swapDown)      -- Swap focused window with next window
-        , ("M-S-k", windows W.swapUp)        -- Swap focused window with prev window
-        , ("M-<Backspace>", promote)         -- Moves focused window to master, others maintain order
-        , ("M1-S-<Tab>", rotSlavesDown)      -- Rotate all windows except master and keep focus in place
-        , ("M1-C-<Tab>", rotAllDown)         -- Rotate all the windows in the current stack
+  -- FUNCTION KEYS
+  , ((0, xK_F12), spawn $ "xfce4-terminal --drop-down" )
 
-        -- Layouts
-        , ("M-<Tab>", sendMessage NextLayout)                -- Switch to next layout
-        , ("M-C-M1-<Up>", sendMessage Arrange)
-        , ("M-C-M1-<Down>", sendMessage DeArrange)
-        , ("M-<Space>", spawn "rofi -show combi")
-        , ("M-S-<Space>", sendMessage ToggleStruts)         -- Toggles struts
-        , ("M-S-n", sendMessage $ MT.Toggle NOBORDERS)      -- Toggles noborder
-        , ("M-<KP_Multiply>", sendMessage (IncMasterN 1))   -- Increase number of clients in master pane
-        , ("M-<KP_Divide>", sendMessage (IncMasterN (-1)))  -- Decrease number of clients in master pane
-        , ("M-S-<KP_Multiply>", increaseLimit)              -- Increase number of windows
-        , ("M-S-<KP_Divide>", decreaseLimit)                -- Decrease number of windows
+  -- SUPER + SHIFT KEYS
 
-        , ("M-h", sendMessage Shrink)                       -- Shrink horiz window width
-        , ("M-l", sendMessage Expand)                       -- Expand horiz window width
-        , ("M-C-j", sendMessage MirrorShrink)               -- Shrink vert window width
-        , ("M-C-k", sendMessage MirrorExpand)               -- Exoand vert window width
+  , ((modMask .|. shiftMask , xK_Return ), spawn $ "thunar")
+  , ((modMask .|. shiftMask , xK_r ), spawn $ "xmonad --recompile && xmonad --restart")
+  , ((modMask .|. shiftMask , xK_e ), io (exitWith ExitSuccess))
+  , ((modMask .|. shiftMask , xK_q ), killAll)
 
-    -- Workspaces
-        , ("M-.", nextScreen)  -- Switch focus to next monitor
-        , ("M-,", prevScreen)  -- Switch focus to prev monitor
-        , ("M-S-<KP_Add>", shiftTo Next nonNSP >> moveTo Next nonNSP)       -- Shifts focused window to next ws
-        , ("M-S-<KP_Subtract>", shiftTo Prev nonNSP >> moveTo Prev nonNSP)  -- Shifts focused window to prev ws
+  -- SUPER + CONTROL KEYS
 
-    -- Scratchpads
-        , ("M-C-<Return>", namedScratchpadAction myScratchPads "alacritty")
-        -- , ("M-C-c", namedScratchpadAction myScratchPads "mocp")
-
-    -- Controls for mocp music player.
-        , ("M-u p", spawn "mocp --play")
-        , ("M-u l", spawn "mocp --next")
-        , ("M-u h", spawn "mocp --previous")
-        , ("M-u <Space>", spawn "mocp --toggle-pause")
-
-    -- Emacs
-        , ("M-C-e", spawn "emacsclient -c -a ''")                            -- start emacs
-        , ("M-C-m", spawn "emacsclient -c -a '' --eval '(mu4e)'")            -- mu4e emacs email client
-        , ("M-C-t", spawn "emacsclient -c -a '' --eval '(org-agenda)'")      -- emacs agenda todo list
+  , ((modMask .|. controlMask, xK_e), spawn "emacsclient -c -a ''")
+  , ((modMask .|. controlMask, xK_m), spawn "emacsclient -c -a '' --eval '(mu4e)'")
+  , ((modMask .|. controlMask, xK_t), spawn "emacsclient -c -a '' --eval '(org-agenda)'")
+  , ((modMask .|. controlMask, xK_s), spawn "flameshot gui")
+  , ((modMask .|. controlMask, xK_p), spawn "rofi-pass")
+  , ((modMask .|. controlMask, xK_b), spawn "alacritty -e 'bmenu'")
+  , ((modMask .|. controlMask, xK_c), spawn "rofi -show calc")
 
 
-    -- Others
-        , ("M-C-s", spawn "flameshot gui")
-        , ("M-C-p", spawn "rofi-pass")
-        , ("M-C-b", spawn "alacritty -e 'bmenu'")
-        , ("M-C-c", spawn "rofi -show calc")
+  -- CONTROL + ALT KEYS
 
-    --- My Applications (Super+Alt+Key)
-        , ("M-M1-a", spawn (myTerminal ++ " -e ncpamixer"))
-        , ("M-M1-e", spawn (myTerminal ++ " -e neomutt"))
-        , ("M-M1-f", spawn (myTerminal ++ " -e sh ./.config/vifm/scripts/vifmrun"))
-        , ("M-M1-i", spawn (myTerminal ++ " -e irssi"))
-        , ("M-M1-j", spawn (myTerminal ++ " -e joplin"))
-        , ("M-M1-l", spawn (myTerminal ++ " -e lynx -cfg=~/.lynx/lynx.cfg -lss=~/.lynx/lynx.lss gopher://distro.tube"))
-        , ("M-M1-n", spawn (myTerminal ++ " -e newsboat"))
-        , ("M-M1-p", spawn (myTerminal ++ " -e pianobar"))
-        , ("M-M1-r", spawn (myTerminal ++ " -e rtv"))
-        , ("M-M1-t", spawn (myTerminal ++ " -e toot curses"))
-        , ("M-M1-y", spawn (myTerminal ++ " -e youtube-viewer"))
+  , ((controlMask .|. mod1Mask , xK_a ), spawn $ "xfce4-appfinder")
+  , ((controlMask .|. mod1Mask , xK_f ), spawn $ "firefox")
+  , ((controlMask .|. mod1Mask , xK_g ), spawn $ "chromium -no-default-browser-check")
+  , ((controlMask .|. mod1Mask , xK_o ), spawn $ "$HOME/.xmonad/scripts/picom-toggle.sh")
+  , ((controlMask .|. mod1Mask , xK_p ), spawn $ "pamac-manager")
+  , ((controlMask .|. mod1Mask , xK_r ), spawn $ "rofi-theme-selector")
+  , ((controlMask .|. mod1Mask , xK_s ), spawn $ "spotify")
+  , ((controlMask .|. mod1Mask , xK_t ), spawn $ "urxvt")
+  , ((controlMask .|. mod1Mask , xK_u ), spawn $ "pavucontrol")
+  , ((controlMask .|. mod1Mask , xK_v ), spawn $ "vivaldi-stable")
+  , ((controlMask .|. mod1Mask , xK_w ), spawn $ "arcolinux-welcome-app")
+  , ((controlMask .|. mod1Mask , xK_Return ), spawn $ "urxvt")
+  , ((modMask, xK_v), spawn $ "pavucontrol" )
+  , ((modMask, xK_y), spawn $ "polybar-msg cmd toggle" )
 
-    -- Multimedia Keys
-        , ("<XF86AudioPlay>", spawn "playerctl play-pause")
-        , ("<XF86AudioPrev>", spawn "playerctl previous")
-        , ("<XF86AudioNext>", spawn "playerctl next")
-        , ("<XF86AudioMute>",   spawn "amixer set Master toggle")  -- Bug prevents it from toggling correctly in 12.04.
-        , ("<XF86AudioLowerVolume>", spawn "amixer set Master 5%- unmute")
-        , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 5%+ unmute")
-        ]
-          where nonNSP          = WSIs (return (\ws -> W.tag ws /= "nsp"))
-                nonEmptyNonNSP  = WSIs (return (\ws -> isJust (W.stack ws) && W.tag ws /= "nsp"))
+  -- ALT + ... KEYS
+
+  , ((mod1Mask, xK_f), spawn $ "variety -f" )
+  , ((mod1Mask, xK_n), spawn $ "variety -n" )
+  , ((mod1Mask, xK_p), spawn $ "variety -p" )
+  , ((mod1Mask, xK_r), spawn $ "xmonad --restart" )
+  , ((mod1Mask, xK_t), spawn $ "variety -t" )
+  , ((mod1Mask, xK_Up), spawn $ "variety --pause" )
+  , ((mod1Mask, xK_Down), spawn $ "variety --resume" )
+  , ((mod1Mask, xK_Left), spawn $ "variety -p" )
+  , ((mod1Mask, xK_Right), spawn $ "variety -n" )
+  , ((mod1Mask, xK_F2), spawn $ "gmrun" )
+  , ((mod1Mask, xK_F3), spawn $ "xfce4-appfinder" )
+
+  --CONTROL + SHIFT KEYS
+
+  , ((controlMask .|. shiftMask , xK_Escape ), spawn $ "xfce4-taskmanager")
+
+  --SCREENSHOTS
+
+  , ((0, xK_Print), spawn $ "scrot 'ArcoLinux-%Y-%m-%d-%s_screenshot_$wx$h.jpg' -e 'mv $f $$(xdg-user-dir PICTURES)'")
+  , ((controlMask, xK_Print), spawn $ "xfce4-screenshooter" )
+  , ((controlMask .|. shiftMask , xK_Print ), spawn $ "gnome-screenshot -i")
+
+
+  --MULTIMEDIA KEYS
+
+  -- Mute volume
+  , ((0, xF86XK_AudioMute), spawn $ "amixer -q set Master toggle")
+
+  -- Decrease volume
+  , ((0, xF86XK_AudioLowerVolume), spawn $ "amixer -q set Master 5%-")
+
+  -- Increase volume
+  , ((0, xF86XK_AudioRaiseVolume), spawn $ "amixer -q set Master 5%+")
+
+  -- Increase brightness
+  , ((0, xF86XK_MonBrightnessUp),  spawn $ "xbacklight -inc 5")
+
+  -- Decrease brightness
+  , ((0, xF86XK_MonBrightnessDown), spawn $ "xbacklight -dec 5")
+
+--  , ((0, xF86XK_AudioPlay), spawn $ "mpc toggle")
+--  , ((0, xF86XK_AudioNext), spawn $ "mpc next")
+--  , ((0, xF86XK_AudioPrev), spawn $ "mpc prev")
+--  , ((0, xF86XK_AudioStop), spawn $ "mpc stop")
+  
+  , ((0, xF86XK_AudioPlay), spawn $ "playerctl play-pause")
+  , ((0, xF86XK_AudioNext), spawn $ "playerctl next")
+  , ((0, xF86XK_AudioPrev), spawn $ "playerctl previous")
+  , ((0, xF86XK_AudioStop), spawn $ "playerctl stop")
+
+
+  --------------------------------------------------------------------
+  --  XMONAD LAYOUT KEYS
+
+  -- Cycle through the available layout algorithms.
+  , ((modMask, xK_Tab), sendMessage NextLayout)
+
+  --Focus selected desktop
+  , ((controlMask .|. mod1Mask , xK_Left ), prevWS)
+
+  --Focus selected desktop
+  , ((controlMask .|. mod1Mask , xK_Right ), nextWS)
+
+  --  Reset the layouts on the current workspace to default.
+  , ((modMask .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
+
+  -- Move focus to the next window.
+  , ((modMask, xK_j), windows W.focusDown)
+
+  -- Move focus to the previous window.
+  , ((modMask, xK_k), windows W.focusUp  )
+
+  -- Shrink the master area.
+  , ((modMask, xK_h), sendMessage Shrink)
+
+  -- Expand the master area.
+  , ((modMask, xK_l), sendMessage Expand)
+
+  -- Move focus to the master window.
+  , ((modMask .|. shiftMask, xK_m), windows W.focusMaster  )
+
+  -- Swap the focused window with the next window.
+  , ((modMask .|. shiftMask, xK_j), windows W.swapDown  )
+
+  -- Swap the focused window with the next window.
+  , ((controlMask .|. modMask, xK_Down), windows W.swapDown  )
+
+  -- Swap the focused window with the previous window.
+  , ((modMask .|. shiftMask, xK_k), windows W.swapUp    )
+
+  -- Swap the focused window with the previous window.
+  , ((controlMask .|. modMask, xK_Up), windows W.swapUp  )
+
+  -- Push window back into tiling.
+  , ((controlMask .|. shiftMask , xK_t), withFocused $ windows . W.sink)
+
+  -- Increment the number of windows in the master area.
+  , ((controlMask .|. modMask, xK_Left), sendMessage (IncMasterN 1))
+
+  -- Decrement the number of windows in the master area.
+  , ((controlMask .|. modMask, xK_Right), sendMessage (IncMasterN (-1)))
+
+  -- Switch focus to next monitor
+  -- , ((modMask, xK_dot), nextScreen)
+
+  -- Switch focus to prev monitor
+  , ((modMask, xK_comma), prevScreen)
+
+  ]
+  ++
+
+  -- mod-[1..9], Switch to workspace N
+  -- mod-shift-[1..9], Move client to workspace N
+  [((m .|. modMask, k), windows $ f i)
+
+  --Keyboard layouts
+  --qwerty users use this line
+   | (i, k) <- zip (XMonad.workspaces conf) [xK_1,xK_2,xK_3,xK_4,xK_5,xK_6,xK_7,xK_8,xK_9,xK_0]
+
+  --French Azerty users use this line
+  -- | (i, k) <- zip (XMonad.workspaces conf) [xK_ampersand, xK_eacute, xK_quotedbl, xK_apostrophe, xK_parenleft, xK_minus, xK_egrave, xK_underscore, xK_ccedilla , xK_agrave]
+
+  --Belgian Azerty users use this line
+  -- | (i, k) <- zip (XMonad.workspaces conf) [xK_ampersand, xK_eacute, xK_quotedbl, xK_apostrophe, xK_parenleft, xK_section, xK_egrave, xK_exclam, xK_ccedilla, xK_agrave]
+
+      , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)
+      , (\i -> W.greedyView i . W.shift i, shiftMask)]]
+
+  -- ++
+  -- -- ctrl-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
+  -- -- ctrl-shift-{w,e,r}, Move client to screen 1, 2, or 3
+  -- [((m .|. controlMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
+  --     | (key, sc) <- zip [xK_w, xK_e] [0..]
+  --     , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+
 
 main :: IO ()
 main = do
-  xmprocs <- spawnPipe myBar
-  xmonad
-    $ docks
-    $ ewmh defaults {
-    logHook = composeAll [
-         ewmhDesktopsLogHook
-        , myLogHook xmprocs
-        ]
-    , focusedBorderColor = myFocusedBorderColor
-    , normalBorderColor  = myNormalBorderColor
-    }
 
-defaults = def 
-     {
-      -- simple stuff
-        terminal           = myTerminal,
-        focusFollowsMouse  = myFocusFollowsMouse,
-        clickJustFocuses   = myClickJustFocuses,
-        borderWidth        = myBorderWidth,
-        modMask            = myModMask,
-        workspaces         = myWorkspaces,
-        normalBorderColor  = myNormalBorderColor,
-        focusedBorderColor = myFocusedBorderColor,
-
-      -- key bindings
-        mouseBindings      = myMouseBindings,
-
-      -- hooks, layouts
-        layoutHook         = myLayoutHook,
-        manageHook         = myManageHook,
-        handleEventHook    = myEventHook,
-        startupHook        = myStartupHook
+    dbus <- D.connectSession
+    -- Request access to the DBus name
+    D.requestName dbus (D.busName_ "org.xmonad.Log")
+        [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
 
 
-    } `additionalKeysP` myKeys
+    xmonad . ewmh $
+  --Keyboard layouts
+  --qwerty users use this line
+            myBaseConfig
+  --French Azerty users use this line
+            --myBaseConfig { keys = azertyKeys <+> keys azertyConfig }
+  --Belgian Azerty users use this line
+            --myBaseConfig { keys = belgianKeys <+> keys belgianConfig }
 
+                {startupHook = myStartupHook
+, layoutHook = gaps [(U,35), (D,5), (R,5), (L,5)] $ myLayout ||| layoutHook myBaseConfig
+, manageHook = manageSpawn <+> myManageHook <+> manageHook myBaseConfig
+, modMask = myModMask
+, borderWidth = myBorderWidth
+, handleEventHook    = handleEventHook myBaseConfig <+> fullscreenEventHook
+, focusFollowsMouse = myFocusFollowsMouse
+, workspaces = myWorkspaces
+, focusedBorderColor = focdBord
+, normalBorderColor = normBord
+, keys = myKeys
+, mouseBindings = myMouseBindings
+}
