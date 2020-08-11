@@ -1130,8 +1130,8 @@ want is prioritized instead.
 
   (setq org-directory "~/Nextcloud/org")
   (setq org-agenda-files (quote (
-                                 "~/Nextcloud/org/calendar/personal.org"
-                                 "~/Nextcloud/org/calendar/shared.org"
+                                 "~/Nextcloud/org/calp.org"
+                                 "~/Nextcloud/org/calw.org"
                                  "~/Nextcloud/org/todo.org"
                                  "~/Nextcloud/org/jira/DELREP.org"
                                  )))
@@ -1871,7 +1871,7 @@ functions we invoke regularly outside of magit is called.
   :demand t
   :ensure t
   :config
-  (load-theme 'base16-material-palenight))
+  (load-theme 'base16-phd))
 #+END_SRC
 *** =powerline=
 #+BEGIN_SRC emacs-lisp
@@ -2324,7 +2324,6 @@ package that automatically generates an up to date table of contents for us.
 (when (file-exists-p "~/Nextcloud/Documents/3Resources/Keys/secrets.el")
     (load "~/Nextcloud/Documents/3Resources/Keys/secrets.el"))
 #+END_SRC
-
 ** Post Initialisation
 Let's lower our GC thresholds back down to a sane level.
 
