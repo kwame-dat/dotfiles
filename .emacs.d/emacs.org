@@ -736,6 +736,9 @@ Generic completion frontend that's just awesome! Let's install and enable it.
   (setq enable-recursive-minibuffers t)
   (setq ivy-initial-inputs-alist nil)
   (setq ivy-on-del-error-function #'ignore)
+  (setq ivy-re-builders-alist
+        '((swiper . ivy--regex-plus)
+          (t . ivy--regex-fuzzy)))
   :config
   (ivy-mode 1)
   (evil-set-initial-state 'ivy-occur-grep-mode 'normal))
