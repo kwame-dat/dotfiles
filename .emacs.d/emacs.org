@@ -24,59 +24,62 @@
   - [[#general-keybinding][General Keybinding]]
   - [[#font][Font]]
   - [[#packages][Packages]]
-    - [[#exec-path-from-shell][=exec-path-from-shell=]]
-    - [[#uniquify][=uniquify=]]
-    - [[#evil][=evil=]]
-    - [[#evil-mc][=evil-mc=]]
-    - [[#general][=general=]]
-    - [[#ivy][=ivy=]]
-    - [[#counsel][=counsel=]]
-    - [[#amx][=amx=]]
-    - [[#company-mode][=company-mode=]]
-    - [[#company-prescient][=company-prescient=]]
-    - [[#company-box][=company-box=]]
-    - [[#company-dict][=company-dict=]]
-    - [[#all-the-icons][=all-the-icons=]]
-    - [[#lsp-mode][=lsp-mode=]]
-    - [[#flycheck][=flycheck=]]
-    - [[#projectile][=projectile=]]
-    - [[#which-key][=which-key=]]
-    - [[#org-mode][=org-mode=]]
-    - [[#eyebrowse][=eyebrowse=]]
-    - [[#calfw][=calfw=]]
-    - [[#slack][=slack=]]
-    - [[#nov][=nov=]]
-    - [[#alert][=alert=]]
-    - [[#wgrep][=wgrep=]]
-    - [[#treemacs][=treemacs=]]
-    - [[#vterm][=vterm=]]
-    - [[#docker][=docker=]]
-    - [[#editorconfig][=editorconfig=]]
-    - [[#synosaurus][=synosaurus=]]
-    - [[#magit][=magit=]]
-    - [[#pass][=pass=]]
-    - [[#pdf-tools][=pdf-tools=]]
-    - [[#eredis][=eredis=]]
-    - [[#macos][=macos=]]
-    - [[#es][=es=]]
-    - [[#openwith][=openwith=]]
-    - [[#dired][=dired=]]
-    - [[#langtool][=langtool=]]
-    - [[#flyspell][=flyspell=]]
-    - [[#yasnippet][=yasnippet=]]
-    - [[#shackle][=shackle=]]
-    - [[#dap-mode][=dap-mode=]]
-    - [[#writeroom-mode][=writeroom-mode=]]
-    - [[#speed-type][=speed-type=]]
-    - [[#engine-mode][=engine-mode=]]
+    - [[#exec-path-from-shell][exec-path-from-shell]]
+    - [[#uniquify][uniquify]]
+    - [[#evil][evil]]
+    - [[#evil-mc][evil-mc]]
+    - [[#general][general]]
+    - [[#ivy][ivy]]
+    - [[#counsel][counsel]]
+    - [[#amx][amx]]
+    - [[#company-mode][company-mode]]
+    - [[#company-prescient][company-prescient]]
+    - [[#company-box][company-box]]
+    - [[#company-dict][company-dict]]
+    - [[#all-the-icons][all-the-icons]]
+    - [[#lsp-mode][lsp-mode]]
+    - [[#flycheck][flycheck]]
+    - [[#projectile][projectile]]
+    - [[#which-key][which-key]]
+    - [[#org-mode][org-mode]]
+    - [[#eyebrowse][eyebrowse]]
+    - [[#calfw][calfw]]
+    - [[#slack][slack]]
+    - [[#nov][nov]]
+    - [[#alert][alert]]
+    - [[#wgrep][wgrep]]
+    - [[#treemacs][treemacs]]
+    - [[#vterm][vterm]]
+    - [[#docker][docker]]
+    - [[#editorconfig][editorconfig]]
+    - [[#synosaurus][synosaurus]]
+    - [[#magit][magit]]
+    - [[#pass][pass]]
+    - [[#pdf-tools][pdf-tools]]
+    - [[#eredis][eredis]]
+    - [[#macos][macos]]
+    - [[#es][es]]
+    - [[#openwith][openwith]]
+    - [[#dired][dired]]
+    - [[#langtool][langtool]]
+    - [[#flyspell][flyspell]]
+    - [[#yasnippet][yasnippet]]
+    - [[#shackle][shackle]]
+    - [[#dap-mode][dap-mode]]
+    - [[#writeroom-mode][writeroom-mode]]
+    - [[#speed-type][speed-type]]
+    - [[#engine-mode][engine-mode]]
     - [[#base16-theme][base16-theme]]
-    - [[#powerline][=powerline=]]
-    - [[#diminish][=diminish=]]
+    - [[#powerline][powerline]]
+    - [[#diminish][diminish]]
     - [[#mixed-pitch][Mixed pitch]]
     - [[#lang][Lang]]
-    - [[#mu4e][=mu4e=]]
+    - [[#mu4e][mu4e=]]
     - [[#toc-org][Toc-org]]
-  - [[#load-secrets][Load secrets]]
+  - [[#organisation-gtd-and-para][Organisation (GTD and PARA)]]
+    - [[#projects][Projects]]
+    - [[#areas][Areas]]
+    - [[#reviews][Reviews]]
   - [[#post-initialisation][Post Initialisation]]
 
 ** About this file
@@ -329,13 +332,17 @@ previously compiled manually then all of the package initialization will still t
   (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
     (find-file tramp-file-name)))
 
+(defun itechytony/day-view ()
+  (interactive)
+  (progn (org-agenda nil "a")
+         (org-agenda-day-view)))
+
 (defadvice ido-find-file (after find-file-sudo activate)
   "Find file as root if necessary."
   (unless (and buffer-file-name
                (file-writable-p buffer-file-name))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 #+END_SRC
-
 ** General Keybinding
 #+BEGIN_SRC emacs-lisp
 (setq mac-option-modifier 'meta)
@@ -487,7 +494,7 @@ Ligature workaround
 (add-hook 'markdown-mode 'fira-code-mode)
 #+END_SRC
 ** Packages
-*** =exec-path-from-shell=
+*** exec-path-from-shell
 #+BEGIN_SRC emacs-lisp
 (use-package exec-path-from-shell
   :demand t
@@ -497,7 +504,7 @@ Ligature workaround
   (exec-path-from-shell-initialize))
 #+END_SRC
 
-*** =uniquify=
+*** uniquify
 Nicer naming of buffers for files with identical names
 #+BEGIN_SRC emacs-lisp
 (require 'uniquify)
@@ -507,7 +514,7 @@ Nicer naming of buffers for files with identical names
 (setq uniquify-ignore-buffers-re "^\\*")
 #+END_SRC
     
-*** =evil=
+*** evil
 Install, automatically load, and enable evil. It's like vim.
 
 #+BEGIN_SRC emacs-lisp
@@ -546,7 +553,7 @@ Install, automatically load, and enable evil. It's like vim.
   (evil-collection-init))
 #+END_SRC
 
-*** =evil-mc=
+*** evil-mc
 #+BEGIN_SRC emacs-lisp
 (use-package evil-mc
   :diminish evil-mc-mode
@@ -560,7 +567,7 @@ Install, automatically load, and enable evil. It's like vim.
 
 #+RESULTS:
 
-*** =general=
+*** general
 #+BEGIN_SRC emacs-lisp
 (use-package general
   :demand t
@@ -718,7 +725,7 @@ Install, automatically load, and enable evil. It's like vim.
   "C-e" 'dired-toggle-read-only)
 #+END_SRC
 
-*** =ivy=
+*** ivy
 Generic completion frontend that's just awesome! Let's install and enable it.
 #+BEGIN_SRC emacs-lisp
 (use-package ivy
@@ -772,7 +779,7 @@ Generic completion frontend that's just awesome! Let's install and enable it.
 (use-package all-the-icons-ivy
   :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
 #+END_SRC
-*** =counsel=
+*** counsel
 Counsel allows us to utilize ivy by replacing many built-in and common functions
 with richer versions. Let's install it!
 
@@ -783,7 +790,7 @@ with richer versions. Let's install it!
   :commands counsel-tramp)
 #+END_SRC
 
-*** =amx=
+*** amx
 #+BEGIN_SRC emacs-lisp
 (use-package amx
   :demand t
@@ -798,7 +805,7 @@ with richer versions. Let's install it!
   (amx-mode 1))
 #+END_SRC
     
-*** =company-mode=
+*** company-mode
 #+BEGIN_SRC emacs-lisp
 (use-package company
   :demand t
@@ -850,14 +857,14 @@ with richer versions. Let's install it!
   (define-key evil-insert-state-map (kbd "C-SPC") 'company-manual-begin)
   (add-hook 'after-init-hook 'global-company-mode))
 #+END_SRC
-*** =company-prescient=
+*** company-prescient
 #+BEGIN_SRC emacs-lisp
 (use-package company-prescient
   :hook (company-mode . company-prescient-mode)
   :config
   (prescient-persist-mode +1))
 #+END_SRC
-*** =company-box=
+*** company-box
 #+BEGIN_SRC emacs-lisp
 (use-package company-box
   :diminish company-box-mode
@@ -913,12 +920,12 @@ with richer versions. Let's install it!
               ((featurep sym) 'ElispFeature)
               ((facep sym)    'ElispFace))))))
 #+END_SRC
-*** =company-dict=
+*** company-dict
 #+BEGIN_SRC emacs-lisp
 (use-package company-dict
   :defer t)
 #+END_SRC
-*** =all-the-icons=
+*** all-the-icons
 #+BEGIN_SRC emacs-lisp
 (use-package all-the-icons
   :ensure t)
@@ -934,7 +941,7 @@ with richer versions. Let's install it!
 (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 #+END_SRC
     
-*** =lsp-mode=
+*** lsp-mode
 #+BEGIN_SRC emacs-lisp
 (use-package lsp-mode
   :ensure t
@@ -981,7 +988,7 @@ with richer versions. Let's install it!
   :custom (company-lsp-cache-candidates t))
 #+END_SRC
 
-*** =flycheck=
+*** flycheck
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
   :diminish flycheck-mode
@@ -998,7 +1005,7 @@ with richer versions. Let's install it!
 (flycheck-add-next-checker 'lsp 'php-phpcs)
 #+END_SRC
 
-*** =projectile=
+*** projectile
 Projectile is a quick and easy project management package that "just works". We're
 going to install it and make sure it's loaded immediately.
 
@@ -1018,7 +1025,7 @@ going to install it and make sure it's loaded immediately.
   (projectile-mode))
 #+END_SRC
 
-*** =which-key=
+*** which-key
 #+BEGIN_SRC emacs-lisp
 (use-package which-key
   :diminish which-key-mode
@@ -1029,7 +1036,7 @@ going to install it and make sure it's loaded immediately.
   :config (which-key-mode))
 #+END_SRC
 
-*** =org-mode=
+*** org-mode
 Let's include a newer version of org-mode than the one that is built in. We're going
 to manually remove the org directories from the load path, to ensure the version we
 want is prioritized instead.
@@ -1055,7 +1062,7 @@ want is prioritized instead.
   :demand t
   :ensure org-plus-contrib
   :custom-face
-  (variable-pitch ((t (:family "Source Sans Pro"))))
+  (variable-pitch ((t (:family "Noto Sans"))))
   (org-document-title ((t (:weight bold ))))
   (org-done ((t (:strike-through t :weight bold))))
   (org-headline-done ((t (:strike-through t))))
@@ -1112,12 +1119,12 @@ want is prioritized instead.
            "|"
            "[X](D)")) ; Task was completed
         org-todo-keyword-faces
-        '(("[-]"  . +org-todo-active)
-          ("STRT" . +org-todo-active)
-          ("[?]"  . +org-todo-onhold)
-          ("WAIT" . +org-todo-onhold)
-          ("HOLD" . +org-todo-onhold)
-          ("PROJ" . +org-todo-project)))
+        '(("[-]"  . org-todo-active)
+          ("STRT" . org-todo-active)
+          ("[?]"  . org-todo-onhold)
+          ("WAIT" . org-todo-onhold)
+          ("HOLD" . org-todo-onhold)
+          ("PROJ" . org-todo-project)))
 
   (plist-put org-format-latex-options :scale 1.5) ; larger previews
 
@@ -1130,10 +1137,11 @@ want is prioritized instead.
 
   (setq org-directory "~/Nextcloud/org")
   (setq org-agenda-files (quote (
-                                 "~/Nextcloud/org/calp.org"
-                                 "~/Nextcloud/org/calw.org"
-                                 "~/Nextcloud/org/todo.org"
                                  "~/Nextcloud/org/jira/DELREP.org"
+                                 "~/Nextcloud/org/calendar-trainline.org"
+                                 "~/Nextcloud/org/calendar-netsells.org"
+                                 "~/Nextcloud/org/calendar.org"
+                                 "~/Nextcloud/org/todo.org"
                                  )))
 
   (add-hook 'org-capture-mode-hook 'evil-insert-state)
@@ -1266,10 +1274,17 @@ want is prioritized instead.
           ("[ ]"  . 9744)
           ("DONE" . 9745)
           ("[X]"  . 9745))))
-
 #+END_SRC
 
-*** =eyebrowse=
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook
+              (lambda ()
+                (push '("TODO"  . ?▲) prettify-symbols-alist)
+                (push '("DONE"  . ?✓) prettify-symbols-alist)
+                (push '("CANCELLED"  . ?✘) prettify-symbols-alist)
+                (push '("QUESTION"  . ??) prettify-symbols-alist)))
+#+END_SRC
+*** eyebrowse
 #+BEGIN_SRC emacs-lisp
 (use-package eyebrowse
   :demand t
@@ -1288,7 +1303,7 @@ want is prioritized instead.
             (setq eyebrowse-new-workspace t)))
 #+END_SRC
 
-*** =calfw=
+*** calfw
 #+BEGIN_SRC emacs-lisp
 (use-package calfw)
 (use-package calfw-org)
@@ -1296,13 +1311,29 @@ want is prioritized instead.
 (use-package calfw-ical)
 #+END_SRC
 
-*** =slack=
+*** slack
 #+BEGIN_SRC emacs-lisp
 (use-package slack
+  :commands (slack-start)
   :init
   (setq slack-buffer-emojify t)
   (setq slack-prefer-current-team t)
-  :commands (slack-start))
+  :config
+  (slack-register-team
+   :name "Trainline"
+   :default t
+   :token (auth-source-pick-first-password
+           :host "trainline.slack.com"
+           :user "tony.ampomah@thetrainline.com")
+   :subscribed-channels '(delay-repay-cms)
+   :full-and-display-names t)
+  (slack-register-team
+   :name "Netsells"
+   :token (auth-source-pick-first-password
+           :host "netsells.slack.com"
+           :user "tony.ampomah@netsells.co.uk")
+   :subscribed-channels '(devz-notification team-backend trainline-railguard)
+   :full-and-display-names t))
 
 (my-local-leader-def 'normal slack-mode-map
   "j" 'slack-channel-select
@@ -1339,7 +1370,7 @@ want is prioritized instead.
   "3" 'slack-message-embed-channel)
 #+END_SRC
     
-*** =nov=
+*** nov
 #+BEGIN_SRC emacs-lisp
 (defun my-nov-font-setup ()
   (face-remap-add-relative 'variable-pitch :family "PT Sans"
@@ -1352,7 +1383,7 @@ want is prioritized instead.
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 #+END_SRC
 
-*** =alert=
+*** alert
 #+BEGIN_SRC emacs-lisp
 (use-package alert
   :commands (alert)
@@ -1360,7 +1391,7 @@ want is prioritized instead.
   (setq alert-default-style 'notifier))
 #+END_SRC
 
-*** =wgrep=
+*** wgrep
 #+BEGIN_SRC emacs-lisp
 (use-package wgrep
   :init
@@ -1375,7 +1406,7 @@ want is prioritized instead.
      (kbd "C-c C-c") 'wgrep-finish-edit))
 #+END_SRC
     
-*** =treemacs=
+*** treemacs
 #+BEGIN_SRC emacs-lisp
 (use-package treemacs
   :ensure t
@@ -1447,7 +1478,7 @@ want is prioritized instead.
   :ensure t)
 #+END_SRC
 
-*** =vterm=
+*** vterm
 #+BEGIN_SRC emacs-lisp
 (defun my-shell-mode-hook ()
   "Custom `shell-mode' behaviours."
@@ -1534,7 +1565,7 @@ want is prioritized instead.
 
 #+RESULTS:
 
-*** =docker=
+*** docker
 #+BEGIN_SRC emacs-lisp
 (use-package dockerfile-mode
   :ensure t)
@@ -1546,7 +1577,7 @@ want is prioritized instead.
   :ensure t)
 #+END_SRC
 
-*** =editorconfig=
+*** editorconfig
 #+BEGIN_SRC emacs-lisp
 (use-package editorconfig
   :ensure t
@@ -1555,14 +1586,14 @@ want is prioritized instead.
 
 #+END_SRC
 
-*** =synosaurus=
+*** synosaurus
 #+BEGIN_SRC emacs-lisp
 (use-package synosaurus
   :config
   (global-set-key (kbd "s-|") 'powerthesaurus-lookup-word-dwim))
 #+END_SRC
 
-*** =magit=
+*** magit
 The magical git client. Let's load magit only when one of the several entry pont
 functions we invoke regularly outside of magit is called.
 #+BEGIN_SRC emacs-lisp
@@ -1599,13 +1630,13 @@ functions we invoke regularly outside of magit is called.
 (use-package browse-at-remote)
 #+END_SRC
 
-*** =pass=
+*** pass
 #+BEGIN_SRC emacs-lisp
 (use-package pass)
 (use-package ivy-pass)
 #+END_SRC
 
-*** =pdf-tools=
+*** pdf-tools
 #+BEGIN_SRC emacs-lisp
 (use-package pdf-tools
   :mode ("\\.[pP][dD][fF]\\'" . pdf-view-mode)
@@ -1616,13 +1647,13 @@ functions we invoke regularly outside of magit is called.
   :config (pdf-tools-install))
 #+END_SRC
 
-*** =eredis=
+*** eredis
 #+BEGIN_SRC emacs-lisp
 (use-package eredis
   :demand t)
 #+END_SRC
 
-*** =macos=
+*** macos
 #+BEGIN_SRC emacs-lisp
 (setq locate-command "mdfind")
 
@@ -1674,7 +1705,7 @@ functions we invoke regularly outside of magit is called.
                    (or (doom-project-root) default-directory))
 #+END_SRC
     
-*** =es=
+*** es
 #+BEGIN_SRC emacs-lisp
 (use-package es-mode)
 (autoload 'es-mode "es-mode.el"
@@ -1682,7 +1713,7 @@ functions we invoke regularly outside of magit is called.
 (add-to-list 'auto-mode-alist '("\\.es$" . es-mode))
 #+END_SRC
     
-*** =openwith=
+*** openwith
 #+BEGIN_SRC emacs-lisp
 (use-package openwith
   :init
@@ -1691,7 +1722,7 @@ functions we invoke regularly outside of magit is called.
   (openwith-mode t))
 #+END_SRC
 
-*** =dired=
+*** dired
 #+BEGIN_SRC emacs-lisp
 (defun itechytony-dired-mode-setup ()
   "to be run as hook for `dired-mode'."
@@ -1724,7 +1755,7 @@ functions we invoke regularly outside of magit is called.
   (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
 #+END_SRC
 
-*** =langtool=
+*** langtool
 #+BEGIN_SRC emacs-lisp
 (use-package langtool
   :commands
@@ -1736,7 +1767,7 @@ functions we invoke regularly outside of magit is called.
 (use-package writegood-mode)
 #+END_SRC
 
-*** =flyspell=
+*** flyspell
 #+BEGIN_SRC emacs-lisp
 (use-package flyspell-correct)
 
@@ -1770,7 +1801,7 @@ functions we invoke regularly outside of magit is called.
   (global-set-key (kbd "M-\\") 'define-word-at-point))
 #+END_SRC
 
-*** =yasnippet=
+*** yasnippet
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
   :diminish yas-minor-mode
@@ -1781,7 +1812,7 @@ functions we invoke regularly outside of magit is called.
   (yas-global-mode 1))
 #+END_SRC
 
-*** =shackle=
+*** shackle
 #+BEGIN_SRC emacs-lisp
 (use-package shackle
   :init
@@ -1807,7 +1838,7 @@ functions we invoke regularly outside of magit is called.
   (shackle-mode 1))
 #+END_SRC
     
-*** =dap-mode=
+*** dap-mode
 #+BEGIN_SRC emacs-lisp
 (use-package dap-mode
   :ensure t
@@ -1822,16 +1853,16 @@ functions we invoke regularly outside of magit is called.
   (tooltip-mode 1))
 #+END_SRC
     
-*** =writeroom-mode=
+*** writeroom-mode
 #+BEGIN_SRC emacs-lisp
 (use-package writeroom-mode :ensure t)
 #+END_SRC
 
-*** =speed-type=
+*** speed-type
 #+BEGIN_SRC emacs-lisp
 (use-package speed-type)
 #+END_SRC
-*** =engine-mode=
+*** engine-mode
 #+BEGIN_SRC emacs-lisp
 (use-package engine-mode)
 (defengine duckduckgo
@@ -1873,7 +1904,7 @@ functions we invoke regularly outside of magit is called.
   :config
   (load-theme 'base16-phd))
 #+END_SRC
-*** =powerline=
+*** powerline
 #+BEGIN_SRC emacs-lisp
 (use-package powerline
   :demand t
@@ -1892,7 +1923,7 @@ functions we invoke regularly outside of magit is called.
   (load-theme 'airline-base16_nord))
 #+END_SRC
 
-*** =diminish=
+*** diminish
 #+BEGIN_SRC emacs-lisp
 (use-package diminish
   :ensure t)
@@ -2134,7 +2165,7 @@ functions we invoke regularly outside of magit is called.
 #+BEGIN_SRC emacs-lisp
 (use-package fountain-mode)
 #+END_SRC
-*** =mu4e=
+*** mu4e=
 #+BEGIN_SRC emacs-lisp
 (require 'mu4e)
 
@@ -2319,10 +2350,112 @@ package that automatically generates an up to date table of contents for us.
   :after org
   :init (add-hook 'org-mode-hook #'toc-org-enable))
 #+END_SRC
-** Load secrets
+** Organisation (GTD and PARA) 
+*** Projects
+A project is “any outcome that will take more than one action step to
+complete.” As a result of implementing Tiago Forte’s “PARA” system, I
+can ensure that I always have an up to date project list.
 #+BEGIN_SRC emacs-lisp
-(when (file-exists-p "~/Nextcloud/Documents/3Resources/Keys/secrets.el")
-    (load "~/Nextcloud/Documents/3Resources/Keys/secrets.el"))
+(defun go-to-projects ()
+  (interactive)
+  (find-file "~/Nextcloud/org/todo.org")
+  (widen)
+  (beginning-of-buffer)
+  (re-search-forward "* Projects")
+  (beginning-of-line))
+
+(defun project-overview ()
+  (interactive)
+  (go-to-projects)
+  (org-narrow-to-subtree)
+  (org-sort-entries t ?p)
+  (org-columns))
+
+(defun project-deadline-overview ()
+  (interactive)
+  (go-to-projects)
+  (org-narrow-to-subtree)
+  (org-sort-entries t ?d)
+  (org-columns))
+#+END_SRC
+The concept of Stuck Projects comes from David Allen’s GTD. A stuck
+project is a project without any action steps or tasks associated with
+it.
+
+Org-Mode has the ability to tell you which subtrees don’t have tasks
+associated with them. You can also configure what it recognizes as a
+stuck project. Unfortunately, by default, this functionality picks up
+a lot of noise.
+
+This function creates an agenda of stuck projects that is restricted
+to my “Projects” subtree.
+#+BEGIN_SRC emacs-lisp
+(defun my-org-agenda-list-stuck-projects ()
+  (interactive)
+  (go-to-projects)
+  (org-agenda nil "#" 'subtree))
+#+END_SRC
+*** Areas
+#+BEGIN_SRC emacs-lisp
+(defun go-to-areas ()
+    (interactive)
+    (find-file "~/Nextcloud/org/todo.org")
+    (widen)
+    (beginning-of-buffer)
+    (re-search-forward "* Areas")
+    (beginning-of-line))
+
+(defun areas-overview ()
+    (interactive)
+    (go-to-areas)
+    (org-narrow-to-subtree)
+    (org-columns))
+#+END_SRC
+*** Reviews
+#+BEGIN_SRC emacs-lisp
+(defun my-new-daily-review ()
+  (interactive)
+  (let ((org-capture-templates '(("d" "Review: Daily Review" entry (file+olp+datetree "/tmp/reviews.org")
+                                  (file "~/Nextcloud/org/templates/daily-review-template.org")))))
+    (progn
+      (org-capture nil "d")
+      (org-capture-finalize t)
+      (org-speed-move-safe 'outline-up-heading)
+      (org-narrow-to-subtree)
+      (fetch-calendar)
+      (org-clock-in))))
+
+(defun my-new-weekly-review ()
+  (interactive)
+  (let ((org-capture-templates '(("w" "Review: Weekly Review" entry (file+olp+datetree "/tmp/reviews.org")
+                                  (file "~/Nextcloud/org/templates/weekly-review-template.org")))))
+    (progn
+      (org-capture nil "w")
+      (org-capture-finalize t)
+      (org-speed-move-safe 'outline-up-heading)
+      (org-narrow-to-subtree)
+      (fetch-calendar)
+      (org-clock-in))))
+
+(defun my-new-monthly-review ()
+  (interactive)
+  (let ((org-capture-templates '(("m" "Review: Monthly Review" entry (file+olp+datetree "/tmp/reviews.org")
+                                  (file "~/Nextcloud/org/templates/monthly-review-template.org")))))
+    (progn
+      (org-capture nil "m")
+      (org-capture-finalize t)
+      (org-speed-move-safe 'outline-up-heading)
+      (org-narrow-to-subtree)
+      (fetch-calendar)
+      (org-clock-in))))
+
+(bind-keys :prefix-map review-map
+           :prefix "C-c r"
+           ("d" . my-new-daily-review)
+           ("w" . my-new-weekly-review)
+           ("m" . my-new-monthly-review))
+
+(f-touch "/tmp/reviews.org")
 #+END_SRC
 ** Post Initialisation
 Let's lower our GC thresholds back down to a sane level.
