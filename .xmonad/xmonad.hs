@@ -177,7 +177,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. controlMask, xK_s), spawn "flameshot gui")
   , ((modMask .|. controlMask, xK_p), spawn "rofi-pass")
   , ((modMask .|. controlMask, xK_b), spawn "alacritty -e 'bmenu'")
-  , ((modMask .|. controlMask, xK_c), spawn "rofi -show calc")
+  , ((modMask .|. controlMask, xK_c), spawn "rofi -show calc -modi calc -no-show-match -no-sort")
 
 
   -- CONTROL + ALT KEYS
