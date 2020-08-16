@@ -1259,23 +1259,21 @@ want is prioritized instead.
 
 (use-package ob-restclient)
 
-(use-package org-superstar ; "prettier" bullets
-  :hook (org-mode . org-superstar-mode)
-  :config
-  ;; Make leading stars truly invisible, by rendering them as spaces!
-  (setq org-superstar-leading-bullet ?\s
-        org-superstar-leading-fallback ?\s
-        org-hide-leading-stars nil)
-  ;; Don't do anything special for item bullets or TODOs by default; these slow
-  ;; down larger org buffers.
-  (setq org-superstar-prettify-item-bullets nil
-        org-superstar-special-todo-items nil
-        ;; ...but configure it in case the user wants it later
-        org-superstar-todo-bullet-alist
-        '(("TODO" . 9744)
-          ("[ ]"  . 9744)
-          ("DONE" . 9745)
-          ("[X]"  . 9745))))
+(use-package org-bullets
+  :demand t
+  :init
+  (add-hook 'org-mode-hook 'org-bullets-mode))
+
+(setq org-ellipsis "⤵")
+
+(setq org-src-tab-acts-natively t)
+
+(setq org-src-window-setup 'current-window)
+
+(add-to-list 'org-structure-template-alist
+             '("el" . "src emacs-lisp"))
+
+(setq org-adapt-indentation nil)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -1757,6 +1755,13 @@ functions we invoke regularly outside of magit is called.
   (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
 #+END_SRC
 
+This allows me to  uncompress a .zip file
+#+BEGIN_SRC emacs-lisp
+(eval-after-load "dired-aux"
+   '(add-to-list 'dired-compress-file-suffixes 
+                 '("\\.zip\\'" ".zip" "unzip")))
+#+END_SRC
+
 *** langtool
 #+BEGIN_SRC emacs-lisp
 (use-package langtool
@@ -1904,7 +1909,7 @@ functions we invoke regularly outside of magit is called.
   :demand t
   :ensure t
   :config
-  (load-theme 'base16-github))
+  (load-theme 'base16-tomorrow-night))
 #+END_SRC
 *** powerline
 #+BEGIN_SRC emacs-lisp
@@ -1922,7 +1927,7 @@ functions we invoke regularly outside of magit is called.
   :ensure t
   :demand t
   :config
-  (load-theme 'airline-light))
+  (load-theme 'airline-base16_tomorrow))
 #+END_SRC
 
 *** diminish
