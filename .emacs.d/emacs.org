@@ -212,6 +212,11 @@ Disable certain byte compiler warnings to cut down on the noise.
 
 (recentf-mode 1)
 #+END_SRC
+
+Prettify Symbols
+#+BEGIN_SRC emacs-lisp
+(global-prettify-symbols-mode +1)
+#+END_SRC
 *** Database configuration
 #+BEGIN_SRC emacs-lisp
 (setq sql-connection-alist
@@ -1066,8 +1071,6 @@ want is prioritized instead.
   :custom-face
   (variable-pitch ((t (:family "Noto Sans"))))
   (org-document-title ((t (:weight bold ))))
-  (org-done ((t (:strike-through t :weight bold))))
-  (org-headline-done ((t (:strike-through t))))
   (org-level-1 ((t (:weight bold :height 1.2))))
   (org-level-2 ((t (:weight normal :height 1.2))))
   (org-level-3 ((t (:weight normal :height 1.2))))
@@ -1140,9 +1143,9 @@ want is prioritized instead.
   (setq org-directory "~/Nextcloud/org")
   (setq org-agenda-files (quote (
                                  "~/Nextcloud/org/jira/DELREP.org"
-                                 "~/Nextcloud/org/calendar-trainline.org"
-                                 "~/Nextcloud/org/calendar-netsells.org"
-                                 "~/Nextcloud/org/calendar.org"
+                                 "~/Nextcloud/org/tcal.org"
+                                 "~/Nextcloud/org/ncal.org"
+                                 "~/Nextcloud/org/pcal.org"
                                  "~/Nextcloud/org/todo.org"
                                  )))
 
@@ -1909,7 +1912,7 @@ This allows me to  uncompress a .zip file
   :demand t
   :ensure t
   :config
-  (load-theme 'base16-tomorrow-night))
+  (load-theme 'base16-snazzy))
 #+END_SRC
 *** powerline
 #+BEGIN_SRC emacs-lisp
@@ -1959,7 +1962,7 @@ This allows me to  uncompress a .zip file
   :demand t
   :hook
   ;; If you want it in all text modes:
-  (text-mode . mixed-pitch-mode))
+  (org-mode . mixed-pitch-mode))
 #+END_SRC
 *** Lang
 **** =php=
