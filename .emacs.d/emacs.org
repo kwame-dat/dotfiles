@@ -142,6 +142,7 @@ Disable certain byte compiler warnings to cut down on the noise.
 
 *** Sensible default
 #+BEGIN_SRC emacs-lisp
+(setq redisplay-dont-pause t)
 (setq scroll-conservatively 101)
 (setq mouse-wheel-scroll-amount '(1))
 (setq mouse-wheel-progressive-speed nil)
@@ -369,8 +370,6 @@ previously compiled manually then all of the package initialization will still t
 (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
 (global-set-key (kbd "s-k") 'kill-buffer)
 (global-set-key (kbd "s-s") 'save-buffer)
-(global-set-key (kbd "§") 'shell-pop)
-
 
 (global-set-key (kbd "C-S-v") 'yank)
 (global-set-key (kbd "C-S-c") 'kill-ring-save)
@@ -1140,9 +1139,9 @@ want is prioritized instead.
   (setq org-directory "~/Nextcloud/org")
   (setq org-agenda-files (quote (
                                  "~/Nextcloud/org/jira/DELREP.org"
-                                 "~/Nextcloud/org/calendar-trainline.org"
-                                 "~/Nextcloud/org/calendar-netsells.org"
-                                 "~/Nextcloud/org/calendar.org"
+                                 "~/Nextcloud/org/tcal.org"
+                                 "~/Nextcloud/org/ncal.org"
+                                 "~/Nextcloud/org/pcal.org"
                                  "~/Nextcloud/org/todo.org"
                                  )))
 
@@ -1909,7 +1908,7 @@ This allows me to  uncompress a .zip file
   :demand t
   :ensure t
   :config
-  (load-theme 'base16-tomorrow-night))
+  (load-theme 'base16-snazzy))
 #+END_SRC
 *** powerline
 #+BEGIN_SRC emacs-lisp
@@ -1927,7 +1926,7 @@ This allows me to  uncompress a .zip file
   :ensure t
   :demand t
   :config
-  (load-theme 'airline-base16_tomorrow))
+  (load-theme 'airline-base16_snazzy))
 #+END_SRC
 
 *** diminish
@@ -2423,7 +2422,7 @@ to my “Projects” subtree.
 (defun my-new-daily-review ()
   (interactive)
   (let ((org-capture-templates '(("d" "Review: Daily Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                  (file "~/Nextcloud/org/templates/daily-review-template.org")))))
+                                  (file "~/Nextcloud/org/reviews/daily-review-template.org")))))
     (progn
       (org-capture nil "d")
       (org-capture-finalize t)
@@ -2435,7 +2434,7 @@ to my “Projects” subtree.
 (defun my-new-weekly-review ()
   (interactive)
   (let ((org-capture-templates '(("w" "Review: Weekly Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                  (file "~/Nextcloud/org/templates/weekly-review-template.org")))))
+                                  (file "~/Nextcloud/org/reviews/weekly-review-template.org")))))
     (progn
       (org-capture nil "w")
       (org-capture-finalize t)
@@ -2447,7 +2446,7 @@ to my “Projects” subtree.
 (defun my-new-monthly-review ()
   (interactive)
   (let ((org-capture-templates '(("m" "Review: Monthly Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                  (file "~/Nextcloud/org/templates/monthly-review-template.org")))))
+                                  (file "~/Nextcloud/org/reviews/monthly-review-template.org")))))
     (progn
       (org-capture nil "m")
       (org-capture-finalize t)
