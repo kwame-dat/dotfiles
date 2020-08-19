@@ -379,7 +379,7 @@ previously compiled manually then all of the package initialization will still t
 ** Font
 #+BEGIN_SRC emacs-lisp
 (setq itechytony/default-font "Jetbrains Mono")
-(setq itechytony/default-font-size 12)
+(setq itechytony/default-font-size 10)
 (setq itechytony/current-font-size itechytony/default-font-size)
 
 (setq itechytony/font-change-increment 1.1)
@@ -1908,7 +1908,7 @@ This allows me to  uncompress a .zip file
   :demand t
   :ensure t
   :config
-  (load-theme 'base16-snazzy))
+  (load-theme 'base16-one-light))
 #+END_SRC
 *** powerline
 #+BEGIN_SRC emacs-lisp
@@ -1926,7 +1926,7 @@ This allows me to  uncompress a .zip file
   :ensure t
   :demand t
   :config
-  (load-theme 'airline-base16_snazzy))
+  (load-theme 'airline-light))
 #+END_SRC
 
 *** diminish
