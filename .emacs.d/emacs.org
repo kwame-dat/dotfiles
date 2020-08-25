@@ -21,6 +21,8 @@
     - [[#database-configuration][Database configuration]]
     - [[#package-management][Package Management]]
   - [[#functions][Functions]]
+    - [[#itechytony][itechytony]]
+    - [[#trainline][Trainline]]
   - [[#general-keybinding][General Keybinding]]
   - [[#font][Font]]
   - [[#packages][Packages]]
@@ -65,6 +67,7 @@
     - [[#flyspell][flyspell]]
     - [[#yasnippet][yasnippet]]
     - [[#shackle][shackle]]
+    - [[#purpose][purpose]]
     - [[#dap-mode][dap-mode]]
     - [[#writeroom-mode][writeroom-mode]]
     - [[#speed-type][speed-type]]
@@ -81,6 +84,8 @@
     - [[#areas][Areas]]
     - [[#reviews][Reviews]]
   - [[#load-secrets][Load secrets]]
+  - [[#music][Music]]
+    - [[#emms-with-mpd][EMMS with mpd]]
   - [[#post-initialisation][Post Initialisation]]
 
 ** About this file
@@ -142,6 +147,7 @@ Disable certain byte compiler warnings to cut down on the noise.
 
 *** Sensible default
 #+BEGIN_SRC emacs-lisp
+(setq redisplay-dont-pause t)
 (setq scroll-conservatively 101)
 (setq mouse-wheel-scroll-amount '(1))
 (setq mouse-wheel-progressive-speed nil)
@@ -307,6 +313,7 @@ previously compiled manually then all of the package initialization will still t
 #+END_SRC
 
 ** Functions
+*** itechytony
 #+BEGIN_SRC emacs-lisp
 (defun itechytony/visit-emacs-config ()
   (interactive)
@@ -319,6 +326,7 @@ previously compiled manually then all of the package initialization will still t
 (defun itechytony/access-unraid ()
   (interactive)
   (find-file "/ssh:root@192.168.1.3:/"))
+
 
 (defun itechytony/find-in-notes ()
   (interactive)
@@ -349,6 +357,29 @@ previously compiled manually then all of the package initialization will still t
                (file-writable-p buffer-file-name))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 #+END_SRC
+*** Trainline
+#+BEGIN_SRC emacs-lisp
+(defun trainline/access-ftp-server ()
+  (interactive)
+  (find-file "/sftp:railguard_master@ftp.ttlprod.local:/"))
+
+(defun trainline/access-c53 ()
+  (interactive)
+  (find-file "/ssh:c53:/"))
+
+(defun trainline/access-c54 ()
+  (interactive)
+  (find-file "/ssh:c54:/"))
+
+(defun trainline/access-c99 ()
+  (interactive)
+  (find-file "/ssh:c99:/"))
+
+(defun trainline/access-st1 ()
+  (interactive)
+  (find-file "/ssh:st1:/"))
+#+END_SRC
+
 ** General Keybinding
 #+BEGIN_SRC emacs-lisp
 (setq mac-option-modifier 'meta)
@@ -374,8 +405,6 @@ previously compiled manually then all of the package initialization will still t
 (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
 (global-set-key (kbd "s-k") 'kill-buffer)
 (global-set-key (kbd "s-s") 'save-buffer)
-(global-set-key (kbd "§") 'shell-pop)
-
 
 (global-set-key (kbd "C-S-v") 'yank)
 (global-set-key (kbd "C-S-c") 'kill-ring-save)
@@ -385,7 +414,7 @@ previously compiled manually then all of the package initialization will still t
 ** Font
 #+BEGIN_SRC emacs-lisp
 (setq itechytony/default-font "Jetbrains Mono")
-(setq itechytony/default-font-size 12)
+(setq itechytony/default-font-size 10)
 (setq itechytony/current-font-size itechytony/default-font-size)
 
 (setq itechytony/font-change-increment 1.1)
@@ -997,19 +1026,17 @@ with richer versions. Let's install it!
 
 *** flycheck
 #+BEGIN_SRC emacs-lisp
-(use-package flycheck
-  :diminish flycheck-mode
-  :ensure t
-  :init
-  (setq flycheck-emacs-lisp-load-path 'inherit
-        flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list
-        flycheck-check-syntax-automatically '(save idle-change mode-enabled)
-        flycheck-idle-change-delay 0.2
-        flycheck-global-modes '(not org-mode)
-        flycheck-phpcs-standard "PSR12")
-  (global-flycheck-mode))
-
-(flycheck-add-next-checker 'lsp 'php-phpcs)
+  (use-package flycheck
+    :diminish flycheck-mode
+    :ensure t
+    :init
+    (setq flycheck-emacs-lisp-load-path 'inherit
+          flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list
+          flycheck-check-syntax-automatically '(save idle-change mode-enabled)
+          flycheck-idle-change-delay 0.2
+          flycheck-global-modes '(not org-mode)
+          flycheck-phpcs-standard "PSR12")
+    (global-flycheck-mode))
 #+END_SRC
 
 *** projectile
@@ -1825,29 +1852,42 @@ This allows me to  uncompress a .zip file
 *** shackle
 #+BEGIN_SRC emacs-lisp
 (use-package shackle
-  :init
+  :demand t
+  :config
+  (shackle-mode 1)
   (setq shackle-default-alignment 'below
-        shackle-default-size 0.4
+        shackle-default-size 0.5
         shackle-rules '((help-mode           :align below :select t)
                         (helpful-mode        :align below)
-                        (compilation-mode    :select nil :size 0.25)
-                        ("*compilation*"     :select nil :size 0.25)
+                        ("*compilation*"     :select t :size 0.75)
                         ("*ag search*"       :select nil :size 0.25)
                         ("*Flycheck errors*" :select nil :size 0.25)
                         ("*Warnings*"        :select nil :size 0.25)
                         ("*Error*"           :select nil :size 0.25)
                         ("*Org Links*"       :select nil :size 0.1)
-                        (magit-status-mode                :align bottom :size 0.75  :inhibit-window-quit t)
+                        (magit-status-mode                :size 0.1  :inhibit-window-quit t)
                         (magit-log-mode                   :same t                  :inhibit-window-quit t)
                         (magit-commit-mode                :ignore t)
                         (magit-diff-mode     :select nil  :align left   :size 0.5)
                         (git-commit-mode                  :same t)
                         (vc-annotate-mode                 :same t)
-                        ))
-  :config
-  (shackle-mode 1))
+                        )))
 #+END_SRC
-    
+
+#+RESULTS:
+: t
+
+*** purpose
+#+BEGIN_SRC emacs-lisp
+(use-package window-purpose
+  :ensure t
+  :demand t
+  :config (purpose-mode))
+(add-to-list 'purpose-user-mode-purposes '(compilation-mode . compilation-purpose))
+(add-to-list 'purpose-user-mode-purposes '(php-mode   . php-file-purpose))
+(purpose-compile-user-configuration)
+#+END_SRC
+
 *** dap-mode
 #+BEGIN_SRC emacs-lisp
 (use-package dap-mode
@@ -1914,6 +1954,10 @@ This allows me to  uncompress a .zip file
   :config
   (load-theme 'base16-snazzy))
 #+END_SRC
+
+#+RESULTS:
+: t
+
 *** powerline
 #+BEGIN_SRC emacs-lisp
 (use-package powerline
@@ -1930,7 +1974,7 @@ This allows me to  uncompress a .zip file
   :ensure t
   :demand t
   :config
-  (load-theme 'airline-base16_tomorrow))
+  (load-theme 'airline-base16_nord))
 #+END_SRC
 
 *** diminish
@@ -2175,6 +2219,11 @@ This allows me to  uncompress a .zip file
 #+BEGIN_SRC emacs-lisp
 (use-package fountain-mode)
 #+END_SRC
+
+**** haskell
+#+BEGIN_SRC emacs-lisp
+(use-package haskell-mode)
+#+END_SRC
 *** mu4e=
 #+BEGIN_SRC emacs-lisp
 (require 'mu4e)
@@ -2350,7 +2399,6 @@ This allows me to  uncompress a .zip file
 ;; display unread email on mode line
 (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
 #+END_SRC
-
 *** Toc-org
 Let's install and load the =toc-org= package after org mode is loaded. This is the
 package that automatically generates an up to date table of contents for us.
@@ -2359,6 +2407,13 @@ package that automatically generates an up to date table of contents for us.
 (use-package toc-org
   :after org
   :init (add-hook 'org-mode-hook #'toc-org-enable))
+#+END_SRC
+
+mu4e alert
+#+BEGIN_SRC emacs-lisp
+(use-package mu4e-alert
+  :demand t
+  :ensure t)
 #+END_SRC
 ** Organisation (GTD and PARA) 
 *** Projects
@@ -2426,7 +2481,7 @@ to my “Projects” subtree.
 (defun my-new-daily-review ()
   (interactive)
   (let ((org-capture-templates '(("d" "Review: Daily Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                  (file "~/Nextcloud/org/templates/daily-review-template.org")))))
+                                  (file "~/Nextcloud/org/reviews/daily-review-template.org")))))
     (progn
       (org-capture nil "d")
       (org-capture-finalize t)
@@ -2438,7 +2493,7 @@ to my “Projects” subtree.
 (defun my-new-weekly-review ()
   (interactive)
   (let ((org-capture-templates '(("w" "Review: Weekly Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                  (file "~/Nextcloud/org/templates/weekly-review-template.org")))))
+                                  (file "~/Nextcloud/org/reviews/weekly-review-template.org")))))
     (progn
       (org-capture nil "w")
       (org-capture-finalize t)
@@ -2450,7 +2505,7 @@ to my “Projects” subtree.
 (defun my-new-monthly-review ()
   (interactive)
   (let ((org-capture-templates '(("m" "Review: Monthly Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                  (file "~/Nextcloud/org/templates/monthly-review-template.org")))))
+                                  (file "~/Nextcloud/org/reviews/monthly-review-template.org")))))
     (progn
       (org-capture nil "m")
       (org-capture-finalize t)
@@ -2472,6 +2527,74 @@ to my “Projects” subtree.
 (when (file-exists-p "~/Nextcloud/Documents/3Resources/Keys/secrets.el")
     (load "~/Nextcloud/Documents/3Resources/Keys/secrets.el"))
 #+END_SRC
+** Music
+*** EMMS with mpd
+There is many backends, many players and codecs for EMMS, we use mpd now.
+
+**** Basic setup for mpd
+The non XF86 keys are made to be somewhat logical to follow and easy to remember.
+At the bottom part of the configuration, you will notice how XF86 keys are used
+by default, so unless you keyboard is broken it should work out of the box.
+Obviously you might have to adjust /server-name/ and /server-port/ to fit your configuration.
+#+BEGIN_SRC emacs-lisp
+(use-package emms
+  :ensure t
+  :demand t
+  :config
+  (require 'emms-setup)
+  (require 'emms-setup)
+  (require 'emms-player-mpd)
+  (emms-all)
+  (emms-default-players)
+  (setq emms-seek-seconds 5)
+  (setq emms-player-list '(emms-player-mpd))
+  (setq emms-info-functions '(emms-info-mpd))
+  (setq emms-player-mpd-server-name "localhost")
+  (setq emms-player-mpd-server-port "6600")
+  :bind
+  ("s-m p" . emms)
+  ("s-m b" . emms-smart-browse)
+  ("s-m r" . emms-player-mpd-update-all-reset-cache)
+  ("<XF86AudioPrev>" . emms-previous)
+  ("<XF86AudioNext>" . emms-next)
+  ("<XF86AudioPlay>" . emms-pause)
+  ("<XF86AudioStop>" . emms-stop))
+#+END_SRC
+**** Some more fun stuff
+***** Starting the daemon from within emacs
+If you have an absolutely massive music library, it might be a good idea to get rid of =mpc-update=
+and only invoke it manually when needed.
+#+BEGIN_SRC emacs-lisp
+  (defun mpd/start-music-daemon ()
+    "Start MPD, connects to it and syncs the metadata cache."
+    (interactive)
+    (shell-command "mpd")
+    (mpd/update-database)
+    (emms-player-mpd-connect)
+    (emms-cache-set-from-mpd-all)
+    (message "MPD Started!"))
+  (global-set-key (kbd "s-m c") 'mpd/start-music-daemon)
+#+END_SRC
+
+***** Killing the daemon from within emacs
+#+BEGIN_SRC emacs-lisp
+  (defun mpd/kill-music-daemon ()
+    "Stops playback and kill the music daemon."
+    (interactive)
+    (emms-stop)
+    (call-process "killall" nil nil nil "mpd")
+    (message "MPD Killed!"))
+  (global-set-key (kbd "s-m k") 'mpd/kill-music-daemon)
+#+END_SRC
+***** Updating the database easily.
+#+BEGIN_SRC emacs-lisp
+  (defun mpd/update-database ()
+    "Updates the MPD database synchronously."
+    (interactive)
+    (call-process "mpc" nil nil nil "update")
+    (message "MPD Database Updated!"))
+  (global-set-key (kbd "s-m u") 'mpd/update-database)
+#+END_SRC
 ** Post Initialisation
 Let's lower our GC thresholds back down to a sane level.
 
@@ -2479,4 +2602,3 @@ Let's lower our GC thresholds back down to a sane level.
 (setq gc-cons-threshold 16777216
       gc-cons-percentage 0.1)
 #+END_SRC
-   

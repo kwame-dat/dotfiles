@@ -57,22 +57,22 @@ winType  = "#c678dd"
 --controlMask= ctrl key
 --shiftMask= shift key
 
-emacs1         = "\xf121"
-web2           = "\xf0ac"
-books3         = "\xf02d"
-chat4          = "\xf075"
-videoCalls5    = "\xf03d"
-dbclient6      = "\xf1c0"
-restClient7    = "\xf25b"
-gaming8        = "\xf11b"
-misc9          = "\61705"
-music10        = "\xf001"
+emacs         = "\xf121"
+web           = "\xf0ac"
+chat          = "\xf075"
+books         = "\xf02d"
+videoCalls    = "\xf03d"
+dbclient      = "\xf1c0"
+restClient    = "\xf25b"
+gaming        = "\xf11b"
+misc          = "\61705"
+music         = "\xf001"
 
 myModMask = mod4Mask
 encodeCChar = map fromIntegral . B.unpack
 myFocusFollowsMouse = True
 myBorderWidth = 2
-myWorkspaces    = [emacs1, web2, books3, chat4, videoCalls5, dbclient6, restClient7, gaming8, misc9, music10]
+myWorkspaces    = [emacs, web, chat, restClient, dbclient, books, videoCalls, gaming, misc, music]
 --myWorkspaces    = ["1","2","3","4","5","6","7","8","9","10"]
 --myWorkspaces    = ["I","II","III","IV","V","VI","VII","VIII","IX","X"]
 
@@ -90,14 +90,14 @@ myManageHook = composeAll . concat $
     , [className =? "Google-chrome"                           --> doShift ( myWorkspaces !! 1 )]
     , [className =? "Brave-browser"                           --> doShift ( myWorkspaces !! 1 )]
     , [className =? "firefox"                                 --> doShift ( myWorkspaces !! 1 )]
-    , [className =? "calibre"                                 --> doShift ( myWorkspaces !! 2 )]
-    , [className =? "whatsapp-nativefier-d52542"              --> doShift ( myWorkspaces !! 3 )]
-    , [className =? "Signal"                                  --> doShift ( myWorkspaces !! 3 )]
-    , [className =? "Slack"                                   --> doShift ( myWorkspaces !! 3 )]
-    , [className =? "zoom"                                    --> doShift ( myWorkspaces !! 4 )]
-    , [className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 5 )]
-    , [className =? "Insomnia"                                --> doShift ( myWorkspaces !! 6 )]
-    , [className =? "Postman"                                 --> doShift ( myWorkspaces !! 6 )]
+    , [className =? "whatsapp-nativefier-d52542"              --> doShift ( myWorkspaces !! 2 )]
+    , [className =? "Signal"                                  --> doShift ( myWorkspaces !! 2 )]
+    , [className =? "Slack"                                   --> doShift ( myWorkspaces !! 2 )]
+    , [className =? "Insomnia"                                --> doShift ( myWorkspaces !! 3 )]
+    , [className =? "Postman"                                 --> doShift ( myWorkspaces !! 3 )]
+    , [className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 4 )]
+    , [className =? "calibre"                                 --> doShift ( myWorkspaces !! 5 )]
+    , [className =? "zoom"                                    --> doShift ( myWorkspaces !! 6 )]
     , [className =? "obs"                                     --> doShift ( myWorkspaces !! 7 )]
     , [className =? "vlc"                                     --> doShift ( myWorkspaces !! 7 )]
     , [className =? "Cisco AnyConnect Secure Mobility Client" --> doShift ( myWorkspaces !! 8 )]
@@ -124,7 +124,7 @@ myManageHook = composeAll . concat $
 
 
 
-myLayout = spacingRaw True (Border 0 5 5 5) True (Border 5 5 5 5) True $ avoidStruts $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ tiled ||| Mirror tiled ||| spiral (6/7)  ||| ThreeColMid 1 (3/100) (1/2) ||| Full
+myLayout = spacingRaw True (Border 0 20 20 20) True (Border 20 20 20 20) True $ avoidStruts $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ tiled ||| Mirror tiled ||| spiral (6/7)  ||| ThreeColMid 1 (3/100) (1/2) ||| Full
     where
         tiled = Tall nmaster delta tiled_ratio
         nmaster = 1
@@ -153,8 +153,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- SUPER + FUNCTION KEYS
 
   [
-    ((modMask, xK_f), sendMessage $ Toggle NBFULL)
-  , ((modMask, xK_q), kill )
+    ((modMask, xK_q), kill )
   , ((modMask, xK_Escape), spawn $ "xkill" )
   , ((modMask, xK_Return), spawn $ "alacritty" )
   , ((modMask, xK_space), spawn $ "rofi -show combi" )
@@ -164,6 +163,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- SUPER + SHIFT KEYS
 
+  , ((modMask .|. shiftMask , xK_f), sendMessage $ Toggle NBFULL)
   , ((modMask .|. shiftMask , xK_Return ), spawn $ "thunar")
   , ((modMask .|. shiftMask , xK_r ), spawn $ "xmonad --recompile && xmonad --restart")
   , ((modMask .|. shiftMask , xK_e ), io (exitWith ExitSuccess))
@@ -182,17 +182,15 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- CONTROL + ALT KEYS
 
-  , ((controlMask .|. mod1Mask , xK_a ), spawn $ "xfce4-appfinder")
   , ((controlMask .|. mod1Mask , xK_f ), spawn $ "firefox")
-  , ((controlMask .|. mod1Mask , xK_g ), spawn $ "chromium -no-default-browser-check")
+  , ((controlMask .|. mod1Mask , xK_b ), spawn $ "brave")
+  , ((controlMask .|. mod1Mask , xK_g ), spawn $ "google-chrome-stable -no-default-browser-check")
   , ((controlMask .|. mod1Mask , xK_o ), spawn $ "$HOME/.xmonad/scripts/picom-toggle.sh")
   , ((controlMask .|. mod1Mask , xK_p ), spawn $ "pamac-manager")
-  , ((controlMask .|. mod1Mask , xK_r ), spawn $ "rofi-theme-selector")
   , ((controlMask .|. mod1Mask , xK_s ), spawn $ "spotify")
   , ((controlMask .|. mod1Mask , xK_t ), spawn $ "urxvt")
   , ((controlMask .|. mod1Mask , xK_u ), spawn $ "pavucontrol")
   , ((controlMask .|. mod1Mask , xK_v ), spawn $ "vivaldi-stable")
-  , ((controlMask .|. mod1Mask , xK_w ), spawn $ "arcolinux-welcome-app")
   , ((controlMask .|. mod1Mask , xK_Return ), spawn $ "urxvt")
   , ((modMask, xK_v), spawn $ "pavucontrol" )
   , ((modMask, xK_y), spawn $ "polybar-msg cmd toggle" )
@@ -254,7 +252,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   --  XMONAD LAYOUT KEYS
 
   -- Cycle through the available layout algorithms.
-  , ((modMask, xK_Tab), sendMessage NextLayout)
+  , ((modMask, xK_Tab), toggleWS)
+
+  , ((modMask, xK_BackSpace), sendMessage NextLayout)
 
   --Focus selected desktop
   , ((controlMask .|. mod1Mask , xK_Left ), prevWS)
@@ -354,7 +354,7 @@ main = do
             --myBaseConfig { keys = belgianKeys <+> keys belgianConfig }
 
                 {startupHook = myStartupHook
-, layoutHook = gaps [(U,35), (D,5), (R,5), (L,5)] $ myLayout ||| layoutHook myBaseConfig
+, layoutHook = gaps [(U,60), (D,20), (R,20), (L,20)] $ myLayout ||| layoutHook myBaseConfig
 , manageHook = manageSpawn <+> myManageHook <+> manageHook myBaseConfig
 , modMask = myModMask
 , borderWidth = myBorderWidth

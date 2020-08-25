@@ -64,3 +64,6 @@ alias ds="docker ps"
 alias emc="emacsclient -c"
 export VISUAL="emacsclient -c"
 export EDITOR="emacsclient -t"
+
+export MPD_HOST="localhost"
+export MPD_PORT="6600"
