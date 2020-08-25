@@ -16,7 +16,7 @@ prompt {
 }
 
 textbox {
-  background-color: #ffffff;
+  background-color: #61afef;
   border: 0 0 1px 0;
   border-color: #ffffff;
   padding: 8px 20px;
@@ -38,5 +38,6 @@ element {
 }
 
 element selected {
-  background-color: #ffffff;
+  background-color: #4078f2;
+  text-color: #ffffff;
 }
