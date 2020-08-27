@@ -1289,10 +1289,25 @@ want is prioritized instead.
 
 (use-package ob-restclient)
 
-(use-package org-bullets
-  :demand t
-  :init
-  (add-hook 'org-mode-hook 'org-bullets-mode))
+
+(use-package org-superstar ; "prettier" bullets
+  :hook (org-mode . org-superstar-mode)
+  :config
+  ;; Make leading stars truly invisible, by rendering them as spaces!
+  (setq org-superstar-leading-bullet ?\s
+        org-superstar-leading-fallback ?\s
+        org-hide-leading-stars nil)
+  ;; Don't do anything special for item bullets or TODOs by default; these slow
+  ;; down larger org buffers.
+  (setq org-superstar-prettify-item-bullets nil
+        org-superstar-special-todo-items nil
+        ;; ...but configure it in case the user wants it later
+        org-superstar-todo-bullet-alist
+        '(("TODO" . 9744)
+          ("[ ]"  . 9744)
+          ("DONE" . 9745)
+          ("[X]"  . 9745))))
+
 
 (setq org-ellipsis "⤵")
 
@@ -1306,7 +1321,7 @@ want is prioritized instead.
 (setq org-adapt-indentation nil)
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (add-hook 'org-mode-hook
               (lambda ()
                 (push '("TODO"  . ?▲) prettify-symbols-alist)
@@ -1314,6 +1329,7 @@ want is prioritized instead.
                 (push '("CANCELLED"  . ?✘) prettify-symbols-alist)
                 (push '("QUESTION"  . ??) prettify-symbols-alist)))
 #+END_SRC
+
 *** eyebrowse
 #+BEGIN_SRC emacs-lisp
 (use-package eyebrowse
@@ -1952,12 +1968,8 @@ This allows me to  uncompress a .zip file
   :demand t
   :ensure t
   :config
-  (load-theme 'base16-snazzy))
+  (load-theme 'base16-tomorrow-night))
 #+END_SRC
-
-#+RESULTS:
-: t
-
 *** powerline
 #+BEGIN_SRC emacs-lisp
 (use-package powerline
@@ -1974,7 +1986,7 @@ This allows me to  uncompress a .zip file
   :ensure t
   :demand t
   :config
-  (load-theme 'airline-base16_nord))
+  (load-theme 'airline-base16_tomorrow))
 #+END_SRC
 
 *** diminish

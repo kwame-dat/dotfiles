@@ -6,7 +6,10 @@
 
 config_version: 2
 settings:
+  content.media_capture:
+    https://duo.google.com: true
   content.notifications:
+    https://duo.google.com: true
     https://www.reddit.com: true
     https://www.youtube.com: false
   fonts.web.size.default:

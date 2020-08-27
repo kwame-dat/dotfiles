@@ -46,16 +46,8 @@ picom &
 /usr/bin/emacs --daemon &
 
 #starting user applications at boot time
-#nitrogen --restore &
-#run caffeine &
-#run vivaldi-stable &
-#run firefox &
-#run thunar &
-#run spotify &
-#run atom &
-
+run nextcloud &
+run caffeine &
+run slack &
+run spotify &
 #run telegram-desktop &
-#run discord &
-#run dropbox &
-#run insync start &
-#run ckb-next -b &
