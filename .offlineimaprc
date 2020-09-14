@@ -1,5 +1,5 @@
 [general]
-accounts = jw, arksolutions, netsells, thetrainline
+accounts = jw, arksolutions, netsells
 maxsyncaccounts = 1
 pythonfile = ~/Repo/2Areas/dotfiles/shell/mu/lib.py
 
@@ -18,9 +18,9 @@ localfolders = ~/Maildir/jw
 
 [Repository jw_remote]
 type = Gmail
-remotehosteval = get_pass("spiritual/email/gmail.com")["remotehost"]
-remoteusereval = get_pass("spiritual/email/gmail.com")["user"]
-remotepasseval = get_pass("spiritual/email/gmail.com")["password"]
+remotehosteval = get_pass("2Areas/Spiritual/Email")["remotehost"]
+remoteusereval = get_pass("2Areas/Spiritual/Email")["user"]
+remotepasseval = get_pass("2Areas/Spiritual/Email")["password"]
 ssl = yes
 holdconnectionopen = true
 keepalive = 60
@@ -38,9 +38,9 @@ localfolders = ~/Maildir/arksolutions
 
 [Repository arksolutions_remote]
 type = IMAP
-remotehosteval = get_pass("personal/email/arksolutions.it")["remotehost"]
-remoteusereval = get_pass("personal/email/arksolutions.it")["user"]
-remotepasseval = get_pass("personal/email/arksolutions.it")["password"]
+remotehosteval = get_pass("2Areas/Personal/Emails/Arksolutions")["remotehost"]
+remoteusereval = get_pass("2Areas/Personal/Emails/Arksolutions")["user"]
+remotepasseval = get_pass("2Areas/Personal/Emails/Arksolutions")["password"]
 ssl = yes
 holdconnectionopen = true
 keepalive = 60
@@ -58,31 +58,10 @@ localfolders = ~/Maildir/netsells
 
 [Repository netsells_remote]
 type = IMAP
-remotehosteval = get_pass("work/netsells/email")["remotehost"]
-remoteusereval = get_pass("work/netsells/email")["user"]
-remotepasseval = get_pass("work/netsells/email")["password"]
+remotehosteval = get_pass("2Areas/Work/Netsells/Email")["remotehost"]
+remoteusereval = get_pass("2Areas/Work/Netsells/Email")["user"]
+remotepasseval = get_pass("2Areas/Work/Netsells/Email")["password"]
 ssl = yes
 holdconnectionopen = true
 keepalive = 60
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-
-# _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
-
-[Account thetrainline]
-localrepository = thetrainline_local
-remoterepository = thetrainline_remote
-
-[Repository thetrainline_local]
-type = Maildir
-localfolders = ~/Maildir/thetrainline
-
-[Repository thetrainline_remote]
-type = IMAP
-ssl = yes
-readonly = true
-remotehosteval = get_pass("work/ttl/email")["remotehost"]
-remoteusereval = get_pass("work/ttl/email")["user"]
-remotepasseval = get_pass("work/ttl/email")["password"]
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-folderfilter = lambda folder: folder in ['Archive' , 'Contacts', 'Deleted Items', 'Drafts', 'INBOX', 'Junk Email', 'Outbox', 'Sent Items' ]
-# _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
