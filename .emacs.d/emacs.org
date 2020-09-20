@@ -1026,17 +1026,19 @@ with richer versions. Let's install it!
 
 *** flycheck
 #+BEGIN_SRC emacs-lisp
-  (use-package flycheck
-    :diminish flycheck-mode
-    :ensure t
-    :init
-    (setq flycheck-emacs-lisp-load-path 'inherit
-          flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list
-          flycheck-check-syntax-automatically '(save idle-change mode-enabled)
-          flycheck-idle-change-delay 0.2
-          flycheck-global-modes '(not org-mode)
-          flycheck-phpcs-standard "PSR12")
-    (global-flycheck-mode))
+    (use-package flycheck
+      :diminish flycheck-mode
+      :ensure t
+      :init
+      (setq flycheck-emacs-lisp-load-path 'inherit
+            flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list
+            flycheck-check-syntax-automatically '(save idle-change mode-enabled)
+            flycheck-idle-change-delay 0.2
+            flycheck-global-modes '(not org-mode)
+            flycheck-phpcs-standard "PSR12")
+      (global-flycheck-mode))
+
+  ;; (flycheck-add-next-checker 'lsp 'php-phpcs)
 #+END_SRC
 
 *** projectile
