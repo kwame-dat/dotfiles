@@ -97,6 +97,7 @@ myManageHook = composeAll . concat $
     , [className =? "Postman"                                 --> doShift ( myWorkspaces !! 3 )]
     , [className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 4 )]
     , [className =? "calibre"                                 --> doShift ( myWorkspaces !! 5 )]
+    , [className =? "Stoplight Studio"                        --> doShift ( myWorkspaces !! 5 )]
     , [className =? "zoom"                                    --> doShift ( myWorkspaces !! 6 )]
     , [className =? "obs"                                     --> doShift ( myWorkspaces !! 7 )]
     , [className =? "vlc"                                     --> doShift ( myWorkspaces !! 7 )]
