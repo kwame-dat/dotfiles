@@ -135,8 +135,9 @@ too high or it will result in long GC pauses during normal usage.
 
 #+BEGIN_SRC emacs-lisp
 (eval-and-compile
-  (setq gc-cons-threshold 402653184
-        gc-cons-percentage 0.6))
+  (setq gc-cons-threshold 100000000))
+
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
 #+END_SRC
 
 Disable certain byte compiler warnings to cut down on the noise.
@@ -414,7 +415,7 @@ previously compiled manually then all of the package initialization will still t
 ** Font
 #+BEGIN_SRC emacs-lisp
 (setq itechytony/default-font "Jetbrains Mono")
-(setq itechytony/default-font-size 10)
+(setq itechytony/default-font-size 14)
 (setq itechytony/current-font-size itechytony/default-font-size)
 
 (setq itechytony/font-change-increment 1.1)
@@ -461,6 +462,8 @@ other, future frames."
 
 (itechytony/reset-font-size)
 #+END_SRC
+
+#+RESULTS:
 
 Ligature workaround
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -979,6 +982,11 @@ with richer versions. Let's install it!
     
 *** lsp-mode
 #+BEGIN_SRC emacs-lisp
+(setq lsp-completion-provider :capf)
+(setq lsp-idle-delay 0.500)
+(setq lsp-enable-file-watchers nil)
+(setq lsp-print-performance t)
+
 (use-package lsp-mode
   :ensure t
   :demand t
@@ -1019,26 +1027,33 @@ with richer versions. Let's install it!
   (lsp-ui-sideline-ignore-duplicate t)
   (lsp-ui-sideline-show-code-actions nil))
 
-(use-package company-lsp
-  :ensure t
-  :custom (company-lsp-cache-candidates t))
+;; (use-package company-lsp
+;;   :ensure t)
+
+
+(use-package lsp-ivy
+  :commands lsp-ivy-workspace-symbol lsp-ivy-global-workspace-symbol
+  :ensure t)
 #+END_SRC
 
 *** flycheck
 #+BEGIN_SRC emacs-lisp
-    (use-package flycheck
-      :diminish flycheck-mode
-      :ensure t
-      :init
-      (setq flycheck-emacs-lisp-load-path 'inherit
-            flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list
-            flycheck-check-syntax-automatically '(save idle-change mode-enabled)
-            flycheck-idle-change-delay 0.2
-            flycheck-global-modes '(not org-mode)
-            flycheck-phpcs-standard "PSR12")
-      (global-flycheck-mode))
+      (use-package flycheck
+        :diminish flycheck-mode
+        :ensure t
+        :init
+        (setq flycheck-emacs-lisp-load-path 'inherit
+              flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list
+              flycheck-check-syntax-automatically '(save idle-change mode-enabled)
+              flycheck-idle-change-delay 0.2
+              flycheck-global-modes '(not org-mode)
+              flycheck-phpcs-standard "PSR12")
+        (global-flycheck-mode))
 
-  ;; (flycheck-add-next-checker 'lsp 'php-phpcs)
+  ;; (defun my-flycheck-setup ()
+  ;;   (flycheck-add-next-checker 'lsp 'php-phpcs)
+
+  ;; (add-hook 'php-mode-hook #'my-flycheck-setup)
 #+END_SRC
 
 *** projectile
