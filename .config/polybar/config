@@ -4,9 +4,9 @@ include-file = ~/.config/polybar/modules.ini
 
 [bar/main]
 monitor = ${env:MONITOR:}
-; dpi = 150
+dpi = 192
 width = 100%
-height = 25
+height = 50
 ;offset-x = 2%
 ;offset-y = 1%
 radius = 0.0
@@ -15,7 +15,7 @@ fixed-center = true
 background = ${colors.background}
 foreground = ${colors.foreground}
 
-line-size = 2
+line-size = 3
 line-color = ${colors.alert}
 
 ; border-size = 10
@@ -27,14 +27,14 @@ padding-right = 0
 module-margin-left = 2
 module-margin-right = 2
 
-font-0 = "Noto Sans:size=12:bold;0"
-font-1 = "FontAwesome:size=12;0"
-font-2 = "Noto Sans:size=12:bold;0"
-font-3 = "Noto Sans Mono:size=12:bold;0"
+font-0 = "Noto Sans:size=10:bold;0"
+font-1 = "FontAwesome:size=10;0"
+font-2 = "Noto Sans:size=10:bold;0"
+font-3 = "Noto Sans Mono:size=10:bold;0"
 
 modules-left = ewmh xwindow 
-modules-center = 
-modules-right = cpu temperature memory filesystem networkspeedup networkspeeddown pavolume xkeyboard battery date
+modules-center = cpu temperature memory filesystem networkspeedup networkspeeddown
+modules-right = backlight pavolume xkeyboard battery date
 
 tray-position = right
 tray-padding = 5
