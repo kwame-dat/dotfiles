@@ -167,7 +167,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. shiftMask , xK_f), sendMessage $ Toggle NBFULL)
   , ((modMask .|. shiftMask , xK_Return ), spawn $ "thunar")
   , ((modMask .|. shiftMask , xK_r ), spawn $ "xmonad --recompile && xmonad --restart")
-  , ((modMask .|. shiftMask , xK_e ), io (exitWith ExitSuccess))
+  , ((modMask .|. shiftMask , xK_e ), spawn $ "arcolinux-logout")
   , ((modMask .|. shiftMask , xK_q ), killAll)
 
   -- SUPER + CONTROL KEYS
