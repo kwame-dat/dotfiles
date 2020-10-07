@@ -88,6 +88,7 @@ myManageHook = composeAll . concat $
     , [className =? "Emacs"                                   --> doShift ( myWorkspaces !! 0 )]
     , [className =? "qutebrowser"                             --> doShift ( myWorkspaces !! 1 )]
     , [className =? "Google-chrome"                           --> doShift ( myWorkspaces !! 1 )]
+    , [className =? "Vivaldi-stable"                          --> doShift ( myWorkspaces !! 1 )]
     , [className =? "Brave-browser"                           --> doShift ( myWorkspaces !! 1 )]
     , [className =? "firefox"                                 --> doShift ( myWorkspaces !! 1 )]
     , [className =? "whatsapp-nativefier-d52542"              --> doShift ( myWorkspaces !! 2 )]
@@ -152,9 +153,29 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   ----------------------------------------------------------------------
   -- SUPER + FUNCTION KEYS
+  [ ((modMask, xK_e), spawn $ "emacsclient -c -a ''" )
+  , ((modMask, xK_f), sendMessage $ Toggle NBFULL)
+  , ((modMask, xK_h), spawn $ "alacritty 'htop task manager' -e htop" )
+  , ((modMask, xK_t), spawn $ "alacritty" )
+  , ((modMask, xK_v), spawn $ "pavucontrol" )
+  , ((modMask, xK_y), spawn $ "polybar-msg cmd toggle" )
+  , ((modMask, xK_x), spawn $ "arcolinux-logout" )
+  , ((modMask, xK_Escape), spawn $ "xkill" )
+  , ((modMask, xK_Return), spawn $ "urxvt" )
+  , ((modMask, xK_F1), spawn $ "emacsclient -c -a ''" )
+  , ((modMask, xK_F2), spawn $ "vivaldi-stable" )
+  , ((modMask, xK_F3), spawn $ "slack" )
+  , ((modMask, xK_F4), spawn $ "Insomnia" )
+  , ((modMask, xK_F5), spawn $ "Dbeaver" )
+  , ((modMask, xK_F6), spawn $ "vlc --video-on-top" )
+  , ((modMask, xK_F7), spawn $ "virtualbox" )
+  , ((modMask, xK_F8), spawn $ "thunar" )
+  , ((modMask, xK_F9), spawn $ "evolution" )
+  , ((modMask, xK_F10), spawn $ "spotify" )
+  , ((modMask, xK_F11), spawn $ "rofi -show run -fullscreen" )
+  , ((modMask, xK_F12), spawn $ "rofi -show run" )
 
-  [
-    ((modMask, xK_q), kill )
+  , ((modMask, xK_q), kill )
   , ((modMask, xK_Escape), spawn $ "xkill" )
   , ((modMask, xK_Return), spawn $ "alacritty" )
   , ((modMask, xK_space), spawn $ "rofi -show combi" )
@@ -193,7 +214,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((controlMask .|. mod1Mask , xK_u ), spawn $ "pavucontrol")
   , ((controlMask .|. mod1Mask , xK_v ), spawn $ "vivaldi-stable")
   , ((controlMask .|. mod1Mask , xK_Return ), spawn $ "urxvt")
-  , ((modMask, xK_v), spawn $ "pavucontrol" )
   , ((modMask, xK_y), spawn $ "polybar-msg cmd toggle" )
 
   -- ALT + ... KEYS
