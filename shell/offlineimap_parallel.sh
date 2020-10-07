@@ -6,5 +6,4 @@ offlineimap -a netsells & pid3=$!
 wait $pid1
 wait $pid2
 wait $pid3
-wait $pid4
 echo "Last execution: $(date)"
