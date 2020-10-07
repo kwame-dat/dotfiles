@@ -8,8 +8,6 @@ function run {
 }
 
 #Set your native resolution IF it does not exist in xrandr
-#More info in the script
-#run $HOME/.xmonad/scripts/set-screen-resolution-in-virtualbox.sh
 
 #Find out your monitor name with xrandr or arandr (save and you get this line)
 #xrandr --output VGA-1 --primary --mode 1360x768 --pos 0x0 --rotate normal
@@ -18,6 +16,10 @@ function run {
 #xrandr --output HDMI2 --mode 1920x1080 --pos 1920x0 --rotate normal --output HDMI1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output VIRTUAL1 --off
 
 (sleep 2; run $HOME/.config/polybar/launch.sh) &
+
+# xrdb -merge ~/.Xresources &
+
+# xrandr --output eDP1 --primary --mode 3840x2160 --pos 3840x0 --rotate normal --output DP1 --mode 3840x1600 --pos 0x327 --rotate normal --output DP2 --off --output DP3 --off --output VIRTUAL1 --off
 
 #change your keyboard if you need it
 #setxkbmap -layout be
@@ -33,21 +35,20 @@ xset r rate 220 80 &
 
 #starting utility applications at boot time
 nitrogen --restore &
-dunst &
 run nm-applet &
 run pamac-tray &
 run xfce4-power-manager &
 run volumeicon &
 numlockx on &
 blueberry-tray &
-picom &
+picom --config $HOME/.xmonad/scripts/picom.conf &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 /usr/lib/xfce4/notifyd/xfce4-notifyd &
 /usr/bin/emacs --daemon &
 
+# dunst &
+
 #starting user applications at boot time
 run nextcloud &
 run caffeine &
-run slack &
-run spotify &
-#run telegram-desktop &
+# run slack &
