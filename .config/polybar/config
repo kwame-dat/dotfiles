@@ -6,20 +6,15 @@ include-file = ~/.config/polybar/modules.ini
 monitor = ${env:MONITOR:}
 dpi = 192
 width = 100%
-height = 50
-;offset-x = 2%
-;offset-y = 1%
+height = 70
 radius = 0.0
 fixed-center = true
 
 background = ${colors.background}
 foreground = ${colors.foreground}
 
-line-size = 3
+line-size = 4
 line-color = ${colors.alert}
-
-; border-size = 10
-; border-color = #00000000
 
 padding-left = 0
 padding-right = 0
@@ -27,32 +22,26 @@ padding-right = 0
 module-margin-left = 2
 module-margin-right = 2
 
-font-0 = "Noto Sans:size=10:bold;0"
-font-1 = "FontAwesome:size=10;0"
-font-2 = "Noto Sans:size=10:bold;0"
-font-3 = "Noto Sans Mono:size=10:bold;0"
+font-0 = "Noto Sans:size=11;0"
+font-1 = "FontAwesome:size=11;0"
+font-2 = "Noto Sans:size=11;0"
+font-3 = "Noto Sans Mono:size=11;0"
 
-modules-left = ewmh xwindow 
-modules-center = cpu temperature memory filesystem networkspeedup networkspeeddown
-modules-right = backlight pavolume xkeyboard battery date
+modules-left = ewmh cpu temperature memory networkspeedup
+modules-center = xwindow
+modules-right = networkspeeddown backlight pavolume battery xkeyboard time date
 
 tray-position = right
-tray-padding = 5
-; tray-transparent = true
+tray-padding = 0
+tray-maxsize = 40
+tray-scale = 1.0
 
 wm-restack = i3
-; override-redirect = false
 
 
 [settings]
 screenchange-reload = true
-;compositing-background = xor
-;compositing-background = screen
-;compositing-foreground = source
-;compositing-border = over
 
 [global/wm]
 margin-top = 0
 margin-bottom = 0
-
-; vim:ft=dosini
