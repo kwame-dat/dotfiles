@@ -1,0 +1,37 @@
+g https://www.google.com/
+gg https://www.google.com/
+jw https://www.jw.org/en/
+bi https://wol.jw.org/en/wol/binav/r1/lp-e
+dt https://wol.jw.org/en/wol/h/r1/lp-e
+yt https://www.youtube.com/
+nf https://www.netflix.com/browse
+cal https://calendar.google.com/calendar/u/1/r/month/2020/10/1?tab=mc
+
+sta-pr https://github.com/swimming-teachers-association/unity/pulls
+sta-unity-prototype https://unity-prototype.sta.co.uk/
+sta-unity https://unity-staging.sta.co.uk/
+sta-dev http://sta-unity.test
+sta-staging http://sta-unity.test
+sta-prod http://sta-unity.test
+sta-wiki https://netsells.atlassian.net/wiki/spaces/STA/overview?homepageId=1117192254
+sta-designs https://projects.invisionapp.com/freehand/document/YYzhPQUX7
+sta-api-spec https://docify.netsells.tools/projects/sta-shop-api-spec?sso_token=51fc18e0-3e3b-11e8-a017-55a107527571&branch=feature-sta-online~mKGm#operation/get-emanuals
+sta-docs https://doc.clickup.com/d/h/1a45p-8/6b150877a3ab401/1a45p-169
+sta-jira https://netsells.atlassian.net/jira/software/c/projects/STASTAOAPI/issues
+
+netsells-jira https://netsells.atlassian.net/secure/Dashboard.jspa
+netsells-jira-peer-support https://netsells.atlassian.net/browse/INT-2
+netsells-15five https://my.15five.com/report/current/
+netsells-people-hr https://netsells.peoplehr.net/Pages/LeftSegment/Dashboard.aspx
+netsells-github https://github.com/netsells
+netsells-docify https://docify.netsells.tools/?sso_token=9d1f14e0-1a75-11ea-8898-01aba121ddc5
+netsells-suggestion-box http://freesuggestionbox.com/pub/zudoeku
+netsells-perkbox https://netsells.perkbox.com/perks/discover
+netsells-nas https://10.0.1.2:5001/
+netsells-assets https://assets.netsells.tools/
+
+firewall http://192.168.1.1/
+switch http://192.168.1.2/cgi-bin/dispatcher.cgi?cmd=0
+unraid http://192.168.1.3/Main
+ap1 http://192.168.1.4/start.htm
+ap2 http://192.168.1.5/cgi-bin/webproc
