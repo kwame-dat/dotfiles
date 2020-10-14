@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: protected_static_method
-# key: pros             
-# --
-protected static function $1($2)$3
-{
-  $0
-}
