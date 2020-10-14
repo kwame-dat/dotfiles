@@ -157,9 +157,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_f), sendMessage $ Toggle NBFULL)
   , ((modMask, xK_h), spawn $ "alacritty 'htop task manager' -e htop" )
   , ((modMask, xK_t), spawn $ "alacritty" )
-  , ((modMask, xK_v), spawn $ "pavucontrol" )
   , ((modMask, xK_y), spawn $ "polybar-msg cmd toggle" )
-  , ((modMask, xK_x), spawn $ "arcolinux-logout" )
   , ((modMask, xK_Escape), spawn $ "xkill" )
   , ((modMask, xK_Return), spawn $ "urxvt" )
   , ((modMask, xK_F1), spawn $ "emacsclient -c -a ''" )
@@ -179,6 +177,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_Escape), spawn $ "xkill" )
   , ((modMask, xK_Return), spawn $ "alacritty" )
   , ((modMask, xK_space), spawn $ "rofi -show combi" )
+  , ((modMask, xK_b), spawn $ "rofi-surfraw" )
 
   -- FUNCTION KEYS
   , ((0, xK_F12), spawn $ "xfce4-terminal --drop-down" )
@@ -247,16 +246,16 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((0, xF86XK_AudioMute), spawn $ "amixer -q set Master toggle")
 
   -- Decrease volume
-  , ((0, xF86XK_AudioLowerVolume), spawn $ "amixer -q set Master 1%-")
+  , ((0, xF86XK_AudioLowerVolume), spawn $ "amixer -q set Master 5%-")
 
   -- Increase volume
-  , ((0, xF86XK_AudioRaiseVolume), spawn $ "amixer -q set Master 1%+")
+  , ((0, xF86XK_AudioRaiseVolume), spawn $ "amixer -q set Master 5%+")
 
   -- Increase brightness
-  , ((0, xF86XK_MonBrightnessUp),  spawn $ "xbacklight -inc 1")
+  , ((0, xF86XK_MonBrightnessUp),  spawn $ "xbacklight -inc 5")
 
   -- Decrease brightness
-  , ((0, xF86XK_MonBrightnessDown), spawn $ "xbacklight -dec 1")
+  , ((0, xF86XK_MonBrightnessDown), spawn $ "xbacklight -dec 5")
 
   , ((0, xF86XK_AudioPlay), spawn $ "playerctl play-pause")
 
