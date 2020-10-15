@@ -1,9 +1,0 @@
-.emacs.d/*
-.emacs.d/lisp/secrets.el
-!.emacs.d/lisp
-!.emacs.d/Makefile
-!.emacs.d/README.md
-!.emacs.d/init.el
-!.emacs.d/emacs.org
-!.emacs.d/snippets
-!.emacs.d/eshell/alias
