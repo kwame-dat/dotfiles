@@ -37,6 +37,10 @@ emacs.el
 *.eld
 
 # transient/os temp files
+.cache
+.lsp-session-v1
+lsp-cache
+projectile.cache
 *.cache-*
 *.log
 .directory
