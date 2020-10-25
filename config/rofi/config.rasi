@@ -1,13 +1,13 @@
 configuration {
 	modi: "combi,calc:qalc -t";
-	width: 30;
-	font: "Noto Sans 16";
+	width: 40;
+	font: "Cantarell 16";
 	show-icons: true;
 	terminal: "alacritty";
 	ssh-client: "ssh";
 	ssh-command: "{terminal} -- {ssh-client} {host}";
 	combi-modi: "drun,window,ssh";
 	hide-scrollbar: true;
-	dpi: 150;
+	dpi: 192;
 	theme: "slate";
 }
