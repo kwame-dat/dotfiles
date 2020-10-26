@@ -1,13 +1,19 @@
-;; File Inclusion
-include-file = ~/.config/polybar/colors.ini
-include-file = ~/.config/polybar/modules.ini
+[colors]
+background = ${xrdb:background}
+foreground = ${xrdb:foreground}
+background-alt = #5c6370
+foreground-alt = #c5c8c6
+primary = #2257A0
+secondary = #d19a66
+alert = #e06c75
+success = #dd8844
+color9 = #ECBE7B
 
 [bar/main]
 monitor = ${env:MONITOR:}
-dpi = 192
+dpi = ${xrdb:Xft.dpi:-1}
 width = 100%
-height = 60
-radius = 0.0
+height = 33
 fixed-center = true
 
 background = ${colors.background}
@@ -19,13 +25,11 @@ line-color = ${colors.background}
 padding-left = 3
 padding-right = 0
 
-module-margin-left = 2
-module-margin-right = 2
+module-margin-left = 3
+module-margin-right = 3
 
 font-0 = "Cantarell:size=10;0"
 font-1 = "FontAwesome:size=10;0"
-font-2 = "Cantarell:size=10;0"
-font-3 = "Noto Sans Mono:size=10;0"
 
 modules-left = cpu memory temperature xwindow 
 modules-center = ewmh 
@@ -33,15 +37,579 @@ modules-right = networkspeedup networkspeeddown backlight pavolume battery xkeyb
 
 tray-position = right
 tray-padding = 0
-tray-maxsize = 40
-tray-scale = 1.0
+; tray-maxsize = 20
+; tray-scale = 1.0
 
-wm-restack = i3
+; fixed-center = true
 
 
 [settings]
 screenchange-reload = true
 
+
 [global/wm]
 margin-top = 0
 margin-bottom = 0
+
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/cpu]
+type = internal/cpu
+interval = 1
+format-prefix-foreground = ${colors.foreground}
+format-underline = ${colors.background}
+format-prefix = " "
+
+label-font = 1
+
+; Available tags:
+;   <label> (default)
+;   <bar-load>
+;   <ramp-load>
+;   <ramp-coreload>
+format = <label>
+
+
+; Available tokens:
+;   %percentage% (default) - total cpu load
+;   %percentage-cores% - load percentage for each core
+;   %percentage-core[1-9]% - load percentage for specific core
+label = "Cpu: %percentage%%"
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/temperature]
+type = internal/temperature
+thermal-zone = 2
+warn-temperature = 60
+
+format = <ramp> <label>
+format-underline = ${colors.secondary}
+format-warn = <ramp> <label-warn>
+format-warn-underline = ${self.format-underline}
+
+label = %temperature%
+label-warn = %temperature%
+label-warn-foreground = ${colors.secondary}
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-foreground = ${colors.foreground}
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/memory]
+type = internal/memory
+interval = 1
+; Available tokens:
+;   %percentage_used% 
+;   %percentage_free%
+;   %gb_used% (default)
+;   %gb_free%
+;   %gb_total%
+;   %mb_used%
+;   %mb_free%
+;   %mb_total%
+label = %gb_used%
+
+format = "Mem: <label>"
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground}
+format-underline = ${colors.primary}
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+mount-0 = /
+label-mounted = %mountpoint%: %percentage_free%% of %total%
+label-unmounted = %mountpoint% not mounted
+format-underline = ${colors.primary}
+spacing = 4
+
+;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:90:...%
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/backlight]
+type = internal/xbacklight
+card = intel_backlight
+
+format = <ramp> <label>
+format-background = ${colors.background}
+format-foreground = ${colors.foreground}
+format-padding = 1
+format-prefix = ""
+format-underline = ${colors.primary}
+
+label = %percentage%%
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-3 = 
+ramp-4 = 
+
+[module/backlight2]
+type = internal/backlight
+card = intel_backlight
+
+format = <bar> <label>
+format-prefix = ""
+
+bar-width = 10
+bar-indicator = |
+bar-indicator-foreground = #ff
+bar-indicator-font = 2
+bar-fill = ─
+bar-fill-font = 2
+bar-fill-foreground = ${colors.alert}
+bar-empty = ─
+bar-empty-font = 2
+bar-empty-foreground = ${colors.foreground-alt}
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground}
+format-prefix-underline = ${colors.secondary}
+
+label-layout = %layout%
+label-layout-underline = ${colors.secondary}
+
+label-indicator-padding = 2
+label-indicator-margin = 1
+label-indicator-background = ${colors.secondary}
+label-indicator-underline = ${colors.secondary}
+
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/volume]
+type = internal/volume
+
+format-volume = <bar-volume> <label-volume>
+label-volume-foreground = ${root.foreground}
+
+format-volume-prefix = ""
+
+format-muted-prefix = ""
+format-muted-foreground = ${colors.foreground-alt}
+label-muted = sound muted
+
+bar-volume-width = 10
+bar-volume-foreground-0 = ${colors.primary}
+bar-volume-foreground-1 = ${colors.primary}
+bar-volume-foreground-2 = ${colors.primary}
+bar-volume-foreground-3 = ${colors.primary}
+bar-volume-foreground-4 = ${colors.primary}
+bar-volume-foreground-5 = ${colors.alert}
+bar-volume-foreground-6 = ${colors.alert}
+bar-volume-gradient = false
+bar-volume-indicator = |
+bar-volume-indicator-font = 2
+bar-volume-fill = ─
+bar-volume-fill-font = 2
+bar-volume-empty = ─
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = ${colors.foreground-alt}
+
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/wlan]
+type = internal/network
+interface = wlp2s0
+interval = 3.0
+
+format-connected = <ramp-signal> <label-connected>
+format-connected-underline = ${colors.primary}
+label-connected = %essid%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
+ramp-signal-foreground = ${colors.foreground}
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/eth]
+type = internal/network
+interface = enp3s0
+interval = 3.0
+
+format-connected-underline = ${colors.primary}
+format-connected-prefix = " "
+format-connected-prefix-foreground = ${colors.foreground-alt}
+label-connected = %local_ip%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/powermenu]
+type = custom/menu
+
+format-spacing = 1
+
+label-open = 
+label-open-foreground = ${colors.primary}
+label-close =  cancel
+label-close-foreground = ${colors.primary}
+label-separator = |
+label-separator-foreground = ${colors.foreground-alt}
+
+menu-0-0 = reboot
+menu-0-0-exec = menu-open-1
+menu-0-1 = power off
+menu-0-1-exec = menu-open-2
+menu-0-2 = suspend
+menu-0-2-exec = menu-open-3
+menu-0-3 = logout
+menu-0-3-exec = menu-open-4
+
+menu-1-0 = cancel
+menu-1-0-exec = menu-open-0
+menu-1-1 = reboot
+menu-1-1-exec = systemctl reboot
+
+menu-2-0 = power off
+menu-2-0-exec = systemctl poweroff
+menu-2-1 = cancel
+menu-2-1-exec = menu-open-0
+
+menu-3-0 = suspend
+menu-3-0-exec = systemctl suspend
+menu-3-1 = cancel
+menu-3-1-exec = menu-open-0
+
+menu-4-0 = logout
+menu-4-0-exec = i3-msg exit
+menu-4-1 = cancel
+menu-4-1-exec = menu-open-0
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/redshift]
+type = custom/script
+interval = 5
+
+exec = ~/.config/polybar/scripts/redshift.sh
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/music]
+type = custom/script
+interval = 2
+
+label = %output:0:45:...%
+exec = ~/.config/polybar/scripts/mpris.sh
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/pavolume]
+type = custom/script
+tail = true
+label = %output%
+exec = ~/.config/polybar/scripts/pavolume.sh --listen
+click-right = exec pavucontrol
+click-left = ~/.config/polybar/scripts/pavolume.sh --togmute
+scroll-up = ~/.config/polybar/scripts/pavolume.sh --up
+scroll-down = ~/.config/polybar/scripts/pavolume.sh --down
+format-background = ${colors.background}
+format-foreground = ${colors.foreground}
+format-underline = ${colors.primary}
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+[module/battery]
+type = internal/battery
+
+; This is useful in case the battery never reports 100% charge
+full-at = 99
+
+; Use the following command to list batteries and adapters:
+; $ ls -1 /sys/class/power_supply/
+battery = BAT0
+adapter = ADP1
+
+; If an inotify event haven't been reported in this many
+; seconds, manually poll for new values.
+;
+; Needed as a fallback for systems that don't report events
+; on sysfs/procfs.
+;
+; Disable polling by setting the interval to 0.
+;
+; Default: 5
+poll-interval = 5
+
+; see "man date" for details on how to format the time string
+; NOTE: if you want to use syntax tags here you need to use %%{...}
+; Default: %H:%M:%S
+time-format = %H:%M
+
+; Available tags:
+;   <label-charging> (default)
+;   <bar-capacity>
+;   <ramp-capacity>
+;   <animation-charging>
+format-charging = <animation-charging> <label-charging>
+
+; Available tags:
+;   <label-discharging> (default)
+;   <bar-capacity>
+;   <ramp-capacity>
+;   <animation-discharging>
+format-discharging = <ramp-capacity> <label-discharging>
+
+; Available tags:
+;   <label-full> (default)
+;   <bar-capacity>
+;   <ramp-capacity>
+;format-full = <ramp-capacity> <label-full>
+
+; Available tokens:
+;   %percentage% (default) - is set to 100 if full-at is reached
+;   %percentage_raw%
+;   %time%
+;   %consumption% (shows current charge rate in watts)
+label-charging = %percentage%%
+
+; Available tokens:
+;   %percentage% (default) - is set to 100 if full-at is reached
+;   %percentage_raw%
+;   %time%
+;   %consumption% (shows current discharge rate in watts)
+label-discharging = %percentage%%
+
+; Available tokens:
+;   %percentage% (default) - is set to 100 if full-at is reached
+;   %percentage_raw%
+label-full = Fully charged
+
+; Only applies if <ramp-capacity> is used
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+; Only applies if <bar-capacity> is used
+bar-capacity-width = 10
+
+; Only applies if <animation-charging> is used
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+; Framerate in milliseconds
+animation-charging-framerate = 750
+
+; Only applies if <animation-discharging> is used
+animation-discharging-0 = 
+animation-discharging-1 = 
+animation-discharging-2 = 
+animation-discharging-3 = 
+animation-discharging-4 = 
+; Framerate in milliseconds
+animation-discharging-framerate = 500
+
+;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/date]
+type = internal/date
+interval = 1.0
+date = "%a %d %b %Y"
+date-alt = " %a %b %d, %Y"
+time = %l:%M%p
+time-alt = %l:%M%p
+format-prefix = " "
+format-background = ${colors.background}
+format-foreground = ${colors.foreground}
+label = "%date% "
+format-underline = ${colors.alert}
+
+[module/time]
+type = internal/date
+interval = 1.0
+time = %l:%M%p
+time-alt = %l:%M%p
+format-prefix = ""
+format-background = ${colors.background}
+format-foreground = ${colors.foreground}
+label = "%time% "
+format-underline = ${colors.alert}
+
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/networkspeedup]
+type = internal/network
+interface = wlp59s0
+label-connected = "%upspeed:7%"
+format-connected = <label-connected>
+format-connected-prefix = ""
+format-connected-prefix-foreground = ${colors.foreground}
+format-connected-foreground = ${colors.foreground}
+format-connected-background = ${colors.background}
+format-connected-underline = ${colors.primary}
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/networkspeeddown]
+type = internal/network
+interface = wlp59s0
+label-connected = "%downspeed:7%"
+format-connected = <label-connected>
+format-connected-prefix = ""
+format-connected-prefix-foreground = ${colors.foreground}
+format-connected-foreground = ${colors.foreground}
+format-connected-background = ${colors.background}
+format-connected-underline = ${colors.alert}
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/spotify]
+type = custom/script
+exec = python ~/.config/polybar/scripts/spotify.py  -f '{song} - {artist} - {album}'
+interval = 1
+
+;format = <label>
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+
+format-padding = 0
+format-underline = ${colors.success}
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+label = %output:0:150%
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/pub-ip]
+type = custom/script
+exec = ~/.config/polybar/scripts/pub-ip.sh
+interval = 100
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+label = %output%
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground}
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/uptime]
+type = custom/script
+exec = uptime | awk -F, '{sub(".*up ",x,$1);print $1}'
+interval = 100
+label = Uptime : %output%
+
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground}
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/wireless-network]
+;https://github.com/jaagr/polybar/wiki/Module:-network
+type = internal/network
+interface = ${env:WIRELESS}
+interval = 3.0
+label-connected = %essid%
+
+format-connected = <label-connected>
+;format-connected = <ramp-signal> <label-connected>
+format-connected-foreground = ${colors.foreground}
+format-connected-background = ${colors.background}
+format-connected-prefix = "  "
+format-connected-prefix-foreground = #7e52c6
+format-connected-prefix-background = ${colors.background}
+format-connected-underline = #7e52c6
+
+label-disconnected = %ifname% disconnected
+label-disconnected-foreground = ${colors.alert}
+label-disconnected-background = ${colors.background}
+
+format-disconnected = <label-disconnected>
+format-disconnected-foreground = ${colors.alert}
+format-disconnected-background = ${colors.background}
+format-disconnected-prefix = "  "
+format-disconnected-prefix-foreground = ${colors.alert}
+format-disconnected-prefix-background = ${colors.background}
+format-disconnected-underline =${colors.alert}
+
+ramp-signal-0 = ▁
+ramp-signal-1 = ▂
+ramp-signal-2 = ▃
+ramp-signal-3 = ▄
+ramp-signal-4 = ▅
+ramp-signal-5 = ▆
+ramp-signal-6 = ▇
+ramp-signal-7 = █
+ramp-signal-foreground = #7e52c6
+
+; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[module/ewmh]
+type = internal/xworkspaces
+
+pin-workspaces = false
+enable-click = false
+enable-scroll = false
+reverse-scroll = false
+
+
+icon-0 = 1;
+icon-1 = 2;
+icon-2 = 3;
+icon-3 = 4;
+icon-4 = 5;
+#icon-5 = 6;
+format = <label-state>
+label-monitor = %name%
+
+label-active = %name%
+label-active-foreground = ${colors.background}
+label-active-background = ${colors.primary}
+label-active-underline= ${colors.background}
+label-active-padding = 3
+
+label-occupied = %name%
+label-occupied-background = ${colors.success}
+label-occupied-padding = 3
+
+label-urgent = %name%
+label-urgent-foreground = ${colors.foreground}
+label-urgent-background = ${colors.alert}
+label-urgent-underline = ${colors.alert}
+label-urgent-padding = 3
+
+
+label-empty = %name%
+label-empty-foreground = ${colors.foreground}
+label-empty-padding = 3
