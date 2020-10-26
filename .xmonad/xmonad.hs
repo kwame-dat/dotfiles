@@ -1,6 +1,5 @@
 import System.IO
 import System.Exit
-
 import XMonad
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.DynamicLog
@@ -16,22 +15,18 @@ import XMonad.Actions.CycleWS
 import XMonad.Actions.WithAll (sinkAll, killAll)
 import XMonad.Hooks.UrgencyHook
 import qualified Codec.Binary.UTF8.String as UTF8
-
 import XMonad.Layout.Spacing
 import XMonad.Layout.Gaps
 import XMonad.Layout.ResizableTile
----import XMonad.Layout.NoBorders
 import XMonad.Layout.Fullscreen (fullscreenFull)
 import XMonad.Layout.Cross(simpleCross)
 import XMonad.Layout.Spiral(spiral)
+import XMonad.Layout.Grid
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.IndependentScreens
-
-
 import XMonad.Layout.CenteredMaster(centerMaster)
-
 import Graphics.X11.ExtraTypes.XF86
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
@@ -57,24 +52,21 @@ winType  = "#c678dd"
 --controlMask= ctrl key
 --shiftMask= shift key
 
-emacs         = "\xf121"
 web           = "\xf0ac"
+editor        = "\xf121"
 chat          = "\xf075"
-books         = "\xf02d"
+reading       = "\xf02d"
 videoCalls    = "\xf03d"
 dbclient      = "\xf1c0"
 restClient    = "\xf25b"
 gaming        = "\xf11b"
-misc          = "\61705"
-music         = "\xf001"
+media         = "\xf001"
 
 myModMask = mod4Mask
 encodeCChar = map fromIntegral . B.unpack
-myFocusFollowsMouse = True
-myBorderWidth = 2
-myWorkspaces    = [emacs, web, chat, restClient, dbclient, books, videoCalls, gaming, misc, music]
---myWorkspaces    = ["1","2","3","4","5","6","7","8","9","10"]
---myWorkspaces    = ["I","II","III","IV","V","VI","VII","VIII","IX","X"]
+myFocusFollowsMouse = False
+myBorderWidth = 0
+myWorkspaces    = [web, editor, reading, chat, restClient, dbclient, videoCalls, gaming, media]
 
 myBaseConfig = desktopConfig
 
@@ -85,26 +77,25 @@ myManageHook = composeAll . concat $
     , [title =? t --> doFloat | t <- myTFloats]
     , [resource =? r --> doFloat | r <- myRFloats]
     , [resource =? i --> doIgnore | i <- myIgnores]
-    , [className =? "Emacs"                                   --> doShift ( myWorkspaces !! 0 )]
-    , [className =? "qutebrowser"                             --> doShift ( myWorkspaces !! 1 )]
-    , [className =? "Google-chrome"                           --> doShift ( myWorkspaces !! 1 )]
-    , [className =? "Vivaldi-stable"                          --> doShift ( myWorkspaces !! 1 )]
-    , [className =? "Brave-browser"                           --> doShift ( myWorkspaces !! 1 )]
-    , [className =? "firefox"                                 --> doShift ( myWorkspaces !! 1 )]
-    , [className =? "whatsapp-nativefier-d52542"              --> doShift ( myWorkspaces !! 2 )]
-    , [className =? "Signal"                                  --> doShift ( myWorkspaces !! 2 )]
-    , [className =? "Slack"                                   --> doShift ( myWorkspaces !! 2 )]
-    , [className =? "Insomnia"                                --> doShift ( myWorkspaces !! 3 )]
-    , [className =? "Postman"                                 --> doShift ( myWorkspaces !! 3 )]
-    , [className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 4 )]
-    , [className =? "calibre"                                 --> doShift ( myWorkspaces !! 5 )]
-    , [className =? "Stoplight Studio"                        --> doShift ( myWorkspaces !! 5 )]
+    , [className =? "qutebrowser"                             --> doShift ( myWorkspaces !! 0 )]
+    , [className =? "Google-chrome"                           --> doShift ( myWorkspaces !! 0 )]
+    , [className =? "Vivaldi-stable"                          --> doShift ( myWorkspaces !! 0 )]
+    , [className =? "Brave-browser"                           --> doShift ( myWorkspaces !! 0 )]
+    , [className =? "firefox"                                 --> doShift ( myWorkspaces !! 0 )]
+    , [className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )]
+    , [className =? "calibre"                                 --> doShift ( myWorkspaces !! 2 )]
+    , [className =? "Stoplight Studio"                        --> doShift ( myWorkspaces !! 2 )]
+    , [className =? "whatsapp-nativefier-d52542"              --> doShift ( myWorkspaces !! 3 )]
+    , [className =? "Signal"                                  --> doShift ( myWorkspaces !! 3 )]
+    , [className =? "Slack"                                   --> doShift ( myWorkspaces !! 3 )]
+    , [className =? "Insomnia"                                --> doShift ( myWorkspaces !! 4 )]
+    , [className =? "Postman"                                 --> doShift ( myWorkspaces !! 4 )]
+    , [className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 5 )]
     , [className =? "zoom"                                    --> doShift ( myWorkspaces !! 6 )]
     , [className =? "obs"                                     --> doShift ( myWorkspaces !! 7 )]
     , [className =? "vlc"                                     --> doShift ( myWorkspaces !! 7 )]
-    , [className =? "Cisco AnyConnect Secure Mobility Client" --> doShift ( myWorkspaces !! 8 )]
     , [className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 8 )]
-    , [className =? "Spotify"                                 --> doShift ( myWorkspaces !! 9 )]
+    , [className =? "Spotify"                                 --> doShift ( myWorkspaces !! 8 )]
     ]
     where
     -- doShiftAndGo = doF . liftM2 (.) W.greedyView W.shift
@@ -112,27 +103,17 @@ myManageHook = composeAll . concat $
     myTFloats = ["Downloads", "Save As..."]
     myRFloats = []
     myIgnores = ["desktop_window"]
-    -- my1Shifts = ["Chromium", "Vivaldi-stable", "Firefox"]
-    -- my2Shifts = []
-    -- my3Shifts = ["Inkscape"]
-    -- my4Shifts = []
-    -- my5Shifts = ["Gimp", "feh"]
-    -- my6Shifts = ["vlc", "mpv"]
-    -- my7Shifts = ["Virtualbox"]
-    -- my8Shifts = ["Thunar"]
-    -- my9Shifts = []
-    -- my10Shifts = ["discord"]
 
-
-
-
-myLayout = spacingRaw True (Border 0 20 20 20) True (Border 20 20 20 20) True $ avoidStruts $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ tiled ||| Mirror tiled ||| spiral (6/7)  ||| ThreeColMid 1 (3/100) (1/2) ||| Full
+myLayout =
+  spacingRaw True (Border 0 30 30 30) True (Border 30 30 30 30) True
+  $ avoidStruts
+  $ mkToggle (NBFULL ?? NOBORDERS ?? EOT)
+  $ tiled ||| spiral (6/7) ||| ThreeColMid 1 (3/100) (1/2) ||| Full
     where
         tiled = Tall nmaster delta tiled_ratio
         nmaster = 1
         delta = 3/100
         tiled_ratio = 1/2
-
 
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 
@@ -214,20 +195,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((controlMask .|. mod1Mask , xK_v ), spawn $ "vivaldi-stable")
   , ((controlMask .|. mod1Mask , xK_Return ), spawn $ "urxvt")
   , ((modMask, xK_y), spawn $ "polybar-msg cmd toggle" )
-
-  -- ALT + ... KEYS
-
-  , ((mod1Mask, xK_f), spawn $ "variety -f" )
-  , ((mod1Mask, xK_n), spawn $ "variety -n" )
-  , ((mod1Mask, xK_p), spawn $ "variety -p" )
-  , ((mod1Mask, xK_r), spawn $ "xmonad --restart" )
-  , ((mod1Mask, xK_t), spawn $ "variety -t" )
-  , ((mod1Mask, xK_Up), spawn $ "variety --pause" )
-  , ((mod1Mask, xK_Down), spawn $ "variety --resume" )
-  , ((mod1Mask, xK_Left), spawn $ "variety -p" )
-  , ((mod1Mask, xK_Right), spawn $ "variety -n" )
-  , ((mod1Mask, xK_F2), spawn $ "gmrun" )
-  , ((mod1Mask, xK_F3), spawn $ "xfce4-appfinder" )
 
   --CONTROL + SHIFT KEYS
 
@@ -326,31 +293,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_comma), prevScreen)
 
   ]
+
   ++
-
-  -- mod-[1..9], Switch to workspace N
-  -- mod-shift-[1..9], Move client to workspace N
-  [((m .|. modMask, k), windows $ f i)
-
-  --Keyboard layouts
-  --qwerty users use this line
-   | (i, k) <- zip (XMonad.workspaces conf) [xK_1,xK_2,xK_3,xK_4,xK_5,xK_6,xK_7,xK_8,xK_9,xK_0]
-
-  --French Azerty users use this line
-  -- | (i, k) <- zip (XMonad.workspaces conf) [xK_ampersand, xK_eacute, xK_quotedbl, xK_apostrophe, xK_parenleft, xK_minus, xK_egrave, xK_underscore, xK_ccedilla , xK_agrave]
-
-  --Belgian Azerty users use this line
-  -- | (i, k) <- zip (XMonad.workspaces conf) [xK_ampersand, xK_eacute, xK_quotedbl, xK_apostrophe, xK_parenleft, xK_section, xK_egrave, xK_exclam, xK_ccedilla, xK_agrave]
-
-      , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)
-      , (\i -> W.greedyView i . W.shift i, shiftMask)]]
-
-  -- ++
-  -- -- ctrl-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
-  -- -- ctrl-shift-{w,e,r}, Move client to screen 1, 2, or 3
-  -- [((m .|. controlMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
-  --     | (key, sc) <- zip [xK_w, xK_e] [0..]
-  --     , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+    [((m .|. modMask, k), windows $ f i)
+        | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
+        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
 
 
 main :: IO ()
@@ -361,18 +308,12 @@ main = do
     D.requestName dbus (D.busName_ "org.xmonad.Log")
         [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
 
-
     xmonad . ewmh $
-  --Keyboard layouts
-  --qwerty users use this line
             myBaseConfig
-  --French Azerty users use this line
-            --myBaseConfig { keys = azertyKeys <+> keys azertyConfig }
-  --Belgian Azerty users use this line
-            --myBaseConfig { keys = belgianKeys <+> keys belgianConfig }
 
                 {startupHook = myStartupHook
-, layoutHook = gaps [(U,20), (D,5), (R,5), (L,5)] $ myLayout ||| layoutHook myBaseConfig
+, layoutHook = gaps [(U,60), (D,40), (R,40), (L,40)] $ myLayout
+-- , layoutHook = gaps [(U,100), (D,30), (R,30), (L,30)] $ myLayout ||| layoutHook myBaseConfig
 , manageHook = manageSpawn <+> myManageHook <+> manageHook myBaseConfig
 , modMask = myModMask
 , borderWidth = myBorderWidth
