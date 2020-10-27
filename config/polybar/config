@@ -13,7 +13,7 @@ color9 = #ECBE7B
 monitor = ${env:MONITOR:}
 dpi = ${xrdb:Xft.dpi:-1}
 width = 100%
-height = 33
+height = 35
 fixed-center = true
 
 background = ${colors.background}

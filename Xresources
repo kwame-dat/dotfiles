@@ -1,4 +1,6 @@
 Xft.dpi: 120
+rofi.dpi: 120
+
 URxvt.font: xft:JetBrains Mono Medium:size=12
 URxvt.boldFont: xft:JetBrains Mono Medium:size=12
 URxvt.scrollBar: false
@@ -6,7 +8,6 @@ URxvt.perl-ext-common:resize-font
 URxvt.keysym.C-minus:resize-font:smaller
 URxvt.keysym.C-equal:resize-font:bigger
 URxvt.keysym.C-0:resize-font:reset
-rofi.dpi: 120
 
 ! special
 *.foreground:   #000000

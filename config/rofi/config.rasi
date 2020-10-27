@@ -8,6 +8,5 @@ configuration {
 	ssh-command: "{terminal} -- {ssh-client} {host}";
 	combi-modi: "drun,window,ssh";
 	hide-scrollbar: true;
-	dpi: 192;
 	theme: "slate";
 }
