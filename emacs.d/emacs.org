@@ -1,4 +1,5 @@
 #+TITLE: My Emacs Literate Configuration
+
 #+AUTHOR: Tony Ampomah
 #+PROPERTY: header-args :tangle yes
 
@@ -333,7 +334,7 @@ previously compiled manually then all of the package initialization will still t
                        (projectile-project-root)
                      (projectile-project-root))))
       (call-process-shell-command
-       (concat "alacritty --working-directory "workdir) nil 0)))
+       (concat "gnome-terminal "workdir) nil 0)))
 
   (defun sudo-find-file (file-name)
     "Like find file, but opens the file as root."
@@ -352,6 +353,7 @@ previously compiled manually then all of the package initialization will still t
                  (file-writable-p buffer-file-name))
       (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 #+END_SRC
+
 ** General Keybinding
 #+BEGIN_SRC emacs-lisp
   (setq mac-option-modifier 'meta)
@@ -489,8 +491,8 @@ Install =evil-collection=, which provides evil-friendly bindings for many modes.
     :after evil
     :config
     (setq evil-collection-want-unimpaired-p nil)
-    (setq evil-collection-mode-list
-          '(ag dired magit mu4e which-key))
+    ;; (setq evil-collection-mode-list
+    ;;       '(ag dired magit mu4e which-key))
     (evil-collection-init))
 #+end_src
 
@@ -645,8 +647,8 @@ Use =evil= with Org agendas.
       ;; notes
       "nf" '(lambda() (interactive) (counsel-find-file "~/Nextcloud/org"))
       "n." '(lambda() (interactive) (counsel-find-file "~/Nextcloud/org"))
-      "ni" '(lambda() (interactive) (find-file "~/Nextcloud/org/inbox.org"))
-      "nt" '(lambda() (interactive) (find-file "~/Nextcloud/org/todo.org"))
+      "ni" '(lambda() (interactive) (find-file "~/Nextcloud/org/Inbox.org"))
+      "nt" '(lambda() (interactive) (find-file "~/Nextcloud/org/Todo.org"))
       "na" 'org-agenda
       "nci" 'org-pomodoro
       "nco" 'org-pomodoro-clock-break
@@ -684,8 +686,8 @@ Use =evil= with Org agendas.
     "C-k" 'evil-window-up
     "C-l" 'evil-window-right)
 
-  (general-def 'normal 'override
-    "-"       'dired-jump)
+  ;; (general-def 'normal 'override
+  ;;   "-"       'dired-jump)
 
   ;; Dired
   (general-def 'normal dired-mode-map
@@ -900,15 +902,15 @@ with richer versions. Let's install it!
   (use-package all-the-icons
     :ensure t)
 
-  (use-package all-the-icons-dired
-    :diminish all-the-icons-dired-mode)
+  ;; (use-package all-the-icons-dired
+  ;;   :diminish all-the-icons-dired-mode)
 
   (use-package all-the-icons-ivy
     :ensure t
     :config
     (all-the-icons-ivy-setup))
 
-  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+  ;; (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 #+END_SRC
     
 *** lsp-mode
@@ -1000,7 +1002,8 @@ going to install it and make sure it's loaded immediately.
     (setq projectile-project-search-path '(
                                            "~/Repo/2Areas"
                                            "~/Repo/1Projects"
-                                           "~/Nextcloud"
+                                           "~/Nextcloud/Documents/1Projects"
+                                           "~/Nextcloud/Documents/2Areas"
                                            ))
     (setq projectile-completion-system 'ivy)
     (setq projectile-switch-project-action #'projectile-dired)
@@ -1029,6 +1032,18 @@ want is prioritized instead.
 
     :config
     (require 'org-tempo)
+
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((R . t)
+       (emacs-lisp . t)
+       (latex . t)
+       (shell . t)
+       (ledger . t)
+       (python . t)
+       (sql . t)
+       (ruby . t)
+       (sqlite . t)))
 
     :custom-face
     (variable-pitch ((t (:family "Noto Sans"))))
@@ -1129,23 +1144,14 @@ Don't indent newly expanded blocks, even if they're under a heading.
 
   (setq org-capture-templates
         '(
-          ("i" "Inbox" entry (file "~/Nextcloud/org/inbox.org")
+          ("i" "Inbox" entry (file "~/Nextcloud/org/Inbox.org")
            "* TODO %?\n")
-          ("m" "Email" entry (file+headline "~/Nextcloud/org/inbox.org" "Emails")
-           "* TODO [#A] Process mail from %:fromname on %:subject\nSCHEDULED:%t\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+2d\"))\n:PROPERTIES:\n:CREATED: %U\n:END:\n %a" :immediate-finish t :prepend t)
-          ("p" "Project" entry (file+headline "~/Nextcloud/org/todo-personal.org" "1Projects")
-           (file "~/Nextcloud/org/templates/new-project-template.org"))
-          ("s" "Someday" entry (file+headline "~/Nextcloud/org/someday.org" "Someday")
-           "* SOMEDAY %?\n")
-          ("l" "Log" entry (file+olp+datetree "~/Nextcloud/org/log.org" "Log")
-           (file "~/Nextcloud/org/templates/logtemplate.org"))))
-
-  ;; (setq org-src-preserve-indentation t  ; use native major-mode indentation
-  ;;       org-src-tab-acts-natively t     ; we do this ourselves
-  ;;       org-confirm-babel-evaluate nil
-  ;;       org-link-elisp-confirm-function nil
-  ;;       org-src-window-setup 'other-window
-  ;;       org-babel-lisp-eval-fn #'sly-eval)
+          ("e" "Email" entry (file+headline "~/Nextcloud/org/Inbox.org" "Emails")
+           "* TODO [#A] Process Email %:fromname on %:subject\nSCHEDULED:%t\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+2d\"))\n:PROPERTIES:\n:CREATED: %U\n:END:\n %a" :immediate-finish t :prepend t)
+          ("p" "Project" entry (file+headline "~/Nextcloud/org/Todo.org" "1Projects")
+           (file "~/Nextcloud/org/templates/new-project.org"))
+          ("s" "Someday" entry (file+headline "~/Nextcloud/org/Someday.org" "Someday")
+           "* SOMEDAY %?\n")))
 
 
   (use-package ox-pandoc
@@ -1201,12 +1207,17 @@ My leader keybinding for org mode
 Task Management & Agenda Views
 #+begin_src emacs-lisp
   (setq org-directory "~/Nextcloud/org")
-  (setq org-agenda-files (quote ("~/Nextcloud/org/todo.org")))
+  (setq org-agenda-files (quote ("~/Nextcloud/org/Todo.org")))
 #+end_src
 
 I prefer indented in org mode please.
 #+begin_src emacs-lisp
   (setq org-startup-indented t)
+#+end_src
+
+Stop asking to confirm
+#+begin_src emacs-lisp
+  (setq org-confirm-babel-evaluate nil)
 #+end_src
 
 Make sure all org files are folded
@@ -1242,63 +1253,6 @@ Make sure all org files are folded
 #+END_SRC
 
 *** slack
-#+BEGIN_SRC emacs-lisp
-  (use-package slack
-    :commands (slack-start)
-    :init
-    (setq slack-buffer-emojify t)
-    (setq slack-prefer-current-team t)
-    :config
-    (slack-register-team
-     :name "Trainline"
-     :default t
-     :token (auth-source-pick-first-password
-             :host "trainline.slack.com"
-             :user "tony.ampomah@thetrainline.com")
-     :subscribed-channels '(delay-repay-cms)
-     :full-and-display-names t)
-    (slack-register-team
-     :name "Netsells"
-     :token (auth-source-pick-first-password
-             :host "netsells.slack.com"
-             :user "tony.ampomah@netsells.co.uk")
-     :subscribed-channels '(devz-notification team-backend trainline-railguard)
-     :full-and-display-names t))
-
-  (my-local-leader-def 'normal slack-mode-map
-    "j" 'slack-channel-select
-    "d" 'slack-im-select
-    "e" 'slack-message-edit
-    "q" 'slack-ws-close
-    "mm" 'slack-message-embed-mention
-    "c" 'slack-message-embed-channel
-    "k" 'slack-channel-select
-    "@" 'slack-message-embed-mention
-    "j" 'slack-channel-select
-    "#" 'slack-message-embed-channel
-    "u" 'slack-room-update-messages
-    "q" 'slack-buffer-kill
-    "ra" 'slack-message-add-reaction
-    "rr" 'slack-message-remove-reaction
-    "rs" 'slack-message-show-reaction-users
-    "pl" 'slack-room-pins-list
-    "pa" 'slack-message-pins-add
-    "pr" 'slack-message-pins-remove
-    "mm" 'slack-message-write-another-buffer
-    "me" 'slack-message-edit
-    "md" 'slack-message-delete
-    "u" 'slack-room-update-messages
-    "2" 'slack-message-embed-mention
-    "3" 'slack-message-embed-channel
-    "\C-n" 'slack-buffer-goto-next-message
-    "\C-p" 'slack-buffer-goto-prev-message)
-
-  (my-local-leader-def 'normal slack-edit-message-mode-map
-    "k" 'slack-message-cancel-edit
-    "s" 'slack-message-send-from-buffer
-    "2" 'slack-message-embed-mention
-    "3" 'slack-message-embed-channel)
-#+END_SRC
     
 *** nov
 #+BEGIN_SRC emacs-lisp
@@ -1592,32 +1546,19 @@ functions we invoke regularly outside of magit is called.
   (add-hook 'dired-mode-hook 'itechytony-dired-mode-setup)
 
   (setq dired-dwim-target t)
-  (setq dired-hide-details-mode t)
+  ;; (setq dired-hide-details-mode t)
   (setq dired-clean-up-buffers-too t)
   (setq dired-recursive-copies 'always)
   (setq dired-recursive-deletes 'top)
   (setq-default dired-listing-switches "-lhvA")
-  (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
+  ;; (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
 
-  ;; (use-package async
-  ;;   :diminish dired-async-mode
-  ;;   :demand t
-  ;;   :ensure t
-  ;;   :config
-  ;;   (dired-async-mode 1))
-
-  ;; (use-package dired-narrow
-  ;;   :ensure t
-  ;;   :config
-  ;;   (bind-key "C-c C-n" #'dired-narrow)
-  ;;   (bind-key "C-c C-f" #'dired-narrow-fuzzy)
-  ;;   (bind-key "C-x C-N" #'dired-narrow-regexp))
-
-  (use-package dired-subtree :ensure t
-    :after dired
+  (use-package async
+    :diminish dired-async-mode
+    :demand t
+    :ensure t
     :config
-    (bind-key "<tab>" #'dired-subtree-toggle dired-mode-map)
-    (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
+    (dired-async-mode 1))
 
   (use-package dired-open
     :demand t
@@ -1629,15 +1570,15 @@ functions we invoke regularly outside of magit is called.
             ("docx" . "abiword")
             ("gif" . "ffplay")
             ("gnumeric" . "gnumeric")
-            ("jpeg" . "s")
-            ("jpg" . "s")
+            ("jpeg" . "feh")
+            ("jpg" . "feh")
             ("mkv" . "mpv")
             ("mov" . "mpv")
             ("mp3" . "mpv")
             ("mp4" . "mpv")
             ("pdf" . "zathura")
-            ("epub" . "zathura")
-            ("png" . "s")
+            ("epub" . "calibre")
+            ("png" . "feh")
             ("webm" . "mpv")
             ("xls" . "gnumeric")
             ("xlsx" . "gnumeric"))))
@@ -2250,7 +2191,7 @@ This allows me to  uncompress a .zip file
            (t  "/archive"))))
 
   ;; use org structures and tables in message mode
-  (add-hook 'message-mode-hook 'turn-on-orgstruct++)
+  ;; (add-hook 'message-mode-hook 'turn-on-orgstruct++)
   (add-hook 'message-mode-hook 'visual-fill-column-mode)
 
   ;; view HTML email in browser
@@ -2283,7 +2224,7 @@ can ensure that I always have an up to date project list.
 #+BEGIN_SRC emacs-lisp
   (defun go-to-projects ()
     (interactive)
-    (find-file "~/Nextcloud/org/todo.org")
+    (find-file "~/Nextcloud/org/Todo.org")
     (widen)
     (beginning-of-buffer)
     (re-search-forward "* Projects")
@@ -2324,7 +2265,7 @@ to my “Projects” subtree.
 #+BEGIN_SRC emacs-lisp
   (defun go-to-areas ()
     (interactive)
-    (find-file "~/Nextcloud/org/todo.org")
+    (find-file "~/Nextcloud/org/Todo.org")
     (widen)
     (beginning-of-buffer)
     (re-search-forward "* Areas")
