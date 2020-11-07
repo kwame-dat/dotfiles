@@ -1121,8 +1121,8 @@ Don't indent newly expanded blocks, even if they're under a heading.
   (setq org-todo-keywords
         '((sequence
            "TODO(t)"  ; A task that needs doing & is ready to do
-           "PROJ(p)"  ; A project, which usually contains other tasks
-           "STRT(s)"  ; A task that is in progress
+           "PROJECT(p)"  ; A project, which usually contains other tasks
+           "IN-PROGRESS(i)"  ; A task that is in progress
            "WAIT(w)"  ; Something external is holding up this task
            "HOLD(h)"  ; This task is paused/on hold because of me
            "|"
@@ -1136,11 +1136,11 @@ Don't indent newly expanded blocks, even if they're under a heading.
            "[X](D)")) ; Task was completed
         org-todo-keyword-faces
         '(("[-]"  . org-todo-active)
-          ("STRT" . org-todo-active)
+          ("IN-PROGRESS" . org-todo-active)
           ("[?]"  . org-todo-onhold)
           ("WAIT" . org-todo-onhold)
           ("HOLD" . org-todo-onhold)
-          ("PROJ" . org-todo-project)))
+          ("PROJECT" . org-todo-project)))
 
   (setq org-capture-templates
         '(
@@ -1207,7 +1207,7 @@ My leader keybinding for org mode
 Task Management & Agenda Views
 #+begin_src emacs-lisp
   (setq org-directory "~/Nextcloud/org")
-  (setq org-agenda-files (quote ("~/Nextcloud/org/Todo.org")))
+  (setq org-agenda-files (quote ("~/Nextcloud/org/Todo.org" "~/Nextcloud/org/Joint - Todo.org")))
 #+end_src
 
 I prefer indented in org mode please.
