@@ -5,6 +5,11 @@ xrdb -merge ~/.Xresources &
 # cursor active at boot
 xsetroot -cursor_name left_ptr &
 
+# Setup trackpad
+xinput --set-prop 13 "libinput Tapping Enabled" 1
+xinput --set-prop 13 "libinput Natural Scrolling Enabled" 1
+xinput --set-prop 13 "libinput Accel Speed" 1
+
 # Caps lock map
 xcape -e 'Caps_Lock=Escape' &
 
@@ -13,9 +18,6 @@ setxkbmap -option 'caps:ctrl_modifier' &
 
 # Increase keyboard key repeat
 xset r rate 220 80 &
-
-# Increase mouse 
-xinput --set-prop 12 'libinput Accel Speed' 1 &
 
 #starting utility applications at boot time
 nitrogen --restore &
