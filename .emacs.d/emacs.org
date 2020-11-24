@@ -71,6 +71,7 @@
     - [[#engine-mode][engine-mode]]
     - [[#doom-themes][doom themes]]
     - [[#doom-modeline][doom-modeline]]
+    - [[#rainbow-mode][rainbow-mode]]
     - [[#diminish][diminish]]
     - [[#mixed-pitch][Mixed pitch]]
     - [[#lang][Lang]]
@@ -334,7 +335,7 @@ previously compiled manually then all of the package initialization will still t
                        (projectile-project-root)
                      (projectile-project-root))))
       (call-process-shell-command
-       (concat "gnome-terminal "workdir) nil 0)))
+       (concat "alacritty --working-directory  "workdir) nil 0)))
 
   (defun sudo-find-file (file-name)
     "Like find file, but opens the file as root."
@@ -388,7 +389,7 @@ previously compiled manually then all of the package initialization will still t
 ** Font
 #+BEGIN_SRC emacs-lisp
   (setq itechytony/default-font "Cascadia Code")
-  (setq itechytony/default-font-size 12)
+  (setq itechytony/default-font-size 10)
   (setq itechytony/current-font-size itechytony/default-font-size)
 
   (setq itechytony/font-change-increment 1.1)
@@ -989,6 +990,7 @@ with richer versions. Let's install it!
   ;; (add-hook 'php-mode-hook #'my-flycheck-setup)
 #+END_SRC
 
+
 *** projectile
 Projectile is a quick and easy project management package that "just works". We're
 going to install it and make sure it's loaded immediately.
@@ -1121,8 +1123,8 @@ Don't indent newly expanded blocks, even if they're under a heading.
   (setq org-todo-keywords
         '((sequence
            "TODO(t)"  ; A task that needs doing & is ready to do
-           "PROJECT(p)"  ; A project, which usually contains other tasks
-           "IN-PROGRESS(i)"  ; A task that is in progress
+           "PROJ(p)"  ; A project, which usually contains other tasks
+           "STRT(s)"  ; A task that is in progress
            "WAIT(w)"  ; Something external is holding up this task
            "HOLD(h)"  ; This task is paused/on hold because of me
            "|"
@@ -1136,11 +1138,11 @@ Don't indent newly expanded blocks, even if they're under a heading.
            "[X](D)")) ; Task was completed
         org-todo-keyword-faces
         '(("[-]"  . org-todo-active)
-          ("IN-PROGRESS" . org-todo-active)
-          ("[?]"  . org-todo-onhold)
-          ("WAIT" . org-todo-onhold)
-          ("HOLD" . org-todo-onhold)
-          ("PROJECT" . org-todo-project)))
+          ("STRT" . (:foreground "orange" :weight bold))
+          ("[?]"  . (:foreground "red" :weight bold))
+          ("WAIT" . (:foreground "red" :weight bold))
+          ("HOLD" . (:foreground "red" :weight bold))
+          ("PROJ" . org-todo-project)))
 
   (setq org-capture-templates
         '(
@@ -1189,6 +1191,8 @@ Don't indent newly expanded blocks, even if they're under a heading.
 
   (use-package ob-restclient)
 #+END_SRC
+
+#+RESULTS:
 
 My leader keybinding for org mode
 #+BEGIN_SRC emacs-lisp
@@ -1278,6 +1282,7 @@ Make sure all org files are folded
 *** wgrep
 #+BEGIN_SRC emacs-lisp
   (use-package wgrep
+    :demand t
     :init
     (setq wgrep-auto-save-buffer t))
 
@@ -1582,6 +1587,21 @@ functions we invoke regularly outside of magit is called.
             ("webm" . "mpv")
             ("xls" . "gnumeric")
             ("xlsx" . "gnumeric"))))
+
+  (use-package dired
+    :ensure nil
+    :commands (dired dired-jump)
+    :bind (("C-x C-j" . dired-jump))
+    :custom ((dired-listing-switches "-agho --group-directories-first"))
+    :config
+    (evil-collection-define-key 'normal 'dired-mode-map
+      "h" 'dired-single-up-directory
+      "l" 'dired-single-buffer))
+
+  (use-package dired-single)
+
+  (use-package all-the-icons-dired
+    :hook (dired-mode . all-the-icons-dired-mode))
 #+END_SRC
 
 This allows me to  uncompress a .zip file
@@ -1753,7 +1773,7 @@ This allows me to  uncompress a .zip file
     ;; Global settings (defaults)
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
           doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    (load-theme 'doom-one t)
+    (load-theme 'doom-tomorrow-night t)
 
     ;; Enable flashing mode-line on errors
     (doom-themes-visual-bell-config)
@@ -1767,6 +1787,7 @@ This allows me to  uncompress a .zip file
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
 #+END_SRC
+
 *** doom-modeline
 #+BEGIN_SRC emacs-lisp
   (use-package doom-modeline
@@ -1777,6 +1798,11 @@ This allows me to  uncompress a .zip file
   (setq doom-modeline-mu4e t)
   (setq doom-modeline-github t)
 #+END_SRC
+
+*** rainbow-mode
+#+begin_src emacs-lisp
+  (use-package rainbow-mode)
+#+end_src
 
 *** diminish
 #+BEGIN_SRC emacs-lisp
@@ -2046,7 +2072,7 @@ This allows me to  uncompress a .zip file
         ;; http://www.offlineimap.org/configuration/2016/01/29/why-i-m-not-using-maxconnctions.html
         ;; This halves the time for checking mails for 4 accounts for me
         ;; (when nothing has to be synched anyway)
-        mu4e-get-mail-command "offlineimap_parallel.sh"
+        mu4e-get-mail-command "offlineimap_parallel"
         mu4e-attachment-dir "~/Downloads")
 
   (setq mu4e-maildir "~/Maildir/")
@@ -2200,6 +2226,7 @@ This allows me to  uncompress a .zip file
   ;; display unread email on mode line
   (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
 #+END_SRC
+
 *** Toc-org
 Let's install and load the =toc-org= package after org mode is loaded. This is the
 package that automatically generates an up to date table of contents for us.
