@@ -9,9 +9,7 @@ function run {
 
 (sleep 2; run $HOME/.config/polybar/launch.sh) &
 
-xrandr --output eDP1 --primary --mode 3840x2160 --pos 0x1600 --rotate normal --output DP1 --mode 3840x1600 --pos 0x0 --rotate normal --output DP2 --off --output DP3 --off --output VIRTUAL1 --off
 
-# xrandr --output eDP1 --off --output DP1 --mode 3840x1600 --pos 0x0 --rotate normal --output DP2 --off --output DP3 --off --output VIRTUAL1 --off
 
 xrdb -merge ~/.Xresources &
 
