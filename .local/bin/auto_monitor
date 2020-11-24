@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if xrandr | grep -q "^DP1 connected"
+then
+    xrandr --output eDP1 --off --output DP1 --primary --mode 3840x1600 \
+           --pos 0x0 --rotate normal \
+           --output DP2 --off \
+           --output DP3 --off \
+           --output VIRTUAL1 --off
+    ln -sf /home/tonya/Repo/2Areas/dotfiles/.Xresources-ultrawide /home/tonya/.Xresources
+    xrdb -merge ~/.Xresources
+else
+    ln -sf /home/tonya/Repo/2Areas/dotfiles/.Xresources /home/tonya/.Xresources
+    xrdb -merge ~/.Xresources
+fi
+
+# #!/bin/sh
+
+# # --- check which is the second monitor, if any ---
+
+# if xrandr | grep -q "HDMI1 connected"
+# then
+#    monitor=HDMI1
+# elif xrandr | grep -q "^DP1 connected"
+# then
+#    monitor=DP1
+# else
+#    monitor=VGA1
+# fi
