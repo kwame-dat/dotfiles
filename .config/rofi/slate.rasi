@@ -1,8 +1,7 @@
 * {
   background-color: #1d1f21;
-  border-color: #1d1f21;
   text-color: #c5c8c6;
-  spacing: 0;
+  spacing: 25px;
 }
 
 inputbar {
@@ -11,15 +10,16 @@ inputbar {
 }
 
 prompt {
-  padding: 16px;
+  padding: 10px;
   border: 0 1px 0 0;
+  border-color: #1d1f21;
 }
 
 textbox {
   background-color: #1d1f21;
   border: 0 0 1px 0;
   border-color: #1d1f21;
-  padding: 8px 20px;
+  padding: 5px 10;
 }
 
 entry {
@@ -34,7 +34,7 @@ listview {
 
 element {
   border: 0 0 1px 0;
-  padding: 20px;
+  padding: 10px;
 }
 
 element selected {
