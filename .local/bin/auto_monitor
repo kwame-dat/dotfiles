@@ -7,23 +7,9 @@ then
            --output DP2 --off \
            --output DP3 --off \
            --output VIRTUAL1 --off
-    ln -sf /home/tonya/Repo/2Areas/dotfiles/.Xresources-ultrawide /home/tonya/.Xresources
+    ln -sf /home/tonya/Repo/2Areas/dotfiles/.config/shell/Xresources-ultrawide /home/tonya/.Xresources
     xrdb -merge ~/.Xresources
 else
-    ln -sf /home/tonya/Repo/2Areas/dotfiles/.Xresources /home/tonya/.Xresources
+    ln -sf /home/tonya/Repo/2Areas/dotfiles/.Xresources ~/
     xrdb -merge ~/.Xresources
 fi
-
-# #!/bin/sh
-
-# # --- check which is the second monitor, if any ---
-
-# if xrandr | grep -q "HDMI1 connected"
-# then
-#    monitor=HDMI1
-# elif xrandr | grep -q "^DP1 connected"
-# then
-#    monitor=DP1
-# else
-#    monitor=VGA1
-# fi

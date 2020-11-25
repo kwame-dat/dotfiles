@@ -45,6 +45,9 @@ super + F12
 #################################################################
 # SUPER + ... KEYS
 #################################################################
+# Rofi pass
+super + p
+	rofi-pass
 
 # Emacs
 super + e
@@ -151,9 +154,6 @@ super + alt + b
 
 super + alt + c
 	rofi -show calc
-
-super + alt + p
-	rofi-pass
 
 super + alt + s
 	flameshot gui

@@ -1,4 +1,6 @@
 .emacs.d/*
+!.emacs.d/eshell/alias
+!.emacs.d/lisp/*
 !.emacs.d/emacs.org
 !.emacs.d/README.md
 !.emacs.d/Makefile

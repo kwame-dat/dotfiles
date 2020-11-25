@@ -389,7 +389,7 @@ previously compiled manually then all of the package initialization will still t
 ** Font
 #+BEGIN_SRC emacs-lisp
   (setq itechytony/default-font "Cascadia Code")
-  (setq itechytony/default-font-size 10)
+  (setq itechytony/default-font-size 12)
   (setq itechytony/current-font-size itechytony/default-font-size)
 
   (setq itechytony/font-change-increment 1.1)
@@ -1006,11 +1006,13 @@ going to install it and make sure it's loaded immediately.
                                            "~/Repo/1Projects"
                                            "~/Nextcloud/Documents/1Projects"
                                            "~/Nextcloud/Documents/2Areas"
+                                           "~/Nextcloud/"
                                            ))
     (setq projectile-completion-system 'ivy)
     (setq projectile-switch-project-action #'projectile-dired)
     (projectile-mode))
 #+END_SRC
+
 
 *** which-key
 #+BEGIN_SRC emacs-lisp
