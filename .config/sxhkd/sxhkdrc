@@ -90,7 +90,7 @@ super + shift + s
 
 # logout
 super + shift + e
-    arcolinux-logout
+    killall dwm
 
 #################################################################
 # CONTROL + ALT KEYS
