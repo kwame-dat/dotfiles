@@ -36,9 +36,7 @@ run "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 picom -b  --config ~/.config/picom/picom.conf &
 run "numlockx on"
 sxhkd -c ~/.config/sxhkd/sxhkdrc &
-
 /usr/bin/emacs --daemon &
-
 run nextcloud &
 run caffeine &
 run kdeconnect-indicator &
