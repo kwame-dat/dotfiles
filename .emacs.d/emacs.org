@@ -348,6 +348,7 @@ previously compiled manually then all of the package initialization will still t
     (progn (org-agenda nil "a")
            (org-agenda-day-view)))
 
+
   (defadvice ido-find-file (after find-file-sudo activate)
     "Find file as root if necessary."
     (unless (and buffer-file-name
@@ -1006,6 +1007,8 @@ going to install it and make sure it's loaded immediately.
                                            "~/Repo/1Projects"
                                            "~/Nextcloud/Documents/1Projects"
                                            "~/Nextcloud/Documents/2Areas"
+                                           "~/RepoWork/2Areas"
+                                           "~/RepoWork/1Projects"
                                            "~/Nextcloud/"
                                            ))
     (setq projectile-completion-system 'ivy)
@@ -1213,7 +1216,11 @@ My leader keybinding for org mode
 Task Management & Agenda Views
 #+begin_src emacs-lisp
   (setq org-directory "~/Nextcloud/org")
-  (setq org-agenda-files (quote ("~/Nextcloud/org/Todo.org" "~/Nextcloud/org/Joint - Todo.org")))
+  (setq org-agenda-files (quote (
+                                 "~/Nextcloud/org/Todo.org"
+                                 "~/Nextcloud/org/Joint - Todo.org"
+                                 "~/Nextcloud/org/Work.org"
+                                 )))
 #+end_src
 
 I prefer indented in org mode please.
@@ -1963,13 +1970,6 @@ This allows me to  uncompress a .zip file
   (use-package prettier-js)
 #+END_SRC
      
-**** =yaml=
-#+BEGIN_SRC emacs-lisp
-  (use-package yaml-mode
-    :mode "Procfile\\'")
-  (add-hook 'yaml-mode-hook 'display-line-numbers-mode)
-#+END_SRC
-     
 **** =dotenv=
 #+BEGIN_SRC emacs-lisp
   (use-package dotenv-mode)
@@ -2053,6 +2053,18 @@ This allows me to  uncompress a .zip file
 #+BEGIN_SRC emacs-lisp
   (use-package haskell-mode)
 #+END_SRC
+**** ansible
+#+begin_src emacs-lisp
+  (use-package ansible)
+  (use-package ansible-doc)
+  (use-package jinja2-mode)
+  (use-package company-ansible)
+
+  (use-package yaml-mode
+    :mode "Procfile\\'")
+  (add-hook 'yaml-mode-hook 'display-line-numbers-mode)
+#+end_src
+
 *** mu4e=
 #+BEGIN_SRC emacs-lisp
   (require 'mu4e)

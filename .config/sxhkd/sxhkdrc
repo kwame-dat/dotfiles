@@ -27,11 +27,11 @@ super + F7
     vlc --video-on-top
 
 #Virtualbox
-super + F9
+super + F8
     virtualbox
 
 #Spotify
-super + F10
+super + F9
     spotify
 
 #Rofi Fullscreen
@@ -121,7 +121,7 @@ ctrl + alt + r
 
 #Spotify
 ctrl + alt + s
-   spotify
+   slack
 
 #Termite
 ctrl + alt + Return
@@ -129,16 +129,27 @@ ctrl + alt + Return
 
 #termite
 ctrl + alt + t
-    termite
+    teams
 
 #Vivaldi
 ctrl + alt + v
     vivaldi-stable
 
+#Whatsdesk
+ctrl + alt + w
+    whatsdesk
+
+#Zoom
+ctrl + alt + z
+    zoom
+
 #Xfce4-appfinder
 ctrl + alt + a
     xfce4-appfinder
 
+#Picom Toggle
+ctrl + alt + o
+    ~/.config/arco-dwm/scripts/picom-toggle.sh
 
 #Keyboard dependent
 #termite
@@ -223,11 +234,11 @@ F12
 
 #Raises volume
 XF86AudioRaiseVolume
-    amixer set Master 10%+
+    amixer set Master 2%+
 
 #Lowers volume
 XF86AudioLowerVolume
-    amixer set Master 10%-
+    amixer set Master 2%-
 
 #Mute
 XF86AudioMute
@@ -277,6 +288,3 @@ XF86MonBrightnessDown
 # CTRL + ALT KEYS
 #################################################################
 
-#Picom Toggle
-ctrl + alt + o
-    ~/.config/arco-dwm/scripts/picom-toggle.sh

@@ -4,17 +4,26 @@
 ## Work
 bitbucket https://bitbucket.eandl.co.uk
 jenkins https://jenkins.eandl.co.uk
+jenkins2 https://jenkins2.eandl.co.uk
 confluence https://confluence.eandl.co.uk
 jira https://jira.eandl.co.uk
 kibana https://kibana.eandl.co.uk
 time https://kibana.eandl.co.uk
+sprint https://jira.eandl.co.uk/secure/RapidBoard.jspa?rapidView=40&selectedIssue=ELICO-7292
+pr https://bitbucket.eandl.co.uk
 
 ## Home
-firewall http://192.168.1.1/
-switch http://192.168.1.2/cgi-bin/dispatcher.cgi?cmd=0
-unraid http://192.168.1.3/Main
+untangle https://untangle.theampomahs.com
+unraid https://unraid.theampomahs.com
+proxmox https://proxmox.theampomahs.com
+plex https://plex.theampomahs.com
+nextcloud https://nextcloud.theampomahs.com
 ap1 http://192.168.1.4/start.htm
 ap2 http://192.168.1.5/cgi-bin/webproc
+switch http://192.168.1.2/cgi-bin/dispatcher.cgi?cmd=0
+
+## Ebay
+ebay-calculator https://www.ebayfeescalculator.com/uk-ebay-calculator/
 
 ## Spiritual
 jw https://www.jw.org/en/

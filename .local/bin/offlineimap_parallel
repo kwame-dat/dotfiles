@@ -1,0 +1,7 @@
+#!/bin/sh
+offlineimap -a jw & pid1=$!
+offlineimap -a arksolutions & pid2=$!
+
+wait $pid1
+wait $pid2
+echo "Last execution: $(date)"

@@ -1,5 +1,8 @@
 PATH="$PATH:/$HOME/.local/bin"
 PATH="$PATH:/$HOME/.local/bin/statusbar"
+export _JAVA_AWT_WM_NONREPARENTING=1 
+# export AWT_TOOLKIT=MToolkit 
+# wmname LG3D
 
 # export GDK_SCALE=2
 # export GDK_DPI_SCALE=0.5

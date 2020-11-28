@@ -1,7 +1,7 @@
 [general]
-accounts = emporium
+accounts = arksolutions, jw
 maxsyncaccounts = 1
-pythonfile = ~/Repo/2Areas/dotfiles/shell/mu/lib.py
+pythonfile = ~/.local/bin/mu/lib.py
 
 autorefresh = 0.5
 quick = 10
@@ -41,6 +41,26 @@ type = IMAP
 remotehosteval = get_pass("2Areas/emails/arksolutions.it/zoho.com")["remotehost"]
 remoteusereval = get_pass("2Areas/emails/arksolutions.it/zoho.com")["user"]
 remotepasseval = get_pass("2Areas/emails/arksolutions.it/zoho.com")["password"]
+ssl = yes
+holdconnectionopen = true
+keepalive = 60
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+# _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+
+[Account gmail]
+localrepository = gmail_local
+remoterepository = gmail_remote
+
+[Repository gmail_local]
+type = Maildir
+localfolders = ~/Maildir/gmail
+
+[Repository gmail_remote]
+type = IMAP
+remotehosteval = get_pass("2Areas/emails/google.com")["remotehost"]
+remoteusereval = get_pass("2Areas/emails/google.com")["user"]
+remotepasseval = get_pass("2Areas/emails/google.com")["password"]
 ssl = yes
 holdconnectionopen = true
 keepalive = 60
