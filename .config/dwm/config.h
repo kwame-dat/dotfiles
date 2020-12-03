@@ -59,8 +59,9 @@ static const Rule rules[] = {
     { "Microsoft Teams - Preview",   NULL,       NULL,      1 << 3,      0,                -1 },
     { "zoom",                        NULL,       NULL,      1 << 3,      0,                -1 },
     { "Dbeaver",                     NULL,       NULL,      1 << 4,      0,                -1 },
-    { "Insomnia",                    NULL,       NULL,      1 << 4,      0,                -1 },
-    { "Postman",                     NULL,       NULL,      1 << 4,      0,                -1 },
+    { "Insomnia",                    NULL,       NULL,      1 << 5,      0,                -1 },
+    { "Postman",                     NULL,       NULL,      1 << 5,      0,                -1 },
+    { "Thunderbird",                 NULL,       NULL,      1 << 7,      0,                -1 },
     { "Nextcloud",                   NULL,       NULL,      1 << 8,      0,                -1 },
     { "Spotify",                     NULL,       NULL,      1 << 8,      0,                -1 },
 };

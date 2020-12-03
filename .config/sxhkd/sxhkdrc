@@ -111,14 +111,6 @@ ctrl + alt + p
 ctrl + alt + m
      xfce4-settings-manager
 
-#Pulse Audio Control
-ctrl + alt + u
-     pavucontrol
-
-#Rofi theme selector
-ctrl + alt + r
-  rofi-theme-selector
-
 #Spotify
 ctrl + alt + s
    slack
@@ -131,30 +123,25 @@ ctrl + alt + Return
 ctrl + alt + t
     teams
 
-#Vivaldi
-ctrl + alt + v
-    vivaldi-stable
-
 #Whatsdesk
 ctrl + alt + w
     whatsdesk
+
+#Dbeaver
+ctrl + alt + d
+    dbeaver
 
 #Zoom
 ctrl + alt + z
     zoom
 
-#Xfce4-appfinder
-ctrl + alt + a
-    xfce4-appfinder
+#Insomnia
+ctrl + alt + i
+    insomnia
 
 #Picom Toggle
 ctrl + alt + o
-    ~/.config/arco-dwm/scripts/picom-toggle.sh
-
-#Keyboard dependent
-#termite
-#ctrl + alt + KP_Enter
-#     termite
+    picom-toggle
 
 
 #################################################################
