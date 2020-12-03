@@ -8,10 +8,10 @@ jenkins2 https://jenkins2.eandl.co.uk
 confluence https://confluence.eandl.co.uk
 jira https://jira.eandl.co.uk
 kibana https://kibana.eandl.co.uk
-time https://kibana.eandl.co.uk
 sprint https://jira.eandl.co.uk/secure/RapidBoard.jspa?rapidView=40&selectedIssue=ELICO-7292
 pr https://bitbucket.eandl.co.uk
 sharedpoint https://theinsuranceemporium.sharepoint.com/sites/DevelopmentTeam
+timesheet http://timesheet.local/timeweb/Personal/Login.aspx
 
 ## Home
 untangle https://untangle.theampomahs.com
