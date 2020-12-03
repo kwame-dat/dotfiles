@@ -1,6 +1,6 @@
 ! Built in 4k Monitor
-Xft.dpi: 200
-rofi.dpi: 200
+Xft.dpi: 192
+rofi.dpi: 192
 
 URxvt.font: xft:JetBrains Mono Medium:size=12
 URxvt.boldFont: xft:JetBrains Mono Medium:size=12

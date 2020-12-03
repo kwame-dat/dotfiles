@@ -69,7 +69,7 @@
     - [[#writeroom-mode][writeroom-mode]]
     - [[#speed-type][speed-type]]
     - [[#engine-mode][engine-mode]]
-    - [[#doom-themes][doom themes]]
+    - [[#doom-themes][doom-themes]]
     - [[#doom-modeline][doom-modeline]]
     - [[#rainbow-mode][rainbow-mode]]
     - [[#diminish][diminish]]
@@ -389,8 +389,8 @@ previously compiled manually then all of the package initialization will still t
 
 ** Font
 #+BEGIN_SRC emacs-lisp
-  (setq itechytony/default-font "Cascadia Code")
-  (setq itechytony/default-font-size 12)
+  (setq itechytony/default-font "JetBrains Mono")
+  (setq itechytony/default-font-size 11)
   (setq itechytony/current-font-size itechytony/default-font-size)
 
   (setq itechytony/font-change-increment 1.1)
@@ -604,12 +604,12 @@ Use =evil= with Org agendas.
       "fs"  'save-buffer
       "fS"  'write-file
       ;; documents/downloads
-      "d1" '(lambda() (interactive) (find-file "~/Nextcloud/Documents/1Projects"))
-      "d2" '(lambda() (interactive) (find-file "~/Nextcloud/Documents/2Areas"))
-      "d3" '(lambda() (interactive) (find-file "~/Nextcloud/Documents/3Resources"))
-      "d4" '(lambda() (interactive) (find-file "~/Nextcloud/Documents/4Archives"))
-      "d5" '(lambda() (interactive) (find-file "~/Nextcloud/Documents"))
+      "d1" '(lambda() (interactive) (find-file "~/Documents/1Projects"))
+      "d2" '(lambda() (interactive) (find-file "~/Documents/2Areas"))
+      "d3" '(lambda() (interactive) (find-file "~/Documents/3Resources"))
+      "d4" '(lambda() (interactive) (find-file "~/Documents/4Archives"))
       "dd" '(lambda() (interactive) (find-file "~/Downloads"))
+      "dD" '(lambda() (interactive) (find-file "~/Desktop"))
       ;; buffers
       "bb"  'counsel-switch-buffer
       "bB"  'counsel-ibuffer
@@ -1189,15 +1189,14 @@ Don't indent newly expanded blocks, even if they're under a heading.
     :hook (org-mode . org-jira-mode)
     :after org
     :config
-    (setq org-jira-working-dir "~/Nextcloud/org/jira")
+    (setq jiralib-url "https://jira.eandl.co.uk")
+    (setq org-jira-working-dir "~/org/jira")
     :ensure t)
 
   (use-package org-gcal)
 
   (use-package ob-restclient)
 #+END_SRC
-
-#+RESULTS:
 
 My leader keybinding for org mode
 #+BEGIN_SRC emacs-lisp
@@ -1465,6 +1464,7 @@ Make sure all org files are folded
 
 *** docker
 #+BEGIN_SRC emacs-lisp
+(setq tramp-histfile-override ".tramp_history")
   (use-package dockerfile-mode
     :ensure t)
 
@@ -1774,7 +1774,7 @@ This allows me to  uncompress a .zip file
   (engine-mode t)
 #+END_SRC
 
-*** doom themes
+*** doom-themes
 #+BEGIN_SRC emacs-lisp
   (use-package doom-themes
     :demand t
@@ -1782,7 +1782,7 @@ This allows me to  uncompress a .zip file
     ;; Global settings (defaults)
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
           doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    (load-theme 'doom-tomorrow-night t)
+    (load-theme 'doom-one t)
 
     ;; Enable flashing mode-line on errors
     (doom-themes-visual-bell-config)

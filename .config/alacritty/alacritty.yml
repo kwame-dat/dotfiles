@@ -3,16 +3,16 @@ env:
   TERM: xterm-256color
 font:
   normal:
-    family: Cascadia Code
+    family: JetBrains Mono
     # style: Retina
 
   # The bold font face
   bold:
-    family: Cascadia Code
+    family: JetBrains Mono
 
   # The italic font face
   italic:
-    family: Cascadia Code
+    family: JetBrains Mono
     style: "Medium Italic"
 
   # Point size of the font
