@@ -2,7 +2,7 @@ configuration {
     width: 40;
     font: "Cantarell 14";
     show-icons: true;
-    combi-modi: "window,drun,run,ssh";
+    combi-modi: "window,drun,ssh";
     terminal: "alacritty";
     ssh-client: "ssh";
     ssh-command: "{terminal} -e {ssh-client} {host}";
