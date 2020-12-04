@@ -46,7 +46,6 @@
     - [[#org-mode][org-mode]]
     - [[#eyebrowse][eyebrowse]]
     - [[#calfw][calfw]]
-    - [[#slack][slack]]
     - [[#nov][nov]]
     - [[#alert][alert]]
     - [[#wgrep][wgrep]]
@@ -324,7 +323,6 @@ previously compiled manually then all of the package initialization will still t
     (interactive)
     (find-file "/ssh:root@192.168.1.3:/"))
 
-
   (defun itechytony/find-in-notes ()
     (interactive)
     (counsel-find-file "~/Nextcloud/org"))
@@ -337,7 +335,19 @@ previously compiled manually then all of the package initialization will still t
       (call-process-shell-command
        (concat "alacritty --working-directory  "workdir) nil 0)))
 
-  (defun sudo-find-file (file-name)
+  (defun itechytony/sudo-this-file (&optional arg)
+    "Edit currently visited file as root.
+
+  With a prefix ARG prompt for a file to visit.
+  Will also prompt for a file to visit if current
+  buffer is not visiting a file."
+    (interactive "P")
+    (if (or arg (not buffer-file-name))
+        (find-file (concat "/sudo:root@localhost:"
+                           (ido-read-file-name "Find file(as root): ")))
+      (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
+  (defun itechytony/sudo-find-file (file-name)
     "Like find file, but opens the file as root."
     (interactive "FSudo Find File: ")
     (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
@@ -347,7 +357,6 @@ previously compiled manually then all of the package initialization will still t
     (interactive)
     (progn (org-agenda nil "a")
            (org-agenda-day-view)))
-
 
   (defadvice ido-find-file (after find-file-sudo activate)
     "Find file as root if necessary."
@@ -390,7 +399,7 @@ previously compiled manually then all of the package initialization will still t
 ** Font
 #+BEGIN_SRC emacs-lisp
   (setq itechytony/default-font "JetBrains Mono")
-  (setq itechytony/default-font-size 11)
+  (setq itechytony/default-font-size 12)
   (setq itechytony/current-font-size itechytony/default-font-size)
 
   (setq itechytony/font-change-increment 1.1)
@@ -752,6 +761,7 @@ Generic completion frontend that's just awesome! Let's install and enable it.
   (use-package all-the-icons-ivy
     :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
 #+END_SRC
+
 *** counsel
 Counsel allows us to utilize ivy by replacing many built-in and common functions
 with richer versions. Let's install it!
@@ -832,6 +842,7 @@ with richer versions. Let's install it!
     (define-key evil-insert-state-map (kbd "C-SPC") 'company-manual-begin)
     (add-hook 'after-init-hook 'global-company-mode))
 #+END_SRC
+
 *** company-prescient
 #+BEGIN_SRC emacs-lisp
   (use-package company-prescient
@@ -839,6 +850,7 @@ with richer versions. Let's install it!
     :config
     (prescient-persist-mode +1))
 #+END_SRC
+
 *** company-box
 #+BEGIN_SRC emacs-lisp
   (use-package company-box
@@ -894,11 +906,13 @@ with richer versions. Let's install it!
                 ((featurep sym) 'ElispFeature)
                 ((facep sym)    'ElispFace))))))
 #+END_SRC
+
 *** company-dict
 #+BEGIN_SRC emacs-lisp
   (use-package company-dict
     :defer t)
 #+END_SRC
+
 *** all-the-icons
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons
@@ -991,7 +1005,6 @@ with richer versions. Let's install it!
   ;; (add-hook 'php-mode-hook #'my-flycheck-setup)
 #+END_SRC
 
-
 *** projectile
 Projectile is a quick and easy project management package that "just works". We're
 going to install it and make sure it's loaded immediately.
@@ -1015,7 +1028,6 @@ going to install it and make sure it's loaded immediately.
     (setq projectile-switch-project-action #'projectile-dired)
     (projectile-mode))
 #+END_SRC
-
 
 *** which-key
 #+BEGIN_SRC emacs-lisp
@@ -1217,7 +1229,6 @@ Task Management & Agenda Views
   (setq org-directory "~/Nextcloud/org")
   (setq org-agenda-files (quote (
                                  "~/Nextcloud/org/Todo.org"
-                                 "~/Nextcloud/org/Joint - Todo.org"
                                  "~/Nextcloud/org/Work.org"
                                  )))
 #+end_src
@@ -1263,8 +1274,6 @@ Make sure all org files are folded
   ;; (use-package calfw-cal)
   ;; (use-package calfw-ical)
 #+END_SRC
-
-*** slack
     
 *** nov
 #+BEGIN_SRC emacs-lisp
@@ -1460,8 +1469,6 @@ Make sure all org files are folded
    '(shell-pop-window-position "bottom"))
 #+END_SRC 
 
-#+RESULTS:
-
 *** docker
 #+BEGIN_SRC emacs-lisp
 (setq tramp-histfile-override ".tramp_history")
@@ -1481,7 +1488,6 @@ Make sure all org files are folded
     :ensure t
     :config
     (editorconfig-mode 1))
-
 #+END_SRC
 
 *** synosaurus
@@ -1702,9 +1708,6 @@ This allows me to  uncompress a .zip file
                           )))
 #+END_SRC
 
-#+RESULTS:
-: t
-
 *** purpose
 #+BEGIN_SRC emacs-lisp
   (use-package window-purpose
@@ -1740,6 +1743,7 @@ This allows me to  uncompress a .zip file
 #+BEGIN_SRC emacs-lisp
   (use-package speed-type)
 #+END_SRC
+
 *** engine-mode
 #+BEGIN_SRC emacs-lisp
   (use-package engine-mode)
@@ -1782,7 +1786,7 @@ This allows me to  uncompress a .zip file
     ;; Global settings (defaults)
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
           doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    (load-theme 'doom-one t)
+    (load-theme 'doom-one-light t)
 
     ;; Enable flashing mode-line on errors
     (doom-themes-visual-bell-config)
@@ -1835,6 +1839,7 @@ This allows me to  uncompress a .zip file
   (diminish 'abbrev-mode)
   (diminish 'subword-mode)
 #+END_SRC
+
 *** Mixed pitch 
 #+BEGIN_SRC emacs-lisp
   (use-package mixed-pitch
@@ -1844,6 +1849,7 @@ This allows me to  uncompress a .zip file
     ;; If you want it in all text modes:
     (org-mode . mixed-pitch-mode))
 #+END_SRC
+
 *** Lang
 **** =php=
 #+BEGIN_SRC emacs-lisp
@@ -1889,6 +1895,7 @@ This allows me to  uncompress a .zip file
     "f" 'php-search-documentation
     "r" 'counsel-imenu)
 #+END_SRC
+
 **** =css= =scss= =less=
 #+BEGIN_SRC emacs-lisp
   (use-package css-mode
@@ -2257,6 +2264,7 @@ mu4e alert
     :demand t
     :ensure t)
 #+END_SRC
+
 ** Organisation (GTD and PARA) 
 *** Projects
 A project is “any outcome that will take more than one action step to
@@ -2285,6 +2293,7 @@ can ensure that I always have an up to date project list.
     (org-sort-entries t ?d)
     (org-columns))
 #+END_SRC
+
 The concept of Stuck Projects comes from David Allen’s GTD. A stuck
 project is a project without any action steps or tasks associated with
 it.
@@ -2302,6 +2311,7 @@ to my “Projects” subtree.
     (go-to-projects)
     (org-agenda nil "#" 'subtree))
 #+END_SRC
+
 *** Areas
 #+BEGIN_SRC emacs-lisp
   (defun go-to-areas ()
@@ -2318,6 +2328,7 @@ to my “Projects” subtree.
     (org-narrow-to-subtree)
     (org-columns))
 #+END_SRC
+
 *** Reviews
 #+BEGIN_SRC emacs-lisp
   (defun my-new-daily-review ()
@@ -2364,11 +2375,13 @@ to my “Projects” subtree.
 
   (f-touch "/tmp/reviews.org")
 #+END_SRC
+
 ** Load secrets
 #+BEGIN_SRC emacs-lisp
   (when (file-exists-p "~/Nextcloud/Documents/3Resources/Keys/secrets.el")
     (load "~/Nextcloud/Documents/3Resources/Keys/secrets.el"))
 #+END_SRC
+
 ** Post Initialisation
 Let's lower our GC thresholds back down to a sane level.
 
