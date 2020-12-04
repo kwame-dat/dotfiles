@@ -1,1 +1,87 @@
-.config/shell/offlineimaprc
+[general]
+accounts = arksolutions, jw
+maxsyncaccounts = 1
+pythonfile = ~/.local/bin/mu/lib.py
+
+autorefresh = 0.5
+quick = 10
+
+# _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+
+[Account jw]
+localrepository = jw_local
+remoterepository = jw_remote
+
+[Repository jw_local]
+type = Maildir
+localfolders = ~/Maildir/jw
+
+[Repository jw_remote]
+type = Gmail
+remotehosteval = get_pass("2Areas/emails/spiritual/gmail.com")["remotehost"]
+remoteusereval = get_pass("2Areas/emails/spiritual/gmail.com")["user"]
+remotepasseval = get_pass("2Areas/emails/spiritual/gmail.com")["password"]
+ssl = yes
+holdconnectionopen = true
+keepalive = 60
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+# _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+
+[Account arksolutions]
+localrepository = arksolutions_local
+remoterepository = arksolutions_remote
+
+[Repository arksolutions_local]
+type = Maildir
+localfolders = ~/Maildir/arksolutions
+
+[Repository arksolutions_remote]
+type = IMAP
+remotehosteval = get_pass("2Areas/emails/arksolutions.it/zoho.com")["remotehost"]
+remoteusereval = get_pass("2Areas/emails/arksolutions.it/zoho.com")["user"]
+remotepasseval = get_pass("2Areas/emails/arksolutions.it/zoho.com")["password"]
+ssl = yes
+holdconnectionopen = true
+keepalive = 60
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+# _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+
+[Account gmail]
+localrepository = gmail_local
+remoterepository = gmail_remote
+
+[Repository gmail_local]
+type = Maildir
+localfolders = ~/Maildir/gmail
+
+[Repository gmail_remote]
+type = IMAP
+remotehosteval = get_pass("2Areas/emails/google.com")["remotehost"]
+remoteusereval = get_pass("2Areas/emails/google.com")["user"]
+remotepasseval = get_pass("2Areas/emails/google.com")["password"]
+ssl = yes
+holdconnectionopen = true
+keepalive = 60
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+# _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+[Account emporium]
+localrepository = emporium_local
+remoterepository = emporium_remote
+
+[Repository emporium_local]
+type = Maildir
+localfolders = ~/Maildir/emporium
+
+[Repository emporium_remote]
+type = IMAP
+remotehosteval = get_pass("2Areas/emails/emporium.co.uk")["remotehost"]
+remoteusereval = get_pass("2Areas/emails/emporium.co.uk")["user"]
+remotepasseval = get_pass("2Areas/emails/emporium.co.uk")["password"]
+ssl = yes
+holdconnectionopen = true
+keepalive = 60
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+folderfilter = lambda folder: folder in ['Archive' , 'Contacts', 'Deleted Items', 'Drafts', 'INBOX', 'Junk Email', 'Outbox', 'Sent Items' ]
