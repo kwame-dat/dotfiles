@@ -3,6 +3,24 @@ import XMonad
 import Data.Monoid
 import System.Exit
 import XMonad.Hooks.SetWMName
+import XMonad.Hooks.ManageDocks
+
+-- For Xmobar
+import XMonad.Hooks.DynamicLog
+import XMonad.Util.Run(spawnPipe)
+import System.IO
+
+-- Layouts
+import XMonad.Layout.Fullscreen
+import XMonad.Layout.NoBorders
+import XMonad.Layout.Spiral
+import XMonad.Layout.Tabbed
+import XMonad.Layout.ThreeColumns
+
+
+-- Toggle Fullscreen
+import XMonad.Hooks.ManageHelpers
+-- import XMonad.Layout.ToggleLayouts
 
 
 -- This is for multi media keys
@@ -26,7 +44,7 @@ myClickJustFocuses = False
 
 -- Width of the window border in pixels.
 --
-myBorderWidth   = 5
+myBorderWidth   = 3
 
 -- modMask lets you specify which modkey you want to use. The default
 -- is mod1Mask ("left alt").  You may also consider using mod3Mask
@@ -47,9 +65,15 @@ myModMask       = mod4Mask
 myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 
 -- Border colors for unfocused and focused windows, respectively.
---
-myNormalBorderColor  = "#dddddd"
-myFocusedBorderColor = "#ff0000"
+-- Currently based on the ir_black theme.
+myNormalBorderColor  = "#7c7c7c"
+myFocusedBorderColor = "#ffb6b0"
+
+-- Color of current window title in xmobar.
+xmobarTitleColor = "#FFB6B0"
+
+-- Color of current workspace in xmobar.
+xmobarCurrentWorkspaceColor = "#CEFFAC"
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -79,7 +103,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_n     ), refresh)
 
     -- Move focus to the next window
-    , ((modm,               xK_Tab   ), windows W.focusDown)
+    , ((modm,               xK_Tab   ), sendMessage NextLayout)
 
     -- Move focus to the next window
     , ((modm,               xK_j     ), windows W.focusDown)
@@ -238,20 +262,12 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 --
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
---
-myLayout = tiled ||| Mirror tiled ||| Full
-  where
-     -- default tiling algorithm partitions the screen into two panes
-     tiled   = Tall nmaster delta ratio
-
-     -- The default number of windows in the master pane
-     nmaster = 1
-
-     -- Default proportion of screen occupied by master pane
-     ratio   = 1/2
-
-     -- Percent of screen to increment by when resizing panes
-     delta   = 3/100
+myLayout = avoidStruts (
+    Tall 1 (3/100) (1/2) |||
+    Mirror (Tall 1 (3/100) (1/2)) |||
+    ThreeColMid 1 (3/100) (1/2) |||
+    spiral (6/7)) 
+    -- noBorders (fullscreenFull Full)
 
 ------------------------------------------------------------------------
 -- Window rules:
@@ -269,10 +285,11 @@ myLayout = tiled ||| Mirror tiled ||| Full
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-    [ className =? "MPlayer"        --> doFloat
-    , className =? "Gimp"           --> doFloat
-    , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore
+    [
+      className =? "MPlayer"                                 --> doFloat
+    , className =? "Gimp"                                    --> doFloat
+    , resource  =? "desktop_window"                          --> doIgnore
+    , resource  =? "kdesktop"                                --> doIgnore
     , className =? "qutebrowser"                             --> doShift ( myWorkspaces !! 0 )
     , className =? "Google-chrome"                           --> doShift ( myWorkspaces !! 0 )
     , className =? "Vivaldi-stable"                          --> doShift ( myWorkspaces !! 0 )
@@ -298,6 +315,7 @@ myManageHook = composeAll
     , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 7 )
     , className =? "Nextcloud"                               --> doShift ( myWorkspaces !! 7 )
     , className =? "Spotify"                                 --> doShift ( myWorkspaces !! 8 )
+    , isFullscreen --> (doF W.focusDown <+> doFullFloat)
     ]
 
 ------------------------------------------------------------------------
@@ -336,8 +354,21 @@ myStartupHook = do
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = xmonad defaults
-
+-- main = xmonad defaults
+main = do
+  xmproc <- spawnPipe "xmobar"
+  xmonad $ defaults {
+      logHook = dynamicLogWithPP $ xmobarPP {
+            ppOutput = hPutStrLn xmproc
+          , ppTitle = xmobarColor xmobarTitleColor "" . shorten 100
+          , ppCurrent = xmobarColor xmobarCurrentWorkspaceColor ""
+          , ppSep = "   "
+      }
+      , manageHook = manageDocks <+> myManageHook
+      , startupHook = myStartupHook
+      , handleEventHook = docksEventHook
+  }
+        
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
 -- use the defaults defined in xmonad/XMonad/Config.hs
@@ -360,7 +391,7 @@ defaults = def {
         mouseBindings      = myMouseBindings,
 
       -- hooks, layouts
-        layoutHook         = myLayout,
+        layoutHook         = smartBorders $ myLayout,
         manageHook         = myManageHook,
         handleEventHook    = myEventHook,
         logHook            = myLogHook,
