@@ -131,24 +131,32 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm , xK_Print    ), spawn "flameshot gui")
 
     -- CONTROl + ALT KEYS
-    , ((mod1Mask .|. controlMask, xK_e), spawn "emacsclient -c -a ''")
-    , ((mod1Mask .|. controlMask, xK_m), spawn "emacsclient -c -a '' --eval '(mu4e)'")
-    , ((mod1Mask .|. controlMask, xK_a), spawn "emacsclient -c -a '' --eval '(itechytony/day-view)'")
-    , ((mod1Mask .|. controlMask, xK_s), spawn "slack")
-    , ((mod1Mask .|. controlMask, xK_t), spawn "teams")
-    , ((mod1Mask .|. controlMask, xK_p), spawn "pamac-manager")
-    , ((mod1Mask .|. controlMask, xK_f), spawn "firefox")
-    , ((mod1Mask .|. controlMask, xK_g), spawn "chromium -no-default-browser-check")
-    , ((mod1Mask .|. controlMask, xK_b), spawn "brave")
-    , ((mod1Mask .|. controlMask, xK_w), spawn "whatsdesk")
-    , ((mod1Mask .|. controlMask, xK_d), spawn "dbeaver")
-    , ((mod1Mask .|. controlMask, xK_z), spawn "zoom")
-    , ((mod1Mask .|. controlMask, xK_i), spawn "insomnia")
-    , ((mod1Mask .|. controlMask, xK_c), spawn "rofi -show calc")
-    , ((mod1Mask .|. controlMask, xK_o), spawn "picom-toggle")
-    , ((mod1Mask .|. controlMask, xK_v), spawn "pavucontrol")
+    , ((controlMask .|. mod1Mask, xK_e), spawn "emacsclient -c -a ''")
+    , ((controlMask .|. mod1Mask, xK_m), spawn "emacsclient -c -a '' --eval '(mu4e)'")
+    , ((controlMask .|. mod1Mask, xK_a), spawn "emacsclient -c -a '' --eval '(itechytony/day-view)'")
+    , ((controlMask .|. mod1Mask, xK_s), spawn "slack")
+    , ((controlMask .|. mod1Mask, xK_t), spawn "teams")
+    , ((controlMask .|. mod1Mask, xK_p), spawn "pamac-manager")
+    , ((controlMask .|. mod1Mask, xK_f), spawn "firefox")
+    , ((controlMask .|. mod1Mask, xK_g), spawn "chromium -no-default-browser-check")
+    , ((controlMask .|. mod1Mask, xK_b), spawn "brave")
+    , ((controlMask .|. mod1Mask, xK_w), spawn "whatsdesk")
+    , ((controlMask .|. mod1Mask, xK_d), spawn "dbeaver")
+    , ((controlMask .|. mod1Mask, xK_z), spawn "zoom")
+    , ((controlMask .|. mod1Mask, xK_i), spawn "insomnia")
+    , ((controlMask .|. mod1Mask, xK_c), spawn "rofi -show calc")
+    , ((controlMask .|. mod1Mask, xK_o), spawn "picom-toggle")
+    , ((controlMask .|. mod1Mask, xK_v), spawn "pavucontrol")
 
+    --  CONTROL + SHIF KEYS
     , ((controlMask .|. shiftMask, xK_Escape), spawn "xfce4-taskmanager")
+
+    --  ALT + SHIFT KEYS
+    , ((mod1Mask .|. shiftMask, xK_t), spawn "variety -t && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
+    , ((mod1Mask .|. shiftMask, xK_n), spawn "variety -n && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
+    , ((mod1Mask .|. shiftMask, xK_p), spawn "variety -p && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
+    , ((mod1Mask .|. shiftMask, xK_f), spawn "variety -f && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
+    , ((mod1Mask .|. shiftMask, xK_u), spawn "wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
 
 
     --MULTIMEDIA KEYS
@@ -264,7 +272,33 @@ myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore ]
+    , resource  =? "kdesktop"       --> doIgnore
+    , className =? "qutebrowser"                             --> doShift ( myWorkspaces !! 0 )
+    , className =? "Google-chrome"                           --> doShift ( myWorkspaces !! 0 )
+    , className =? "Vivaldi-stable"                          --> doShift ( myWorkspaces !! 0 )
+    , className =? "Chromium"                                --> doShift ( myWorkspaces !! 0 )
+    , className =? "Brave-browser"                           --> doShift ( myWorkspaces !! 0 )
+    , className =? "firefox"                                 --> doShift ( myWorkspaces !! 0 )
+    , className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )
+    , className =? "jetbrains-phpstorm"                      --> doShift ( myWorkspaces !! 1 )
+    , className =? "whatsapp-nativefier-d52542"              --> doShift ( myWorkspaces !! 2 )
+    , className =? "Signal"                                  --> doShift ( myWorkspaces !! 2 )
+    , className =? "whatsdesk"                               --> doShift ( myWorkspaces !! 2 )
+    , className =? "Slack"                                   --> doShift ( myWorkspaces !! 2 )
+    , className =? "zoom"                                    --> doShift ( myWorkspaces !! 3 )
+    , className =? "Microsoft Teams - Preview"               --> doShift ( myWorkspaces !! 3 )
+    , className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 4 )
+    , className =? "Insomnia"                                --> doShift ( myWorkspaces !! 5 )
+    , className =? "Postman"                                 --> doShift ( myWorkspaces !! 5 )
+    , className =? "Stoplight Studio"                        --> doShift ( myWorkspaces !! 6 )
+    , className =? "calibre"                                 --> doShift ( myWorkspaces !! 6 )
+    -- , [className =? "obs"                                     --> doShift ( myWorkspaces !! 7 )]
+    -- , [className =? "vlc"                                     --> doShift ( myWorkspaces !! 7 )]
+    , className =? "Thunderbird"                             --> doShift ( myWorkspaces !! 6 )
+    , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 7 )
+    , className =? "Nextcloud"                               --> doShift ( myWorkspaces !! 7 )
+    , className =? "Spotify"                                 --> doShift ( myWorkspaces !! 8 )
+    ]
 
 ------------------------------------------------------------------------
 -- Event handling
