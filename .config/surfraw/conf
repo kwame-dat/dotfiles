@@ -1,3 +1,2 @@
-SURFRAW_graphical_browser=/usr/bin/chromium
-#SURFRAW_text_browser=/usr/bin/elinks
+SURFRAW_graphical_browser=/usr/bin/brave
 SURFRAW_graphical=yes

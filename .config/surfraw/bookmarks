@@ -24,14 +24,14 @@ staging.pet-insurance.co.uk https://staging.pet-insurance.co.uk/
 pet-insurance.co.uk https://docker.pet-insurance.co.uk/
 
 ## Home
-untangle https://untangle.theampomahs.com
-unraid https://unraid.theampomahs.com
-proxmox https://proxmox.theampomahs.com
-plex https://plex.theampomahs.com
-nextcloud https://nextcloud.theampomahs.com
-ap1 http://192.168.1.4/start.htm
-ap2 http://192.168.1.5/cgi-bin/webproc
-switch http://192.168.1.2/cgi-bin/dispatcher.cgi?cmd=0
+untangle.theampomahs.com https://untangle.theampomahs.com
+unraid.theampomahs.com https://unraid.theampomahs.com
+proxmox.theampomahs.com https://proxmox.theampomahs.com
+plex.theampomahs.com https://plex.theampomahs.com
+nextcloud.theampomahs.com https://nextcloud.theampomahs.com
+ap1.theampomahs.local http://192.168.1.4/start.htm
+ap2.theampomahs.local http://192.168.1.5/cgi-bin/webproc
+switch.theampomahs.local http://192.168.1.2/cgi-bin/dispatcher.cgi?cmd=0
 
 ## Ebay
 ebay-calculator https://www.ebayfeescalculator.com/uk-ebay-calculator/
@@ -42,7 +42,7 @@ bible https://wol.jw.org/en/wol/binav/r1/lp-e
 daily-text https://wol.jw.org/en/wol/h/r1/lp-e
 
 ## Entertainment
-netflix https://www.netflix.com/browse
+netflix.com https://www.netflix.com/browse
 
 # 3Resources
 calendar https://calendar.google.com/calendar/u/1/r/month/2020/10/1?tab=mc
