@@ -7,6 +7,8 @@ function run {
   fi
 }
 
+auto-monitor &
+
 # cursor active at boot
 xsetroot -cursor_name left_ptr &
 
