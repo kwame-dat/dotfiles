@@ -661,6 +661,7 @@ Use =evil= with Org agendas.
       "ni" '(lambda() (interactive) (find-file "~/Nextcloud/org/Inbox.org"))
       "nt" '(lambda() (interactive) (find-file "~/Nextcloud/org/Todo.org"))
       "na" 'org-agenda
+      "nd" 'itechytony/day-view
       "nci" 'org-pomodoro
       "nco" 'org-pomodoro-clock-break
       "nn" 'org-capture
