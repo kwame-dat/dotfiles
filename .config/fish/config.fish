@@ -1,7 +1,6 @@
 set fish_greeting
 
 # Composer export path
-export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 
 # General
 alias e="exit"
