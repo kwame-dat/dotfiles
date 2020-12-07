@@ -1,5 +1,4 @@
 #!/bin/bash
-
 function run {
  if ! pgrep $1 ;
   then
@@ -7,7 +6,17 @@ function run {
   fi
 }
 
-auto-monitor &
+if xrandr | grep -q "^DP1 connected"
+then
+    ln -sf /home/tonya/Repo/2Areas/dotfiles/.Xresources-ultrawide /home/tonya/.Xresources &
+    ln -sf /home/tonya/Repo/2Areas/dotfiles/.profile-ultrawide /home/tonya/.profile &
+    xrandr --output eDP1 --off --output DP1 --primary --mode 3840x1600 --pos 0x0 --rotate normal --output DP2 --off --output DP3 --off --output VIRTUAL1 --off &
+    xrdb -merge ~/.Xresources &
+else
+    ln -sf /home/tonya/Repo/2Areas/dotfiles/.Xresources ~/ &
+    ln -sf /home/tonya/Repo/2Areas/dotfiles/.profile /home/tonya/.profile &
+    xrdb -merge ~/.Xresources &
+fi
 
 # cursor active at boot
 xsetroot -cursor_name left_ptr &
@@ -27,20 +36,18 @@ setxkbmap -option 'caps:ctrl_modifier' &
 xset r rate 220 80 &
 
 run "variety"
-run dwmblocks &
+run "dwmblocks"
+run "picom"
 run "nm-applet"
 run "xfce4-power-manager"
 run "blueberry-tray"
-run "/usr/lib/xfce4/notifyd/xfce4-notifyd"
-run "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
-picom -b  --config ~/.config/picom/picom.conf &
-run "numlockx on"
-sxhkd -c ~/.config/sxhkd/sxhkdrc &
+/usr/lib/xfce4/notifyd/xfce4-notifyd &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 /usr/bin/emacs --daemon &
-run nextcloud &
-run caffeine &
-run kdeconnect-indicator &
-# run teams &
-# run zoom &
-# run slack &
-# run whatsdesk &
+run "nextcloud"
+run "caffeine"
+run "kdeconnect-indicator"
+# teams &
+# zoom &
+# slack &
+# whatsdesk &

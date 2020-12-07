@@ -47,10 +47,10 @@ static const Rule rules[] = {
 	/* class                           instance    title      tags         mask              monitor */
     { "qutebrowser",                 NULL,       NULL,      1,           0,                -1 },
     { "Google-chrome",               NULL,       NULL,      1,           0,                -1 },
+    { "Vivaldi-stable",              NULL,       NULL,      1,           0,                -1 },
     { "Chromium",                    NULL,       NULL,      1,           0,                -1 },
-    { "Firefox",                     NULL,       NULL,      1,           0,                -1 },
     { "Brave-browser",               NULL,       NULL,      1,           0,                -1 },
-    { "calibre",                     NULL,       NULL,      1,           0,                -1 },
+    { "Firefox",                     NULL,       NULL,      1,           0,                -1 },
     { "Emacs",                       NULL,       NULL,      2,           0,                -1 },
     { "jetbrains-phpstorm",          NULL,       NULL,      2,           0,                -1 },
     { "whatsdesk",                   NULL,       NULL,      1 << 2,      0,                -1 },
@@ -61,8 +61,10 @@ static const Rule rules[] = {
     { "Dbeaver",                     NULL,       NULL,      1 << 4,      0,                -1 },
     { "Insomnia",                    NULL,       NULL,      1 << 5,      0,                -1 },
     { "Postman",                     NULL,       NULL,      1 << 5,      0,                -1 },
-    { "Thunderbird",                 NULL,       NULL,      1 << 7,      0,                -1 },
-    { "Nextcloud",                   NULL,       NULL,      1 << 8,      0,                -1 },
+    { "Thunderbird",                 NULL,       NULL,      1 << 6,      0,                -1 },
+    { "calibre",                     NULL,       NULL,      1 << 6,      0,                -1 },
+    { "Nextcloud",                   NULL,       NULL,      1 << 7,      0,                -1 },
+    { "VirtualBox Manager",          NULL,       NULL,      1 << 7,      0,                -1 },
     { "Spotify",                     NULL,       NULL,      1 << 8,      0,                -1 },
 };
 
@@ -103,6 +105,7 @@ static const char *bashtop[]  = { "xfce4-taskmanager", NULL };
 
 #include "selfrestart.c"
 #include "shiftview.c"
+#include <X11/XF86keysym.h>
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -149,6 +152,59 @@ static Key keys[] = {
     { MODKEY,			            XK_0,		       view,		{.ui = ~0 } },
     { MODKEY|ShiftMask,		    XK_0,		       tag,		  {.ui = ~0 } },
     { MODKEY|ShiftMask,       XK_r,          quit,            {1} }, 
+
+    /* SUPER + KEYS */
+    { MODKEY,                 XK_p,           spawn,     SHCMD("rofi-pass")},
+    { MODKEY,                 XK_b,           spawn,     SHCMD("rofi-surfraw")},
+    { MODKEY,                 XK_e,           spawn,     SHCMD("emacsclient -c -a ''")},
+    { MODKEY,                 XK_Return,      spawn,     SHCMD("termite")},
+    { MODKEY|ShiftMask,       XK_Return,      spawn,     SHCMD("nautilus")},
+    { MODKEY,                 XK_Escape,      spawn,     SHCMD("xkill")},
+    { MODKEY,                 XK_space,       spawn,     SHCMD("rofi -show combi")},
+
+    /* CONTROl + SHIFT KEYS */
+    { ControlMask|ShiftMask,            XK_Escape,  spawn,    SHCMD("xfce4-taskmanager") },
+
+    /* CONTROl + ALT KEYS */
+    { ControlMask|Mod1Mask,             XK_e,  spawn,         SHCMD("emacsclient -c -a ''") },
+    { ControlMask|Mod1Mask,             XK_m,  spawn,         SHCMD("emacsclient -c -a '' --eval '(mu4e)'") },
+    { ControlMask|Mod1Mask,             XK_a,  spawn,         SHCMD("emacsclient -c -a '' --eval '(itechytony/day-view)'") },
+    { ControlMask|Mod1Mask,             XK_s,  spawn,         SHCMD("slack") },
+    { ControlMask|Mod1Mask,             XK_t,  spawn,         SHCMD("teams") },
+    { ControlMask|Mod1Mask,             XK_p,  spawn,         SHCMD("pamac-manager") },
+    { ControlMask|Mod1Mask,             XK_f,  spawn,         SHCMD("firefox") },
+    { ControlMask|Mod1Mask,             XK_g,  spawn,         SHCMD("chromium -no-default-browser-check") },
+    { ControlMask|Mod1Mask,             XK_b,  spawn,         SHCMD("brave") },
+    { ControlMask|Mod1Mask,             XK_w,  spawn,         SHCMD("whatsdesk") },
+    { ControlMask|Mod1Mask,             XK_d,  spawn,         SHCMD("dbeaver") },
+    { ControlMask|Mod1Mask,             XK_z,  spawn,         SHCMD("zoom") },
+    { ControlMask|Mod1Mask,             XK_i,  spawn,         SHCMD("insomnia") },
+    { ControlMask|Mod1Mask,             XK_c,  spawn,         SHCMD("rofi -show calc") },
+    { ControlMask|Mod1Mask,             XK_o,  spawn,         SHCMD("picom-toggle") },
+    { ControlMask|Mod1Mask,             XK_v,  spawn,         SHCMD("pavucontrol") },
+
+    /* ALT + SHIFT KEYS */
+    { Mod1Mask|ShiftMask,             XK_t,  spawn,         SHCMD("variety -t && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&") },
+    { Mod1Mask|ShiftMask,             XK_n,  spawn,         SHCMD("variety -n && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&") },
+    { Mod1Mask|ShiftMask,             XK_p,  spawn,         SHCMD("variety -p && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&") },
+    { Mod1Mask|ShiftMask,             XK_f,  spawn,         SHCMD("variety -f && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&") },
+    { Mod1Mask|ShiftMask,             XK_u,  spawn,         SHCMD("wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&") },
+
+    { 0, XF86XK_AudioMute,		        spawn,		SHCMD("amixer -q set Master toggle") },
+    { 0, XF86XK_AudioRaiseVolume,	    spawn,		SHCMD("amixer -q set Master 2%+") },
+    { 0, XF86XK_AudioLowerVolume,	    spawn,		SHCMD("amixer -q set Master 2%-") },
+    { 0, XF86XK_AudioPrev,		        spawn,		SHCMD("playerctl previous") },
+    { 0, XF86XK_AudioNext,		        spawn,		SHCMD("playerctl next") },
+    { 0, XF86XK_AudioPause,		        spawn,		SHCMD("playerctl play-pause") },
+    { 0, XF86XK_AudioPlay,		        spawn,		SHCMD("playerctl play-pause") },
+    { 0, XF86XK_AudioStop,		        spawn,		SHCMD("playerctl stop") },
+    { 0, XF86XK_AudioRewind,	        spawn,		SHCMD("mpc seek -10") },
+    { 0, XF86XK_AudioForward,	        spawn,		SHCMD("mpc seek +10") },
+    { 0, XF86XK_AudioMicMute,	        spawn,		SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
+    { 0, XF86XK_PowerOff,		          spawn,		SHCMD("sysact") },
+    { 0, XF86XK_ScreenSaver,	        spawn,		SHCMD("slock & xset dpms force off; mpc pause; pauseallmpv") },
+    { 0, XF86XK_MonBrightnessUp,	    spawn,		SHCMD("xbacklight -inc 2") },
+    { 0, XF86XK_MonBrightnessDown,    spawn,		SHCMD("xbacklight -dec 2") },
 };
 
 /* button definitions */
