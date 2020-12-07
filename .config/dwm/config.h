@@ -157,10 +157,12 @@ static Key keys[] = {
     { MODKEY,                 XK_p,           spawn,     SHCMD("rofi-pass")},
     { MODKEY,                 XK_b,           spawn,     SHCMD("rofi-surfraw")},
     { MODKEY,                 XK_e,           spawn,     SHCMD("emacsclient -c -a ''")},
+    { MODKEY|ShiftMask,       XK_e,           spawn,     SHCMD("sysact")},
     { MODKEY,                 XK_Return,      spawn,     SHCMD("termite")},
     { MODKEY|ShiftMask,       XK_Return,      spawn,     SHCMD("nautilus")},
     { MODKEY,                 XK_Escape,      spawn,     SHCMD("xkill")},
     { MODKEY,                 XK_space,       spawn,     SHCMD("rofi -show combi")},
+
 
     /* CONTROl + SHIFT KEYS */
     { ControlMask|ShiftMask,            XK_Escape,  spawn,    SHCMD("xfce4-taskmanager") },
