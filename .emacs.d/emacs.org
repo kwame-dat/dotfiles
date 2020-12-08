@@ -63,6 +63,7 @@
     - [[#flyspell][flyspell]]
     - [[#yasnippet][yasnippet]]
     - [[#shackle][shackle]]
+    - [[#highlight-uncommitted-changes][Highlight uncommitted changes]]
     - [[#purpose][purpose]]
     - [[#dap-mode][dap-mode]]
     - [[#writeroom-mode][writeroom-mode]]
@@ -214,6 +215,12 @@ Disable certain byte compiler warnings to cut down on the noise.
 
   (recentf-mode 1)
 #+END_SRC
+
+Highlight current line
+#+begin_src emacs-lisp
+(global-hl-line-mode)
+#+end_src
+
 
 Prettify Symbols
 #+BEGIN_SRC emacs-lisp
@@ -1709,6 +1716,14 @@ This allows me to  uncompress a .zip file
                           )))
 #+END_SRC
 
+*** Highlight uncommitted changes
+#+begin_src emacs-lisp
+(use-package diff-hl
+  :config
+  (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
+  (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
+#+end_src
+
 *** purpose
 #+BEGIN_SRC emacs-lisp
   (use-package window-purpose
@@ -1787,7 +1802,7 @@ This allows me to  uncompress a .zip file
     ;; Global settings (defaults)
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
           doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    (load-theme 'doom-one-light t)
+    (load-theme 'doom-one t)
 
     ;; Enable flashing mode-line on errors
     (doom-themes-visual-bell-config)
@@ -2083,9 +2098,9 @@ This allows me to  uncompress a .zip file
 
   ;; Default account on startup
   (setq user-full-name  "Tony Ampomah"
-        mu4e-sent-folder "/arksolutions/Sent"
-        mu4e-drafts-folder "/arksolutions/Drafts"
-        mu4e-trash-folder "/arksolutions/Trash")
+        mu4e-sent-folder "/tony@arksolutions.it/Sent"
+        mu4e-drafts-folder "/tony@arksolutions.it/Drafts"
+        mu4e-trash-folder "/tony@arksolutions.it/Trash")
 
   (setq smtpmail-debug-info t
         message-kill-buffer-on-exit t
@@ -2114,13 +2129,13 @@ This allows me to  uncompress a .zip file
   ;; (setq mu4e-html2text-command "w3m -dump -T text/html")
 
   (defvar my-mu4e-account-alist
-    '(("arksolutions"
+    '(("tony@arksolutions.it"
        (user-full-name  "Tony Ampomah")
        (mu4e-compose-signature . (concat "Many thanks\n" "Tony\n"))
        (mu4e-compose-signature-auto-include t)
-       (mu4e-sent-folder "/arksolutions/Sent")
-       (mu4e-drafts-folder "/arksolutions/Drafts")
-       (mu4e-trash-folder "/arksolutions/Trash")
+       (mu4e-sent-folder "/tony@arksolutions.it/Sent")
+       (mu4e-drafts-folder "/tony@arksolutions.it/Drafts")
+       (mu4e-trash-folder "/tony@arksolutions.it/Trash")
        (user-mail-address "tony@arksolutions.it")
        (smtpmail-default-smtp-server "smtp.zoho.com")
        (smtpmail-local-domain "zoho.com")
@@ -2128,31 +2143,16 @@ This allows me to  uncompress a .zip file
        (smtpmail-smtp-server "smtp.zoho.com")
        (smtpmail-stream-type starttls)
        (smtpmail-smtp-service 587))
-      ("netsells"
-       (user-full-name  "Tony Ampomah")
-       (mu4e-compose-signature (concat "Tony Ampomah\n"
-                                       "PHP Developer :: Netsells\n"
-                                       "https://netsells.co.uk/\n"))
-       (mu4e-compose-signature-auto-include t)
-       (mu4e-sent-folder "/netsells/[Gmail].Sent Mail")
-       (mu4e-drafts-folder "/netsells/[Gmail].Drafts")
-       (mu4e-trash-folder "/netsells/[Gmail].Bin")
-       (user-mail-address "tony.ampomah@netsells.co.uk")
-       (smtpmail-default-smtp-server "smtp.gmail.com")
-       (smtpmail-smtp-server "smtp.gmail.com")
-       (smtpmail-local-domain "gmail.com")
-       (smtpmail-smtp-user "tony.ampomah@netsells.co.uk")
-       (smtpmail-stream-type starttls)
-       (smtpmail-smtp-service 587))
-      ("jw-gmail"
+    
+      ("tony.ampomah.jw@gmail.com"
        (user-full-name  "Tony Ampomah")
        (mu4e-compose-signature . (concat
                                   "Warm love\n"
                                   "Tony\n"))
        (mu4e-compose-signature-auto-include t)
-       (mu4e-sent-folder "/jw/[Gmail].Sent Mail")
-       (mu4e-drafts-folder "/jw/[Gmail].Drafts")
-       (mu4e-trash-folder "/jw/[Gmail].Trash")
+       (mu4e-sent-folder "/tony.ampomah.jw@gmail.com/[Gmail].Sent Mail")
+       (mu4e-drafts-folder "/tony.ampomah.jw@gmail.com/[Gmail].Drafts")
+       (mu4e-trash-folder "/tony.ampomah.jw@gmail.com/[Gmail].Trash")
        (user-mail-address "tony.ampomah.jw@gmail")
        (smtpmail-default-smtp-server "smtp.gmail.com")
        (smtpmail-local-domain "gmail.com")
@@ -2160,19 +2160,7 @@ This allows me to  uncompress a .zip file
        (smtpmail-smtp-server "smtp.gmail.com")
        (smtpmail-stream-type starttls)
        (smtpmail-smtp-service 587))
-      ("trainline"
-       (user-full-name  "Tony Ampomah")
-       (mu4e-compose-signature-auto-include nil)
-       (mu4e-sent-folder "/thetrainline/Sent Items")
-       (mu4e-drafts-folder "/thetrainline/Drafts")
-       (mu4e-trash-folder "/thetrainline/Deleted Items")
-       (user-mail-address "tony.ampomah@thetrainline.com")
-       (smtpmail-default-smtp-server "smtp.outlook.com")
-       (smtpmail-local-domain "outlook.com")
-       (smtpmail-smtp-user "tony.ampomah@thetrainline.com")
-       (smtpmail-smtp-server "smtp.outlook.com")
-       (smtpmail-stream-type starttls)
-       (smtpmail-smtp-service 587))))
+      ))
 
   ;; Whenever a new mail is to be composed, change all relevant
   ;; configuration variables to the respective account. This method is
@@ -2205,36 +2193,27 @@ This allows me to  uncompress a .zip file
   (setq mu4e-trash-folder
         (lambda (msg)
           (cond
-           ((string-match "^/arksolutions.*"
+           ((string-match "^/tony@arksolutions.it.*"
                           (mu4e-message-field msg :maildir))
-            "/arksolutions/Trash")
-           ((string-match "^/netsells*"
-                          (mu4e-message-field msg :maildir))
-            "/netsells/[Gmail].Bin")
-           ((string-match "^/thetrainline*"
-                          (mu4e-message-field msg :maildir))
-            "/thetrainline/Deleted Items")
-           ((string-match "^/jw.*"
-                          (mu4e-message-field msg :maildir))
-            "/jw/[Gmail].Trash")
+            "/tony@arksolutions.it/Trash")
            ;; everything else goes to /archive
            (t  "/archive"))))
 
   (setq mu4e-refile-folder
         (lambda (msg)
           (cond
-           ((string-match "^/arksolutions.*"
+           ((string-match "^/tony@arksolutions.it.*"
                           (mu4e-message-field msg :maildir))
-            "/arksolutions/4Archives")
-           ((string-match "^/netsells*"
+            "/tony@arksolutions.it/4Archives")
+           ((string-match "^/tony.ampomah.jw@gmail.com*"
                           (mu4e-message-field msg :maildir))
-            "/netsells/4Archives")
-           ((string-match "^/thetrainline*"
+            "/tony.ampomah.jw@gmail.com/4Archives")
+           ((string-match "^/tampomah@emporium.co.uk*"
                           (mu4e-message-field msg :maildir))
-            "/thetrainline/Archive")
-           ((string-match "^/jw.*"
+            "/tampomah@emporium.co.uk/Archive")
+           ((string-match "^/itechytony@gmail.com.*"
                           (mu4e-message-field msg :maildir))
-            "/jw/4Archives")
+            "/itechytony@gmail.com/4Archives")
            ;; everything else goes to /archive
            (t  "/archive"))))
 
