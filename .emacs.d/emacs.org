@@ -688,7 +688,7 @@ Use =evil= with Org agendas.
       ;; open application
       "o-" 'dired-jump
       "oc" 'cfw:open-org-calendar
-      "oo" '+macos/reveal-in-finder
+      "oo" 'dired-open-xdg
       "om" 'mu4e
       "od"  'docker
       "op"  'pass
