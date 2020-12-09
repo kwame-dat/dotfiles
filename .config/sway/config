@@ -4,15 +4,17 @@
 #
 # Read `man 5 sway` for a complete reference.
 
+exec xcape -e 'Caps_Lock=Escape'
+exec setxkbmap -option 'caps:ctrl_modifier'
 exec variety
 exec nm-applet
-exec /usr/lib/xfce4/notifyd/xfce4-notifyd
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec /usr/bin/emacs --daemon
 exec nextcloud
 exec caffeine
 exec kdeconnect-indicator
 
+font pango:Cantarell 14px
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
@@ -29,10 +31,16 @@ set $term alacritty
 # on the original workspace that the command was run on.
 set $menu rofi -show combi
 
+gaps inner 15
+gaps outer 15
+# smart_gaps on
+
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+# output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+
+
 #
 # Example configuration:
 #
@@ -53,24 +61,30 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
 
+
+# Auto switch to single monitor when laptop lid is cloded
+set $laptop eDP-1
+bindswitch --reload --locked lid:on output $laptop disable
+bindswitch --reload --locked lid:off output $laptop enable
+
+
+
 ### Input configuration
-#
-# Example configuration:
-#
-#   input "2:14:SynPS/2_Synaptics_TouchPad" {
-#       dwt enabled
-#       tap enabled
-#       natural_scroll enabled
-#       middle_emulation enabled
-#   }
-#
-# You can get the names of your inputs by running: swaymsg -t get_inputs
-# Read `man 5 sway-input` for more information about this section.
+input "type:keyboard" {
+    xkb_layout gb
+    repeat_delay 220
+    repeat_rate 80
+    # xkb_options caps:escape
+    xkb_options altwin:swap_lalt_lwin
+}
+
+input "1739:31251:SYNA2393:00_06CB:7A13_Touchpad" {
+    tap enabled
+    natural_scroll enabled
+    pointer_accel 0.7
+}
 
 ### Key bindings
-#
-# Basics:
-#
     # Start a terminal
     bindsym $mod+Return exec $term
 
@@ -79,6 +93,7 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 
     # Start your launcher
     bindsym $mod+d exec $menu
+
     bindsym $mod+space exec $menu
 
     # Drag floating windows by holding down $mod and left mouse button.
@@ -93,6 +108,45 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 
     # Exit sway (logs you out of your Wayland session)
     bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+
+    # Volume & Brightness Control
+    bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+    bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+    bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+    bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+    bindsym XF86MonBrightnessDown exec brightnessctl set 2%-
+    bindsym XF86MonBrightnessUp exec brightnessctl set +2%
+    bindsym XF86AudioPlay exec playerctl play-pause
+    bindsym XF86AudioNext exec playerctl next
+    bindsym XF86AudioPrev exec playerctl previous
+
+    # CONTROL + ALT KEYS
+    bindsym Control+Alt+e exec emacsclient -c -a ''
+    bindsym Control+Alt+m exec emacsclient -c -a '' --eval '(mu4e)'
+    bindsym Control+Alt+a exec emacsclient -c -a '' --eval '(itechytony/day-view)'
+    bindsym Control+Alt+s exec slack
+    bindsym Control+Alt+t exec teams
+    bindsym Control+Alt+g exec chromium -no-default-browser-check
+    bindsym Control+Alt+b exec brave -no-default-browser-check
+    bindsym Control+Alt+w exec whatsdesk
+    bindsym Control+Alt+d exec dbeaver
+    bindsym Control+Alt+z exec zoom
+    bindsym Control+Alt+u exec pamac-manager
+    bindsym Control+Alt+i exec insomnia
+    bindsym Control+Alt+c exec rofi -show calc
+    bindsym Control+Alt+o exec picom-toggle
+    bindsym Control+Alt+v exec pavucontrol
+    bindsym Control+Alt+delete exec xfce4-taskmanager
+    bindsym Control+Alt+p exec rofi-pass
+
+    # ALT + SHIFT KEYS
+    bindsym Alt+Shift+n exec variety -n && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&
+    bindsym Alt+Shift+p exec variety -p && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)
+
+    bindsym Alt+p exec rofi-pass
+    bindsym Print exec grim $(xdg-user-dir PICTURES)/$(date +'%s_grim.png')
+    bindsym $mod+Print exec grim -g "$(slurp -d)" - | wl-copy
+
 #
 # Moving around:
 #
@@ -211,17 +265,7 @@ bindsym $mod+r mode "resize"
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
-    position top
-
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
-
-    colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
-    }
+    swaybar_command waybar
 }
 
 include /etc/sway/config.d/*
@@ -251,60 +295,3 @@ assign [class="VirtualBox Manager"]  8
 assign [class="Spotify"]  10
 assign [class="^Urxvt$" instance="^htop$"]  9
  
-# gaps inner 8
-
-# Auto switch to single monitor when laptop lid is cloded
-set $laptop eDP-1
-bindswitch --reload --locked lid:on output $laptop disable
-bindswitch --reload --locked lid:off output $laptop enable
-
-# default layout
-input "type:keyboard" {
-    xkb_layout gb
-    repeat_delay 220
-    repeat_rate 80
-    xkb_options caps:escape
-    xkb_options altwin:swap_lalt_lwin
-}
-
-input "1739:31251:SYNA2393:00_06CB:7A13_Touchpad" {
-    tap enabled
-    natural_scroll enabled
-    pointer_accel 0.7
-}
-
-# Volume & Brightness Control
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
-bindsym XF86MonBrightnessUp exec brightnessctl set +5%
-bindsym XF86AudioPlay exec playerctl play-pause
-bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioPrev exec playerctl previous
-
-# CONTROL + ALT KEYS
-bindsym Control+Alt+e exec emacsclient -c -a ''
-bindsym Control+Alt+m exec emacsclient -c -a '' --eval '(mu4e)'
-bindsym Control+Alt+a exec emacsclient -c -a '' --eval '(itechytony/day-view)'
-bindsym Control+Alt+s exec slack
-bindsym Control+Alt+t exec teams
-bindsym Control+Alt+g exec chromium -no-default-browser-check
-bindsym Control+Alt+b exec brave -no-default-browser-check
-bindsym Control+Alt+w exec whatsdesk
-bindsym Control+Alt+d exec dbeaver
-bindsym Control+Alt+z exec zoom
-bindsym Control+Alt+u exec pamac-manager
-bindsym Control+Alt+i exec insomnia
-bindsym Control+Alt+c exec rofi -show calc
-bindsym Control+Alt+o exec picom-toggle
-bindsym Control+Alt+v exec pavucontrol
-bindsym Control+Alt+delete exec xfce4-taskmanager
-bindsym Control+Alt+p exec rofi-pass
-
-# ALT + SHIFT KEYS
-bindsym Alt+Shift+n exec variety -n && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&
-bindsym Alt+Shift+p exec variety -p && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)
-
-bindsym Alt+p exec rofi-pass
