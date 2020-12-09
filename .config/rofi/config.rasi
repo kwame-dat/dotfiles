@@ -1,5 +1,4 @@
 configuration {
-    width: 40;
     font: "Cantarell 14";
     show-icons: true;
     combi-modi: "window,drun,ssh";

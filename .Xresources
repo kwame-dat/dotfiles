@@ -2,14 +2,6 @@
 Xft.dpi: 192
 rofi.dpi: 192
 
-URxvt.font: xft:JetBrains Mono Medium:size=12
-URxvt.boldFont: xft:JetBrains Mono Medium:size=12
-URxvt.scrollBar: false
-URxvt.perl-ext-common:resize-font
-URxvt.keysym.C-minus:resize-font:smaller
-URxvt.keysym.C-equal:resize-font:bigger
-URxvt.keysym.C-0:resize-font:reset
-
 ! special
 *.foreground:   #000000
 *.background:   #D3D3D3
