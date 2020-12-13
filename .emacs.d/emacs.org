@@ -601,11 +601,17 @@ Use =evil= with Org agendas.
       ;; files
       "fc"  'editorconfig-find-current-editorconfig
       "fC"  'itecytony/copy-this-file
-      "f1"  '(lambda() (interactive) (find-file "~/Repo/1Projects"))
-      "f2"  '(lambda() (interactive) (find-file "~/Repo/2Areas"))
-      "f3"  '(lambda() (interactive) (find-file "~/Repo/3Resources"))
-      "f4"  '(lambda() (interactive) (find-file "~/Repo/4Archives"))
-      "f5"  '(lambda() (interactive) (find-file "~/Repo"))
+      "fpp"  '(lambda() (interactive) (find-file "~/.emacs.d/emacs.org"))
+      "fp1"  '(lambda() (interactive) (find-file "~/Repo/Personal/1Projects"))
+      "fp2"  '(lambda() (interactive) (find-file "~/Repo/Personal/2Areas"))
+      "fp3"  '(lambda() (interactive) (find-file "~/Repo/Personal/3Resources"))
+      "fp4"  '(lambda() (interactive) (find-file "~/Repo/Personal/4Archives"))
+      "fp5"  '(lambda() (interactive) (find-file "~/Repo/Personal"))
+      "fw1"  '(lambda() (interactive) (find-file "~/Repo/Work/1Projects"))
+      "fw2"  '(lambda() (interactive) (find-file "~/Repo/Work/2Areas"))
+      "fw3"  '(lambda() (interactive) (find-file "~/Repo/Work/3Resources"))
+      "fw4"  '(lambda() (interactive) (find-file "~/Repo/Work/4Archives"))
+      "fw5"  '(lambda() (interactive) (find-file "~/Repo/Work"))
       "fD"  'itechytony/delete-this-file
       "fd" 'dired
       "ff"  'counsel-find-file
@@ -615,15 +621,18 @@ Use =evil= with Org agendas.
       "fu"  'itechytony/sudo-find-file
       "fU"  'itechytony/sudo-this-file
       "fl"  'locate
-      "fp"  '(lambda() (interactive) (find-file "~/.emacs.d/emacs.org"))
       "fr"  'recentf-open-files
       "fs"  'save-buffer
       "fS"  'write-file
       ;; documents/downloads
-      "d1" '(lambda() (interactive) (find-file "~/Documents/1Projects"))
-      "d2" '(lambda() (interactive) (find-file "~/Documents/2Areas"))
-      "d3" '(lambda() (interactive) (find-file "~/Documents/3Resources"))
-      "d4" '(lambda() (interactive) (find-file "~/Documents/4Archives"))
+      "dp1" '(lambda() (interactive) (find-file "~/Documents/Personal/1Projects"))
+      "dp2" '(lambda() (interactive) (find-file "~/Documents/Personal/2Areas"))
+      "dp3" '(lambda() (interactive) (find-file "~/Documents/Personal/3Resources"))
+      "dp4" '(lambda() (interactive) (find-file "~/Documents/Personal/4Archives"))
+      "dw1" '(lambda() (interactive) (find-file "~/Documents/Work/1Projects"))
+      "dw2" '(lambda() (interactive) (find-file "~/Documents/Work/2Areas"))
+      "dw3" '(lambda() (interactive) (find-file "~/Documents/Work/3Resources"))
+      "dw4" '(lambda() (interactive) (find-file "~/Documents/Work/4Archives"))
       "dd" '(lambda() (interactive) (find-file "~/Downloads"))
       "dD" '(lambda() (interactive) (find-file "~/Desktop"))
       ;; buffers
