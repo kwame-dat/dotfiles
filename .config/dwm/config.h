@@ -66,6 +66,7 @@ static const Rule rules[] = {
     { "Nextcloud",                   NULL,       NULL,      1 << 5,      0,                -1 },
     { "VirtualBox Manager",          NULL,       NULL,      1 << 7,      0,                -1 },
     { "Spotify",                     NULL,       NULL,      1 << 8,      0,                -1 },
+    { NULL,       NULL,   "scratchpad",   0,            1,           -1,       's' },
 };
 
 
@@ -107,6 +108,9 @@ static const char *bashtop[]  = { "xfce4-taskmanager", NULL };
 #include "shiftview.c"
 #include <X11/XF86keysym.h>
 
+/*First arg only serves to match against key in rules*/
+static const char *scratchpadcmd[] = {"s", "termite", "-t", "scratchpad", NULL}; 
+
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = filecmd } },
@@ -133,6 +137,9 @@ static Key keys[] = {
   { MODKEY|ShiftMask,     XK_Tab,        cyclelayout,    {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
 	{ MODKEY,             XK_f,      togglefullscr,  {0} },
+
+
+  { 0,                       XK_grave,  togglescratch,  {.v = scratchpadcmd } },
 
   /* Switching between monitors */
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
