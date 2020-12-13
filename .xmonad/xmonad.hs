@@ -4,6 +4,7 @@ import Data.Monoid
 import System.Exit
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.ManageDocks
+import qualified Codec.Binary.UTF8.String as UTF8
 
 -- For Xmobar
 import XMonad.Hooks.DynamicLog
@@ -16,12 +17,18 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.Spiral
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns
-
+import XMonad.Layout.Fullscreen (fullscreenFull)
+import XMonad.Layout.MultiToggle
+import XMonad.Layout.MultiToggle.Instances
 
 -- Toggle Fullscreen
 import XMonad.Hooks.ManageHelpers
 -- import XMonad.Layout.ToggleLayouts
 
+import XMonad.Layout.Spacing
+import XMonad.Layout.Gaps
+
+import XMonad.Actions.CycleWS
 
 -- This is for multi media keys
 import Graphics.X11.ExtraTypes.XF86
@@ -67,10 +74,10 @@ myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 -- Border colors for unfocused and focused windows, respectively.
 -- Currently based on the ir_black theme.
 myNormalBorderColor  = "#7c7c7c"
-myFocusedBorderColor = "#ffb6b0"
+myFocusedBorderColor = "#f0c674"
 
 -- Color of current window title in xmobar.
-xmobarTitleColor = "#FFB6B0"
+xmobarTitleColor = "f0c674"
 
 -- Color of current workspace in xmobar.
 xmobarCurrentWorkspaceColor = "#CEFFAC"
@@ -84,8 +91,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm,   xK_Return), spawn $ XMonad.terminal conf)
 
     , ((modm,               xK_p     ), spawn "rofi-pass")
+    , ((modm,               xK_e     ), spawn "emacsclient -c -a ''")
     , ((modm,               xK_Escape     ), spawn "xkill")
     , ((modm,               xK_b     ), spawn "rofi-surfraw")
+    , ((modm,               xK_f     ), sendMessage $ Toggle NBFULL)
 
     -- launch gmrun
     , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
@@ -144,13 +153,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
     -- Quit xmonad
-    , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
+    , ((modm .|. shiftMask, xK_e     ), io (exitWith ExitSuccess))
 
     -- Restart xmonad
     , ((modm .|. shiftMask, xK_r     ), spawn "xmonad --recompile; xmonad --restart")
-
-    -- Run xmessage with a summary of the default keybindings (useful for beginners)
-    , ((modm .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
 
     , ((modm , xK_Print    ), spawn "flameshot gui")
 
@@ -212,6 +218,15 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_F10), spawn $ "termite")
     -- , ((modm, xK_F11), spawn $ "spotify") for webcam lunchpad
     -- , ((modm, xK_F12), spawn $ "spotify") terminal lunchpad
+    , ((modm,               xK_Down),  nextWS)
+    , ((modm,               xK_Up),    prevWS)
+    , ((modm .|. shiftMask, xK_Down),  shiftToNext)
+    , ((modm .|. shiftMask, xK_Up),    shiftToPrev)
+    , ((modm,               xK_Right), nextScreen)
+    , ((modm,               xK_Left),  prevScreen)
+    , ((modm .|. shiftMask, xK_Right), shiftNextScreen)
+    , ((modm .|. shiftMask, xK_Left),  shiftPrevScreen)
+    , ((modm,               xK_z),     toggleWS)
     ]
     ++
 
@@ -229,7 +244,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
     --
     [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_w, xK_e] [0..]
+        | (key, sc) <- zip [xK_w] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
 
@@ -254,20 +269,21 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 
 ------------------------------------------------------------------------
 -- Layouts:
-
--- You can specify and transform your layouts by modifying these values.
--- If you change layout bindings be sure to use 'mod-shift-space' after
--- restarting (with 'mod-q') to reset your layout state to the new
--- defaults, as xmonad preserves your old layout settings by default.
---
--- The available layouts.  Note that each layout is separated by |||,
--- which denotes layout choice.
-myLayout = avoidStruts (
-    Tall 1 (3/100) (1/2) |||
-    Mirror (Tall 1 (3/100) (1/2)) |||
-    ThreeColMid 1 (3/100) (1/2) |||
-    spiral (6/7)) 
-    -- noBorders (fullscreenFull Full)
+myLayoutHook =
+  spacingRaw True (Border 0 15 15 15) True (Border 15 15 15 15) True $
+  mkToggle (NBFULL ?? NOBORDERS ?? EOT) $
+  avoidStruts $
+  gaps [(U,30), (D,30), (R,30), (L,30)] $
+  tiled |||
+  Mirror tiled |||
+  spiral (6/7) |||
+  ThreeColMid 1 (3/100) (1/2) |||
+  Full
+    where
+        tiled = Tall nmaster delta tiled_ratio
+        nmaster = 1
+        delta = 3/100
+        tiled_ratio = 1/2
 
 ------------------------------------------------------------------------
 -- Window rules:
@@ -302,18 +318,18 @@ myManageHook = composeAll
     , className =? "Signal"                                  --> doShift ( myWorkspaces !! 2 )
     , className =? "whatsdesk"                               --> doShift ( myWorkspaces !! 2 )
     , className =? "Slack"                                   --> doShift ( myWorkspaces !! 2 )
-    , className =? "zoom"                                    --> doShift ( myWorkspaces !! 3 )
-    , className =? "Microsoft Teams - Preview"               --> doShift ( myWorkspaces !! 3 )
-    , className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 4 )
-    , className =? "Insomnia"                                --> doShift ( myWorkspaces !! 5 )
-    , className =? "Postman"                                 --> doShift ( myWorkspaces !! 5 )
-    , className =? "Stoplight Studio"                        --> doShift ( myWorkspaces !! 6 )
-    , className =? "calibre"                                 --> doShift ( myWorkspaces !! 6 )
+    , className =? "zoom"                                    --> doShift ( myWorkspaces !! 2 )
+    , className =? "Microsoft Teams - Preview"               --> doShift ( myWorkspaces !! 2 )
+    , className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 3 )
+    , className =? "Insomnia"                                --> doShift ( myWorkspaces !! 4 )
+    , className =? "Postman"                                 --> doShift ( myWorkspaces !! 4 )
+    , className =? "Stoplight Studio"                        --> doShift ( myWorkspaces !! 5 )
+    , className =? "calibre"                                 --> doShift ( myWorkspaces !! 5 )
     -- , [className =? "obs"                                     --> doShift ( myWorkspaces !! 7 )]
     -- , [className =? "vlc"                                     --> doShift ( myWorkspaces !! 7 )]
-    , className =? "Thunderbird"                             --> doShift ( myWorkspaces !! 6 )
-    , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 7 )
-    , className =? "Nextcloud"                               --> doShift ( myWorkspaces !! 7 )
+    , className =? "Thunderbird"                             --> doShift ( myWorkspaces !! 5 )
+    , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 6 )
+    , className =? "Nextcloud"                               --> doShift ( myWorkspaces !! 6 )
     , className =? "Spotify"                                 --> doShift ( myWorkspaces !! 8 )
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)
     ]
@@ -366,7 +382,7 @@ main = do
       }
       , manageHook = manageDocks <+> myManageHook
       , startupHook = myStartupHook
-      , handleEventHook = docksEventHook
+      , handleEventHook = docksEventHook <+> fullscreenEventHook
   }
         
 -- A structure containing your configuration settings, overriding
@@ -382,7 +398,7 @@ defaults = def {
         clickJustFocuses   = myClickJustFocuses,
         borderWidth        = myBorderWidth,
         modMask            = myModMask,
-        workspaces         = myWorkspaces,
+        workspaces         = myWorkspaces, 
         normalBorderColor  = myNormalBorderColor,
         focusedBorderColor = myFocusedBorderColor,
 
@@ -391,60 +407,9 @@ defaults = def {
         mouseBindings      = myMouseBindings,
 
       -- hooks, layouts
-        layoutHook         = smartBorders $ myLayout,
+        layoutHook         = smartBorders $ myLayoutHook ,
         manageHook         = myManageHook,
-        handleEventHook    = myEventHook,
+        handleEventHook = myEventHook,
         logHook            = myLogHook,
         startupHook        = myStartupHook
     }
-
--- | Finally, a copy of the default bindings in simple textual tabular format.
-help :: String
-help = unlines ["The default modifier key is 'alt'. Default keybindings:",
-    "",
-    "-- launching and killing programs",
-    "mod-Shift-Enter  Launch xterminal",
-    "mod-p            Launch dmenu",
-    "mod-Shift-p      Launch gmrun",
-    "mod-Shift-c      Close/kill the focused window",
-    "mod-Space        Rotate through the available layout algorithms",
-    "mod-Shift-Space  Reset the layouts on the current workSpace to default",
-    "mod-n            Resize/refresh viewed windows to the correct size",
-    "",
-    "-- move focus up or down the window stack",
-    "mod-Tab        Move focus to the next window",
-    "mod-Shift-Tab  Move focus to the previous window",
-    "mod-j          Move focus to the next window",
-    "mod-k          Move focus to the previous window",
-    "mod-m          Move focus to the master window",
-    "",
-    "-- modifying the window order",
-    "mod-Return   Swap the focused window and the master window",
-    "mod-Shift-j  Swap the focused window with the next window",
-    "mod-Shift-k  Swap the focused window with the previous window",
-    "",
-    "-- resizing the master/slave ratio",
-    "mod-h  Shrink the master area",
-    "mod-l  Expand the master area",
-    "",
-    "-- floating layer support",
-    "mod-t  Push window back into tiling; unfloat and re-tile it",
-    "",
-    "-- increase or decrease number of windows in the master area",
-    "mod-comma  (mod-,)   Increment the number of windows in the master area",
-    "mod-period (mod-.)   Deincrement the number of windows in the master area",
-    "",
-    "-- quit, or restart",
-    "mod-Shift-q  Quit xmonad",
-    "mod-q        Restart xmonad",
-    "mod-[1..9]   Switch to workSpace N",
-    "",
-    "-- Workspaces & screens",
-    "mod-Shift-[1..9]   Move client to workspace N",
-    "mod-{w,e,r}        Switch to physical/Xinerama screens 1, 2, or 3",
-    "mod-Shift-{w,e,r}  Move client to screen 1, 2, or 3",
-    "",
-    "-- Mouse bindings: default actions bound to mouse events",
-    "mod-button1  Set the window to floating mode and move by dragging",
-    "mod-button2  Raise the window to the top of the stack",
-    "mod-button3  Set the window to floating mode and resize by dragging"]
