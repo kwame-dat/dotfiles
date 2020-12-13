@@ -24,6 +24,7 @@ setxkbmap -option 'caps:ctrl_modifier,altwin:swap_lalt_lwin' &
 xset r rate 220 80 &
 
 run "variety"
+run "dunst"
 run "dwmblocks"
 run "nm-applet"
 run "xfce4-power-manager"
