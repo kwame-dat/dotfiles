@@ -36,7 +36,7 @@ static const unsigned int alphas[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "🌍", "", "🗨️", "🎦", "", "", "🎬️", "🎮", "🎧" };
+static const char *tags[] = { "🌍", "", "️","", "", "️",  "🎦", "", "" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -56,14 +56,14 @@ static const Rule rules[] = {
     { "whatsdesk",                   NULL,       NULL,      1 << 2,      0,                -1 },
     { "Signal",                      NULL,       NULL,      1 << 2,      0,                -1 },
     { "Slack",                       NULL,       NULL,      1 << 2,      0,                -1 },
-    { "Microsoft Teams - Preview",   NULL,       NULL,      1 << 3,      0,                -1 },
-    { "zoom",                        NULL,       NULL,      1 << 3,      0,                -1 },
-    { "Dbeaver",                     NULL,       NULL,      1 << 4,      0,                -1 },
-    { "Insomnia",                    NULL,       NULL,      1 << 5,      0,                -1 },
-    { "Postman",                     NULL,       NULL,      1 << 5,      0,                -1 },
-    { "Thunderbird",                 NULL,       NULL,      1 << 6,      0,                -1 },
-    { "calibre",                     NULL,       NULL,      1 << 6,      0,                -1 },
-    { "Nextcloud",                   NULL,       NULL,      1 << 7,      0,                -1 },
+    { "Microsoft Teams - Preview",   NULL,       NULL,      1 << 2,      0,                -1 },
+    { "zoom",                        NULL,       NULL,      1 << 2,      0,                -1 },
+    { "Dbeaver",                     NULL,       NULL,      1 << 3,      0,                -1 },
+    { "Insomnia",                    NULL,       NULL,      1 << 4,      0,                -1 },
+    { "Postman",                     NULL,       NULL,      1 << 4,      0,                -1 },
+    { "Thunderbird",                 NULL,       NULL,      1 << 5,      0,                -1 },
+    { "calibre",                     NULL,       NULL,      1 << 5,      0,                -1 },
+    { "Nextcloud",                   NULL,       NULL,      1 << 5,      0,                -1 },
     { "VirtualBox Manager",          NULL,       NULL,      1 << 7,      0,                -1 },
     { "Spotify",                     NULL,       NULL,      1 << 8,      0,                -1 },
 };
@@ -206,8 +206,8 @@ static Key keys[] = {
     { 0, XF86XK_AudioMicMute,	        spawn,		SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
     { 0, XF86XK_PowerOff,		          spawn,		SHCMD("sysact") },
     { 0, XF86XK_ScreenSaver,	        spawn,		SHCMD("slock & xset dpms force off; mpc pause; pauseallmpv") },
-    { 0, XF86XK_MonBrightnessUp,	    spawn,		SHCMD("xbacklight -inc 2") },
-    { 0, XF86XK_MonBrightnessDown,    spawn,		SHCMD("xbacklight -dec 2") },
+    { 0, XF86XK_MonBrightnessUp,	    spawn,		SHCMD("xbacklight -inc 1") },
+    { 0, XF86XK_MonBrightnessDown,    spawn,		SHCMD("xbacklight -dec 1") },
 };
 
 /* button definitions */
