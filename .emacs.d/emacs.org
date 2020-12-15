@@ -674,8 +674,8 @@ Use =evil= with Org agendas.
       ;; notes
       "nf" '(lambda() (interactive) (counsel-find-file "~/org"))
       "n." '(lambda() (interactive) (counsel-find-file "~/org"))
-      "ni" '(lambda() (interactive) (find-file "~/org/Inbox.org"))
-      "nt" '(lambda() (interactive) (find-file "~/org/Todo.org"))
+      "ni" '(lambda() (interactive) (find-file "~/org/PInbox.org"))
+      "nt" '(lambda() (interactive) (find-file "~/org/PTodo.org"))
       "na" 'org-agenda
       "nd" 'itechytony/day-view
       "nci" 'org-pomodoro
@@ -1183,11 +1183,11 @@ Don't indent newly expanded blocks, even if they're under a heading.
 
   (setq org-capture-templates
         '(
-          ("i" "Inbox" entry (file "~/org/Inbox.org")
+          ("i" "Inbox" entry (file+headline "~/org/PTodo.org" "Inbox")
            "* TODO %?\n")
-          ("e" "Email" entry (file+headline "~/org/Inbox.org" "Emails")
+          ("e" "Email" entry (file+headline "~/org/PTodo.org" "Inbox")
            "* TODO [#A] Process Email %:fromname on %:subject\nSCHEDULED:%t\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+2d\"))\n:PROPERTIES:\n:CREATED: %U\n:END:\n %a" :immediate-finish t :prepend t)
-          ("p" "Project" entry (file+headline "~/org/Todo.org" "1Projects")
+          ("p" "Project" entry (file+headline "~/org/PTodo.org" "1Projects")
            (file "~/org/templates/new-project.org"))
           ("s" "Someday" entry (file+headline "~/org/Someday.org" "Someday")
            "* SOMEDAY %?\n")))
@@ -1248,8 +1248,9 @@ Task Management & Agenda Views
 #+begin_src emacs-lisp
   (setq org-directory "~/org")
   (setq org-agenda-files (quote (
-                                 "~/org/Todo.org"
-                                 "~/org/Work.org"
+                                 "~/org/PTodo.org"
+                                 "~/org/JTodo.org"
+                                 "~/org/WTodo.org"
                                  )))
 #+end_src
 
@@ -1760,6 +1761,8 @@ This allows me to  uncompress a .zip file
     (dap-ui-mode 1)
     (dap-tooltip-mode 1)
     (tooltip-mode 1))
+
+  (require 'dap-php)
 #+END_SRC
     
 *** writeroom-mode
@@ -2265,7 +2268,7 @@ can ensure that I always have an up to date project list.
 #+BEGIN_SRC emacs-lisp
   (defun go-to-projects ()
     (interactive)
-    (find-file "~/org/Todo.org")
+    (find-file "~/org/PTodo.org")
     (widen)
     (beginning-of-buffer)
     (re-search-forward "* Projects")
@@ -2308,7 +2311,7 @@ to my “Projects” subtree.
 #+BEGIN_SRC emacs-lisp
   (defun go-to-areas ()
     (interactive)
-    (find-file "~/org/Todo.org")
+    (find-file "~/org/PTodo.org")
     (widen)
     (beginning-of-buffer)
     (re-search-forward "* Areas")
