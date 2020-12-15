@@ -5,7 +5,7 @@
 bitbucket.eandl.co.uk https://bitbucket.eandl.co.uk
 jenkins.eandl.co.uk https://jenkins.eandl.co.uk
 confluence.eandl.co.uk https://confluence.eandl.co.uk
-jira.eandl.co.uk https://jira.eandl.co.uk
+jira.eandl.co.uk https://jira.eandl.co.uk/secure/RapidBoard.jspa?rapidView=40&view=detail&selectedIssue=ELICO-7506
 kibana.eandl.co.uk https://kibana.eandl.co.uk
 sharedpoint https://theinsuranceemporium.sharepoint.com/sites/DevelopmentTeam
 timesheet http://timesheet.local/timeweb/Personal/Login.aspx
@@ -22,6 +22,12 @@ docker.pet-insurance.co.uk https://docker.pet-insurance.co.uk/
 test.pet-insurance.co.uk https://test.pet-insurance.co.uk/
 staging.pet-insurance.co.uk https://staging.pet-insurance.co.uk/
 pet-insurance.co.uk https://docker.pet-insurance.co.uk/
+
+### PET.API
+docker.pet.api.eandl.co.uk https://docker.pet.api.eandl.co.uk/
+test.pet.api.eandl.co.uk https://test.pet.api.eandl.co.uk/
+staging.pet.api.eandl.co.uk https://staging.pet.api.eandl.co.uk/
+pet.api.eandl.co.uk https://docker.pet.api.eandl.co.uk/
 
 ## Home
 untangle.theampomahs.com https://untangle.theampomahs.com
