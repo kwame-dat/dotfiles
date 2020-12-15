@@ -6,6 +6,8 @@ function run {
   fi
 }
 
+xrandr --output eDP1 --mode 3840x2160 --pos 3840x0 --rotate normal --output DP1 --primary --mode 3840x1600 --pos 0x0 --rotate normal --output DP2 --off --output DP3 --off --output VIRTUAL1 --off &
+
 # cursor active at boot
 xsetroot -cursor_name left_ptr &
 
@@ -35,7 +37,4 @@ picom -b  --config ~/.config/picom/picom.conf &
 run "nextcloud"
 run "caffeine"
 run "kdeconnect-indicator"
-# teams &
-# zoom &
-# slack &
-# whatsdesk &
+run "dropbox"
