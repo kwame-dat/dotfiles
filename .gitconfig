@@ -3,6 +3,9 @@
 [user]
 	name = Tony Ampomah
 	email = tony@arksolutions.it
+
+[includeIf "gitdir:~/Repo/Work/"]
+    path = ~/Repo/Work/.gitconfig
 [alias]
 	co = checkout
 	br = branch
