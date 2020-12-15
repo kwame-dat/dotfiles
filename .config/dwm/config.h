@@ -129,7 +129,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_equal,  setgaps,        {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
   { MODKEY,                       XK_s,      togglesticky,   {0} },
-	{ MODKEY,                       XK_grave,  view,           {0} },
+	/* { MODKEY,                       XK_grave,  view,           {0} }, */
+	{ MODKEY,                       XK_grave,  togglescratch,  {.v = scratchpadcmd }},
 	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
 	{ MODKEY,            			      XK_q,      killclient,     {0} },
 
@@ -140,7 +141,7 @@ static Key keys[] = {
 	{ MODKEY,             XK_f,      togglefullscr,  {0} },
 
 
-  { 0,                       XK_grave,  togglescratch,  {.v = scratchpadcmd } },
+  /* { 0,                       XK_grave,  togglescratch,  {.v = scratchpadcmd } }, */
 
   /* Switching between monitors */
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
