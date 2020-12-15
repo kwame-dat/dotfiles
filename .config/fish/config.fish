@@ -1,6 +1,8 @@
 set fish_greeting
 
-# Composer export path
+# Abbreviations
+abbr -a -g cvpn sudo openvpn --config Connection.ovpn
+abbr -a -g dvpn sudo killall openvpn
 
 # General
 alias e="exit"
@@ -12,11 +14,14 @@ alias ckh="rm -rf ~/.ssh/known_hosts"
 alias getKey="pbcopy < ~/.ssh/id_rsa.pub"
 
 # Repo
-alias r="cd ~/Repo/"
-alias wp="cd ~/Repo/Work/1Projects"
-alias wa="cd ~/Repo/Work/2Areas"
-alias pp="cd ~/Repo/Personal/1Projects"
-alias pa="cd ~/Repo/Personal/2Areas"
+alias rw1="cd ~/Repo/Work/1Projects"
+alias rw2="cd ~/Repo/Work/2Areas"
+alias rw3="cd ~/Repo/Work/3Resources"
+alias rw4="cd ~/Repo/Work/4Archives"
+alias rp1="cd ~/Repo/Personal/1Projects"
+alias rp2="cd ~/Repo/Personal/2Areas"
+alias rp3="cd ~/Repo/Personal/3Resources"
+alias rp4="cd ~/Repo/Personal/4Archives"
 
 # Composer
 alias cu="composer update"
