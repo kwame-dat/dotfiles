@@ -75,6 +75,7 @@
     - [[#diminish][diminish]]
     - [[#mixed-pitch][Mixed pitch]]
     - [[#lang][Lang]]
+    - [[#calendar][calendar]]
     - [[#mu4e][mu4e=]]
     - [[#toc-org][Toc-org]]
   - [[#organisation-gtd-and-para][Organisation (GTD and PARA)]]
@@ -535,6 +536,12 @@ Use =evil= with Org agendas.
               (lambda () (evil-org-set-key-theme)))
     (require 'evil-org-agenda)
     (evil-org-agenda-set-keys))
+#+end_src
+
+Undo stuff
+#+begin_src emacs-lisp
+  (use-package undo-tree
+    :demand t)
 #+end_src
 
 *** evil-mc
@@ -1288,14 +1295,6 @@ Make sure all org files are folded
               (setq eyebrowse-new-workspace t)))
 #+END_SRC
 
-*** calfw
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package calfw)
-  ;; (use-package calfw-org)
-  ;; (use-package calfw-cal)
-  ;; (use-package calfw-ical)
-#+END_SRC
-    
 *** nov
 #+BEGIN_SRC emacs-lisp
   (defun my-nov-font-setup ()
@@ -1817,7 +1816,7 @@ This allows me to  uncompress a .zip file
     ;; Global settings (defaults)
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
           doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    (load-theme 'doom-tomorrow-night t)
+    (load-theme 'doom-one t)
 
     ;; Enable flashing mode-line on errors
     (doom-themes-visual-bell-config)
@@ -2103,6 +2102,33 @@ This allows me to  uncompress a .zip file
   (add-hook 'yaml-mode-hook 'display-line-numbers-mode)
 #+end_src
 
+*** calendar
+#+begin_src emacs-lisp :tangle no
+    ;; (use-package calfw)
+    ;; (use-package calfw-org)
+    ;; (use-package calfw-cal)
+    ;; (use-package calfw-ical)
+
+  (use-package calfw)
+  (use-package calfw-org)
+  (use-package calfw-gcal)
+
+  (require 'calfw-cal)
+  (require 'calfw-ical)
+  (require 'calfw-howm)
+  (require 'calfw-org)
+
+  (defun my-open-calendar ()
+    (interactive)
+    (cfw:open-calendar-buffer
+     :contents-sources
+     (list
+      (cfw:org-create-source "Green")  ; orgmode source
+      (cfw:cal-create-source "Orange") ; diary source
+      (cfw:ical-create-source "Moon" "~/moon.ics" "Gray")  ; ICS source1
+      (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
+     ))) 
+#+end_src
 *** mu4e=
 #+BEGIN_SRC emacs-lisp
   (require 'mu4e)

@@ -283,15 +283,15 @@ assign [class="jetbrains-phpstorm"]  2
 assign [class="whatsdesk"]  3
 assign [class="Signal"]  3
 assign [class="Slack"]  3
-assign [class="Microsoft Teams - Preview"]  4
-assign [class="zoom"]  4
+assign [class="Microsoft Teams - Preview"]  3
+assign [class="zoom"]  3
+assign [class="Insomnia"]  4
+assign [class="Postman"]  4
 assign [class="Dbeaver"]  5
-assign [class="Insomnia"]  6
-assign [class="Postman"]  6
-assign [class="Thunderbird"]  7
-assign [class="calibre"]  7
-assign [class="Nextcloud"]  8
-assign [class="VirtualBox Manager"]  8
+assign [class="Thunderbird"]  6
+assign [class="calibre"]  6
+assign [class="Nextcloud"] 6
+assign [class="VirtualBox Manager"]  7
 assign [class="Spotify"]  10
 assign [class="^Urxvt$" instance="^htop$"]  9
  
