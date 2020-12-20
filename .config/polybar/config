@@ -24,15 +24,15 @@ line-color = ${colors.background}
 padding-left = 0
 padding-right = 0
 
-module-margin-left = 2
-module-margin-right = 2
+module-margin-left = 1
+module-margin-right = 1
 
-font-0 = "Cantarell:size=12;4"
-font-1 = "FontAwesome:size=12;4"
+font-0 = "JetBrains Mono Medium:size=10;4"
+font-1 = "FontAwesome:size=10;4"
 
 modules-left = ewmh xwindow  
-modules-center = networkspeedup cpu memory temperature networkspeeddown
-modules-right = backlight pavolume battery xkeyboard time date
+modules-center =  
+modules-right = networkspeedup networkspeeddown cpu memory temperature backlight pavolume battery time date
 
 tray-position = right
 tray-padding = 0
@@ -73,7 +73,7 @@ format = <label>
 ;   %percentage% (default) - total cpu load
 ;   %percentage-cores% - load percentage for each core
 ;   %percentage-core[1-9]% - load percentage for specific core
-label = "Cpu: %percentage%%"
+label = "C: %percentage%%"
 
 ; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
@@ -112,7 +112,7 @@ interval = 1
 ;   %mb_total%
 label = %gb_used%
 
-format = "Mem: <label>"
+format = "M: <label>"
 format-prefix = " "
 format-prefix-foreground = ${colors.foreground}
 format-underline = ${colors.primary}
@@ -132,7 +132,7 @@ spacing = 4
 
 [module/xwindow]
 type = internal/xwindow
-label = %title:0:90:...%
+label = %title:0:50:...%
 
 ; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
@@ -186,7 +186,7 @@ format-prefix-underline = ${colors.secondary}
 label-layout = %layout%
 label-layout-underline = ${colors.secondary}
 
-label-indicator-padding = 2
+label-indicator-padding = 1
 label-indicator-margin = 1
 label-indicator-background = ${colors.secondary}
 label-indicator-underline = ${colors.secondary}
@@ -595,19 +595,19 @@ label-active = %name%
 label-active-foreground = ${colors.background}
 label-active-background = ${colors.primary}
 label-active-underline= ${colors.background}
-label-active-padding = 3
+label-active-padding = 1.5
 
 label-occupied = %name%
 label-occupied-background = ${colors.success}
-label-occupied-padding = 3
+label-occupied-padding = 1.5
 
 label-urgent = %name%
 label-urgent-foreground = ${colors.foreground}
 label-urgent-background = ${colors.alert}
 label-urgent-underline = ${colors.alert}
-label-urgent-padding = 3
+label-urgent-padding = 1.5
 
 
 label-empty = %name%
 label-empty-foreground = ${colors.foreground}
-label-empty-padding = 3
+label-empty-padding = 1.5

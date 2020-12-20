@@ -4,12 +4,15 @@
 killall -q polybar
 
 # Wait until the processes have been shut down
-while pgrep -x polybar >/dev/null; do sleep 1; done
+while pgrep -u $UID -x polybar > /dev/null; do sleep 1; done
 
-if type "xrandr"; then
-  for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
-    MONITOR=$m polybar --reload main &
-  done
+count=$(xrandr --query | grep " connected" | cut -d" " -f1 | wc -l)
+
+if [ $count = 1 ]; then
+    m=$(xrandr --query | grep " connected" | cut -d" " -f1)
+    MONITOR=$m polybar --reload main -c ~/.config/polybar/config &
 else
-  polybar --reload main &
+    for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
+        MONITOR=$m polybar --reload main -c ~/.config/polybar/config &
+    done
 fi
