@@ -73,7 +73,7 @@ format = <label>
 ;   %percentage% (default) - total cpu load
 ;   %percentage-cores% - load percentage for each core
 ;   %percentage-core[1-9]% - load percentage for specific core
-label = "C: %percentage%%"
+label = "C: %percentage%"
 
 ; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
@@ -143,7 +143,7 @@ card = intel_backlight
 format = <ramp> <label>
 format-background = ${colors.background}
 format-foreground = ${colors.foreground}
-format-padding = 1
+format-padding = 0
 format-prefix = ""
 format-underline = ${colors.primary}
 
@@ -595,19 +595,19 @@ label-active = %name%
 label-active-foreground = ${colors.background}
 label-active-background = ${colors.primary}
 label-active-underline= ${colors.background}
-label-active-padding = 1.5
+label-active-padding = 2
 
 label-occupied = %name%
 label-occupied-background = ${colors.success}
-label-occupied-padding = 1.5
+label-occupied-padding = 2
 
 label-urgent = %name%
 label-urgent-foreground = ${colors.foreground}
 label-urgent-background = ${colors.alert}
 label-urgent-underline = ${colors.alert}
-label-urgent-padding = 1.5
+label-urgent-padding = 2
 
 
 label-empty = %name%
 label-empty-foreground = ${colors.foreground}
-label-empty-padding = 1.5
+label-empty-padding = 2
