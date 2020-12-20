@@ -1,13 +1,12 @@
 #!/bin/bash
 
 function run {
- if ! pgrep $1 ;
+  if ! pgrep $1 ;
   then
     $@&
   fi
 }
 
-xrandr --output eDP1 --mode 3840x2160 --pos 3840x0 --rotate normal --output DP1 --primary --mode 3840x1600 --pos 0x0 --rotate normal --output DP2 --off --output DP3 --off --output VIRTUAL1 --off &
 
 # cursor active at boot
 xsetroot -cursor_name left_ptr &
@@ -20,27 +19,40 @@ xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Accel Speed" 1 &
 # Caps lock map    
 xcape -e 'Caps_Lock=Escape' &
 
-# Make caps lock control key
-setxkbmap -option 'caps:ctrl_modifier' &
+# Make caps lock control key & sway alt with super key
+setxkbmap -option 'caps:ctrl_modifier,altwin:swap_lalt_lwin' &
 
 # Increase keyboard key repeat
 xset r rate 220 80 &
 
-run "variety"
-run dwmblocks &
-run "nm-applet"
-# run "xfce4-power-manager"
-run "blueberry-tray"
-# run "/usr/lib/xfce4/notifyd/xfce4-notifyd"
-run "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
-picom -b  --config ~/.config/picom/picom.conf &
-run "numlockx on"
-# sxhkd -c ~/.config/sxhkd/sxhkdrc &
+(sleep 2; run $HOME/.config/polybar/launch.sh) &
+
+#change your keyboard if you need it
+#setxkbmap -layout be
+
+#cursor active at boot
+xsetroot -cursor_name left_ptr &
+
+#start ArcoLinux Welcome App
+run dex $HOME/.config/autostart/arcolinux-welcome-app.desktop
+
+#Some ways to set your wallpaper besides variety or nitrogen
+feh --bg-fill /usr/share/backgrounds/arcolinux/arco-wallpaper.jpg &
+
+#starting utility applications at boot time
+run variety &
+run nm-applet &
+run pamac-tray &
+run xfce4-power-manager &
+run volumeicon &
+numlockx on &
+blueberry-tray &
+picom --config $HOME/.xmonad/scripts/picom.conf &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+/usr/lib/xfce4/notifyd/xfce4-notifyd &
+
+#starting user applications at boot time
 /usr/bin/emacs --daemon &
 run nextcloud &
 run caffeine &
 run kdeconnect-indicator &
-# run teams &
-# run zoom &
-# run slack &
-# run whatsdesk &
