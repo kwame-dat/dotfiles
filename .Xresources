@@ -3,9 +3,9 @@ Xft.dpi: 192
 rofi.dpi: 192
 
 ! special
-*.foreground:   #000000
-*.background:   #D3D3D3
-*.cursorColor:  #d8dee9
+*.foreground:   #c5c8c6
+*.background:   #1d1f21
+! *.cursorColor:  #d8dee9
 
 ! black
 *.color0:       #000000

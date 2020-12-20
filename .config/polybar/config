@@ -3,11 +3,10 @@ background = ${xrdb:background}
 foreground = ${xrdb:foreground}
 background-alt = #5c6370
 foreground-alt = #c5c8c6
-primary = #2257A0
-secondary = #d19a66
-alert = #e06c75
-success = #dd8844
-color9 = #ECBE7B
+primary = #b5bd68
+secondary = #41728e
+alert = #cc6666
+success = #f0c674
 
 [bar/main]
 monitor = ${env:MONITOR:}
@@ -18,7 +17,7 @@ height = 60
 background = ${colors.background}
 foreground = ${colors.foreground}
 
-line-size = 0
+line-size = 5
 line-color = ${colors.background}
 
 padding-left = 0
@@ -56,7 +55,7 @@ margin-bottom = 0
 type = internal/cpu
 interval = 1
 format-prefix-foreground = ${colors.foreground}
-format-underline = ${colors.background}
+format-underline = ${colors.secondary}
 format-prefix = " "
 
 label-font = 1
@@ -73,7 +72,7 @@ format = <label>
 ;   %percentage% (default) - total cpu load
 ;   %percentage-cores% - load percentage for each core
 ;   %percentage-core[1-9]% - load percentage for specific core
-label = "C: %percentage%"
+label = "%percentage%"
 
 ; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
@@ -112,7 +111,7 @@ interval = 1
 ;   %mb_total%
 label = %gb_used%
 
-format = "M: <label>"
+format = "<label>"
 format-prefix = " "
 format-prefix-foreground = ${colors.foreground}
 format-underline = ${colors.primary}
@@ -406,7 +405,8 @@ label-discharging = %percentage%%
 ; Available tokens:
 ;   %percentage% (default) - is set to 100 if full-at is reached
 ;   %percentage_raw%
-label-full = Fully charged
+label-full = 
+format-full-underline = ${colors.primary}
 
 ; Only applies if <ramp-capacity> is used
 ramp-capacity-0 = 
@@ -426,6 +426,7 @@ animation-charging-3 = 
 animation-charging-4 = 
 ; Framerate in milliseconds
 animation-charging-framerate = 750
+format-charging-underline = ${colors.success}
 
 ; Only applies if <animation-discharging> is used
 animation-discharging-0 = 
@@ -435,6 +436,7 @@ animation-discharging-3 = 
 animation-discharging-4 = 
 ; Framerate in milliseconds
 animation-discharging-framerate = 500
+format-discharging-underline = ${colors.alert}
 
 ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
@@ -592,22 +594,22 @@ format = <label-state>
 label-monitor = %name%
 
 label-active = %name%
-label-active-foreground = ${colors.background}
-label-active-background = ${colors.primary}
-label-active-underline= ${colors.background}
-label-active-padding = 2
+label-active-foreground = ${colors.primary}
+label-active-background = ${colors.background}
+label-active-underline= ${colors.primary}
+label-active-padding = 1
 
 label-occupied = %name%
-label-occupied-background = ${colors.success}
-label-occupied-padding = 2
+label-occupied-background = ${colors.background}
+label-occupied-foreground = ${colors.secondary}
+label-occupied-padding = 1
 
 label-urgent = %name%
 label-urgent-foreground = ${colors.foreground}
 label-urgent-background = ${colors.alert}
 label-urgent-underline = ${colors.alert}
-label-urgent-padding = 2
-
+label-urgent-padding = 1
 
 label-empty = %name%
 label-empty-foreground = ${colors.foreground}
-label-empty-padding = 2
+label-empty-padding = 1
