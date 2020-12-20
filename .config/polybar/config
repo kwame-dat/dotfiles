@@ -35,8 +35,8 @@ modules-right = networkspeedup networkspeeddown cpu memory temperature backlight
 
 tray-position = right
 tray-padding = 0
-; tray-maxsize = 20
-; tray-scale = 1.0
+tray-maxsize = 30
+tray-scale = 1.0
 ; fixed-center = true
 
 
@@ -450,7 +450,7 @@ time-alt = %l:%M%p
 format-prefix = " "
 format-background = ${colors.background}
 format-foreground = ${colors.foreground}
-label = "%date% "
+label = "%date%"
 format-underline = ${colors.alert}
 
 [module/time]
@@ -461,7 +461,7 @@ time-alt = %l:%M%p
 format-prefix = ""
 format-background = ${colors.background}
 format-foreground = ${colors.foreground}
-label = "%time% "
+label = "%time%"
 format-underline = ${colors.alert}
 
 
