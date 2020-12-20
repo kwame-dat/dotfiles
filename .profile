@@ -1,5 +1,5 @@
-PATH="$PATH:/$HOME/.local/bin"
-PATH="$PATH:/$HOME/.local/bin/statusbar"
+PATH="$PATH:/$HOME/.bin"
+PATH="$PATH:/$HOME/.bin/statusbar"
 
 # Fix JAVA Apps
 export _JAVA_AWT_WM_NONREPARENTING=1 
