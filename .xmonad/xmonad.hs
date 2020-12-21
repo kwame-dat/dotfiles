@@ -92,6 +92,7 @@ myManageHook = composeAll
     , className =? "Stoplight Studio"                        --> doShift ( myWorkspaces !! 5 )
     , className =? "calibre"                                 --> doShift ( myWorkspaces !! 5 )
     , className =? "Thunderbird"                             --> doShift ( myWorkspaces !! 5 )
+    , className =? "Evolution"                               --> doShift ( myWorkspaces !! 5 )
     , className =? "obs"                                     --> doShift ( myWorkspaces !! 6 )
     , className =? "vlc"                                     --> doShift ( myWorkspaces !! 6 )
     , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 6 )
