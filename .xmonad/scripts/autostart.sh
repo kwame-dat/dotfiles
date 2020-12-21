@@ -7,6 +7,7 @@ function run {
   fi
 }
 
+xrandr --output eDP1 --off --output DP1 --primary --mode 3840x1600 --pos 0x0 --rotate normal --output DP2 --off --output DP3 --off --output VIRTUAL1 --off
 
 # cursor active at boot
 xsetroot -cursor_name left_ptr &
@@ -49,5 +50,8 @@ picom &
 #starting user applications at boot time
 /usr/bin/emacs --daemon &
 run nextcloud &
+evolution &
 run caffeine &
+run slack &
+run teams &
 run kdeconnect-indicator &
