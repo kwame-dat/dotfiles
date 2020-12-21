@@ -1,12 +1,17 @@
-PATH="$PATH:/$HOME/.local/bin"
-PATH="$PATH:/$HOME/.local/bin/statusbar"
+PATH="$PATH:/$HOME/.bin"
+PATH="$PATH:/$HOME/.bin/statusbar"
 
-# Fix JAVA Apps
+# JAVA
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 # NPM
 PATH="$HOME/.node_modules/bin:$PATH"
 export npm_config_prefix=~/.node_modules
 
-# Composer
+# COMPOSER
 export PATH="$HOME/.config/composer/vendor/bin:$PATH"
+
+# POLYBAR
+export POLYBAR_HEIGHT=30
+export POLYBAR_LINE_SIZE=2
+export POLYBAR_TRAY_MAXSIZE=20
