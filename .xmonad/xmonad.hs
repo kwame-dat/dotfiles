@@ -46,7 +46,7 @@ myStartupHook = do
 
 -- colours
 normBord = "#4c566a"
-focdBord = "#5e81ac"
+focdBord = "#b5bd68"
 fore     = "#DEE3E0"
 back     = "#282c34"
 winType  = "#c678dd"
@@ -59,7 +59,7 @@ winType  = "#c678dd"
 myModMask = mod4Mask
 encodeCChar = map fromIntegral . B.unpack
 myFocusFollowsMouse = True
-myBorderWidth = 2
+myBorderWidth = 5
 myWorkspaces    = ["\61612","\61899","\61557","\62043","\61888","\61485","\61705","\61723","\61501","\61441"]
 --myWorkspaces    = ["1","2","3","4","5","6","7","8","9","10"]
 --myWorkspaces    = ["I","II","III","IV","V","VI","VII","VIII","IX","X"]
