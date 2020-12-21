@@ -106,6 +106,7 @@ myLayout =
   spacingRaw True (Border 0 15 15 15) True (Border 15 15 15 15) True $
   mkToggle (NBFULL ?? NOBORDERS ?? EOT) $
   avoidStruts $
+  gaps [(U,30), (D,30), (R,30), (L,30)] $
   tiled |||
   Mirror tiled |||
   spiral (6/7)  |||
