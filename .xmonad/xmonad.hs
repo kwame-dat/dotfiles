@@ -39,6 +39,8 @@ import Control.Monad (liftM2)
 import qualified DBus as D
 import qualified DBus.Client as D
 
+import XMonad.Util.NamedScratchpad
+import XMonad.ManageHook
 
 myStartupHook = do
     spawn "$HOME/.xmonad/scripts/autostart.sh"
@@ -50,6 +52,8 @@ focdBord = "#b5bd68"
 fore     = "#DEE3E0"
 back     = "#282c34"
 winType  = "#c678dd"
+
+myTerminal = "alacritty"
 
 --mod4Mask= super key
 --mod1Mask= alt key
@@ -65,6 +69,13 @@ myWorkspaces    = ["\61612","\61899","\61557","\62043","\61888","\61485","\61705
 --myWorkspaces    = ["I","II","III","IV","V","VI","VII","VIII","IX","X"]
 
 myBaseConfig = desktopConfig
+
+myScratchPads :: [NamedScratchpad]
+myScratchPads = [
+                  -- NS "terminal" "alacritty --title=scratchpad " (title =? "scratchpad") defaultFloating,
+                  NS "terminal" "alacritty --title=scratchpad " (title =? "scratchpad") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
+                ]
+
 
 -- window manipulations
 myManageHook = composeAll
@@ -100,7 +111,7 @@ myManageHook = composeAll
     , className =? "zoom"                                    --> doShift ( myWorkspaces !! 8 )
     , className =? "Spotify"                                 --> doShift ( myWorkspaces !! 9 )
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)
-    ]
+    ] <+> namedScratchpadManageHook myScratchPads
 
 
 myLayout =
@@ -138,9 +149,8 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   ----------------------------------------------------------------------
-  -- SUPER + FUNCTION KEYS
-
   [
+    -- SUPER + FUNCTION KEYS
     ((modMask, xK_p), spawn $ "rofi-pass")
   , ((modMask, xK_b), spawn $ "rofi-surfraw")
   , ((modMask, xK_space ), spawn $ "rofi -show combi")
@@ -149,49 +159,28 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_h), spawn $ "alacritty 'htop task manager' -e htop" )
   , ((modMask, xK_m), spawn $ "pragha" )
   , ((modMask, xK_q), kill )
-  , ((modMask, xK_t), spawn $ "alacritty" )
+  , ((modMask, xK_t), namedScratchpadAction myScratchPads "terminal")
   , ((modMask, xK_v), spawn $ "pavucontrol" )
   , ((modMask, xK_y), spawn $ "polybar-msg cmd toggle" )
   , ((modMask, xK_Escape), spawn $ "xkill" )
-  , ((modMask, xK_Return), spawn $ "alacritty" )
-
-
-    --FUNCTIONS KEY 
-  , ((modMask, xK_F1), spawn $ "chromium")
-  , ((modMask, xK_F2), spawn $ "emacsclient -c -a ''")
-  , ((modMask, xK_F3), spawn $ "slack")
-  , ((modMask, xK_F4), spawn $ "zoom")
-  , ((modMask, xK_F5), spawn $ "dbeaver")
-  , ((modMask, xK_F6), spawn $ "insomnia")
-  , ((modMask, xK_F7), spawn $ "vlc --video-on-top")
-  , ((modMask, xK_F8), spawn $ "virtualbox")
-  , ((modMask, xK_F9), spawn $ "spotify")
-  , ((modMask, xK_F10), spawn $ "termite")
-
+  , ((modMask, xK_Return), spawn $ myTerminal )
 
   -- SUPER + FUNCTION KEYS
-  , ((modMask, xK_F1), spawn $ "vivaldi-stable" )
-  , ((modMask, xK_F2), spawn $ "atom" )
-  , ((modMask, xK_F3), spawn $ "inkscape" )
-  , ((modMask, xK_F4), spawn $ "gimp" )
   , ((modMask, xK_F5), spawn $ "meld" )
-  , ((modMask, xK_F6), spawn $ "vlc --video-on-top" )
+  , ((modMask, xK_F6), spawn $ "evolution" )
   , ((modMask, xK_F7), spawn $ "virtualbox" )
-  , ((modMask, xK_F8), spawn $ "thunar" )
-  , ((modMask, xK_F9), spawn $ "evolution" )
   , ((modMask, xK_F10), spawn $ "spotify" )
 
   -- FUNCTION KEYS
-  , ((0, xK_F12), spawn $ "xfce4-terminal --drop-down" )
+  , ((0, xK_F7), namedScratchpadAction myScratchPads "terminal")
+  -- , ((0, xK_F7), namedScratchpadAction myScratchPads "terminal")
 
   -- SUPER + SHIFT KEYS
-
   , ((modMask .|. shiftMask , xK_Return ), spawn $ "thunar")
   , ((modMask .|. shiftMask , xK_d ), spawn $ "dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'")
   , ((modMask .|. shiftMask , xK_r ), spawn $ "xmonad --recompile && xmonad --restart")
   , ((modMask .|. shiftMask , xK_q ), kill)
   , ((modMask .|. shiftMask, xK_e ), spawn $ "arcolinux-logout")
-  -- , ((modMask .|. shiftMask , xK_x ), io (exitWith ExitSuccess))
 
   -- CONTROL + ALT KEYS
   , ((controlMask .|. mod1Mask , xK_a ), spawn $ "xfce4-appfinder")
@@ -206,7 +195,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((controlMask .|. mod1Mask, xK_f), spawn $ "firefox")
   , ((controlMask .|. mod1Mask , xK_m ), spawn $ "xfce4-settings-manager")
   , ((controlMask .|. mod1Mask, xK_g), spawn $ "chromium -no-default-browser-check")
-  , ((controlMask .|. mod1Mask , xK_t ), spawn $ "alacritty")
+  , ((controlMask .|. mod1Mask , xK_t ), spawn $ myTerminal )
   , ((controlMask .|. mod1Mask, xK_b), spawn $ "brave")
   , ((controlMask .|. mod1Mask, xK_w), spawn $ "whatsdesk")
   , ((controlMask .|. mod1Mask, xK_d), spawn $ "dbeaver")
@@ -218,10 +207,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((controlMask .|. mod1Mask , xK_k ), spawn $ "arcolinux-logout")
   , ((controlMask .|. mod1Mask , xK_l ), spawn $ "arcolinux-logout")
   , ((controlMask .|. mod1Mask , xK_v ), spawn $ "vivaldi-stable")
-  , ((controlMask .|. mod1Mask , xK_Return ), spawn $ "alacritty")
+  , ((controlMask .|. mod1Mask , xK_Return ), spawn $ myTerminal )
 
   -- ALT + ... KEYS
-
   , ((mod1Mask, xK_f), spawn $ "variety -f" )
   , ((mod1Mask, xK_n), spawn $ "variety -n" )
   , ((mod1Mask, xK_p), spawn $ "variety -p" )
@@ -235,7 +223,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((mod1Mask, xK_F3), spawn $ "xfce4-appfinder" )
 
   --VARIETY KEYS WITH PYWAL
-
   , ((mod1Mask .|. shiftMask , xK_f ), spawn $ "variety -f && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
   , ((mod1Mask .|. shiftMask , xK_n ), spawn $ "variety -n && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
   , ((mod1Mask .|. shiftMask , xK_p ), spawn $ "variety -p && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
@@ -383,8 +370,9 @@ main = do
 , layoutHook = smartBorders $ myLayout
 , manageHook = manageSpawn <+> myManageHook <+> manageHook myBaseConfig
 , modMask = myModMask
+, terminal = myTerminal
 , borderWidth = myBorderWidth
-, handleEventHook    = handleEventHook myBaseConfig <+> fullscreenEventHook
+, handleEventHook = handleEventHook myBaseConfig <+> fullscreenEventHook
 , focusFollowsMouse = myFocusFollowsMouse
 , workspaces = myWorkspaces
 , focusedBorderColor = focdBord
