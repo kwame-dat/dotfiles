@@ -68,10 +68,8 @@
     - [[#writeroom-mode][writeroom-mode]]
     - [[#speed-type][speed-type]]
     - [[#engine-mode][engine-mode]]
-    - [[#doom-themes][doom-themes]]
-    - [[#doom-modeline][doom-modeline]]
+    - [[#theme][theme]]
     - [[#rainbow-mode][rainbow-mode]]
-    - [[#diminish][diminish]]
     - [[#mixed-pitch][Mixed pitch]]
     - [[#lang][Lang]]
     - [[#calendar][calendar]]
@@ -1807,67 +1805,41 @@ This allows me to  uncompress a .zip file
   (engine-mode t)
 #+END_SRC
 
-*** doom-themes
-#+BEGIN_SRC emacs-lisp
-  (use-package doom-themes
+*** theme
+#+begin_src emacs-lisp
+  (use-package color-theme-sanityinc-tomorrow
+    :ensure t
+    :demand t
+    :config (load-theme 'sanityinc-tomorrow-bright))
+#+end_src
+
+**** minions
+#+begin_src emacs-lisp
+  (use-package minions
+    :demand t
+    :ensure t
+    :config
+    (setq minions-mode-line-lighter ""
+          minions-mode-line-delimiters '("" . ""))
+    (minions-mode 1))
+#+end_src
+
+**** moody
+#+begin_src emacs-lisp
+  (use-package moody
     :demand t
     :config
-    ;; Global settings (defaults)
-    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-          doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    (load-theme 'doom-tomorrow-night t)
+    (setq x-underline-at-descent-line t)
+    (moody-replace-mode-line-buffer-identification)
+    (moody-replace-vc-mode))
+#+end_src
 
-    ;; Enable flashing mode-line on errors
-    (doom-themes-visual-bell-config)
 
-    ;; Enable custom neotree theme (all-the-icons must be installed!)
-    ;; (doom-themes-neotree-config)
-    ;; or for treemacs users
-    (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-    (doom-themes-treemacs-config)
-
-    ;; Corrects (and improves) org-mode's native fontification.
-    (doom-themes-org-config))
-#+END_SRC
-
-*** doom-modeline
-#+BEGIN_SRC emacs-lisp
-  (use-package doom-modeline
-    :ensure t
-    :init (doom-modeline-mode 1))
-
-  (setq doom-modeline-modal-icon 'evil)
-  (setq doom-modeline-mu4e t)
-  (setq doom-modeline-github t)
-#+END_SRC
 
 *** rainbow-mode
 #+begin_src emacs-lisp
   (use-package rainbow-mode)
 #+end_src
-
-*** diminish
-#+BEGIN_SRC emacs-lisp
-  (use-package diminish
-    :ensure t)
-  (diminish 'subword-mode)
-  (diminish 'mixed-pitch-mode)
-  (diminish 'indented-text-mode)
-  (diminish 'undo-tree-mode)
-  (diminish 'eldoc-mode)
-  (diminish 'company-box-mode)
-  (diminish 'evil-commentary-mode)
-  (diminish 'org-src-mode)
-  (diminish 'sub-mode)
-  (diminish 'all-the-icons-dired-mode)
-  (diminish 'company-mode)
-  (add-hook 'org-indent-mode-hook (lambda () (diminish 'org-indent-mode)))
-  (diminish 'wrap-region-mode)
-  (diminish 'yas/minor-mode)
-  (diminish 'visual-line-mode)
-  (diminish 'abbrev-mode)
-  (diminish 'subword-mode)
-#+END_SRC
 
 *** Mixed pitch 
 #+BEGIN_SRC emacs-lisp
