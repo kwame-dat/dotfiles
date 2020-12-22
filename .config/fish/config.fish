@@ -1,8 +1,8 @@
 set fish_greeting
 
 # Abbreviations
-abbr -a -g cvpn sudo openvpn --config Connection.ovpn
-abbr -a -g dvpn sudo killall openvpn
+abbr -a -g vpn sudo openvpn --config Connection.ovpn
+abbr -a -g kvpn sudo killall openvpn
 
 # General
 alias e="exit"
