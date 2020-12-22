@@ -98,6 +98,7 @@ myManageHook = composeAll
     , className =? "Slack"                                   --> doShift ( myWorkspaces !! 2 )
     , className =? "Microsoft Teams - Preview"               --> doShift ( myWorkspaces !! 2 )
     , className =? "Insomnia"                                --> doShift ( myWorkspaces !! 3 )
+    , className =? "Insomnia Designer"                       --> doShift ( myWorkspaces !! 3 )
     , className =? "Postman"                                 --> doShift ( myWorkspaces !! 3 )
     , className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 4 )
     , className =? "Stoplight Studio"                        --> doShift ( myWorkspaces !! 5 )
@@ -206,7 +207,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((controlMask .|. mod1Mask, xK_v), spawn $ "pavucontrol")
   , ((controlMask .|. mod1Mask , xK_k ), spawn $ "arcolinux-logout")
   , ((controlMask .|. mod1Mask , xK_l ), spawn $ "arcolinux-logout")
-  , ((controlMask .|. mod1Mask , xK_v ), spawn $ "vivaldi-stable")
   , ((controlMask .|. mod1Mask , xK_Return ), spawn $ myTerminal )
 
   -- ALT + ... KEYS
