@@ -235,7 +235,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   --SCREENSHOTS
 
-  , ((0, xK_Print), spawn $ "scrot 'ArcoLinux-%Y-%m-%d-%s_screenshot_$wx$h.jpg' -e 'mv $f $$(xdg-user-dir PICTURES)'")
+  , ((0, xK_Print), spawn $ "flameshot gui")
   , ((controlMask, xK_Print), spawn $ "xfce4-screenshooter" )
   , ((controlMask .|. shiftMask , xK_Print ), spawn $ "gnome-screenshot -i")
 
