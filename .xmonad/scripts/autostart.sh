@@ -28,8 +28,7 @@ xset r rate 220 80 &
 
 (sleep 2; run $HOME/.config/polybar/launch.sh) &
 
-#change your keyboard if you need it
-#setxkbmap -layout be
+xrdb ~/.Xresources
 
 #cursor active at boot
 xsetroot -cursor_name left_ptr &
@@ -52,6 +51,6 @@ picom &
 run nextcloud &
 evolution &
 run caffeine &
-run slack &
-run teams &
+# run slack &
+# run teams &
 run kdeconnect-indicator &
