@@ -187,7 +187,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((controlMask .|. mod1Mask , xK_a ), spawn $ "xfce4-appfinder")
   , ((controlMask .|. mod1Mask , xK_b ), spawn $ "thunar")
   , ((controlMask .|. mod1Mask , xK_c ), spawn $ "catfish")
-  , ((controlMask .|. mod1Mask, xK_e), spawn $ "emacsclient -c -a ''")
+  , ((controlMask .|. mod1Mask, xK_e), spawn $ "emacs")
   , ((controlMask .|. mod1Mask, xK_m), spawn $ "emacsclient -c -a '' --eval '(mu4e)'")
   , ((controlMask .|. mod1Mask, xK_a), spawn $ "emacsclient -c -a '' --eval '(itechytony/day-view)'")
   , ((controlMask .|. mod1Mask, xK_s), spawn $ "slack")
