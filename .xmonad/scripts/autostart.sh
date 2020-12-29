@@ -49,8 +49,8 @@ picom &
 #starting user applications at boot time
 /usr/bin/emacs --daemon &
 run nextcloud &
-evolution &
-run caffeine &
+# evolution &
+# run caffeine &
 # run slack &
 # run teams &
 run kdeconnect-indicator &
