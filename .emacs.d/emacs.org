@@ -73,6 +73,7 @@
     - [[#langtool][langtool]]
   - [[#tools][TOOLS]]
     - [[#docker][docker]]
+    - [[#vagrant][vagrant]]
     - [[#pass][pass]]
     - [[#magit][magit]]
     - [[#pdf][pdf]]
@@ -329,10 +330,14 @@ going to install it and make sure it's loaded immediately.
                                            "~/Documents/Personal/2Areas"
                                            "~/Documents/Work/1Projects"
                                            "~/Documents/Personal/1Projects"
-                                           "~/Repo/Work/2Areas"
+                                           "~/Repo/Work/2Areas/misc"
+                                           "~/Repo/Work/2Areas/modules"
+                                           "~/Repo/Work/2Areas/services"
+                                           "~/Repo/Work/2Areas/sites"
                                            "~/Repo/Personal/2Areas"
-                                           "~/Repo/Work/1Projects"
                                            "~/Repo/Personal/1Projects"
+                                           "~/Repo/Work/1Projects"
+                                           "~/"
                                            ))
     (setq projectile-completion-system 'ivy)
     (setq projectile-switch-project-action #'projectile-dired)
@@ -560,10 +565,10 @@ going to install it and make sure it's loaded immediately.
       "pB"  'counsel-switch-buffer
       "pd"  'projectile-discover-projects-in-search-path
       ;; notes
-      "nf" '(lambda() (interactive) (counsel-find-file "~/org"))
-      "n." '(lambda() (interactive) (counsel-find-file "~/org"))
-      "ni" '(lambda() (interactive) (find-file "~/org/PInbox.org"))
-      "nt" '(lambda() (interactive) (find-file "~/org/PTodo.org"))
+      "nf" '(lambda() (interactive) (counsel-find-file "~/Org"))
+      "n." '(lambda() (interactive) (counsel-find-file "~/Org"))
+      "ni" '(lambda() (interactive) (find-file "~/Org/Personal/PInbox.org"))
+      "nt" '(lambda() (interactive) (find-file "~/Org/Personal/PTodo.org"))
       "na" 'org-agenda
       "nd" 'itechytony/day-view
       "nci" 'org-pomodoro
@@ -806,7 +811,7 @@ This allows me to  uncompress a .zip file
 *** Font
 #+BEGIN_SRC emacs-lisp
   (setq itechytony/default-font "JetBrains Mono")
-  (setq itechytony/default-font-size 10)
+  (setq itechytony/default-font-size 12)
   (setq itechytony/current-font-size itechytony/default-font-size)
 
   (setq itechytony/font-change-increment 1.1)
@@ -859,7 +864,7 @@ This allows me to  uncompress a .zip file
   (use-package color-theme-sanityinc-tomorrow
     :ensure t
     :demand t
-    :config (load-theme 'sanityinc-tomorrow-bright))
+    :config (load-theme 'one-dark))
 #+end_src
 
 **** minions
@@ -1039,55 +1044,34 @@ Nicer naming of buffers for files with identical names
             vterm-mode)
           company-frontends '(company-pseudo-tooltip-frontend
                               company-echo-metadata-frontend)
-
-          ;; Buffer-local backends will be computed when loading a major mode, so
-          ;; only specify a global default here.
           company-backends  '(company-capf)
-
-          ;; Company overrides `company-active-map' based on
-          ;; `company-auto-complete-chars'; no magic please!
-
           company-auto-commit nil
           company-auto-commit-chars nil
-
-          ;; Only search the current buffer for `company-dabbrev' (a backend that
-          ;; suggests text your open buffers). This prevents Company from causing
-          ;; lag once you have a lot of buffers open.
           company-dabbrev-other-buffers nil
-          ;; Make `company-dabbrev' fully case-sensitive, to improve UX with
-          ;; domain-specific words with particular casing.
           company-dabbrev-ignore-case nil
           company-dabbrev-downcase nil)
 
-
     :ensure t
     :config
-    (add-hook 'after-init-hook 'global-company-mode))
+    (add-hook 'after-init-hook 'global-company-mode)
+    (company-tng-configure-default))
 
-    (define-key company-active-map (kbd "TAB") 'company-complete)
-    (define-key company-active-map (kbd "[tab]") 'company-complete)
-    ;; (define-key company-active-map (kbd "[tab]") #'company-complete-selection)
-    ;; (define-key company-active-map (kbd "[return]") #'company-complete)
-    ;; (define-key company-active-map (kbd "C-n") #'company-select-next)
-    ;; (define-key company-active-map (kbd "C-p") #'company-select-previous)
-    ;; (define-key company-active-map (kbd "C-SPC") #'company-manual-begin)
-    ;; (define-key evil-insert-state-map (kbd "C-SPC") #'company-manual-begin)
+  (eval-after-load 'company
+    '(progn
+       (define-key company-active-map (kbd "TAB") 'company-complete)
+       (define-key company-active-map (kbd "<tab>") 'company-complete)))
 
-  ;; (with-eval-after-load 'company
-  ;;   (define-key company-active-map (kbd "<return>") nil)
-  ;;   (define-key company-active-map (kbd "RET") nil)
-  ;;   (define-key company-active-map (kbd "C-SPC") #'company-complete-selection))
-
-  ;; (company-tng-configure-default)
+  (eval-after-load 'company
+    '(progn
+       (define-key company-active-map (kbd "S-TAB") 'company-select-previous)
+       (define-key company-active-map (kbd "<backtab>") 'company-select-previous)))
 #+END_SRC
-
-#+RESULTS:
-: company-complete
 
 *** company-prescient
 #+BEGIN_SRC emacs-lisp
   (use-package company-prescient
     :hook (company-mode . company-prescient-mode)
+    :demand t
     :config
     (prescient-persist-mode +1))
 #+END_SRC
@@ -1596,13 +1580,13 @@ Don't indent newly expanded blocks, even if they're under a heading.
 
   (setq org-capture-templates
         '(
-          ("i" "Inbox" entry (file+headline "~/org/PTodo.org" "Inbox")
+          ("i" "Inbox" entry (file+headline "~/Org/Personal/PTodo.org" "Inbox")
            "* TODO %?\n")
-          ("e" "Email" entry (file+headline "~/org/PTodo.org" "Inbox")
+          ("e" "Email" entry (file+headline "~/Org/Personal/PTodo.org" "Inbox")
            "* TODO [#A] Process Email %:fromname on %:subject\nSCHEDULED:%t\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+2d\"))\n:PROPERTIES:\n:CREATED: %U\n:END:\n %a" :immediate-finish t :prepend t)
-          ("p" "Project" entry (file+headline "~/org/PTodo.org" "1Projects")
-           (file "~/org/templates/new-project.org"))
-          ("s" "Someday" entry (file+headline "~/org/Someday.org" "Someday")
+          ("p" "Project" entry (file+headline "~/Org/Personal/PTodo.org" "1Projects")
+           (file "~/Org/Personal/templates/new-project.org"))
+          ("s" "Someday" entry (file+headline "~/Org/Personal/Someday.org" "Someday")
            "* SOMEDAY %?\n")))
 
 
@@ -1622,7 +1606,7 @@ Don't indent newly expanded blocks, even if they're under a heading.
     :after org
     :config
     (setq jiralib-url "https://jira.eandl.co.uk")
-    (setq org-jira-working-dir "~/org/jira")
+    (setq org-jira-working-dir "~/Org/Work/jira")
     :ensure t)
 
   (use-package org-gcal)
@@ -1648,9 +1632,9 @@ Task Management & Agenda Views
 #+begin_src emacs-lisp
   (setq org-directory "~/org")
   (setq org-agenda-files (quote (
-                                 "~/org/PTodo.org"
-                                 "~/org/JTodo.org"
-                                 "~/org/WTodo.org"
+                                 "~/Org/Personal/PTodo.org"
+                                 "~/Org/Joint/JTodo.org"
+                                 "~/Org/Work/WTodo.org"
                                  )))
 #+end_src
 
@@ -1675,7 +1659,7 @@ Manage my contacts with org-mode
  (use-package org-contacts
    :ensure nil
    :after org
-   :custom (org-contacts-files '("~/Documents/org/contacts.org")))
+   :custom (org-contacts-files '("~/Org/Personal/contacts/contacts.org")))
 #+end_src
 
 **** ox-pandoc
@@ -1715,7 +1699,7 @@ can ensure that I always have an up to date project list.
 #+BEGIN_SRC emacs-lisp
   (defun go-to-projects ()
     (interactive)
-    (find-file "~/org/PTodo.org")
+    (find-file "~/Org/Personal/PTodo.org")
     (widen)
     (beginning-of-buffer)
     (re-search-forward "* Projects")
@@ -1758,7 +1742,7 @@ to my “Projects” subtree.
 #+BEGIN_SRC emacs-lisp
   (defun go-to-areas ()
     (interactive)
-    (find-file "~/org/PTodo.org")
+    (find-file "~/Org/Personal/PTodo.org")
     (widen)
     (beginning-of-buffer)
     (re-search-forward "* Areas")
@@ -1776,7 +1760,7 @@ to my “Projects” subtree.
   (defun my-new-daily-review ()
     (interactive)
     (let ((org-capture-templates '(("d" "Review: Daily Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                    (file "~/org/reviews/daily-review-template.org")))))
+                                    (file "~/Org/Personal/reviews/daily-review-template.org")))))
       (progn
         (org-capture nil "d")
         (org-capture-finalize t)
@@ -1788,7 +1772,7 @@ to my “Projects” subtree.
   (defun my-new-weekly-review ()
     (interactive)
     (let ((org-capture-templates '(("w" "Review: Weekly Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                    (file "~/org/reviews/weekly-review-template.org")))))
+                                    (file "~/Org/Personal/reviews/weekly-review-template.org")))))
       (progn
         (org-capture nil "w")
         (org-capture-finalize t)
@@ -1800,7 +1784,7 @@ to my “Projects” subtree.
   (defun my-new-monthly-review ()
     (interactive)
     (let ((org-capture-templates '(("m" "Review: Monthly Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                    (file "~/org/reviews/monthly-review-template.org")))))
+                                    (file "~/Org/Personal/reviews/monthly-review-template.org")))))
       (progn
         (org-capture nil "m")
         (org-capture-finalize t)
@@ -2001,6 +1985,13 @@ mu4e alert
   (use-package docker
     :ensure t)
 #+END_SRC
+*** vagrant
+#+begin_src emacs-lisp
+  (use-package vagrant
+    :ensure t)
+  (use-package vagrant-tramp
+    :ensure t)
+#+end_src
 
 *** pass
 #+BEGIN_SRC emacs-lisp
@@ -2036,12 +2027,6 @@ functions we invoke regularly outside of magit is called.
   (use-package yagist :demand t)
   (use-package bug-reference-github :demand t)
   (use-package github-review :demand t)
-
-  (use-package forge
-    :demand t
-    :config
-    (add-to-list 'forge-alist '("github.thetrainline.com" "github.thetrainline.com/api/v3"
-                                "github.thetrainline.com" forge-github-repository)))
 #+END_SRC
 
 *** pdf
