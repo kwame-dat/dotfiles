@@ -109,6 +109,7 @@ myManageHook = composeAll
     , className =? "vlc"                                     --> doShift ( myWorkspaces !! 6 )
     , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 6 )
     , className =? "Nextcloud"                               --> doShift ( myWorkspaces !! 6 )
+    , className =? "Syncthing GTK"                           --> doShift ( myWorkspaces !! 6 )
     , className =? "zoom"                                    --> doShift ( myWorkspaces !! 8 )
     , className =? "Spotify"                                 --> doShift ( myWorkspaces !! 9 )
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)
