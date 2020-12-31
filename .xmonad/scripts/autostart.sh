@@ -30,13 +30,13 @@ xset r rate 220 80 &
 
 xrdb ~/.Xresources
 
-#cursor active at boot
+# Cursor active at boot
 xsetroot -cursor_name left_ptr &
 
-#start ArcoLinux Welcome App
+# Start ArcoLinux Welcome App
 run dex $HOME/.config/autostart/arcolinux-welcome-app.desktop
 
-#starting utility applications at boot time
+# Starting utility applications at boot time
 run variety &
 run nm-applet &
 run xfce4-power-manager &
@@ -44,13 +44,10 @@ numlockx on &
 picom &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 /usr/lib/xfce4/notifyd/xfce4-notifyd &
-# run pamac-tray &
 
-#starting user applications at boot time
+# starting user applications at boot time
 /usr/bin/emacs --daemon &
+copyq &
 run nextcloud &
-# evolution &
-# run caffeine &
-# run slack &
-# run teams &
+run syncthing -no-browser &
 run kdeconnect-indicator &
