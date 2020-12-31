@@ -52,17 +52,19 @@
     - [[#amx][amx]]
     - [[#wgrep][wgrep]]
   - [[#lang][LANG]]
-    - [[#php][=php=]]
-    - [[#css-scss-less][=css= =scss= =less=]]
-    - [[#web][=web=]]
-    - [[#javascript][=javascript=]]
-    - [[#dotenv][=dotenv=]]
-    - [[#csv][=csv=]]
-    - [[#ledger][=ledger=]]
-    - [[#markdown][=markdown=]]
-    - [[#restclient][=restclient=]]
-    - [[#fountain-mode][=fountain-mode=]]
+    - [[#php][php]]
+    - [[#web][web]]
+    - [[#javascript][javascript]]
+    - [[#dotenv][dotenv]]
+    - [[#css][css]]
+    - [[#scss][scss]]
+    - [[#less][less]]
     - [[#haskell][haskell]]
+    - [[#ledger][ledger]]
+    - [[#restclient][restclient]]
+    - [[#csv][csv]]
+    - [[#markdown][markdown]]
+    - [[#fountain-mode][fountain-mode]]
     - [[#ansible][ansible]]
     - [[#org-mode][org-mode]]
   - [[#terminal][TERMINAL]]
@@ -328,8 +330,10 @@ going to install it and make sure it's loaded immediately.
                                            "~/Repo/Work/3Resources"
                                            "~/Documents/Work/2Areas"
                                            "~/Documents/Personal/2Areas"
+                                           "~/Documents/Joint/2Areas"
                                            "~/Documents/Work/1Projects"
                                            "~/Documents/Personal/1Projects"
+                                           "~/Documents/Joint/1Projects"
                                            "~/Repo/Work/2Areas/misc"
                                            "~/Repo/Work/2Areas/modules"
                                            "~/Repo/Work/2Areas/services"
@@ -460,6 +464,25 @@ going to install it and make sure it's loaded immediately.
      "C-x C-s"    'company-yasnippet
      "C-x C-o"    'company-capf
      "C-x C-n"    'company-dabbrev)
+
+    (general-define-key
+     :states 'normal
+     :prefix "gz"
+     "d" #'evil-mc-make-and-goto-next-match
+     "D" #'evil-mc-make-and-goto-prev-match
+     "j" #'evil-mc-make-cursor-move-next-line
+     "k" #'evil-mc-make-cursor-move-prev-line
+     "m" #'evil-mc-make-all-cursors
+     "n" #'evil-mc-make-and-goto-next-cursor
+     "N" #'evil-mc-make-and-goto-last-cursor
+     "p" #'evil-mc-make-and-goto-prev-cursor
+     "P" #'evil-mc-make-and-goto-first-cursor
+     "q" #'evil-mc-undo-all-cursors
+     "t" #'+multiple-cursors/evil-mc-toggle-cursors
+     "u" #'+multiple-cursors/evil-mc-undo-cursor
+     "z" #'+multiple-cursors/evil-mc-toggle-cursor-here
+     "I" #'evil-mc-make-cursor-in-visual-selection-beg
+     "A" #'evil-mc-make-cursor-in-visual-selection-end)
 
     (general-create-definer my-leader-def
       :keymaps 'override
@@ -608,7 +631,7 @@ going to install it and make sure it's loaded immediately.
     "C-l" 'evil-window-right)
 
   ;; Dired
-  (general-def 'normal dired-mode-map
+  (general-def 'normal 'dired-mode-map 'override
     "." 'dired-hide-dotfiles-mode
     "C-e" 'dired-toggle-read-only)
 #+END_SRC
@@ -720,13 +743,36 @@ Install some snippets collections
 #+BEGIN_SRC emacs-lisp
   (use-package evil-mc
     :diminish evil-mc-mode
+    :commands (evil-mc-make-cursor-here
+               evil-mc-make-all-cursors
+               evil-mc-undo-all-cursors
+               evil-mc-pause-cursors
+               evil-mc-resume-cursors
+               evil-mc-make-and-goto-first-cursor
+               evil-mc-make-and-goto-last-cursor
+               evil-mc-make-cursor-in-visual-selection-beg
+               evil-mc-make-cursor-in-visual-selection-end
+               evil-mc-make-cursor-move-next-line
+               evil-mc-make-cursor-move-prev-line
+               evil-mc-make-cursor-at-pos
+               evil-mc-has-cursors-p
+               evil-mc-make-and-goto-next-cursor
+               evil-mc-skip-and-goto-next-cursor
+               evil-mc-make-and-goto-prev-cursor
+               evil-mc-skip-and-goto-prev-cursor
+               evil-mc-make-and-goto-next-match
+               evil-mc-skip-and-goto-next-match
+               evil-mc-skip-and-goto-next-match
+               evil-mc-make-and-goto-prev-match
+               evil-mc-skip-and-goto-prev-match)
     :ensure t
     :config
-    (global-evil-mc-mode 1))
+    (global-evil-mc-mode +1))
 
   (use-package evil-multiedit
     :ensure t)
 #+END_SRC
+
 ** EMACS
 *** dired
 **** setup
@@ -783,12 +829,13 @@ This allows me to  uncompress a .zip file
             ("mp3" . "mpv")
             ("mp4" . "mpv")
             ("pdf" . "zathura")
-            ("epub" . "calibre")
+            ("epub" . "emacs")
             ("png" . "feh")
             ("webm" . "mpv")
             ("xls" . "gnumeric")
             ("xlsx" . "gnumeric"))))
 #+end_src
+
 **** async
 #+begin_src emacs-lisp :tangle yes
   (use-package async
@@ -864,7 +911,7 @@ This allows me to  uncompress a .zip file
   (use-package color-theme-sanityinc-tomorrow
     :ensure t
     :demand t
-    :config (load-theme 'one-dark))
+    :config (load-theme 'sanityinc-tomorrow-night))
 #+end_src
 
 **** minions
@@ -1237,7 +1284,7 @@ with richer versions. Let's install it!
 #+END_SRC
     
 ** LANG
-*** =php=
+*** php
 #+BEGIN_SRC emacs-lisp
   (use-package php-mode
     :init
@@ -1282,22 +1329,7 @@ with richer versions. Let's install it!
     "r" 'counsel-imenu)
 #+END_SRC
 
-*** =css= =scss= =less=
-#+BEGIN_SRC emacs-lisp
-  (use-package css-mode
-    :config
-    (setq css-indent-offset 2))
-
-  ;; scss-mode
-  (use-package scss-mode
-    :config
-    (setq scss-compile-at-save nil))
-
-  ;; less-css-mode
-  (use-package less-css-mode)
-#+END_SRC
-     
-*** =web=
+*** web
 #+BEGIN_SRC emacs-lisp
   (use-package web-mode
     :ensure t
@@ -1349,7 +1381,7 @@ with richer versions. Let's install it!
   (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
 #+END_SRC
      
-*** =javascript=
+*** javascript
 #+BEGIN_SRC emacs-lisp
   (setq js-indent-level 2)
   (add-hook 'coffee-mode-hook
@@ -1363,21 +1395,36 @@ with richer versions. Let's install it!
   (use-package prettier-js)
 #+END_SRC
      
-*** =dotenv=
+*** dotenv
 #+BEGIN_SRC emacs-lisp
   (use-package dotenv-mode)
   (add-to-list 'auto-mode-alist '("\\.env\\..*\\'" . dotenv-mode))
 #+END_SRC
      
-*** =csv=
+*** css
 #+BEGIN_SRC emacs-lisp
-  (use-package csv-mode
-    :init
-    (setq csv-separators '("," ";" "|" " "))
-    :ensure t)
+  (use-package css-mode
+    :config
+    (setq css-indent-offset 2))
 #+END_SRC
      
-*** =ledger=
+*** scss
+#+BEGIN_SRC emacs-lisp
+  (use-package scss-mode
+    :config
+    (setq scss-compile-at-save nil))
+#+END_SRC
+*** less
+#+BEGIN_SRC emacs-lisp
+  (use-package less-css-mode)
+#+END_SRC
+
+*** haskell
+#+BEGIN_SRC emacs-lisp
+  (use-package haskell-mode)
+#+END_SRC
+*** ledger
+
 #+BEGIN_SRC emacs-lisp
   (use-package ledger-mode
     :mode ("\\.\\(ledger\\|ldg\\)\\'" . ledger-mode)
@@ -1422,7 +1469,20 @@ with richer versions. Let's install it!
     "y" #'ledger-set-year)
 #+END_SRC
      
-*** =markdown=
+*** restclient
+#+BEGIN_SRC emacs-lisp
+  (use-package restclient)
+#+END_SRC
+
+*** csv
+#+BEGIN_SRC emacs-lisp
+  (use-package csv-mode
+    :init
+    (setq csv-separators '("," ";" "|" " "))
+    :ensure t)
+#+END_SRC
+     
+*** markdown
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
     :commands (markdown-mode gfm-mode)
@@ -1432,20 +1492,11 @@ with richer versions. Let's install it!
     :init (setq markdown-command "pandoc --no-highlight"))
 #+END_SRC
      
-*** =restclient=
-#+BEGIN_SRC emacs-lisp
-  (use-package restclient)
-#+END_SRC
-
-*** =fountain-mode=
+*** fountain-mode
 #+BEGIN_SRC emacs-lisp
   (use-package fountain-mode)
 #+END_SRC
 
-*** haskell
-#+BEGIN_SRC emacs-lisp
-  (use-package haskell-mode)
-#+END_SRC
 *** ansible
 #+begin_src emacs-lisp
   (use-package ansible)
@@ -1479,6 +1530,7 @@ want is prioritized instead.
        (python . t)
        (sql . t)
        (ruby . t)
+       (tmux . t)
        (sqlite . t)))
 
     :custom-face
@@ -1630,7 +1682,7 @@ My leader keybinding for org mode
 
 Task Management & Agenda Views
 #+begin_src emacs-lisp
-  (setq org-directory "~/org")
+  (setq org-directory "~/Org")
   (setq org-agenda-files (quote (
                                  "~/Org/Personal/PTodo.org"
                                  "~/Org/Joint/JTodo.org"
@@ -1684,12 +1736,42 @@ Manage my contacts with org-mode
 #+begin_src emacs-lisp
   (use-package ox-twbs
     :init (add-to-list 'org-export-backends 'twbs))
+#+end_src
 
+**** ox-slimhtml
+#+begin_src emacs-lisp
   (use-package ox-slimhtml
     :init (add-to-list 'org-export-backends 'slimhtml))
 #+end_src
 
-**** ox-slimhtml
+**** ob-async
+#+begin_src emacs-lisp :tangle yes
+  (use-package ob-async)
+  (require 'ob-async)
+#+end_src
+
+**** ob-tmux
+#+begin_src emacs-lisp
+(use-package ob-tmux
+  ;; Install package automatically (optional)
+  :ensure t
+  :custom
+  (org-babel-default-header-args:tmux
+   '((:results . "silent")	;
+     (:session . "default")	; The default tmux session to send code to
+     (:socket  . nil)))		; The default tmux socket to communicate with
+  ;; The tmux sessions are prefixed with the following string.
+  ;; You can customize this if you like.
+  (org-babel-tmux-session-prefix "ob-")
+  ;; The terminal that will be used.
+  ;; You can also customize the options passed to the terminal.
+  ;; The default terminal is "gnome-terminal" with options "--".
+  (org-babel-tmux-terminal "xterm")
+  (org-babel-tmux-terminal-opts '("-T" "ob-tmux" "-e"))
+  ;; Finally, if your tmux is not in your $PATH for whatever reason, you
+  ;; may set the path to the tmux binary as follows:
+  (org-babel-tmux-location "/usr/bin/tmux"))
+#+end_src
 
 **** Organisation (GTD and PARA) 
 ***** Projects
@@ -2135,7 +2217,7 @@ functions we invoke regularly outside of magit is called.
 *** nov
 #+BEGIN_SRC emacs-lisp
   (defun my-nov-font-setup ()
-    (face-remap-add-relative 'variable-pitch :family "PT Sans"
+    (face-remap-add-relative 'variable-pitch :family "Noto Sans"
                              :height 1.3))
   (use-package nov)
 
@@ -2144,6 +2226,7 @@ functions we invoke regularly outside of magit is called.
   (add-hook 'nov-mode-hook 'writeroom-mode)
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 #+END_SRC
+
 
 *** diff-hl
 #+begin_src emacs-lisp
