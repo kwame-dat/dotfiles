@@ -1,35 +1,23 @@
-# 1Projects
-
-# 2Areas
-## Work
 bitbucket.eandl.co.uk https://bitbucket.eandl.co.uk
 jenkins.eandl.co.uk https://jenkins.eandl.co.uk
 confluence.eandl.co.uk https://confluence.eandl.co.uk
 jira.eandl.co.uk https://jira.eandl.co.uk/secure/RapidBoard.jspa?rapidView=40&view=detail&selectedIssue=ELICO-7506
 kibana.eandl.co.uk https://kibana.eandl.co.uk
 sharedpoint https://theinsuranceemporium.sharepoint.com/sites/DevelopmentTeam
-timesheet http://timesheet.local/timeweb/Personal/Login.aspx
 sprint https://jira.eandl.co.uk/secure/RapidBoard.jspa?rapidView=40&selectedIssue=ELICO-7292
 pr https://bitbucket.eandl.co.uk
-### TIE
 docker.theinsuranceemporium.co.uk https://docker.theinsuranceemporium.co.uk/
 test.theinsuranceemporium.co.uk https://test.theinsuranceemporium.co.uk/
 staging.theinsuranceemporium.co.uk https://staging.theinsuranceemporium.co.uk/
 theinsuranceemporium.co.uk https://docker.theinsuranceemporium.co.uk/
-
-### PET-INSURANCE
 docker.pet-insurance.co.uk https://docker.pet-insurance.co.uk/
 test.pet-insurance.co.uk https://test.pet-insurance.co.uk/
 staging.pet-insurance.co.uk https://staging.pet-insurance.co.uk/
 pet-insurance.co.uk https://docker.pet-insurance.co.uk/
-
-### PET.API
 docker.pet.api.eandl.co.uk https://docker.pet.api.eandl.co.uk/
 test.pet.api.eandl.co.uk https://test.pet.api.eandl.co.uk/
 staging.pet.api.eandl.co.uk https://staging.pet.api.eandl.co.uk/
 pet.api.eandl.co.uk https://docker.pet.api.eandl.co.uk/
-
-## Home
 untangle.theampomahs.com https://untangle.theampomahs.com
 unraid.theampomahs.com https://unraid.theampomahs.com
 proxmox.theampomahs.com https://proxmox.theampomahs.com
@@ -38,19 +26,9 @@ nextcloud.theampomahs.com https://nextcloud.theampomahs.com
 ap1.theampomahs.local http://192.168.1.4/start.htm
 ap2.theampomahs.local http://192.168.1.5/cgi-bin/webproc
 switch.theampomahs.local http://192.168.1.2/cgi-bin/dispatcher.cgi?cmd=0
-
-## Ebay
 ebay-calculator https://www.ebayfeescalculator.com/uk-ebay-calculator/
-
-## Spiritual
-jw https://www.jw.org/en/
+jw.org https://www.jw.org/en/
 bible https://wol.jw.org/en/wol/binav/r1/lp-e
 daily-text https://wol.jw.org/en/wol/h/r1/lp-e
-
-## Entertainment
 netflix.com https://www.netflix.com/browse
-
-# 3Resources
 calendar https://calendar.google.com/calendar/u/1/r/month/2020/10/1?tab=mc
-
-# 4Archives
