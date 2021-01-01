@@ -16,3 +16,6 @@ export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 export POLYBAR_HEIGHT=30
 export POLYBAR_LINE_SIZE=2
 export POLYBAR_TRAY_MAXSIZE=20
+
+export MPD_HOST="localhost"
+export MPD_PORT="6600"
