@@ -1173,6 +1173,8 @@ Nicer naming of buffers for files with identical names
 
   (eval-after-load 'company
     '(progn
+       (define-key company-active-map (kbd "<return>") 'company-complete-selection)
+       (define-key company-active-map (kbd "RET") 'company-complete-selection)
        (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
        (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)))
 
@@ -1514,7 +1516,7 @@ with richer versions. Let's install it!
 
 #+BEGIN_SRC emacs-lisp
   (use-package ledger-mode
-    :mode ("\\.\\(ledger\\|ldg\\)\\'" . ledger-mode)
+    :mode ("\\.\\(ledger\\|ldg\\|dat\\)\\'" . ledger-mode)
     :init
     (setq ledger-clear-whole-transactions 1
           ledger-mode-should-check-version nil)
