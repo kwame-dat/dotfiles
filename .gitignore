@@ -10,3 +10,7 @@
 /.config/gtk-3.0/bookmarks
 /.config/xfce4/terminal/accels.scm
 .config/Thunar/accels.scm
+/.mpd/*.db
+/.mpd/*.log
+/.mpd/*.pid
+/.mpd/mpdstate
