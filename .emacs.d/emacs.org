@@ -882,7 +882,7 @@ This allows me to  uncompress a .zip file
             ("jpg" . "feh")
             ("mkv" . "mpv")
             ("mov" . "mpv")
-            ("mp3" . "mpd")
+            ("mp3" . "mpv")
             ("mp4" . "mpv")
             ("pdf" . "zathura")
             ("epub" . "emacs")
