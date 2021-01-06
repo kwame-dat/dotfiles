@@ -27,6 +27,7 @@ import XMonad.Layout.ThreeColumns
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.IndependentScreens
+import XMonad.Layout.NoFrillsDecoration
 
 
 import XMonad.Layout.CenteredMaster(centerMaster)
@@ -42,9 +43,16 @@ import qualified DBus.Client as D
 import XMonad.Util.NamedScratchpad
 import XMonad.ManageHook
 
+
 myStartupHook = do
     spawn "$HOME/.xmonad/scripts/autostart.sh"
     setWMName "LG3D"
+
+
+myTerminal = "alacritty"
+myBrowser = "qutebrowser"
+myLauncher = "rofi -show combi"
+myFont      = "-*-terminus-medium-*-*-*-*-160-*-*-*-*-*-*"
 
 -- colours
 normBord = "#4c566a"
@@ -53,17 +61,56 @@ fore     = "#DEE3E0"
 back     = "#282c34"
 winType  = "#c678dd"
 
-myTerminal = "alacritty"
+base03  = "#002b36"
+base02  = "#073642"
+base01  = "#586e75"
+base00  = "#657b83"
+base0   = "#839496"
+base1   = "#93a1a1"
+base2   = "#eee8d5"
+base3   = "#fdf6e3"
+yellow  = "#b58900"
+orange  = "#cb4b16"
+red     = "#dc322f"
+magenta = "#d33682"
+violet  = "#6c71c4"
+blue    = "#268bd2"
+cyan    = "#2aa198"
+green   = "#859900"
+
+active      = blue
+activeWarn  = red
+inactive    = base02
+focusColor  = blue
+unfocusColor = base02
+
+topbar      = 30
+
+topBarTheme = def
+    { 
+      fontName              = myFont
+    , inactiveBorderColor   = base03
+    , inactiveColor         = base03
+    , inactiveTextColor     = base03
+    , activeBorderColor     = active
+    , activeColor           = active
+    , activeTextColor       = active
+    , urgentBorderColor     = fore
+    , urgentTextColor       = focdBord
+    , decoHeight            = topbar
+    }
+
 
 --mod4Mask= super key
 --mod1Mask= alt key
 --controlMask= ctrl key
 --shiftMask= shift key
 
-myModMask = mod4Mask
+
+myModMask = mod3Mask
 encodeCChar = map fromIntegral . B.unpack
-myFocusFollowsMouse = True
-myBorderWidth = 5
+myFocusFollowsMouse = False
+myBorderWidth = 0
 myWorkspaces    = ["\61612","\61899","\61557","\62043","\61888","\61485","\61705","\61723","\61501","\61441"]
 --myWorkspaces    = ["1","2","3","4","5","6","7","8","9","10"]
 --myWorkspaces    = ["I","II","III","IV","V","VI","VII","VIII","IX","X"]
@@ -72,8 +119,11 @@ myBaseConfig = desktopConfig
 
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [
+                  NS "terminal" "alacritty --title=scratchpad " (title =? "scratchpad") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
+                  NS "vpn" "alacritty --title vpn --command sudo openvpn --config Connection.ovpn" (title =? "vpn") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
+                  NS "music" "alacritty --title=music --command=ncmpcpp" (title =? "music") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
+                  NS "webcam" "mpv /dev/video0" (title =? "webcam") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
                   -- NS "terminal" "alacritty --title=scratchpad " (title =? "scratchpad") defaultFloating,
-                  NS "terminal" "alacritty --title=scratchpad " (title =? "scratchpad") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
                 ]
 
 
@@ -117,10 +167,11 @@ myManageHook = composeAll
 
 
 myLayout =
-  spacingRaw True (Border 0 15 15 15) True (Border 15 15 15 15) True $
+  noFrillsDeco shrinkText topBarTheme $
+  spacingRaw True (Border 0 10 10 10) True (Border 10 10 10 10) True $
   mkToggle (NBFULL ?? NOBORDERS ?? EOT) $
   avoidStruts $
-  gaps [(U,30), (D,30), (R,30), (L,30)] $
+  gaps [(U,20), (D,20), (R,20), (L,20)] $
   tiled |||
   Mirror tiled |||
   spiral (6/7)  |||
@@ -158,14 +209,12 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_space ), spawn $ "rofi -show combi")
   , ((modMask, xK_e), spawn $ "emacsclient -c -a ''" )
   , ((modMask, xK_f), sendMessage $ Toggle NBFULL)
-  , ((modMask, xK_h), spawn $ "alacritty 'htop task manager' -e htop" )
-  , ((modMask, xK_m), spawn $ "pragha" )
   , ((modMask, xK_q), kill )
   , ((modMask, xK_t), namedScratchpadAction myScratchPads "terminal")
-  , ((modMask, xK_v), spawn $ "pavucontrol" )
   , ((modMask, xK_y), spawn $ "polybar-msg cmd toggle" )
   , ((modMask, xK_Escape), spawn $ "xkill" )
   , ((modMask, xK_Return), spawn $ myTerminal )
+
 
   -- SUPER + FUNCTION KEYS
   , ((modMask, xK_F5), spawn $ "meld" )
@@ -175,7 +224,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- FUNCTION KEYS
   , ((0, xK_F7), namedScratchpadAction myScratchPads "terminal")
-  -- , ((0, xK_F7), namedScratchpadAction myScratchPads "terminal")
 
   -- SUPER + SHIFT KEYS
   , ((modMask .|. shiftMask , xK_Return ), spawn $ "thunar")
@@ -184,10 +232,15 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. shiftMask , xK_q ), kill)
   , ((modMask .|. shiftMask, xK_e ), spawn $ "arcolinux-logout")
 
+  -- SUPER + ALT KEYS
+  , ((modMask .|. mod1Mask, xK_v ), namedScratchpadAction myScratchPads "vpn")
+  , ((modMask .|. mod1Mask, xK_m ), namedScratchpadAction myScratchPads "music")
+  , ((modMask .|. mod1Mask, xK_w ), namedScratchpadAction myScratchPads "webcam")
+
   -- CONTROL + ALT KEYS
-  , ((controlMask .|. mod1Mask , xK_a ), spawn $ "xfce4-appfinder")
-  , ((controlMask .|. mod1Mask , xK_b ), spawn $ "thunar")
-  , ((controlMask .|. mod1Mask , xK_c ), spawn $ "catfish")
+  , ((controlMask .|. mod1Mask, xK_a ), spawn $ "xfce4-appfinder")
+  , ((controlMask .|. mod1Mask, xK_b ), spawn $ "thunar")
+  , ((controlMask .|. mod1Mask, xK_c ), spawn $ "catfish")
   , ((controlMask .|. mod1Mask, xK_e), spawn $ "emacs")
   , ((controlMask .|. mod1Mask, xK_m), spawn $ "emacsclient -c -a '' --eval '(mu4e)'")
   , ((controlMask .|. mod1Mask, xK_a), spawn $ "emacsclient -c -a '' --eval '(itechytony/day-view)'")
@@ -195,10 +248,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((controlMask .|. mod1Mask, xK_t), spawn $ "teams")
   , ((controlMask .|. mod1Mask, xK_p), spawn $ "pamac-manager")
   , ((controlMask .|. mod1Mask, xK_f), spawn $ "firefox")
-  , ((controlMask .|. mod1Mask , xK_m ), spawn $ "xfce4-settings-manager")
+  , ((controlMask .|. mod1Mask, xK_m ), spawn $ "xfce4-settings-manager")
   , ((controlMask .|. mod1Mask, xK_g), spawn $ "chromium -no-default-browser-check")
   , ((controlMask .|. mod1Mask, xK_q), spawn $ "qutebrowser")
-  , ((controlMask .|. mod1Mask , xK_t ), spawn $ myTerminal )
   , ((controlMask .|. mod1Mask, xK_b), spawn $ "qutebrowser")
   , ((controlMask .|. mod1Mask, xK_w), spawn $ "whatsdesk")
   , ((controlMask .|. mod1Mask, xK_d), spawn $ "dbeaver")
@@ -207,9 +259,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((controlMask .|. mod1Mask, xK_c), spawn $ "rofi -show calc")
   , ((controlMask .|. mod1Mask, xK_o), spawn $ "picom-toggle")
   , ((controlMask .|. mod1Mask, xK_v), spawn $ "pavucontrol")
-  , ((controlMask .|. mod1Mask , xK_k ), spawn $ "arcolinux-logout")
-  , ((controlMask .|. mod1Mask , xK_l ), spawn $ "arcolinux-logout")
-  , ((controlMask .|. mod1Mask , xK_Return ), spawn $ myTerminal )
+  , ((controlMask .|. mod1Mask, xK_k ), spawn $ "arcolinux-logout")
+  , ((controlMask .|. mod1Mask, xK_l ), spawn $ "arcolinux-logout")
+  , ((controlMask .|. mod1Mask, xK_Return ), spawn $ myTerminal )
 
   -- ALT + ... KEYS
   , ((mod1Mask, xK_f), spawn $ "variety -f" )
@@ -259,10 +311,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- Decrease brightness
   , ((0, xF86XK_MonBrightnessDown), spawn $ "xbacklight -dec 2")
 
-  , ((0, xF86XK_AudioPlay), spawn $ "playerctl play-pause")
-  , ((0, xF86XK_AudioNext), spawn $ "playerctl next")
-  , ((0, xF86XK_AudioPrev), spawn $ "playerctl previous")
-  , ((0, xF86XK_AudioStop), spawn $ "playerctl stop")
+  , ((0, xF86XK_AudioPlay), spawn $ "mpc toggle")
+  , ((0, xF86XK_AudioNext), spawn $ "mpc next")
+  , ((0, xF86XK_AudioPrev), spawn $ "mpc previous")
+  , ((0, xF86XK_AudioStop), spawn $ "mpc stop")
 
 
   --------------------------------------------------------------------
@@ -350,6 +402,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
       , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
 
+myL = noFrillsDeco shrinkText def (layoutHook def)
+
 main :: IO ()
 main = do
 
@@ -360,25 +414,18 @@ main = do
 
 
     xmonad . ewmh $
-  --Keyboard layouts
-  --qwerty users use this line
             myBaseConfig
-  --French Azerty users use this line
-            --myBaseConfig { keys = azertyKeys <+> keys azertyConfig }
-  --Belgian Azerty users use this line
-            --myBaseConfig { keys = belgianKeys <+> keys belgianConfig }
-
-                {startupHook = myStartupHook
-, layoutHook = smartBorders $ myLayout
-, manageHook = manageSpawn <+> myManageHook <+> manageHook myBaseConfig
-, modMask = myModMask
-, terminal = myTerminal
-, borderWidth = myBorderWidth
-, handleEventHook = handleEventHook myBaseConfig <+> fullscreenEventHook
-, focusFollowsMouse = myFocusFollowsMouse
-, workspaces = myWorkspaces
-, focusedBorderColor = focdBord
-, normalBorderColor = normBord
-, keys = myKeys
-, mouseBindings = myMouseBindings
+                { startupHook = myStartupHook
+                , layoutHook = myLayout
+                , manageHook = manageSpawn <+> myManageHook <+> manageHook myBaseConfig
+                , modMask = myModMask
+                , terminal = myTerminal
+                , borderWidth = myBorderWidth
+                , handleEventHook = handleEventHook myBaseConfig <+> fullscreenEventHook
+                , focusFollowsMouse = myFocusFollowsMouse
+                , workspaces = myWorkspaces
+                , focusedBorderColor = focdBord
+                , normalBorderColor = normBord
+                , keys = myKeys
+                , mouseBindings = myMouseBindings
 }
