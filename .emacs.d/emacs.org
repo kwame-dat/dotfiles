@@ -451,9 +451,6 @@ going to install it and make sure it's loaded immediately.
   (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
   (global-set-key (kbd "s-k") 'kill-buffer)
   (global-set-key (kbd "s-s") 'save-buffer)
-
-  (global-set-key (kbd "C-S-v") 'yank)
-  (global-set-key (kbd "C-S-c") 'kill-ring-save)
   (global-set-key (kbd "M-x") 'counsel-M-x)
 #+END_SRC
 
@@ -559,6 +556,7 @@ going to install it and make sure it's loaded immediately.
       "fr"  'recentf-open-files
       "fs"  'save-buffer
       "fS"  'write-file
+      "ft"  'counsel-tramp
 
       ;;; <leader> d --- documents/downloads
       "dp1" '(lambda() (interactive) (find-file "~/Documents/Personal/1Projects"))
@@ -2629,7 +2627,6 @@ If you have an absolutely massive music library, it might be a good idea to get 
     (message "MPD Database Updated!"))
   (global-set-key (kbd "s-m u") 'mpd/update-database)
 #+end_src
-
 ** Post Initialisation
 Let's lower our GC thresholds back down to a sane level.
 
