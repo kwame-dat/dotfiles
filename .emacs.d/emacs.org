@@ -99,6 +99,7 @@
     - [[#calendar][calendar]]
     - [[#alert][alert]]
     - [[#music][music]]
+    - [[#confluence][confluence]]
   - [[#post-initialisation][Post Initialisation]]
 
 ** ORG FILE TWEAKS
@@ -1755,6 +1756,7 @@ Refile targets configuration
     (setq org-pomodoro-long-break-length 60)
     (setq org-pomodoro-long-break-frequency 10))
 
+  (make-directory "~/.org-jira")
   (use-package org-jira
     :diminish org-jira-mode
     :init
@@ -1763,7 +1765,6 @@ Refile targets configuration
     :after org
     :config
     (setq jiralib-url "https://jira.eandl.co.uk")
-    (setq org-jira-working-dir "~/Org/Work/jira")
     :ensure t)
 
   (use-package org-gcal)
@@ -2180,6 +2181,7 @@ mu4e alert
 *** magit
 The magical git client. Let's load magit only when one of the several entry pont
 functions we invoke regularly outside of magit is called.
+**** magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :init
@@ -2191,12 +2193,6 @@ functions we invoke regularly outside of magit is called.
     (add-hook 'with-editor-mode-hook 'evil-insert-state)
     :ensure t)
 
-  (use-package git-gutter-fringe
-    :ensure t
-    :init
-    (setq git-gutter-fr:side 'right-fringe)
-    :config (global-git-gutter-mode))
-
   (use-package browse-at-remote)
   ;; (use-package evil-magit :demand t)
   (use-package with-editor :demand t)
@@ -2206,6 +2202,16 @@ functions we invoke regularly outside of magit is called.
   (use-package bug-reference-github :demand t)
   (use-package github-review :demand t)
 #+END_SRC
+
+**** Highlight uncommitted changes
+Use the diff-hl package to highlight changed-and-uncommitted lines when programming.
+#+begin_src emacs-lisp
+  (use-package diff-hl
+    :demand t
+    :config
+    (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
+    (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
+#+end_src
 
 *** pdf
 #+BEGIN_SRC emacs-lisp
@@ -2314,7 +2320,7 @@ functions we invoke regularly outside of magit is called.
 #+BEGIN_SRC emacs-lisp
   (defun my-nov-font-setup ()
     (face-remap-add-relative 'variable-pitch :family "Noto Sans"
-                             :height 1.5))
+                             :height 1.2))
   (use-package nov)
 
   (add-hook 'nov-mode-hook 'my-nov-font-setup)
@@ -2641,6 +2647,12 @@ If you have an absolutely massive music library, it might be a good idea to get 
     (call-process "mpc" nil nil nil "update")
     (message "MPD Database Updated!"))
   (global-set-key (kbd "s-m u") 'mpd/update-database)
+#+end_src
+*** confluence
+#+begin_src emacs-lisp
+  (setq confluence-url "https://confluence.eandl.co.uk/confluence/rpc/xmlrpc")
+  (use-package confluence
+    :ensure t)
 #+end_src
 ** Post Initialisation
 Let's lower our GC thresholds back down to a sane level.
