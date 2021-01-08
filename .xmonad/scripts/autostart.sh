@@ -7,7 +7,7 @@ function run {
   fi
 }
 
-xrandr --output eDP1 --off --output DP1 --primary --mode 3840x1600 --pos 0x0 --rotate normal --output DP2 --off --output DP3 --off --output VIRTUAL1 --off
+run multi-monitor.sh &
 
 # cursor active at boot
 xsetroot -cursor_name left_ptr &
@@ -16,25 +16,31 @@ xsetroot -cursor_name left_ptr &
 xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Tapping Enabled" 1 &
 xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Natural Scrolling Enabled" 1 &
 xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Accel Speed" 1 &
-                   
-# Caps lock map    
-xcape -e 'Caps_Lock=Escape' &
 
-# Make caps lock control key & sway alt with super key
-setxkbmap -option 'caps:ctrl_modifier,altwin:swap_lalt_lwin' &
+# Keyboard changes
+## make CapsLock behave like Ctrl:
+setxkbmap -option ctrl:nocaps
 
-# Increase keyboard key repeat
+## make short-pressed Ctrl behave like Escape:
+xcape -e 'Control_L=Escape' -t 300
+
+## make short-pressed shift behave like Escape:
+xcape -e 'Shift_L=Escape' -t 300
+xcape -e 'Shift_R=Escape' -t 300
+
+## make short-pressed tab behave like Hyper:
+xcape -e "Hyper_L=Tab;Hyper_R=Return"
+
+## Increase keyboard key repeat
 xset r rate 220 80 &
 
-(sleep 2; run $HOME/.config/polybar/launch.sh) &
 
+#
+(sleep 2; run $HOME/.config/polybar/launch.sh) &
 xrdb ~/.Xresources
 
 # Cursor active at boot
 xsetroot -cursor_name left_ptr &
-
-# Start ArcoLinux Welcome App
-run dex $HOME/.config/autostart/arcolinux-welcome-app.desktop
 
 # Starting utility applications at boot time
 run variety &
@@ -42,6 +48,8 @@ run nm-applet &
 run xfce4-power-manager &
 numlockx on &
 picom &
+xmodmap ~/.Xmodmap &
+sxhkd -c ~/.config/sxhkd/sxhkdrc &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 /usr/lib/xfce4/notifyd/xfce4-notifyd &
 
@@ -50,4 +58,5 @@ picom &
 copyq &
 run nextcloud &
 run syncthing -no-browser &
-run kdeconnect-indicator &
+run sudo mount -a &
+#run kdeconnect-indicator &
