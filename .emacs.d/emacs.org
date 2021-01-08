@@ -1756,7 +1756,6 @@ Refile targets configuration
     (setq org-pomodoro-long-break-length 60)
     (setq org-pomodoro-long-break-frequency 10))
 
-  (make-directory "~/.org-jira")
   (use-package org-jira
     :diminish org-jira-mode
     :init
