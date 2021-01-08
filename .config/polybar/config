@@ -7,6 +7,8 @@ primary = #b5bd68
 secondary = #41728e
 alert = #cc6666
 success = #f0c674
+active = #268bd2
+inactive = #073642
 
 [bar/main]
 monitor = ${env:MONITOR:}
@@ -589,22 +591,22 @@ format = <label-state>
 label-monitor = %name%
 
 label-active = %name%
-label-active-foreground = ${colors.primary}
-label-active-background = ${colors.background}
-label-active-underline= ${colors.primary}
-label-active-padding = 1
+label-active-foreground = ${colors.foreground}
+label-active-background = ${colors.active}
+label-active-underline= ${colors.active}
+label-active-padding = 2
 
 label-occupied = %name%
-label-occupied-background = ${colors.background}
-label-occupied-foreground = ${colors.secondary}
-label-occupied-padding = 1
+label-occupied-background = ${colors.inactive}
+label-occupied-foreground = ${colors.foreground}
+label-occupied-padding = 2
 
 label-urgent = %name%
 label-urgent-foreground = ${colors.foreground}
 label-urgent-background = ${colors.alert}
 label-urgent-underline = ${colors.alert}
-label-urgent-padding = 1
+label-urgent-padding = 2
 
 label-empty = %name%
 label-empty-foreground = ${colors.foreground}
-label-empty-padding = 1
+label-empty-padding = 2
