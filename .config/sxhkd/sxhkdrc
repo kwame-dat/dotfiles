@@ -1,100 +1,111 @@
 #################################################################
-# KEYBOARD BINDINGS FOR ANY TWM
+#################################################################
+############   KEYBOARD BINDINGS FOR ANY TWM ####################
+#################################################################
 #################################################################
 
 #################################################################
-# SUPER + FUNCTION KEYS
-#################################################################
-
-# Browser
-super + F1
-	chromium
-
-# Editor
-super + F2
-	emacsclient -c -a ''
-
-# Calibre
-super + F3
-    calibre
-
-#Meld
-super + F5
-    meld
-
-#Vlc
-super + F7
-    vlc --video-on-top
-
-#Virtualbox
-super + F8
-    virtualbox
-
-#Spotify
-super + F9
-    spotify
-
-#Rofi Fullscreen
-super + F11
-    rofi -show run -fullscreen
-
-#Rofi
-super + F12
-    rofi -show run
-
-#################################################################
-# SUPER + ... KEYS
+# HYPER + ... KEYS
 #################################################################
 # Rofi pass
-super + p
+hyper + p
 	rofi-pass
 
 # Emacs
-super + e
+hyper + e
     emacsclient -c -a ''
 
-#Pavucontrol
-super + v
-    pavucontrol
-
-#Alacritty
-super + Return
+# Alacritty
+hyper + Return
     alacritty
 
-#Xkill
-super + Escape
+# Xkill
+hyper + Escape
     xkill
 
-super + space
+# Rofi Luncher
+hyper + space
   rofi -show combi
 
-super + b
+# Rofi Bookmarks
+hyper + b
   rofi-surfraw
 
+# Rofi Calculator
+hyper + c
+	rofi -show calc
+
 #################################################################
-# SUPER + SHIFT KEYS
+# HYPER + FUNCTION KEYS
+#################################################################
+# Browser
+hyper + F1
+	chromium
+
+# Editor
+hyper + F2
+	emacsclient -c -a ''
+
+# Calibre
+hyper + F3
+    calibre
+
+# Meld
+hyper + F5
+    meld
+
+# Vlc
+hyper + F7
+    vlc --video-on-top
+
+# Virtualbox
+hyper + F8
+    virtualbox
+
+# Spotify
+hyper + F9
+    spotify
+
+# Rofi Fullscreen
+hyper + F11
+    rofi -show run -fullscreen
+
+# Rofi
+hyper + F12
+    rofi -show run
+
+#################################################################
+# HYPER + SHIFT KEYS
 #################################################################
 
 #File-Manager
-super + shift + Return
+hyper + shift + Return
 	thunar
 
 #Keyboard dependent
 #File-Manager
-super + shift + KP_Enter
+hyper + shift + KP_Enter
 	thunar
 
 #reload sxhkd:
-super + shift + s
+hyper + shift + s
 	pkill -USR1 -x sxhkd
-
-# logout
-super + shift + e
-    killall dwm
 
 #################################################################
 # CONTROL + ALT KEYS
 #################################################################
+# emacs
+ctrl + alt + e
+    emacs
+
+# emacsclient
+ctrl + alt + m
+    emacsclient -c -a '' --eval '(mu4e)'
+
+# emacsclient day view
+ctrl + alt + a
+    emacsclient -c -a '' --eval '(itechytony/day-view)'
+
 #Chromium
 ctrl + alt + g
     chromium -no-default-browser-check
@@ -111,15 +122,11 @@ ctrl + alt + p
 ctrl + alt + m
      xfce4-settings-manager
 
-#Spotify
-ctrl + alt + s
-   slack
+#Qutebrowser
+ctrl + alt + b
+   qutebrowser
 
-#Termite
-ctrl + alt + Return
-    termite
-
-#termite
+#Teams
 ctrl + alt + t
     teams
 
@@ -137,24 +144,21 @@ ctrl + alt + z
 
 #Insomnia
 ctrl + alt + i
-    insomnia
+    insomnia-designer
 
 #Picom Toggle
 ctrl + alt + o
     picom-toggle
 
+# Pavucontrol
+ctrl + alt + v
+    pavucontrol
+
 
 #################################################################
-# SUPER + ALT KEYS
+# HYPER + ALT KEYS
 #################################################################
-super + alt + b
-	brave
 
-super + alt + c
-	rofi -show calc
-
-super + alt + s
-	flameshot gui
 
 #################################################################
 #VARIETY KEYS WITH PYWAL
@@ -195,7 +199,7 @@ ctrl + shift + Escape
 
 #Scrot
 Print
-    scrot 'ArcoLinux-%Y-%m-%d-%s_screenshot_$wx$h.jpg' -e 'mv $f $$(xdg-user-dir PICTURES)'
+    flameshot gui
 
 #screeenshooter
 ctrl + Print
@@ -263,15 +267,3 @@ XF86MonBrightnessUp
 #Brightness down
 XF86MonBrightnessDown
     xbacklight -dec 2
-
-
-#################################################################
-#################################################################
-##################   DESKTOP SPECIFIC    ########################
-#################################################################
-#################################################################
-
-#################################################################
-# CTRL + ALT KEYS
-#################################################################
-
