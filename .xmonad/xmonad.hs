@@ -90,7 +90,7 @@ myModMask = mod3Mask
 encodeCChar = map fromIntegral . B.unpack
 myFocusFollowsMouse = False
 myBorderWidth = 4
-myWorkspaces    = ["\61612","\61899","\61557","\62043","\61888","\61485","\61705","\61723","\61501","\61441"]
+myWorkspaces    = ["\61612","\61899","\61557","\61501","\62043","\61888","\61485","\61723","\61705"]
 
 myBaseConfig = desktopConfig
 
@@ -99,7 +99,7 @@ myScratchPads :: [NamedScratchpad]
 myScratchPads = [
                   NS "terminal" "alacritty --title=scratchpad " (title =? "scratchpad") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
                   NS "vpn" "alacritty --title vpn --command sudo openvpn --config Connection.ovpn" (title =? "vpn") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
-                  NS "ncmpcpp" "alacritty --title=music --command=ncmpcpp" (title =? "music") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
+                  NS "music" "alacritty --title=music --command=ncmpcpp" (title =? "music") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
                   NS "webcam" "mpv /dev/video0" (title =? "webcam") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
                 ]
 
@@ -118,26 +118,22 @@ myManageHook = composeAll
     , className =? "firefox"                                 --> doShift ( myWorkspaces !! 0 )
     , className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )
     , className =? "jetbrains-phpstorm"                      --> doShift ( myWorkspaces !! 1 )
+    , className =? "Evolution"                               --> doShift ( myWorkspaces !! 1 )
+    , className =? "calibre"                                 --> doShift ( myWorkspaces !! 1 )
     , className =? "whatsapp-nativefier-d52542"              --> doShift ( myWorkspaces !! 2 )
     , className =? "Signal"                                  --> doShift ( myWorkspaces !! 2 )
     , className =? "whatsdesk"                               --> doShift ( myWorkspaces !! 2 )
     , className =? "Slack"                                   --> doShift ( myWorkspaces !! 2 )
-    , className =? "Microsoft Teams - Preview"               --> doShift ( myWorkspaces !! 2 )
-    , className =? "Insomnia"                                --> doShift ( myWorkspaces !! 3 )
-    , className =? "Insomnia Designer"                       --> doShift ( myWorkspaces !! 3 )
-    , className =? "Postman"                                 --> doShift ( myWorkspaces !! 3 )
-    , className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 4 )
-    , className =? "Stoplight Studio"                        --> doShift ( myWorkspaces !! 5 )
-    , className =? "calibre"                                 --> doShift ( myWorkspaces !! 5 )
-    , className =? "Thunderbird"                             --> doShift ( myWorkspaces !! 5 )
-    , className =? "Evolution"                               --> doShift ( myWorkspaces !! 5 )
+    , className =? "Microsoft Teams - Preview"               --> doShift ( myWorkspaces !! 3 )
+    , className =? "zoom"                                    --> doShift ( myWorkspaces !! 3 )
+    , className =? "Insomnia"                                --> doShift ( myWorkspaces !! 4 )
+    , className =? "Insomnia Designer"                       --> doShift ( myWorkspaces !! 4 )
+    , className =? "Stoplight Studio"                        --> doShift ( myWorkspaces !! 4 )
+    , className =? "Postman"                                 --> doShift ( myWorkspaces !! 4 )
+    , className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 5 )
     , className =? "obs"                                     --> doShift ( myWorkspaces !! 6 )
-    , className =? "vlc"                                     --> doShift ( myWorkspaces !! 6 )
-    , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 6 )
-    , className =? "Nextcloud"                               --> doShift ( myWorkspaces !! 6 )
-    , className =? "Syncthing GTK"                           --> doShift ( myWorkspaces !! 6 )
-    , className =? "zoom"                                    --> doShift ( myWorkspaces !! 8 )
-    , className =? "Spotify"                                 --> doShift ( myWorkspaces !! 9 )
+    , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 8 )
+    , className =? "Nextcloud"                               --> doShift ( myWorkspaces !! 8 )
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)
     ] <+> namedScratchpadManageHook myScratchPads
 
@@ -179,7 +175,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   [
   -- MODKEY + ...
    ((modMask, xK_v), namedScratchpadAction myScratchPads "vpn")
-  , ((modMask, xK_n), namedScratchpadAction myScratchPads "ncmpcpp")
+  , ((modMask, xK_m), namedScratchpadAction myScratchPads "music")
   , ((modMask .|. mod1Mask, xK_w ), namedScratchpadAction myScratchPads "webcam")
   , ((modMask, xK_t), namedScratchpadAction myScratchPads "terminal")
 
@@ -223,8 +219,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_k), windows W.focusUp )
   , ((modMask, xK_Up), windows W.focusUp )
 
-  -- Move focus to the master window.
-  , ((modMask, xK_m), windows W.focusMaster  )
 
   -- Swap the focused window with the next window.
   , ((modMask .|. shiftMask, xK_j), windows W.swapDown  )
@@ -248,6 +242,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- Decrement the number of windows in the master area.
   , ((modMask, xK_minus), sendMessage (IncMasterN (-1)))
 
+  -- Move focus to the master window.
+  , ((modMask, xK_0), windows W.focusMaster )
+
   ]
   ++
 
@@ -257,7 +254,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   --Keyboard layouts
   --qwerty users use this line
-   | (i, k) <- zip (XMonad.workspaces conf) [xK_1,xK_2,xK_3,xK_4,xK_5,xK_6,xK_7,xK_8,xK_9,xK_0]
+   | (i, k) <- zip (XMonad.workspaces conf) [xK_1,xK_2,xK_3,xK_4,xK_5,xK_6,xK_7,xK_8,xK_9]
       , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)
       , (\i -> W.greedyView i . W.shift i, shiftMask)]]
 
