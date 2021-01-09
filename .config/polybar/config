@@ -19,17 +19,36 @@ background = ${colors.background}
 foreground = ${colors.foreground}
 line-size = ${env:POLYBAR_LINE_SIZE}
 line-color = ${colors.background}
-padding-left = 0
-padding-right = 0
 module-margin-left = 1
 module-margin-right = 1
 
 font-0 = "JetBrains Mono Medium:size=10;4"
 font-1 = "FontAwesome:size=10;4"
 
-modules-left = ewmh xwindow  
+modules-left = xwindow  
 modules-center =  
-modules-right = networkspeedup networkspeeddown cpu memory temperature backlight pavolume battery time date
+modules-right = 
+
+[bar/top]
+inherit = bar/main
+border-bottom-size = 0
+border-bottom-color = ${color.primary}
+modules-left = pub-ip xwindow
+modules-center = mpd 
+modules-right = networkspeedup  networkspeeddown battery date time 
+enable-ipc = true
+padding-left = 1
+padding-right = 1
+
+[bar/bottom]
+inherit = bar/main
+bottom = true
+border-top-size = 0
+border-top-color = ${color.primary}
+modules-left = ewmh 
+modules-center = cpu memory filesystem temperature  
+modules-right = backlight2 volume 
+enable-ipc = true
 
 tray-position = right
 tray-padding = 0
@@ -53,7 +72,7 @@ type = internal/cpu
 interval = 1
 format-prefix-foreground = ${colors.foreground}
 format-underline = ${colors.secondary}
-format-prefix = " "
+format-prefix = " CPU: "
 
 label-font = 1
 
@@ -610,3 +629,47 @@ label-urgent-padding = 2
 label-empty = %name%
 label-empty-foreground = ${colors.foreground}
 label-empty-padding = 2
+
+[module/mpd]
+type = internal/mpd
+interval = 1
+
+format-online = <label-song> <icon-prev> <toggle> <icon-next>
+format-online-prefix = ﱘ
+format-online-foreground = ${color.foreground}
+format-offline = <label-offline>
+format-offline-prefix = ﱘ
+format-offline-foreground = ${color.foreground}
+
+label-song =  " %artist% - %title%"
+label-song-maxlen = 25
+label-song-ellipsis = true
+
+; Available tokens:
+;   %elapsed%
+;   %total%
+; Default: %elapsed% / %total%
+label-time = %elapsed% / %total%
+
+; Available tokens:
+;   None
+label-offline = " Offline"
+
+; Only applies if <icon-X> is used
+icon-play = 
+icon-pause = 
+icon-stop = 
+icon-prev = 
+icon-next = 
+icon-seekb = 
+icon-seekf = 
+icon-random = 
+icon-repeat = 
+icon-repeatone = 
+icon-single = 
+icon-consume = 
+
+; Used to display the state of random/repeat/repeatone/single
+; Only applies if <icon-[random|repeat|repeatone|single]> is used
+toggle-on-foreground = ${color.primary}
+toggle-off-foreground = ${color.red}
