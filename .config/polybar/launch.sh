@@ -10,8 +10,7 @@ count=$(xrandr --query | grep " connected" | cut -d" " -f1 | wc -l)
 
 if [ $count = 1 ]; then
     m=$(xrandr --query | grep " connected" | cut -d" " -f1)
-    MONITOR=$m polybar --reload top -c ~/.config/polybar/config &
-    MONITOR=$m polybar --reload bottom -c ~/.config/polybar/config &
+    MONITOR=$m polybar --reload main -c ~/.config/polybar/config &
 else
     for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
         MONITOR=$m polybar --reload main -c ~/.config/polybar/config &

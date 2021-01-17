@@ -21,40 +21,18 @@ line-size = ${env:POLYBAR_LINE_SIZE}
 line-color = ${colors.background}
 module-margin-left = 1
 module-margin-right = 1
-
-font-0 = "JetBrains Mono Medium:size=10;4"
-font-1 = "FontAwesome:size=10;4"
-
-modules-left = xwindow  
-modules-center =  
-modules-right = 
-
-[bar/top]
-inherit = bar/main
-border-bottom-size = 0
-border-bottom-color = ${color.primary}
-modules-left = pub-ip xwindow
-modules-center = mpd 
-modules-right = networkspeedup  networkspeeddown battery date time 
-enable-ipc = true
-padding-left = 1
 padding-right = 1
 
-[bar/bottom]
-inherit = bar/main
-bottom = true
-border-top-size = 0
-border-top-color = ${color.primary}
-modules-left = ewmh 
-modules-center = cpu memory filesystem temperature  
-modules-right = backlight2 volume 
-enable-ipc = true
+font-0 = "JetBrains Mono Medium:size=8;4"
+font-1 = "FontAwesome:size=8;4"
 
+modules-left = ewmh pub-ip backlight2 volume
+modules-center = xwindow
+modules-right = networkspeedup  networkspeeddown cpu memory temperature battery time date 
 tray-position = right
 tray-padding = 0
 tray-maxsize = ${env:POLYBAR_TRAY_MAXSIZE}
 tray-scale = 1.0
-
 
 [settings]
 screenchange-reload = true
@@ -459,7 +437,7 @@ format-discharging-underline = ${colors.alert}
 [module/date]
 type = internal/date
 interval = 1.0
-date = "%a %d %b %Y"
+date = "%a %d %b"
 date-alt = " %a %b %d, %Y"
 time = %l:%M%p
 time-alt = %l:%M%p
@@ -474,7 +452,7 @@ type = internal/date
 interval = 1.0
 time = %l:%M%p
 time-alt = %l:%M%p
-format-prefix = ""
+format-prefix = " "
 format-background = ${colors.background}
 format-foreground = ${colors.foreground}
 label = "%time%"
