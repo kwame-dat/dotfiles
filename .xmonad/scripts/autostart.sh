@@ -6,8 +6,8 @@ function run {
     $@&
   fi
 }
-
 run multi-monitor.sh &
+# xrandr --output eDP1 --auto --output DP1 --auto --scale 2x2 --right-of eDP1 &
 
 # cursor active at boot
 xsetroot -cursor_name left_ptr &
@@ -34,8 +34,6 @@ xcape -e "Hyper_L=Tab;Hyper_R=Return"
 ## Increase keyboard key repeat
 xset r rate 220 80 &
 
-
-#
 (sleep 2; run $HOME/.config/polybar/launch.sh) &
 xrdb ~/.Xresources
 
@@ -48,10 +46,9 @@ run nm-applet &
 run xfce4-power-manager &
 numlockx on &
 picom &
-xmodmap ~/.Xmodmap &
-sxhkd -c ~/.config/sxhkd/sxhkdrc &
+dunst &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-/usr/lib/xfce4/notifyd/xfce4-notifyd &
+xmodmap ~/.Xmodmap &
 
 # starting user applications at boot time
 /usr/bin/emacs --daemon &
