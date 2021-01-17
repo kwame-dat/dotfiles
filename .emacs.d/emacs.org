@@ -200,6 +200,12 @@ Disable certain byte compiler warnings to cut down on the noise.
   (setq split-width-threshold nil)
   (setq tramp-default-method "ssh")
 
+  (setq tramp-histfile-override "/tmp/.tramp")
+  (require 'tramp-cache)
+  (setq tramp-persistency-file-name "/tmp/.tramp")
+  ;; (require 'tramp-cache)
+  (setq tramp-persistency-file-name "/tmp/.tramp")
+
   (show-paren-mode 1)
   (setq show-paren-delay 0)
 
@@ -338,6 +344,7 @@ going to install it and make sure it's loaded immediately.
                                            "~/Documents/Work/2Areas"
                                            "~/Documents/Personal/2Areas"
                                            "~/Documents/Joint/2Areas"
+                                           "~/Documents/Spiritual/1Projects"
                                            "~/Documents/Work/1Projects"
                                            "~/Documents/Personal/1Projects"
                                            "~/Documents/Joint/1Projects"
@@ -348,7 +355,7 @@ going to install it and make sure it's loaded immediately.
                                            "~/Repo/Personal/2Areas"
                                            "~/Repo/Personal/1Projects"
                                            "~/Repo/Work/1Projects"
-                                           "~/"
+                                           "~/Sync/org"
                                            ))
     (setq projectile-completion-system 'ivy)
     (setq projectile-switch-project-action #'projectile-dired)
@@ -366,13 +373,21 @@ going to install it and make sure it's loaded immediately.
     (interactive)
     (find-file "/sudo:root@localhost:/etc/hosts"))
 
+  (defun itechytony/edit-ssh-config ()
+    (interactive)
+    (find-file "~/.ssh/config"))
+
+  (defun itechytony/edit-emacs-config ()
+    (interactive)
+    (find-file "~/.emacs.d/config.org"))
+
   (defun itechytony/visit-resolv-conf ()
     (interactive)
     (find-file "/sudo:root@localhost:/etc/resolv.conf"))
 
   (defun itechytony/find-in-notes ()
     (interactive)
-    (counsel-find-file "~/Org"))
+    (counsel-find-file "~/Sync/org"))
 
   (defun open-terminal-in-projectile-root ()
     (interactive)
@@ -451,11 +466,19 @@ going to install it and make sure it's loaded immediately.
   (use-package general
     :demand t
     :config
+    (setq general-override-states '(insert
+                                    emacs
+                                    hybrid
+                                    normal
+                                    visual
+                                    motion
+                                    operator
+                                    replace))
     (require 'general)
     (general-evil-setup)
 
     (general-define-key
-     :states 'insert
+     :states 'insert 
      "C-x C-l"    'company-whole-lines
      "C-x C-k"    'company-dict-or-keywords
      "C-x C-f"    'company-files
@@ -485,6 +508,7 @@ going to install it and make sure it's loaded immediately.
      "A" #'evil-mc-make-cursor-in-visual-selection-end)
 
     (general-create-definer my-leader-def
+      :states '(normal visual motion)
       :keymaps 'override
       :prefix "SPC")
 
@@ -493,11 +517,20 @@ going to install it and make sure it's loaded immediately.
       :prefix ",")
 
     (my-leader-def 'normal 'override
-
       ":"  'eval-expression
       "<SPC>" 'counsel-projectile-find-file
       "/"  'swiper
       "x"  'counsel-M-x
+      "RET" 'bookmark-jump
+      "1" 'eyebrowse-switch-to-window-config-1
+      "2" 'eyebrowse-switch-to-window-config-2
+      "3" 'eyebrowse-switch-to-window-config-3
+      "4" 'eyebrowse-switch-to-window-config-4
+      "5" 'eyebrowse-switch-to-window-config-5
+      "6" 'eyebrowse-switch-to-window-config-6
+      "7" 'eyebrowse-switch-to-window-config-7
+      "8" 'eyebrowse-switch-to-window-config-8
+      "9" 'eyebrowse-switch-to-window-config-9
 
       ;;; <leader> a --- application
       "ass" 'slack-start
@@ -539,8 +572,11 @@ going to install it and make sure it's loaded immediately.
       "fD"  'itechytony/delete-this-file
       "fd" 'dired
       "ff"  'counsel-find-file
+      "fh"  'itechytony/find-home-directory
       "feh"  'itechytony/visit-host-file
       "fer"  'itechytony/visit-resolv-conf
+      "fes"  'itechytony/edit-ssh-config
+      "fee"  'itechytony/edit-emacs-config
       ;; "fE"  '(lambda() (interactive) (find-file "~/.emacs.d"))
       "fu"  'itechytony/sudo-find-file
       "fU"  'itechytony/sudo-this-file
@@ -551,10 +587,10 @@ going to install it and make sure it's loaded immediately.
       "ft"  'counsel-tramp
 
       ;;; <leader> d --- documents/downloads
-      "dp1" '(lambda() (interactive) (find-file "~/Documents/Personal/1Projects"))
-      "dp2" '(lambda() (interactive) (find-file "~/Documents/Personal/2Areas"))
-      "dp3" '(lambda() (interactive) (find-file "~/Documents/Personal/3Resources"))
-      "dp4" '(lambda() (interactive) (find-file "~/Documents/Personal/4Archives"))
+      "dp1" '(lambda() (interactive) (find-file "~/Documents/personal/1Projects"))
+      "dp2" '(lambda() (interactive) (find-file "~/Documents/personal/2Areas"))
+      "dp3" '(lambda() (interactive) (find-file "~/Documents/personal/3Resources"))
+      "dp4" '(lambda() (interactive) (find-file "~/Documents/personal/4Archives"))
       "dw1" '(lambda() (interactive) (find-file "~/Documents/Work/1Projects"))
       "dw2" '(lambda() (interactive) (find-file "~/Documents/Work/2Areas"))
       "dw3" '(lambda() (interactive) (find-file "~/Documents/Work/3Resources"))
@@ -563,9 +599,25 @@ going to install it and make sure it's loaded immediately.
       "dD" '(lambda() (interactive) (find-file "~/Desktop"))
 
       ;;; <leader> b --- buffers
-      "bb"  'counsel-switch-buffer
-      "bB"  'counsel-ibuffer
-      "bk"  'kill-this-buffer
+      "b["  #'previous-buffer
+      "b]"  #'next-buffer
+      "bb"  #'switch-to-buffer
+      "bB"  #'switch-to-buffer
+      "bc"  #'clone-indirect-buffer
+      "bC"  #'clone-indirect-buffer-other-window
+      "bk"  #'kill-current-buffer
+      "bl"  #'evil-switch-to-windows-last-buffer
+      "bi"  #'ibuffer
+      "bm"  #'bookmark-set
+      "bM"  #'bookmark-delete
+      "bn"  #'next-buffer
+      "bN"  #'evil-buffer-new
+      ;; "bO"   #'kill-other-buffers
+      "bp"   #'previous-buffer
+      "br"   #'revert-buffer
+      "bs"   #'basic-save-buffer
+      "bS"   #'evil-write-all
+      "bz"   #'bury-buffer
 
       ;;; <leader> s --- search
       "s." #'+itechytony/search-project-for-symbol-at-point
@@ -621,15 +673,15 @@ going to install it and make sure it's loaded immediately.
       "pd"  'projectile-discover-projects-in-search-path
 
       ;;; <leader> n --- notes
-      "nf" '(lambda() (interactive) (counsel-find-file "~/Org"))
-      "n." '(lambda() (interactive) (counsel-find-file "~/Org"))
-      "ni" '(lambda() (interactive) (find-file "~/Org/Personal/Inbox.org"))
-      "npt" '(lambda() (interactive) (find-file "~/Org/Personal/PTodo.org"))
-      "npn" '(lambda() (interactive) (find-file "~/Org/Personal/PNotes.org"))
-      "nps" '(lambda() (interactive) (find-file "~/Org/Personal/PSomeday.org"))
-      "nwt" '(lambda() (interactive) (find-file "~/Org/Work/WTodo.org"))
-      "nwn" '(lambda() (interactive) (find-file "~/Org/Work/WNotes.org"))
-      "nws" '(lambda() (interactive) (find-file "~/Org/Work/WSomeday.org"))
+      "nf" '(lambda() (interactive) (counsel-find-file "~/Sync/org"))
+      "n." '(lambda() (interactive) (counsel-find-file "~/Sync/org"))
+      "ni" '(lambda() (interactive) (find-file "~/Sync/org/personal/Inbox.org"))
+      "npt" '(lambda() (interactive) (find-file "~/Sync/org/personal/PTodo.org"))
+      "npn" '(lambda() (interactive) (find-file "~/Sync/org/personal/PNotes.org"))
+      "nps" '(lambda() (interactive) (find-file "~/Sync/org/personal/PSomeday.org"))
+      "nwt" '(lambda() (interactive) (find-file "~/Sync/org/work/WTodo.org"))
+      "nwn" '(lambda() (interactive) (find-file "~/Sync/org/work/WNotes.org"))
+      "nws" '(lambda() (interactive) (find-file "~/Sync/org/work/WSomeday.org"))
       "na" 'org-agenda
       "nd" 'itechytony/day-view
       "nci" 'org-pomodoro
@@ -730,8 +782,6 @@ Install =evil-collection=, which provides evil-friendly bindings for many modes.
     :after evil
     :config
     (setq evil-collection-want-unimpaired-p nil)
-    ;; (setq evil-collection-mode-list
-    ;;       '(ag dired magit mu4e which-key))
     (evil-collection-init))
 #+end_src
 **** evil-surround
@@ -744,7 +794,7 @@ Enable =surround= everywhere.
     (global-evil-surround-mode 1))
 #+end_src
 **** evil-org
-Use =evil= with Org agendas.
+Use =evil= with org agendas.
 
 #+begin_src emacs-lisp
   (use-package evil-org
@@ -859,7 +909,7 @@ This allows me to  uncompress a .zip file
     :ensure nil
     :commands (dired dired-jump)
     :bind (("C-x C-j" . dired-jump))
-    :custom ((dired-listing-switches "-agho --group-directories-first"))
+    :custom ((dired-listing-switches "-lhvA"))
     :config
     (evil-collection-define-key 'normal 'dired-mode-map
       "h" 'dired-single-up-directory
@@ -886,7 +936,7 @@ This allows me to  uncompress a .zip file
             ("mp3" . "mpv")
             ("mp4" . "mpv")
             ("pdf" . "zathura")
-            ("epub" . "emacs")
+            ;; ("epub" . "emacs")
             ("png" . "feh")
             ("webm" . "mpv")
             ("xls" . "gnumeric")
@@ -915,7 +965,7 @@ This allows me to  uncompress a .zip file
 *** font
 #+BEGIN_SRC emacs-lisp
   (setq itechytony/default-font "JetBrains Mono")
-  (setq itechytony/default-font-size 12)
+  (setq itechytony/default-font-size 10)
   (setq itechytony/current-font-size itechytony/default-font-size)
 
   (setq itechytony/font-change-increment 1.1)
@@ -965,10 +1015,10 @@ This allows me to  uncompress a .zip file
 
 *** theme
 #+begin_src emacs-lisp
-  (use-package doom-themes
+  (use-package base16-theme
     :ensure t
     :demand t
-    :config (load-theme 'doom-tomorrow-night))
+    :config (load-theme 'doom-monokai-pro))
 #+end_src
 
 **** minions
@@ -1030,7 +1080,9 @@ Nicer naming of buffers for files with identical names
     
 *** writeroom-mode
 #+BEGIN_SRC emacs-lisp
-  (use-package writeroom-mode :ensure t)
+  (use-package writeroom-mode :ensure t
+    :config
+    (setq writeroom-width 80))
 #+END_SRC
 
 *** treemacs
@@ -1113,15 +1165,6 @@ Nicer naming of buffers for files with identical names
     :demand t
     :diminish eyebrowse-mode
     :config (progn
-              (define-key eyebrowse-mode-map (kbd "C-1") 'eyebrowse-switch-to-window-config-1)
-              (define-key eyebrowse-mode-map (kbd "C-2") 'eyebrowse-switch-to-window-config-2)
-              (define-key eyebrowse-mode-map (kbd "C-3") 'eyebrowse-switch-to-window-config-3)
-              (define-key eyebrowse-mode-map (kbd "C-4") 'eyebrowse-switch-to-window-config-4)
-              (define-key eyebrowse-mode-map (kbd "C-5") 'eyebrowse-switch-to-window-config-5)
-              (define-key eyebrowse-mode-map (kbd "C-6") 'eyebrowse-switch-to-window-config-6)
-              (define-key eyebrowse-mode-map (kbd "C-7") 'eyebrowse-switch-to-window-config-7)
-              (define-key eyebrowse-mode-map (kbd "C-8") 'eyebrowse-switch-to-window-config-8)
-              (define-key eyebrowse-mode-map (kbd "C-9") 'eyebrowse-switch-to-window-config-9)
               (eyebrowse-mode t)
               (setq eyebrowse-new-workspace t)))
 #+END_SRC
@@ -1174,8 +1217,6 @@ Nicer naming of buffers for files with identical names
 
   (eval-after-load 'company
     '(progn
-       (define-key company-active-map (kbd "<return>") 'company-complete-selection)
-       (define-key company-active-map (kbd "RET") 'company-complete-selection)
        (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
        (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)))
 
@@ -1632,14 +1673,12 @@ want is prioritized instead.
     (org-image-actual-width '(600)))
 #+end_src
 
-I'd like the initial scratch buffer to be in Org:
-
+I'd like the initial scratch buffer to be in org:
 #+begin_src emacs-lisp
   (setq initial-major-mode 'org-mode)
 #+end_src
 
 I like to see an outline of pretty bullets instead of a list of asterisks.
-
 #+begin_src emacs-lisp
   (use-package org-bullets
     :init
@@ -1648,7 +1687,6 @@ I like to see an outline of pretty bullets instead of a list of asterisks.
 
 I like seeing a little downward-pointing arrow instead of the usual ellipsis
 (=...=) that org displays when there's stuff under a header.
-
 #+begin_src emacs-lisp
   (setq org-ellipsis "⤵")
 #+end_src
@@ -1658,33 +1696,28 @@ I like seeing a little downward-pointing arrow instead of the usual ellipsis
 #+end_src
 
 Use syntax highlighting in source blocks while editing.
-
 #+begin_src emacs-lisp
   (setq org-src-fontify-natively t)
 #+end_src
 
 Make TAB act as if it were issued in a buffer of the language's major mode.
-
 #+begin_src emacs-lisp
   (setq org-src-tab-acts-natively t)
 #+end_src
 
 When editing a code snippet, use the current window rather than popping open a
 new one (which shows the same information).
-
 #+begin_src emacs-lisp
   (setq org-src-window-setup 'current-window)
 #+end_src
 
 Quickly insert a block of elisp:
-
 #+begin_src emacs-lisp
   (add-to-list 'org-structure-template-alist
                '("el" . "src emacs-lisp"))
 #+end_src
 
 Don't indent newly expanded blocks, even if they're under a heading.
-
 #+begin_src emacs-lisp
   (setq org-adapt-indentation nil)
 #+end_src
@@ -1696,12 +1729,12 @@ Automatically put quick capture into insert mode
 
 Task Management & Agenda Views
 #+begin_src emacs-lisp
-  (setq org-directory "~/Org")
+  (setq org-directory "~/Sync/org")
   (setq org-agenda-files (quote (
-                                 "~/Org/Personal/PTodo.org"
-                                 "~/Org/Spiritual/STodo.org"
-                                 "~/Org/Joint/JTodo.org"
-                                 "~/Org/Work/WTodo.org"
+                                 "~/Sync/org/personal/PTodo.org"
+                                 "~/Sync/org/spiritual/STodo.org"
+                                 "~/Sync/org/joint/JTodo.org"
+                                 "~/Sync/org/work/WTodo.org"
                                  )))
 #+end_src
 
@@ -1739,36 +1772,20 @@ Refile targets configuration
 
   (setq org-capture-templates
         '(
-          ("i" "Inbox" entry (file "~/Org/Personal/Inbox.org")
+          ("i" "Inbox" entry (file "~/Sync/org/personal/Inbox.org")
            "* TODO %?\n %i\n")
-          ("e" "Email" entry (file+headline "~/Org/Personal/Inbox.org" "Emails")
+          ("e" "Email" entry (file+headline "~/Sync/org/personal/Inbox.org" "Emails")
            "* TODO [#A] Process Email %:fromname on %:subject\nSCHEDULED:%t\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+2d\"))\n:PROPERTIES:\n:CREATED: %U\n:END:\n %a" :immediate-finish t :prepend t)
-          ("p" "Project" entry (file+headline "~/Org/Personal/PTodo.org" "1Projects")
-           (file "~/Org/Personal/templates/new-project.org"))
-          ("w" "WorkProject" entry (file+headline "~/Org/Work/WTodo.org" "1Projects")
-           (file "~/Org/Personal/templates/new-project.org"))
-          ("s" "Someday" entry (file+headline "~/Org/Personal/PSomeday.org" "Someday")
+          ("p" "Project" entry (file+headline "~/Sync/org/personal/PTodo.org" "1Projects")
+           (file "~/Sync/org/personal/templates/new-project.org"))
+          ("w" "workProject" entry (file+headline "~/Sync/org/work/WTodo.org" "1Projects")
+           (file "~/Sync/org/personal/templates/new-project.org"))
+          ("m" "MeetingWorkbook" entry (file+headline "~/Sync/org/spiritual/SNotes.org" "Life & Ministry Workbook Comments")
+           (file "~/Sync/org/spiritual/templates/workbook.org"))
+          ("s" "Someday" entry (file+headline "~/Sync/org/personal/PSomeday.org" "Someday")
            "* SOMEDAY %?\n")))
 
-  (use-package org-pomodoro
-    :commands (org-mode org-pomodoro-mode)
-    :config
-    (setq org-pomodoro-long-break-length 60)
-    (setq org-pomodoro-long-break-frequency 10))
 
-  (use-package org-jira
-    :diminish org-jira-mode
-    :init
-    (defalias 'getf 'cl-getf)
-    :hook (org-mode . org-jira-mode)
-    :after org
-    :config
-    (setq jiralib-url "https://jira.eandl.co.uk")
-    :ensure t)
-
-  (use-package org-gcal)
-
-  (use-package ob-restclient)
 #+END_SRC
 
 My leader keybinding for org mode
@@ -1807,7 +1824,34 @@ Manage my contacts with org-mode
   (use-package org-contacts
     :ensure nil
     :after org
-    :custom (org-contacts-files '("~/Org/Personal/contacts/contacts.org")))
+    :custom (org-contacts-files '("~/Sync/org/personal/contacts/contacts.org")))
+#+end_src
+
+**** org-gcal
+#+begin_src emacs-lisp :tangle yes
+  (use-package org-gcal)
+#+end_src
+
+**** org-pomodoro
+#+begin_src emacs-lisp :tangle yes
+  (use-package org-pomodoro
+    :commands (org-mode org-pomodoro-mode)
+    :config
+    (setq org-pomodoro-long-break-length 60)
+    (setq org-pomodoro-long-break-frequency 10))
+#+end_src
+
+**** org-jira
+#+begin_src emacs-lisp :tangle yes
+  (use-package org-jira
+    :diminish org-jira-mode
+    :init
+    (defalias 'getf 'cl-getf)
+    :hook (org-mode . org-jira-mode)
+    :after org
+    :config
+    (setq jiralib-url "https://jira.eandl.co.uk")
+    :ensure t)
 #+end_src
 
 **** ox-pandoc
@@ -1840,6 +1884,11 @@ Manage my contacts with org-mode
     :init (add-to-list 'org-export-backends 'slimhtml))
 #+end_src
 
+**** ob-restclient
+#+begin_src emacs-lisp :tangle yes
+  (use-package ob-restclient)
+#+end_src
+
 **** ob-async
 #+begin_src emacs-lisp :tangle yes
   (use-package ob-async)
@@ -1869,7 +1918,7 @@ Manage my contacts with org-mode
     (org-babel-tmux-location "/usr/bin/tmux"))
 #+end_src
 
-**** Organisation (GTD and PARA) 
+**** organisation (GTD and PARA) 
 ***** Projects
 A project is “any outcome that will take more than one action step to
 complete.” As a result of implementing Tiago Forte’s “PARA” system, I
@@ -1877,7 +1926,7 @@ can ensure that I always have an up to date project list.
 #+BEGIN_SRC emacs-lisp
   (defun go-to-projects ()
     (interactive)
-    (find-file "~/Org/Personal/PTodo.org")
+    (find-file "~/Sync/org/personal/PTodo.org")
     (widen)
     (beginning-of-buffer)
     (re-search-forward "* Projects")
@@ -1902,7 +1951,7 @@ The concept of Stuck Projects comes from David Allen’s GTD. A stuck
 project is a project without any action steps or tasks associated with
 it.
 
-Org-Mode has the ability to tell you which subtrees don’t have tasks
+org-Mode has the ability to tell you which subtrees don’t have tasks
 associated with them. You can also configure what it recognizes as a
 stuck project. Unfortunately, by default, this functionality picks up
 a lot of noise.
@@ -1920,7 +1969,7 @@ to my “Projects” subtree.
 #+BEGIN_SRC emacs-lisp
   (defun go-to-areas ()
     (interactive)
-    (find-file "~/Org/Personal/PTodo.org")
+    (find-file "~/Sync/org/personal/PTodo.org")
     (widen)
     (beginning-of-buffer)
     (re-search-forward "* Areas")
@@ -1938,7 +1987,7 @@ to my “Projects” subtree.
   (defun my-new-daily-review ()
     (interactive)
     (let ((org-capture-templates '(("d" "Review: Daily Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                    (file "~/Org/Personal/reviews/daily-review-template.org")))))
+                                    (file "~/Sync/org/personal/reviews/daily-review-template.org")))))
       (progn
         (org-capture nil "d")
         (org-capture-finalize t)
@@ -1950,7 +1999,7 @@ to my “Projects” subtree.
   (defun my-new-weekly-review ()
     (interactive)
     (let ((org-capture-templates '(("w" "Review: Weekly Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                    (file "~/Org/Personal/reviews/weekly-review-template.org")))))
+                                    (file "~/Sync/org/personal/reviews/weekly-review-template.org")))))
       (progn
         (org-capture nil "w")
         (org-capture-finalize t)
@@ -1962,7 +2011,7 @@ to my “Projects” subtree.
   (defun my-new-monthly-review ()
     (interactive)
     (let ((org-capture-templates '(("m" "Review: Monthly Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                    (file "~/Org/Personal/reviews/monthly-review-template.org")))))
+                                    (file "~/Sync/org/personal/reviews/monthly-review-template.org")))))
       (progn
         (org-capture nil "m")
         (org-capture-finalize t)
@@ -2077,7 +2126,7 @@ mu4e alert
 
   (custom-set-variables
    '(shell-pop-shell-type (quote ("vterm" "*vterm*" (lambda nil (vterm)))))
-   '(shell-pop-window-size 45)
+   '(shell-pop-window-size 50)
    '(shell-pop-full-span t)
    '(shell-pop-term-shell "/usr/bin/fish")
    '(shell-pop-window-position "bottom"))
@@ -2153,7 +2202,6 @@ mu4e alert
 ** TOOLS
 *** docker
 #+BEGIN_SRC emacs-lisp
-  (setq tramp-histfile-override ".tramp_history")
   (use-package dockerfile-mode
     :ensure t)
 
@@ -2318,14 +2366,18 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
 *** nov
 #+BEGIN_SRC emacs-lisp
   (defun my-nov-font-setup ()
-    (face-remap-add-relative 'variable-pitch :family "Noto Sans"
-                             :height 1.2))
+    (face-remap-add-relative 'variable-pitch :family "Lexend Deca"
+                             :height 1.3))
   (use-package nov)
 
   (add-hook 'nov-mode-hook 'my-nov-font-setup)
   (add-hook 'nov-mode-hook 'visual-line-mode)
   (add-hook 'nov-mode-hook 'writeroom-mode)
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+
+  ;; (general-def 'normal 'override
+  ;;   "<" 'nov-history-back
+  ;;   ">" 'nov-history-forward)
 #+END_SRC
 
 *** diff-hl
