@@ -9,7 +9,7 @@ pr https://bitbucket.eandl.co.uk
 docker.theinsuranceemporium.co.uk https://docker.theinsuranceemporium.co.uk/
 test.theinsuranceemporium.co.uk https://test.theinsuranceemporium.co.uk/
 staging.theinsuranceemporium.co.uk https://staging.theinsuranceemporium.co.uk/
-theinsuranceemporium.co.uk https://docker.theinsuranceemporium.co.uk/
+tie theinsuranceemporium.co.uk https://theinsuranceemporium.co.uk
 docker.pet-insurance.co.uk https://docker.pet-insurance.co.uk/
 test.pet-insurance.co.uk https://test.pet-insurance.co.uk/
 staging.pet-insurance.co.uk https://staging.pet-insurance.co.uk/
