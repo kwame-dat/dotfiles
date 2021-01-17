@@ -86,9 +86,9 @@ topBarTheme = def
     , decoHeight            = 30
     }
 
-myModMask = mod3Mask
+myModMask = mod4Mask
 encodeCChar = map fromIntegral . B.unpack
-myFocusFollowsMouse = False
+myFocusFollowsMouse = True
 myBorderWidth = 4
 myWorkspaces    = ["\61612","\61899","\61557","\61501","\62043","\61888","\61485","\61723","\61705"]
 
@@ -147,7 +147,7 @@ myLayout =
   tiled |||
   Mirror tiled |||
   spiral (6/7)  |||
-  ThreeColMid 1 (3/100) (1/2) |||
+  ThreeColMid 1 (1/100) (1/2) |||
   Full
     where
         tiled = Tall nmaster delta tiled_ratio
@@ -174,27 +174,110 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   ----------------------------------------------------------------------
   [
   -- MODKEY + ...
-   ((modMask, xK_v), namedScratchpadAction myScratchPads "vpn")
-  , ((modMask, xK_m), namedScratchpadAction myScratchPads "music")
-  , ((modMask .|. mod1Mask, xK_w ), namedScratchpadAction myScratchPads "webcam")
+   ((modMask, xK_m), namedScratchpadAction myScratchPads "music")
   , ((modMask, xK_t), namedScratchpadAction myScratchPads "terminal")
-
-  , ((modMask, xK_r), spawn $ "xmonad --recompile && xmonad --restart")
   , ((modMask, xK_f), sendMessage $ Toggle NBFULL)
   , ((modMask, xK_q), kill )
-  -- , ((modMask, xK_Return), spawn $ myTerminal )
-
+  , ((modMask, xK_p), spawn $ "rofi-pass")
+  , ((modMask, xK_e), spawn $ "emacsclient -c -a ''")
+  , ((modMask, xK_Return), spawn $ "alacritty")
+  , ((modMask, xK_space), spawn $ "rofi -show combi")
+  , ((modMask, xK_b), spawn $ "rofi-surfraw")
 
   -- MODKEY + SHIFT KEYS
+  , ((modMask .|. shiftMask, xK_r), spawn $ "xmonad --recompile && xmonad --restart")
+  , ((modMask .|. shiftMask, xK_w ), namedScratchpadAction myScratchPads "webcam")
+  , ((modMask .|. shiftMask, xK_v), namedScratchpadAction myScratchPads "vpn")
   , ((modMask .|. shiftMask , xK_Return ), spawn $ "thunar")
   , ((modMask .|. shiftMask , xK_d ), spawn $ "dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'")
   , ((modMask .|. shiftMask , xK_q ), kill)
+  , ((modMask .|. shiftMask , xK_s ), spawn $ "flameshot gui")
   , ((modMask .|. shiftMask, xK_e ), spawn $ "arcolinux-logout")
 
+  -- MODKEY + FUNCTIONS KEYS
+  , ((modMask, xK_F1), spawn $ "chromium")
+  , ((modMask, xK_F2), spawn $ "emacsclient -c -a ''")
+  , ((modMask, xK_F3), spawn $ "slack")
+  , ((modMask, xK_F4), spawn $ "teams")
+  , ((modMask, xK_F5), spawn $ "insomnia-designer")
+  , ((modMask, xK_F6), spawn $ "virtualbox")
+  , ((modMask, xK_F7), spawn $ "dbeaver")
+
+  -- CONTROL + ALT KEYS
+  , ((controlMask .|. mod1Mask, xK_a ), spawn $ "xfce4-appfinder")
+  , ((controlMask .|. mod1Mask, xK_b ), spawn $ "qutebrowser")
+  , ((controlMask .|. mod1Mask, xK_e), spawn $ "emacs")
+  , ((controlMask .|. mod1Mask, xK_m), spawn $ "emacsclient -c -a '' --eval '(mu4e)'")
+  , ((controlMask .|. mod1Mask, xK_a), spawn $ "emacsclient -c -a '' --eval '(itechytony/day-view)'")
+  , ((controlMask .|. mod1Mask, xK_s), spawn $ "slack")
+  , ((controlMask .|. mod1Mask, xK_t), spawn $ "teams")
+  , ((controlMask .|. mod1Mask, xK_p), spawn $ "pamac-manager")
+  , ((controlMask .|. mod1Mask, xK_f), spawn $ "firefox")
+  , ((controlMask .|. mod1Mask, xK_m ), spawn $ "xfce4-settings-manager")
+  , ((controlMask .|. mod1Mask, xK_g), spawn $ "chromium -no-default-browser-check")
+  , ((controlMask .|. mod1Mask, xK_q), spawn $ "qutebrowser")
+  , ((controlMask .|. mod1Mask, xK_b), spawn $ "qutebrowser")
+  , ((controlMask .|. mod1Mask, xK_w), spawn $ "whatsdesk")
+  , ((controlMask .|. mod1Mask, xK_d), spawn $ "dbeaver")
+  , ((controlMask .|. mod1Mask, xK_z), spawn $ "zoom")
+  , ((controlMask .|. mod1Mask, xK_i), spawn $ "insomnia-designer")
+  , ((controlMask .|. mod1Mask, xK_c), spawn $ "rofi -show calc")
+  , ((controlMask .|. mod1Mask, xK_o), spawn $ "picom-toggle")
+  , ((controlMask .|. mod1Mask, xK_Delete), spawn $ "xkill")
+  , ((controlMask .|. mod1Mask, xK_v), spawn $ "pavucontrol")
+  , ((controlMask .|. mod1Mask, xK_k ), spawn $ "arcolinux-logout")
+  , ((controlMask .|. mod1Mask, xK_l ), spawn $ "arcolinux-logout")
+  , ((controlMask .|. mod1Mask, xK_Return ), spawn $ myTerminal )
+
+  -- ALT + ... KEYS
+  , ((mod1Mask, xK_f), spawn $ "variety -f" )
+  , ((mod1Mask, xK_n), spawn $ "variety -n" )
+  , ((mod1Mask, xK_p), spawn $ "variety -p" )
+  , ((mod1Mask, xK_r), spawn $ "xmonad --restart" )
+  , ((mod1Mask, xK_t), spawn $ "variety -t" )
+  , ((mod1Mask, xK_Up), spawn $ "variety --pause" )
+  , ((mod1Mask, xK_Down), spawn $ "variety --resume" )
+  , ((mod1Mask, xK_Left), spawn $ "variety -p" )
+  , ((mod1Mask, xK_Right), spawn $ "variety -n" )
+  , ((mod1Mask, xK_F2), spawn $ "gmrun" )
+  , ((mod1Mask, xK_F3), spawn $ "xfce4-appfinder" )
+
+  --VARIETY KEYS WITH PYWAL
+  , ((mod1Mask .|. shiftMask , xK_f ), spawn $ "variety -f && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
+  , ((mod1Mask .|. shiftMask , xK_n ), spawn $ "variety -n && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
+  , ((mod1Mask .|. shiftMask , xK_p ), spawn $ "variety -p && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
+  , ((mod1Mask .|. shiftMask , xK_t ), spawn $ "variety -t && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
+  , ((mod1Mask .|. shiftMask , xK_u ), spawn $ "wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
+
+  --CONTROL + SHIFT KEYS
+  , ((controlMask .|. shiftMask , xK_Escape ), spawn $ "xfce4-taskmanager")
+
+  --SCREENSHOTS
+  , ((0, xK_Print), spawn $ "flameshot gui")
+  , ((controlMask .|. shiftMask , xK_Print ), spawn $ "gnome-screenshot -i")
 
 
+  --MULTIMEDIA KEYS
 
+  -- Mute volume
+  , ((0, xF86XK_AudioMute), spawn $ "amixer -q set Master toggle")
 
+  -- Decrease volume
+  , ((0, xF86XK_AudioLowerVolume), spawn $ "amixer -q set Master 2%-")
+
+  -- Increase volume
+  , ((0, xF86XK_AudioRaiseVolume), spawn $ "amixer -q set Master 2%+")
+
+  -- Increase brightness
+  , ((0, xF86XK_MonBrightnessUp),  spawn $ "xbacklight -inc 2")
+
+  -- Decrease brightness
+  , ((0, xF86XK_MonBrightnessDown), spawn $ "xbacklight -dec 2")
+
+  , ((0, xF86XK_AudioPlay), spawn $ "mpc toggle")
+  , ((0, xF86XK_AudioNext), spawn $ "mpc next")
+  , ((0, xF86XK_AudioPrev), spawn $ "mpc previous")
+  , ((0, xF86XK_AudioStop), spawn $ "mpc stop")
 
   --------------------------------------------------------------------
   --  XMONAD LAYOUT KEYS
