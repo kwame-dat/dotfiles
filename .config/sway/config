@@ -4,17 +4,18 @@
 #
 # Read `man 5 sway` for a complete reference.
 
-exec xcape -e 'Caps_Lock=Escape'
-exec setxkbmap -option 'caps:ctrl_modifier'
-exec variety
-exec nm-applet
+exec_always setxkbmap -option ctrl:nocaps
+exec_always xcape -e 'Caps_Lock=Escape'
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec /usr/bin/emacs --daemon
+exec syncthing -no-browser
 exec nextcloud
+exec sudo mount -a
+exec nm-applet
 exec caffeine
 exec kdeconnect-indicator
 
-font pango:Cantarell 14px
+font pango:Cantarell 10px
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
@@ -38,7 +39,7 @@ gaps outer 15
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-# output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+output * bg ~/Wallpapers/general/0170.jpg fill
 
 
 #
@@ -68,14 +69,12 @@ bindswitch --reload --locked lid:on output $laptop disable
 bindswitch --reload --locked lid:off output $laptop enable
 
 
-
 ### Input configuration
 input "type:keyboard" {
     xkb_layout gb
-    repeat_delay 220
-    repeat_rate 80
-    # xkb_options caps:escape
-    xkb_options altwin:swap_lalt_lwin
+    repeat_delay 300
+    repeat_rate 100
+    xkb_options caps:escape
 }
 
 input "1739:31251:SYNA2393:00_06CB:7A13_Touchpad" {
@@ -88,11 +87,15 @@ input "1739:31251:SYNA2393:00_06CB:7A13_Touchpad" {
     # Start a terminal
     bindsym $mod+Return exec $term
 
+    # Open file manager
+    bindsym $mod+shift+Return exec thunar
+
     # Kill focused window
     bindsym $mod+q kill
 
-    # Start your launcher
-    bindsym $mod+d exec $menu
+    bindsym $mod+p exec rofi-pass
+
+    bindsym $mod+shift+b exec rofi-surfraw
 
     bindsym $mod+space exec $menu
 
@@ -121,20 +124,20 @@ input "1739:31251:SYNA2393:00_06CB:7A13_Touchpad" {
     bindsym XF86AudioPrev exec playerctl previous
 
     # CONTROL + ALT KEYS
+    bindsym Control+Alt+a exec emacsclient -c -a '' --eval '(itechytony/day-view)'
     bindsym Control+Alt+e exec emacsclient -c -a ''
     bindsym Control+Alt+m exec emacsclient -c -a '' --eval '(mu4e)'
-    bindsym Control+Alt+a exec emacsclient -c -a '' --eval '(itechytony/day-view)'
     bindsym Control+Alt+s exec slack
     bindsym Control+Alt+t exec teams
     bindsym Control+Alt+g exec chromium -no-default-browser-check
-    bindsym Control+Alt+b exec brave -no-default-browser-check
+    bindsym Control+Alt+b exec qutebrowser
     bindsym Control+Alt+w exec whatsdesk
     bindsym Control+Alt+d exec dbeaver
+    bindsym Control+Alt+q exec dbeaver
     bindsym Control+Alt+z exec zoom
     bindsym Control+Alt+u exec pamac-manager
-    bindsym Control+Alt+i exec insomnia
+    bindsym Control+Alt+i exec insomnia-designer
     bindsym Control+Alt+c exec rofi -show calc
-    bindsym Control+Alt+o exec picom-toggle
     bindsym Control+Alt+v exec pavucontrol
     bindsym Control+Alt+delete exec xfce4-taskmanager
     bindsym Control+Alt+p exec rofi-pass
@@ -143,7 +146,6 @@ input "1739:31251:SYNA2393:00_06CB:7A13_Touchpad" {
     bindsym Alt+Shift+n exec variety -n && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&
     bindsym Alt+Shift+p exec variety -p && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)
 
-    bindsym Alt+p exec rofi-pass
     bindsym Print exec grim $(xdg-user-dir PICTURES)/$(date +'%s_grim.png')
     bindsym $mod+Print exec grim -g "$(slurp -d)" - | wl-copy
 
@@ -270,7 +272,6 @@ bar {
 
 include /etc/sway/config.d/*
 
-
 for_window [app_id="galculator"] floating enable
 assign [class="qutebrowser"]  1
 assign [class="Google-chrome"]  1
@@ -279,19 +280,18 @@ assign [class="Chromium"]  1
 assign [class="Brave-browser"]  1
 assign [class="firefox"]  1
 assign [class="Emacs"]  2
+assign [class="calibre"] 2
+assign [class="Thunderbird"] 2
 assign [class="jetbrains-phpstorm"]  2
 assign [class="whatsdesk"]  3
 assign [class="Signal"]  3
 assign [class="Slack"]  3
-assign [class="Microsoft Teams - Preview"]  3
-assign [class="zoom"]  3
-assign [class="Insomnia"]  4
-assign [class="Postman"]  4
-assign [class="Dbeaver"]  5
-assign [class="Thunderbird"]  6
-assign [class="calibre"]  6
-assign [class="Nextcloud"] 6
-assign [class="VirtualBox Manager"]  7
-assign [class="Spotify"]  10
+assign [class="Microsoft Teams - Preview"]  4
+assign [class="zoom"] 4
+assign [class="Insomnia-Designer"] 5
+assign [class="Postman"] 5
+assign [class="DBeaver"] 6
+assign [class="VirtualBox Manager"]  9
+assign [class="Nextcloud"] 0
 assign [class="^Urxvt$" instance="^htop$"]  9
  
