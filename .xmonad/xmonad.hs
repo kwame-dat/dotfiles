@@ -29,6 +29,7 @@ import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.IndependentScreens
 import XMonad.Layout.NoFrillsDecoration
 import XMonad.Layout.CenteredMaster(centerMaster)
+import XMonad.Layout.Reflect
 
 import Graphics.X11.ExtraTypes.XF86
 import qualified XMonad.StackSet as W
@@ -139,14 +140,15 @@ myManageHook = composeAll
 
 
 myLayout =
+  mkToggle (single REFLECTX) $
+  mkToggle (single REFLECTY) $
   spacingRaw True (Border 0 10 10 10) True (Border 10 10 10 10) True $
   mkToggle (NBFULL ?? NOBORDERS ?? EOT) $
   -- noFrillsDeco shrinkText topBarTheme $
   avoidStruts $
   gaps [(U,20), (D,20), (R,20), (L,20)] $
-  tiled |||
+  reflectHoriz tiled |||
   Mirror tiled |||
-  spiral (6/7)  |||
   ThreeColMid 1 (1/100) (1/2) |||
   Full
     where
