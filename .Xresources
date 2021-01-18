@@ -1,7 +1,8 @@
 ! Built in 4k Monitor
-Xft.dpi: 192
-rofi.dpi: 192
-Xcursor.size: 64
+Xft.dpi: 200
+rofi.dpi: 200
+Xcursor.size: 32
+Xcursor.theme: Neutral++
 
 ! special
 *.foreground:   #c5c8c6
