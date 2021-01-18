@@ -32,7 +32,7 @@ xcape -e 'Shift_R=Escape' -t 300
 xcape -e "Hyper_L=Tab;Hyper_R=Return"
 
 ## Increase keyboard key repeat
-xset r rate 220 80 &
+xset r rate 300 80 &
 
 (sleep 2; run $HOME/.config/polybar/launch.sh) &
 xrdb ~/.Xresources
