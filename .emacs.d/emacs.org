@@ -973,8 +973,8 @@ This allows me to  uncompress a .zip file
 ** UI
 *** font
 #+BEGIN_SRC emacs-lisp
-  (setq itechytony/default-font "JetBrains Mono")
-  (setq itechytony/default-font-size 10)
+  (setq itechytony/default-font "Cascadia Code")
+  (setq itechytony/default-font-size 11)
   (setq itechytony/current-font-size itechytony/default-font-size)
 
   (setq itechytony/font-change-increment 1.1)
@@ -1024,10 +1024,10 @@ This allows me to  uncompress a .zip file
 
 *** theme
 #+begin_src emacs-lisp
-  (use-package doom-themes
+  (use-package base16-theme
     :ensure t
     :demand t
-    :config (load-theme 'doom-one))
+    :config (load-theme 'base16-onedark))
 #+end_src
 
 **** minions
@@ -1674,7 +1674,7 @@ want is prioritized instead.
        (sqlite . t)))
 
     :custom-face
-    (variable-pitch ((t (:family "Noto Sans"))))
+    (variable-pitch ((t (:family "Lexend Deca"))))
     (org-document-title ((t (:weight bold ))))
     (org-level-1 ((t (:weight bold :height 1.3))))
     (org-level-2 ((t (:weight normal :height 1.3))))
@@ -2113,6 +2113,8 @@ mu4e alert
     (evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
     (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume))
 
+  (add-hook 'vterm-mode-hook (lambda () (setq global-hl-line-mode nil)))
+
   (use-package vterm-toggle
     :ensure t)
 
@@ -2375,7 +2377,7 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
 *** nov
 #+BEGIN_SRC emacs-lisp
   (defun my-nov-font-setup ()
-    (face-remap-add-relative 'variable-pitch :family "Noto Sans"
+    (face-remap-add-relative 'variable-pitch :family "Lexend Deca"
                              :height 1.3))
   (use-package nov)
 
