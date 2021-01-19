@@ -5,7 +5,7 @@
 	// "width": 1280, // Waybar width
 
 	// Choose the order of the modules
-	"modules-left": ["sway/workspaces", "sway/mode", "backlight", "pulseaudio", "cpu", "memory"],
+	"modules-left": ["sway/workspaces", "sway/mode", "backlight", "pulseaudio", "cpu", "memory", "custom/vpn"],
 	"modules-center": ["sway/window"],
 	"modules-right": ["network", "temperature", "custom/mail", "battery", "clock", "idle_inhibitor", "tray"],
 
@@ -148,6 +148,13 @@
         "escape": true,
         "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
         // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+    },
+    "custom/vpn": {
+        "format": "VPN ",
+        "exec": "echo '{\"class\": \"connected\"}'",
+        "exec-if": "test -d /proc/sys/net/ipv4/conf/tun0",
+        "return-type": "json",
+        "interval": 5
     },
     "mpd": {
         "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ",
