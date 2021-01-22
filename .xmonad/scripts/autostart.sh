@@ -22,14 +22,7 @@ xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Accel Speed" 1 &
 setxkbmap -option ctrl:nocaps
 
 ## make short-pressed Ctrl behave like Escape:
-xcape -e 'Control_L=Escape' -t 300
-
-## make short-pressed shift behave like Escape:
-xcape -e 'Shift_L=Escape' -t 300
-xcape -e 'Shift_R=Escape' -t 300
-
-## make short-pressed tab behave like Hyper:
-xcape -e "Hyper_L=Tab;Hyper_R=Return"
+xcape -e 'Control_L=Escape'
 
 ## Increase keyboard key repeat
 xset r rate 300 80 &
