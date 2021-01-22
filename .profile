@@ -4,6 +4,7 @@ PATH="$PATH:/$HOME/.bin/statusbar"
 
 # JAVA
 export _JAVA_AWT_WM_NONREPARENTING=1 
+export AWT_TOOLKIT=MToolkit
 
 # NPM
 PATH="$HOME/.node_modules/bin:$PATH"
