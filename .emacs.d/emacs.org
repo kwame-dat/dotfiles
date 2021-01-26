@@ -51,7 +51,6 @@
     - [[#company-prescient][company-prescient]]
     - [[#company-box][company-box]]
     - [[#company-dict][company-dict]]
-    - [[#company-ledger][company-ledger]]
     - [[#ivy][ivy]]
     - [[#counsel][counsel]]
     - [[#amx][amx]]
@@ -752,7 +751,7 @@ Install, automatically load, and enable evil. It's like vim.
     :init
     (setq evil-want-keybinding nil)
     (setq evil-want-C-u-scroll t)
-    ;; (setq evil-vsplit-window-right t)
+    (setq evil-vsplit-window-right t)
     (setq evil-split-window-below t)
     (setq evil-want-abbrev-expand-on-insert-exit nil)
     :ensure t
@@ -973,7 +972,7 @@ This allows me to  uncompress a .zip file
 *** font
 #+BEGIN_SRC emacs-lisp
   (setq itechytony/default-font "Cascadia Code")
-  (setq itechytony/default-font-size 12)
+  (setq itechytony/default-font-size 10)
   (setq itechytony/current-font-size itechytony/default-font-size)
 
   (setq itechytony/font-change-increment 1.1)
@@ -1341,16 +1340,6 @@ Nicer naming of buffers for files with identical names
   (use-package company-dict
     :defer t)
 #+END_SRC
-
-*** company-ledger
-#+begin_src emacs-lisp
-  (use-package company-ledger
-    :demand t
-    :ensure company
-    :init
-    (with-eval-after-load 'company
-      (add-to-list 'company-backends 'company-ledger)))
-#+end_src
 
 *** ivy
 Generic completion frontend that's just awesome! Let's install and enable it.
