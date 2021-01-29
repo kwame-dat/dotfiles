@@ -46,6 +46,8 @@
     - [[#emoji][emoji]]
     - [[#unicode-fonts][unicode-fonts]]
     - [[#ligatures][ligatures]]
+    - [[#powerline][powerline]]
+    - [[#powerline-evil][powerline-evil]]
   - [[#completion][COMPLETION]]
     - [[#company-mode][company-mode]]
     - [[#company-prescient][company-prescient]]
@@ -211,7 +213,7 @@ Disable certain byte compiler warnings to cut down on the noise.
   (setq auth-sources
         '((:source "~/.authinfo.gpg")))
 
-  (global-visual-line-mode 1)
+  ;; (global-visual-line-mode 1)
 
   (setq inhibit-startup-message t)
   (setq initial-scratch-message nil)
@@ -333,7 +335,6 @@ going to install it and make sure it's loaded immediately.
 
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
-    :diminish projectile-mode
     :demand t
     :ensure t
     :init
@@ -732,7 +733,6 @@ going to install it and make sure it's loaded immediately.
 *** which-key
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
-    :diminish which-key-mode
     :demand t
     :init
     (setq which-key-idle-delay 0.30)
@@ -746,7 +746,6 @@ going to install it and make sure it's loaded immediately.
 Install, automatically load, and enable evil. It's like vim.
 #+BEGIN_SRC emacs-lisp
   (use-package evil
-    :diminish evil-mode
     :demand t
     :init
     (setq evil-want-keybinding nil)
@@ -762,7 +761,6 @@ Install, automatically load, and enable evil. It's like vim.
 **** evil-commentary
 #+begin_src emacs-lisp
   (use-package evil-commentary
-    :diminish evil-commentary-mode
     :demand t
     :ensure t
     :config
@@ -773,7 +771,6 @@ Install =evil-collection=, which provides evil-friendly bindings for many modes.
 
 #+begin_src emacs-lisp
   (use-package evil-collection
-    :diminish evil-collection-mode
     :demand t
     :after evil
     :config
@@ -837,7 +834,6 @@ Install some snippets collections
 **** evil-mc
 #+BEGIN_SRC emacs-lisp
   (use-package evil-mc
-    :diminish evil-mc-mode
     :commands (evil-mc-make-cursor-here
                evil-mc-make-all-cursors
                evil-mc-undo-all-cursors
@@ -885,6 +881,7 @@ Install some snippets collections
 
   (setq dired-dwim-target t)
   ;; (setq dired-hide-details-mode t)
+  (setq delete-by-moving-to-trash t)
   (setq dired-clean-up-buffers-too t)
   (setq dired-recursive-copies 'always)
   (setq dired-recursive-deletes 'top)
@@ -946,7 +943,6 @@ This allows me to  uncompress a .zip file
 **** async
 #+begin_src emacs-lisp :tangle yes
   (use-package async
-    :diminish dired-async-mode
     :demand t
     :ensure t
     :config
@@ -1022,10 +1018,10 @@ This allows me to  uncompress a .zip file
 
 *** theme
 #+begin_src emacs-lisp
-  (use-package atom-dark-theme
+  (use-package base16-theme
     :ensure t
     :demand t
-    :config (load-theme 'atom-dark))
+    :config (load-theme 'base16-harmonic-dark))
 #+end_src
 
 **** minions
@@ -1053,9 +1049,6 @@ This allows me to  uncompress a .zip file
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons
     :ensure t)
-
-  ;; (use-package all-the-icons-dired
-  ;;   :diminish all-the-icons-dired-mode)
 
   (use-package all-the-icons-ivy
     :ensure t
@@ -1089,8 +1082,8 @@ Nicer naming of buffers for files with identical names
 #+BEGIN_SRC emacs-lisp tangle yes
   (use-package writeroom-mode :ensure t
     :config
-    (setq writeroom-fullscreen-effect 'maximized)
-    (setq writeroom-width 60))
+    ;; (setq writeroom-width 60)
+    (setq writeroom-fullscreen-effect 'maximized))
 #+END_SRC
 
 *** treemacs
@@ -1171,7 +1164,6 @@ Nicer naming of buffers for files with identical names
 #+BEGIN_SRC emacs-lisp
   (use-package eyebrowse
     :demand t
-    :diminish eyebrowse-mode
     :config (progn
               (eyebrowse-mode t)
               (setq eyebrowse-new-workspace t)))
@@ -1218,60 +1210,162 @@ Nicer naming of buffers for files with identical names
     ;; per mode with `ligature-mode'.
     (global-ligature-mode t))
 #+end_src
+*** powerline
+#+begin_src emacs-lisp
+  ;; 
+  ;; #E1B61A
+  (defface my-pl-segment1-active
+    '((t (:foreground "#000000" :background "#568bbf")))
+    "Powerline first segment active face.")
+  (defface my-pl-segment1-inactive
+    '((t (:foreground "#CEBFF3" :background "#3A2E58")))
+    "Powerline first segment inactive face.")
+  (defface my-pl-segment2-active
+    '((t (:foreground "#d7d7d7" :background "#8f3d3d")))
+    "Powerline second segment active face.")
+  (defface my-pl-segment2-inactive
+    '((t (:foreground "#CEBFF3" :background "#0b1c2c")))
+    "Powerline second segment inactive face.")
+  (defface my-pl-segment3-active
+    '((t (:foreground "#CEBFF3" :background "#0b1c2c")))
+    "Powerline third segment active face.")
+  (defface my-pl-segment3-inactive
+    '((t (:foreground "#CEBFF3" :background "#0b1c2c")))
+    "Powerline third segment inactive face.")
+
+  (defun air--powerline-default-theme ()
+    "Set up my custom Powerline with Evil indicators."
+    (setq-default mode-line-format
+                  '("%e"
+                    (:eval
+                     (let* ((active (powerline-selected-window-active))
+                            (seg1 (if active 'my-pl-segment1-active 'my-pl-segment1-inactive))
+                            (seg2 (if active 'my-pl-segment2-active 'my-pl-segment2-inactive))
+                            (seg3 (if active 'my-pl-segment3-active 'my-pl-segment3-inactive))
+                            (separator-left (intern (format "powerline-%s-%s"
+                                                            (powerline-current-separator)
+                                                            (car powerline-default-separator-dir))))
+                            (separator-right (intern (format "powerline-%s-%s"
+                                                             (powerline-current-separator)
+                                                             (cdr powerline-default-separator-dir))))
+                            (lhs (list (let ((evil-face (powerline-evil-face)))
+                                         (if evil-mode
+                                             (powerline-raw (powerline-evil-tag) evil-face)
+                                           ))
+                                       (if evil-mode
+                                           (funcall separator-left (powerline-evil-face) seg1))
+                                       (powerline-buffer-id seg1 'l)
+                                       (powerline-raw "[%*]" seg1 'l)
+                                       (when (and (boundp 'which-func-mode) which-func-mode)
+                                         (powerline-raw which-func-format seg1 'l))
+                                       (powerline-raw " " seg1)
+                                       (funcall separator-left seg1 seg2)
+                                       (when (boundp 'erc-modified-channels-object)
+                                         (powerline-raw erc-modified-channels-object seg2 'l))
+                                       (powerline-major-mode seg2 'l)
+                                       (powerline-process seg2)
+                                       (powerline-minor-modes seg2 'l)
+                                       (powerline-narrow seg2 'l)
+                                       (powerline-raw " " seg2)
+                                       (funcall separator-left seg2 seg3)
+                                       (powerline-vc seg3 'r)
+                                       (when (bound-and-true-p nyan-mode)
+                                         (powerline-raw (list (nyan-create)) seg3 'l))))
+                            (rhs (list (powerline-raw global-mode-string seg3 'r)
+                                       (funcall separator-right seg3 seg2)
+                                       (unless window-system
+                                         (powerline-raw (char-to-string #xe0a1) seg2 'l))
+                                       (powerline-raw "%4l" seg2 'l)
+                                       (powerline-raw ":" seg2 'l)
+                                       (powerline-raw "%3c" seg2 'r)
+                                       (funcall separator-right seg2 seg1)
+                                       (powerline-raw " " seg1)
+                                       (powerline-raw "%6p" seg1 'r)
+                                       (when powerline-display-hud
+                                         (powerline-hud seg1 seg3)))))
+                       (concat (powerline-render lhs)
+                               (powerline-fill seg3 (powerline-width rhs))
+                               (powerline-render rhs)))))))
+
+  (use-package powerline
+    :demand t
+    :config
+    (setq powerline-default-separator (if (display-graphic-p) 'arrow
+                                        nil))
+    (air--powerline-default-theme))
+
+
+    ;; (powerline-center-evil-theme)
+#+end_src
+*** powerline-evil
+#+begin_src emacs-lisp
+  (use-package powerline-evil
+    :demand t)
+#+end_src
 
 ** COMPLETION
 *** company-mode
 #+BEGIN_SRC emacs-lisp
+
+    ;; company-tooltip-align-annotations t
+    ;; company-require-match 'never
+    ;; company-global-modes
+    ;; '(not
+    ;;   erc-mode
+    ;;   eshell-mode
+    ;;   gud-mode
+    ;;   help-mode
+    ;;   message-mode
+    ;;   shell-mode
+    ;;   vterm-mode)
+    ;; company-frontends '(company-pseudo-tooltip-frontend
+    ;;                     company-echo-metadata-frontend)
+    ;; company-backends  '(company-capf)
+    ;; company-auto-commit nil
+    ;; company-auto-commit-chars nil
+    ;; company-dabbrev-other-buffers nil
+    ;; company-dabbrev-ignore-case nil
+    ;; company-dabbrev-downcase nil
+
   (use-package company
-    :demand t
-    :init
-    (setq company-idle-delay 0.5
-          company-minimum-prefix-length 1
-          company-tooltip-limit 14
-          company-tooltip-align-annotations t
-          company-selection-wrap-around t
-          company-require-match 'never
-          company-global-modes
-          '(not
-            erc-mode
-            eshell-mode
-            gud-mode
-            help-mode
-            message-mode
-            shell-mode
-            vterm-mode)
-          company-frontends '(company-pseudo-tooltip-frontend
-                              company-echo-metadata-frontend)
-          company-backends  '(company-capf)
-          company-auto-commit nil
-          company-auto-commit-chars nil
-          company-dabbrev-other-buffers nil
-          company-dabbrev-ignore-case nil
-          company-dabbrev-downcase nil)
-
-    :ensure t
+    :after lsp-mode
+    :hook (lsp-mode . company-mode)
     :config
-    (add-hook 'after-init-hook 'global-company-mode)
-    (company-tng-configure-default))
+    (define-key company-active-map (kbd "ESC") 'company-abort)
+    (define-key company-active-map [tab] 'company-complete-common-or-cycle)
+    :custom
+    (company-minimum-prefix-length 1)
+    (company-idle-delay 0)
+    (company-selection-wrap-around t)
+    :ensure t)
 
-  (eval-after-load 'company
-    '(progn
-       (define-key company-active-map (kbd "TAB") 'company-complete-selection)
-       (define-key company-active-map (kbd "<tab>") 'company-complete-selection)))
 
 
-  (eval-after-load 'company
-    '(progn
-       (define-key company-active-map (kbd "S-TAB") 'company-select-previous)
-       (define-key company-active-map (kbd "<backtab>") 'company-select-previous)))
+  ;; (eval-after-load 'company
+  ;;   '(progn
+  ;;      (define-key company-active-map (kbd "TAB") 'company-complete-selection)
+  ;;      (define-key company-active-map (kbd "<tab>") 'company-complete-selection)))
 
   (with-eval-after-load 'company
-    (define-key company-active-map (kbd "C-n") (lambda () (interactive) (company-complete-common-or-cycle 1)))
-    (define-key company-active-map (kbd "C-p") (lambda () (interactive) (company-complete-common-or-cycle -1))))
+    (define-key company-active-map (kbd "C-j") (lambda () (interactive) (company-complete-common-or-cycle 1)))
+    (define-key company-active-map (kbd "C-k") (lambda () (interactive) (company-complete-common-or-cycle -1))))
+
+  ;; :bind 
+  ;; (:map lsp-mode-map ("<tab>". company-indent-or-complete-common))
+
+  ;; (add-hook 'after-init-hook 'global-company-mode)
+  ;; (company-tng-configure-default)
+
+
+  ;; (eval-after-load 'company
+  ;;   '(progn
+  ;;      (define-key company-active-map (kbd "S-TAB") 'company-select-previous)
+  ;;      (define-key company-active-map (kbd "<backtab>") 'company-select-previous)))
+
 #+END_SRC
 
 *** company-prescient
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package company-prescient
     :hook (company-mode . company-prescient-mode)
     :demand t
@@ -1280,9 +1374,8 @@ Nicer naming of buffers for files with identical names
 #+END_SRC
 
 *** company-box
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package company-box
-    :diminish company-box-mode
     :hook (company-mode . company-box-mode)
     :config
     (setq company-box-show-single-candidate t
@@ -1336,7 +1429,7 @@ Nicer naming of buffers for files with identical names
 #+END_SRC
 
 *** company-dict
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package company-dict
     :defer t)
 #+END_SRC
@@ -1345,7 +1438,6 @@ Nicer naming of buffers for files with identical names
 Generic completion frontend that's just awesome! Let's install and enable it.
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
-    :diminish ivy-mode
     :init
     (setq ivy-use-virtual-buffers t)
     (setq ivy-count-format "(%d/%d) ")
@@ -1375,7 +1467,6 @@ Generic completion frontend that's just awesome! Let's install and enable it.
   (use-package ivy-posframe
     :ensure t
     :after ivy
-    :diminish
     :config
     (setq ivy-posframe-parameters
           '((left-fringe . 2)
@@ -1875,11 +1966,8 @@ Manage my contacts with org-mode
 #+end_src
 
 **** org-jira
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp :tangle no
   (use-package org-jira
-    :diminish org-jira-mode
-    :init
-    (defalias 'getf 'cl-getf)
     :hook (org-mode . org-jira-mode)
     :after org
     :config
@@ -2171,7 +2259,6 @@ mu4e alert
 *** flycheck
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
-    :diminish flycheck-mode
     :ensure t
     :init
     (setq flycheck-emacs-lisp-load-path 'inherit
@@ -2201,7 +2288,6 @@ mu4e alert
     (setq ispell-program-name "aspell"))
 
   (use-package flyspell
-    :diminish flyspell-mode
     :delight
     :hook ((markdown-mode org-mode text-mode) . flyspell-mode)
     (prog-mode . flyspell-prog-mode)
@@ -2326,21 +2412,18 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
     
 *** lsp-mode
 #+BEGIN_SRC emacs-lisp
-  (setq lsp-completion-provider :capf)
-  (setq lsp-idle-delay 0.500)
-  (setq lsp-enable-file-watchers nil)
-  (setq lsp-print-performance t)
+  ;; (setq lsp-completion-provider :capf)
+  ;; (setq lsp-idle-delay 0.500)
+  ;; (setq lsp-enable-file-watchers nil)
+  ;; (setq lsp-print-performance t)
+
+  (setq lsp-enable-file-watchers nil
+        lsp-auto-guess-root t
+        lsp-file-watch-threshold 3000)
 
   (use-package lsp-mode
+    :commands (lsp lsp-deferred)
     :ensure t
-    :demand t
-    :init
-    (setq lsp-enable-file-watchers nil
-          lsp-auto-guess-root t
-          lsp-file-watch-threshold 3000)
-
-    :commands lsp
-    :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
     :hook ((java-mode
             python-mode
             go-mode
@@ -2355,10 +2438,9 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
 
   (use-package lsp-ui
     :after lsp-mode
-    :commands lsp-ui-mode
-    :custom-face
-    (lsp-ui-doc-background ((t (:background nil))))
-    (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
+    ;; :custom-face
+    ;; (lsp-ui-doc-background ((t (:background nil))))
+    ;; (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
     :bind (:map lsp-ui-mode-map
                 ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
                 ([remap xref-find-references] . lsp-ui-peek-find-references))
