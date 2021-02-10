@@ -14,21 +14,22 @@ inactive = #073642
 monitor = ${env:MONITOR:}
 dpi = ${xrdb:Xft.dpi:-1}
 width = 100%
-height = ${env:POLYBAR_HEIGHT}
+height = 40
 background = ${colors.background}
 foreground = ${colors.foreground}
 line-size = ${env:POLYBAR_LINE_SIZE}
 line-color = ${colors.background}
 module-margin-left = 1
 module-margin-right = 1
-padding-right = 1
+padding-left = 0
+padding-right = 0
 
-font-0 = "Cascadia Code:size=10;4"
-font-1 = "FontAwesome:size=8;4"
+font-0 = "Cascadia Code:size=8"
+font-1 = "FontAwesome:size=8"
 
-modules-left = ewmh pub-ip backlight2 volume
+modules-left = ewmh cpu memory temperature
 modules-center = xwindow
-modules-right = networkspeedup  networkspeeddown cpu memory temperature battery time date 
+modules-right = vpn-openvpn-isrunning networkspeedup networkspeeddown backlight battery pavolume date
 tray-position = right
 tray-padding = 0
 tray-maxsize = ${env:POLYBAR_TRAY_MAXSIZE}
@@ -50,7 +51,7 @@ type = internal/cpu
 interval = 1
 format-prefix-foreground = ${colors.foreground}
 format-underline = ${colors.secondary}
-format-prefix = " CPU: "
+format-prefix = " "
 
 label-font = 1
 
@@ -438,24 +439,13 @@ format-discharging-underline = ${colors.alert}
 type = internal/date
 interval = 1.0
 date = "%a %d %b"
-date-alt = " %a %b %d, %Y"
-time = %l:%M%p
-time-alt = %l:%M%p
+date-alt = "%a %b %d, %Y"
+time ="%l:%M%p"
+time-alt ="%l:%M%p"
 format-prefix = " "
 format-background = ${colors.background}
 format-foreground = ${colors.foreground}
-label = "%date%"
-format-underline = ${colors.alert}
-
-[module/time]
-type = internal/date
-interval = 1.0
-time = %l:%M%p
-time-alt = %l:%M%p
-format-prefix = " "
-format-background = ${colors.background}
-format-foreground = ${colors.foreground}
-label = "%time%"
+label = "%date% %time% "
 format-underline = ${colors.alert}
 
 
@@ -501,18 +491,6 @@ format-underline = ${colors.success}
 format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
 label = %output:0:150%
-
-; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-
-[module/pub-ip]
-type = custom/script
-exec = ~/.config/polybar/scripts/pub-ip.sh
-interval = 100
-format-foreground = ${colors.foreground}
-format-background = ${colors.background}
-label = %output%
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground}
 
 ; ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
@@ -591,22 +569,22 @@ label-active = %name%
 label-active-foreground = ${colors.foreground}
 label-active-background = ${colors.active}
 label-active-underline= ${colors.active}
-label-active-padding = 2
+label-active-padding = 1
 
 label-occupied = %name%
 label-occupied-background = ${colors.inactive}
 label-occupied-foreground = ${colors.foreground}
-label-occupied-padding = 2
+label-occupied-padding = 1
 
 label-urgent = %name%
 label-urgent-foreground = ${colors.foreground}
 label-urgent-background = ${colors.alert}
 label-urgent-underline = ${colors.alert}
-label-urgent-padding = 2
+label-urgent-padding = 1
 
 label-empty = %name%
 label-empty-foreground = ${colors.foreground}
-label-empty-padding = 2
+label-empty-padding = 1
 
 [module/mpd]
 type = internal/mpd
@@ -651,3 +629,8 @@ icon-consume =
 ; Only applies if <icon-[random|repeat|repeatone|single]> is used
 toggle-on-foreground = ${color.primary}
 toggle-off-foreground = ${color.red}
+
+[module/vpn-openvpn-isrunning]
+type = custom/script
+exec = ~/.config/polybar/scripts/vpn-openvpn-isrunning.sh
+interval = 5
