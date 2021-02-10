@@ -287,20 +287,20 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 
   -- Swap the focused window with the next window.
-  , ((modMask .|. shiftMask, xK_j), windows W.swapDown)
-  , ((modMask .|. shiftMask, xK_Down), windows W.swapDown)
+  , ((modMask .|. shiftMask, xK_k), windows W.swapDown)
+  , ((modMask .|. shiftMask, xK_Up), windows W.swapDown)
 
   -- Swap the focused window with the previous window.
-  , ((modMask .|. shiftMask, xK_k), windows W.swapUp)
-  , ((modMask .|. shiftMask, xK_Up), windows W.swapUp)
+  , ((modMask .|. shiftMask, xK_j), windows W.swapUp)
+  , ((modMask .|. shiftMask, xK_Down), windows W.swapUp)
 
   -- Shrink the master area.
-  , ((modMask, xK_h), sendMessage Shrink)
-  , ((modMask, xK_Left), sendMessage Shrink)
+  , ((modMask, xK_l), sendMessage Shrink)
+  , ((modMask, xK_Right), sendMessage Shrink)
 
   -- Expand the master area.
-  , ((modMask, xK_l), sendMessage Expand)
-  , ((modMask, xK_Right), sendMessage Expand)
+  , ((modMask, xK_h), sendMessage Expand)
+  , ((modMask, xK_Left), sendMessage Expand)
 
   -- Increment the number of windows in the master area.
   , ((modMask, xK_equal), sendMessage (IncMasterN 1))
