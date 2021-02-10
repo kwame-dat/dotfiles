@@ -11,7 +11,7 @@
 #   qute://help/settings.html
 
 # Uncomment this to still load settings configured via autoconfig.yml
-# config.load_autoconfig()
+config.load_autoconfig(False)
 
 # Which cookies to accept. With QtWebEngine, this setting also controls
 # other features with tracking capabilities similar to those of cookies;
@@ -290,7 +290,7 @@ c.fonts.statusbar = '12pt "JetBrains Mono"'
 
 
 # Setting dark mode
-config.set('colors.webpage.darkmode.enabled', True)
+config.set('colors.webpage.darkmode.enabled', False)
 
 # Bindings for normal mode
 config.bind('M', 'hint links spawn mpv {hint-url}')
