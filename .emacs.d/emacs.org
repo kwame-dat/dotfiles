@@ -22,6 +22,7 @@
   - [[#core][CORE]]
     - [[#exec-path-from-shell][exec-path-from-shell]]
     - [[#projectile][projectile]]
+    - [[#keep-emacsd-clean-no-littering][Keep .emacs.d clean =no-littering=]]
     - [[#functions][functions]]
   - [[#keybindings][KEYBINDINGS]]
     - [[#core-keybindings][core-keybindings]]
@@ -32,6 +33,7 @@
     - [[#snippets][Snippets]]
     - [[#multiple-cursors][Multiple Cursors]]
     - [[#edit-indirect][Edit Indirect]]
+    - [[#auto-saving-changed-files][Auto Saving Changed Files]]
   - [[#emacs][EMACS]]
     - [[#dired][dired]]
   - [[#ui][UI]]
@@ -47,16 +49,21 @@
     - [[#unicode-fonts][unicode-fonts]]
     - [[#ligatures][ligatures]]
     - [[#powerline][powerline]]
+    - [[#diminish][diminish]]
     - [[#powerline-evil][powerline-evil]]
+    - [[#prettify-symbols][Prettify Symbols]]
+    - [[#frames-only-mode][frames-only-mode]]
   - [[#completion][COMPLETION]]
     - [[#company-mode][company-mode]]
     - [[#company-prescient][company-prescient]]
     - [[#company-box][company-box]]
     - [[#company-dict][company-dict]]
     - [[#ivy][ivy]]
+    - [[#flx][flx]]
     - [[#counsel][counsel]]
     - [[#amx][amx]]
     - [[#wgrep][wgrep]]
+    - [[#savehist][savehist]]
   - [[#lang][LANG]]
     - [[#php][php]]
     - [[#web][web]]
@@ -102,6 +109,7 @@
     - [[#alert][alert]]
     - [[#music][music]]
     - [[#confluence][confluence]]
+    - [[#slack][slack]]
   - [[#post-initialisation][Post Initialisation]]
 
 ** ORG FILE TWEAKS
@@ -141,9 +149,11 @@ Let's set some variables with basic user information.
 
 ** EMACS INITIALISATION
 *** Settings
-We're going to increase the gc-cons-threshold to a very high number to decrease the load and compile time.
-We'll lower this value significantly after initialization has completed. We don't want to keep this value
-too high or it will result in long GC pauses during normal usage.
+We're going to increase the gc-cons-threshold to a very high number to
+decrease the load and compile time.  We'll lower this value
+significantly after initialization has completed. We don't want to
+keep this value too high or it will result in long GC pauses during
+normal usage.
 
 #+BEGIN_SRC emacs-lisp
   (eval-and-compile
@@ -160,6 +170,8 @@ Disable certain byte compiler warnings to cut down on the noise.
 
 *** Sensible default
 #+BEGIN_SRC emacs-lisp
+  (setq user-emacs-directory (expand-file-name "~/.cache/emacs"))
+
   (setq redisplay-dont-pause t)
   (setq scroll-conservatively 101)
   (setq mouse-wheel-scroll-amount '(1))
@@ -213,19 +225,13 @@ Disable certain byte compiler warnings to cut down on the noise.
   (setq auth-sources
         '((:source "~/.authinfo.gpg")))
 
-  ;; (global-visual-line-mode 1)
 
   (setq inhibit-startup-message t)
   (setq initial-scratch-message nil)
 
   (fset 'yes-or-no-p 'y-or-n-p)
 
-  (setq backup-directory-alist '(("." . "~/.emacs.d/.cache/backups")))
-  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/.cache/auto-save-list/" t)))
 
-  (setq make-backup-files nil) ; stop creating backup~ files
-  (setq auto-save-default nil) ; stop creating #autosave# files
-  (setq create-lockfiles nil)  ; stop creating .# files
 
   (add-hook 'conf-space-mode-hook 'display-line-numbers-mode)
   (defun my/disable-scroll-bars (frame)
@@ -237,15 +243,12 @@ Disable certain byte compiler warnings to cut down on the noise.
   (recentf-mode 1)
 #+END_SRC
 
-Highlight current line
+**** Highlight current line
 #+begin_src emacs-lisp
   (global-hl-line-mode)
 #+end_src
 
-Prettify Symbols
-#+BEGIN_SRC emacs-lisp
-  (global-prettify-symbols-mode +1)
-#+END_SRC
+
 *** Package Management
 
 **** Package Settings
@@ -336,6 +339,7 @@ going to install it and make sure it's loaded immediately.
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :demand t
+    :diminish projectile-mode
     :ensure t
     :init
     (setq projectile-project-search-path '(
@@ -355,12 +359,30 @@ going to install it and make sure it's loaded immediately.
                                            "~/Repo/Personal/2Areas"
                                            "~/Repo/Personal/1Projects"
                                            "~/Repo/Work/1Projects"
-                                           "~/Sync/org"
+                                           "~/org"
                                            ))
     (setq projectile-completion-system 'ivy)
     (setq projectile-switch-project-action #'projectile-dired)
     (projectile-mode))
 #+END_SRC
+
+*** Keep .emacs.d clean =no-littering=
+#+begin_src emacs-lisp
+  ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
+  (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
+        url-history-file (expand-file-name "url/history" user-emacs-directory))
+
+  ;; Use no-littering to automatically set common paths to the new user-emacs-directory
+  (use-package no-littering
+    :demand t)
+
+  ;; Keep customization settings in a temporary file (thanks Ambrevar!)
+  (setq custom-file
+        (if (boundp 'server-socket-dir)
+            (expand-file-name "custom.el" server-socket-dir)
+          (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
+  (load custom-file t)
+#+end_src
 
 *** functions
 **** itechytony
@@ -387,7 +409,7 @@ going to install it and make sure it's loaded immediately.
 
   (defun itechytony/find-in-notes ()
     (interactive)
-    (counsel-find-file "~/Sync/org"))
+    (counsel-find-file "~/org"))
 
   (defun open-terminal-in-projectile-root ()
     (interactive)
@@ -460,12 +482,23 @@ going to install it and make sure it's loaded immediately.
   (global-set-key (kbd "s-x") 'kill-region)
   (global-set-key (kbd "s-s") 'save-buffer)
   (global-set-key (kbd "M-x") 'counsel-M-x)
+
+  (global-set-key (kbd "H-/") 'comment-line)
+  (global-set-key (kbd "H-f") 'swiper)
+  (global-set-key (kbd "H-o") (kbd "C-x o"))
+  (global-set-key (kbd "H-w") (kbd "C-x 0"))
+  (global-set-key (kbd "H-p") 'projectile-find-file)
+  (global-set-key (kbd "H-b") 'ivy-switch-buffer)
+  (global-set-key (kbd "H-P") 'projectile-switch-project)
+  (global-set-key (kbd "H-q") 'save-buffers-kill-emacs)
+  (global-set-key (kbd "H-k") 'kill-buffer)
+  (global-set-key (kbd "H-x") 'kill-region)
+  (global-set-key (kbd "H-s") 'save-buffer)
 #+END_SRC
 
 *** general
 #+BEGIN_SRC emacs-lisp
   (use-package general
-    :demand t
     :config
     (setq general-override-states '(insert
                                     emacs
@@ -574,6 +607,7 @@ going to install it and make sure it's loaded immediately.
       "fd" 'dired
       "ff"  'counsel-find-file
       "fh"  'itechytony/find-home-directory
+      "fx" '(lambda() (interactive) (find-file "~/Repo/Personal/2Areas/dotfiles/.xmonad/xmonad.hs"))
       "feh"  'itechytony/visit-host-file
       "fer"  'itechytony/visit-resolv-conf
       "fes"  'itechytony/edit-ssh-config
@@ -602,7 +636,7 @@ going to install it and make sure it's loaded immediately.
       ;;; <leader> b --- buffers
       "b["  #'previous-buffer
       "b]"  #'next-buffer
-      "bb"  #'switch-to-buffer
+      "bb"  #'counsel-switch-buffer
       "bB"  #'switch-to-buffer
       "bc"  #'clone-indirect-buffer
       "bC"  #'clone-indirect-buffer-other-window
@@ -674,15 +708,15 @@ going to install it and make sure it's loaded immediately.
       "pd"  'projectile-discover-projects-in-search-path
 
       ;;; <leader> n --- notes
-      "nf" '(lambda() (interactive) (counsel-find-file "~/Sync/org"))
-      "n." '(lambda() (interactive) (counsel-find-file "~/Sync/org"))
-      "ni" '(lambda() (interactive) (find-file "~/Sync/org/personal/Inbox.org"))
-      "npt" '(lambda() (interactive) (find-file "~/Sync/org/personal/PTodo.org"))
-      "npn" '(lambda() (interactive) (find-file "~/Sync/org/personal/PNotes.org"))
-      "nps" '(lambda() (interactive) (find-file "~/Sync/org/personal/PSomeday.org"))
-      "nwt" '(lambda() (interactive) (find-file "~/Sync/org/work/WTodo.org"))
-      "nwn" '(lambda() (interactive) (find-file "~/Sync/org/work/WNotes.org"))
-      "nws" '(lambda() (interactive) (find-file "~/Sync/org/work/WSomeday.org"))
+      "nf" '(lambda() (interactive) (counsel-find-file "~/org"))
+      "n." '(lambda() (interactive) (counsel-find-file "~/org"))
+      "ni" '(lambda() (interactive) (find-file "~/org/personal/Inbox.org"))
+      "npt" '(lambda() (interactive) (find-file "~/org/personal/PTodo.org"))
+      "npn" '(lambda() (interactive) (find-file "~/org/personal/PNotes.org"))
+      "nps" '(lambda() (interactive) (find-file "~/org/personal/PSomeday.org"))
+      "nwt" '(lambda() (interactive) (find-file "~/org/work/WTodo.org"))
+      "nwn" '(lambda() (interactive) (find-file "~/org/work/WNotes.org"))
+      "nws" '(lambda() (interactive) (find-file "~/org/work/WSomeday.org"))
       "na" 'org-agenda
       "nd" 'itechytony/day-view
       "nci" 'org-pomodoro
@@ -733,6 +767,7 @@ going to install it and make sure it's loaded immediately.
 *** which-key
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
+    :diminish
     :demand t
     :init
     (setq which-key-idle-delay 0.30)
@@ -761,6 +796,7 @@ Install, automatically load, and enable evil. It's like vim.
 **** evil-commentary
 #+begin_src emacs-lisp
   (use-package evil-commentary
+    :diminish
     :demand t
     :ensure t
     :config
@@ -773,6 +809,8 @@ Install =evil-collection=, which provides evil-friendly bindings for many modes.
   (use-package evil-collection
     :demand t
     :after evil
+    :custom
+    (evil-collection-outline-bind-tab-p nil)
     :config
     (setq evil-collection-want-unimpaired-p nil)
     (evil-collection-init))
@@ -791,6 +829,7 @@ Use =evil= with org agendas.
 
 #+begin_src emacs-lisp
   (use-package evil-org
+    :diminish
     :demand t
     :after org
     :config
@@ -804,7 +843,10 @@ Use =evil= with org agendas.
 Undo stuff
 #+begin_src emacs-lisp
   (use-package undo-tree
-    :demand t)
+    :diminish
+    :demand t
+    :init
+    (global-undo-tree-mode 1))
 #+end_src
 **** hint-link
 #+begin_src emacs-lisp
@@ -816,6 +858,8 @@ Undo stuff
 **** yasnippet
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
+    :demand t
+    :diminish (yas-minor-mode)
     :ensure t
     :config
     (setq yas-snippet-dirs
@@ -825,9 +869,7 @@ Undo stuff
 **** yasnippet-snippets
 Install some snippets collections
 #+begin_src emacs-lisp
-  (use-package yasnippet-snippets
-    :ensure t
-    :demand t)
+  (use-package yasnippet-snippets)
 #+end_src
 
 *** Multiple Cursors
@@ -865,9 +907,16 @@ Install some snippets collections
 #+END_SRC
 *** Edit Indirect
 #+begin_src emacs-lisp :tangle yes
-  (use-package edit-indirect
-    :ensure t
-    :demand t)
+  (use-package edit-indirect)
+#+end_src
+*** Auto Saving Changed Files
+#+begin_src emacs-lisp
+(use-package super-save
+  :defer 1
+  :diminish super-save-mode
+  :config
+  (super-save-mode +1)
+  (setq super-save-auto-save-when-idle t))
 #+end_src
 
 ** EMACS
@@ -915,7 +964,7 @@ This allows me to  uncompress a .zip file
 #+end_src
 
 **** dired-open
-#+begin_src emacs-lisp :tangle yes :results silent
+#+begin_src emacs-lisp
   (use-package dired-open
     :demand t
     :config
@@ -941,19 +990,19 @@ This allows me to  uncompress a .zip file
 #+end_src
 
 **** async
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package async
-    :demand t
+    :diminish
     :ensure t
     :config
     (dired-async-mode 1))
 #+end_src
 **** dired-single
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package dired-single)
 #+end_src
 **** all-the-icons-dired
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package all-the-icons-dired
     :hook (dired-mode . all-the-icons-dired-mode))
 #+end_src
@@ -968,7 +1017,7 @@ This allows me to  uncompress a .zip file
 *** font
 #+BEGIN_SRC emacs-lisp
   (setq itechytony/default-font "Cascadia Code")
-  (setq itechytony/default-font-size 10)
+  (setq itechytony/default-font-size 11)
   (setq itechytony/current-font-size itechytony/default-font-size)
 
   (setq itechytony/font-change-increment 1.1)
@@ -1018,40 +1067,20 @@ This allows me to  uncompress a .zip file
 
 *** theme
 #+begin_src emacs-lisp
-  (use-package base16-theme
+  (use-package doom-themes
     :ensure t
     :demand t
-    :config (load-theme 'base16-harmonic-dark))
-#+end_src
-
-**** minions
-#+begin_src emacs-lisp :tangle no
-  (use-package minions
-    :demand t
-    :ensure t
-    :config
-    (setq minions-mode-line-lighter ""
-          minions-mode-line-delimiters '("" . ""))
-    (minions-mode 1))
-#+end_src
-
-**** moody
-#+begin_src emacs-lisp :tangle no
-  (use-package moody
-    :demand t
-    :config
-    (setq x-underline-at-descent-line t)
-    (moody-replace-mode-line-buffer-identification)
-    (moody-replace-vc-mode))
+    :config (load-theme 'atom-one-dark))
 #+end_src
 
 *** all-the-icons
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons
-    :ensure t)
+    :diminish
+    :demand t)
 
   (use-package all-the-icons-ivy
-    :ensure t
+    :diminish
     :config
     (all-the-icons-ivy-setup))
 
@@ -1061,8 +1090,8 @@ This allows me to  uncompress a .zip file
 *** mixed pitch 
 #+BEGIN_SRC emacs-lisp
   (use-package mixed-pitch
+    :diminish mixed-pitch-mode
     :ensure t
-    :demand t
     :hook
     ;; If you want it in all text modes:
     (org-mode . mixed-pitch-mode))
@@ -1082,7 +1111,7 @@ Nicer naming of buffers for files with identical names
 #+BEGIN_SRC emacs-lisp tangle yes
   (use-package writeroom-mode :ensure t
     :config
-    ;; (setq writeroom-width 60)
+    (setq writeroom-width 90)
     (setq writeroom-fullscreen-effect 'maximized))
 #+END_SRC
 
@@ -1161,7 +1190,7 @@ Nicer naming of buffers for files with identical names
 *** workspaces
 
 **** eyebrowse
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package eyebrowse
     :demand t
     :config (progn
@@ -1181,7 +1210,6 @@ Nicer naming of buffers for files with identical names
 #+end_src
 *** ligatures
 #+begin_src emacs-lisp
-  ;; Ligatures
   (use-package ligature
     :demand t
     :load-path "~/.emacs.d/manual/ligatures"
@@ -1214,168 +1242,167 @@ Nicer naming of buffers for files with identical names
 #+begin_src emacs-lisp
   ;; 
   ;; #E1B61A
-  (defface my-pl-segment1-active
-    '((t (:foreground "#000000" :background "#568bbf")))
-    "Powerline first segment active face.")
-  (defface my-pl-segment1-inactive
-    '((t (:foreground "#CEBFF3" :background "#3A2E58")))
-    "Powerline first segment inactive face.")
-  (defface my-pl-segment2-active
-    '((t (:foreground "#d7d7d7" :background "#8f3d3d")))
-    "Powerline second segment active face.")
-  (defface my-pl-segment2-inactive
-    '((t (:foreground "#CEBFF3" :background "#0b1c2c")))
-    "Powerline second segment inactive face.")
-  (defface my-pl-segment3-active
-    '((t (:foreground "#CEBFF3" :background "#0b1c2c")))
-    "Powerline third segment active face.")
-  (defface my-pl-segment3-inactive
-    '((t (:foreground "#CEBFF3" :background "#0b1c2c")))
-    "Powerline third segment inactive face.")
+  ;; (defface my-pl-segment1-active
+  ;;   '((t (:foreground "#000000" :background "#568bbf")))
+  ;;   "Powerline first segment active face.")
+  ;; (defface my-pl-segment1-inactive
+  ;;   '((t (:foreground "#CEBFF3" :background "#3A2E58")))
+  ;;   "Powerline first segment inactive face.")
+  ;; (defface my-pl-segment2-active
+  ;;   '((t (:foreground "#d7d7d7" :background "#8f3d3d")))
+  ;;   "Powerline second segment active face.")
+  ;; (defface my-pl-segment2-inactive
+  ;;   '((t (:foreground "#CEBFF3" :background "#181818")))
+  ;;   "Powerline second segment inactive face.")
+  ;; (defface my-pl-segment3-active
+  ;;   '((t (:foreground "#CEBFF3" :background "#181818")))
+  ;;   "Powerline third segment active face.")
+  ;; (defface my-pl-segment3-inactive
+  ;;   '((t (:foreground "#CEBFF3" :background "#181818")))
+  ;;   "Powerline third segment inactive face.")
 
-  (defun air--powerline-default-theme ()
-    "Set up my custom Powerline with Evil indicators."
-    (setq-default mode-line-format
-                  '("%e"
-                    (:eval
-                     (let* ((active (powerline-selected-window-active))
-                            (seg1 (if active 'my-pl-segment1-active 'my-pl-segment1-inactive))
-                            (seg2 (if active 'my-pl-segment2-active 'my-pl-segment2-inactive))
-                            (seg3 (if active 'my-pl-segment3-active 'my-pl-segment3-inactive))
-                            (separator-left (intern (format "powerline-%s-%s"
-                                                            (powerline-current-separator)
-                                                            (car powerline-default-separator-dir))))
-                            (separator-right (intern (format "powerline-%s-%s"
-                                                             (powerline-current-separator)
-                                                             (cdr powerline-default-separator-dir))))
-                            (lhs (list (let ((evil-face (powerline-evil-face)))
-                                         (if evil-mode
-                                             (powerline-raw (powerline-evil-tag) evil-face)
-                                           ))
-                                       (if evil-mode
-                                           (funcall separator-left (powerline-evil-face) seg1))
-                                       (powerline-buffer-id seg1 'l)
-                                       (powerline-raw "[%*]" seg1 'l)
-                                       (when (and (boundp 'which-func-mode) which-func-mode)
-                                         (powerline-raw which-func-format seg1 'l))
-                                       (powerline-raw " " seg1)
-                                       (funcall separator-left seg1 seg2)
-                                       (when (boundp 'erc-modified-channels-object)
-                                         (powerline-raw erc-modified-channels-object seg2 'l))
-                                       (powerline-major-mode seg2 'l)
-                                       (powerline-process seg2)
-                                       (powerline-minor-modes seg2 'l)
-                                       (powerline-narrow seg2 'l)
-                                       (powerline-raw " " seg2)
-                                       (funcall separator-left seg2 seg3)
-                                       (powerline-vc seg3 'r)
-                                       (when (bound-and-true-p nyan-mode)
-                                         (powerline-raw (list (nyan-create)) seg3 'l))))
-                            (rhs (list (powerline-raw global-mode-string seg3 'r)
-                                       (funcall separator-right seg3 seg2)
-                                       (unless window-system
-                                         (powerline-raw (char-to-string #xe0a1) seg2 'l))
-                                       (powerline-raw "%4l" seg2 'l)
-                                       (powerline-raw ":" seg2 'l)
-                                       (powerline-raw "%3c" seg2 'r)
-                                       (funcall separator-right seg2 seg1)
-                                       (powerline-raw " " seg1)
-                                       (powerline-raw "%6p" seg1 'r)
-                                       (when powerline-display-hud
-                                         (powerline-hud seg1 seg3)))))
-                       (concat (powerline-render lhs)
-                               (powerline-fill seg3 (powerline-width rhs))
-                               (powerline-render rhs)))))))
+  ;; (defun air--powerline-default-theme ()
+  ;;   "Set up my custom Powerline with Evil indicators."
+  ;;   (setq-default mode-line-format
+  ;;                 '("%e"
+  ;;                   (:eval
+  ;;                    (let* ((active (powerline-selected-window-active))
+  ;;                           (seg1 (if active 'my-pl-segment1-active 'my-pl-segment1-inactive))
+  ;;                           (seg2 (if active 'my-pl-segment2-active 'my-pl-segment2-inactive))
+  ;;                           (seg3 (if active 'my-pl-segment3-active 'my-pl-segment3-inactive))
+  ;;                           (separator-left (intern (format "powerline-%s-%s"
+  ;;                                                           (powerline-current-separator)
+  ;;                                                           (car powerline-default-separator-dir))))
+  ;;                           (separator-right (intern (format "powerline-%s-%s"
+  ;;                                                            (powerline-current-separator)
+  ;;                                                            (cdr powerline-default-separator-dir))))
+  ;;                           (lhs (list (let ((evil-face (powerline-evil-face)))
+  ;;                                        (if evil-mode
+  ;;                                            (powerline-raw (powerline-evil-tag) evil-face)
+  ;;                                          ))
+  ;;                                      (if evil-mode
+  ;;                                          (funcall separator-left (powerline-evil-face) seg1))
+  ;;                                      (powerline-buffer-id seg1 'l)
+  ;;                                      (powerline-raw "[%*]" seg1 'l)
+  ;;                                      (when (and (boundp 'which-func-mode) which-func-mode)
+  ;;                                        (powerline-raw which-func-format seg1 'l))
+  ;;                                      (powerline-raw " " seg1)
+  ;;                                      (funcall separator-left seg1 seg2)
+  ;;                                      (when (boundp 'erc-modified-channels-object)
+  ;;                                        (powerline-raw erc-modified-channels-object seg2 'l))
+  ;;                                      (powerline-major-mode seg2 'l)
+  ;;                                      (powerline-process seg2)
+  ;;                                      (powerline-minor-modes seg2 'l)
+  ;;                                      (powerline-narrow seg2 'l)
+  ;;                                      (powerline-raw " " seg2)
+  ;;                                      (funcall separator-left seg2 seg3)
+  ;;                                      (powerline-vc seg3 'r)
+  ;;                                      (when (bound-and-true-p nyan-mode)
+  ;;                                        (powerline-raw (list (nyan-create)) seg3 'l))))
+  ;;                           (rhs (list (powerline-raw global-mode-string seg3 'r)
+  ;;                                      (funcall separator-right seg3 seg2)
+  ;;                                      (unless window-system
+  ;;                                        (powerline-raw (char-to-string #xe0a1) seg2 'l))
+  ;;                                      (powerline-raw "%4l" seg2 'l)
+  ;;                                      (powerline-raw ":" seg2 'l)
+  ;;                                      (powerline-raw "%3c" seg2 'r)
+  ;;                                      (funcall separator-right seg2 seg1)
+  ;;                                      (powerline-raw " " seg1)
+  ;;                                      (powerline-raw "%6p" seg1 'r)
+  ;;                                      (when powerline-display-hud
+  ;;                                        (powerline-hud seg1 seg3)))))
+  ;;                      (concat (powerline-render lhs)
+  ;;                              (powerline-fill seg3 (powerline-width rhs))
+  ;;                              (powerline-render rhs)))))))
 
   (use-package powerline
     :demand t
     :config
     (setq powerline-default-separator (if (display-graphic-p) 'arrow
-                                        nil))
-    (air--powerline-default-theme))
+                                        nil)))
+  ;; (air--powerline-default-theme)
 
-
-    ;; (powerline-center-evil-theme)
+  (powerline-center-evil-theme)
+#+end_src
+*** diminish
+#+begin_src emacs-lisp
+  (use-package diminish)
 #+end_src
 *** powerline-evil
 #+begin_src emacs-lisp
-  (use-package powerline-evil
-    :demand t)
+  (use-package powerline-evil)
+#+end_src
+*** Prettify Symbols
+#+BEGIN_SRC emacs-lisp
+  (global-prettify-symbols-mode +1)
+#+END_SRC
+*** frames-only-mode
+#+begin_src emacs-lisp
+  (use-package frames-only-mode
+    :demand t
+    :ensure t
+    :config
+    (frames-only-mode))
 #+end_src
 
 ** COMPLETION
 *** company-mode
 #+BEGIN_SRC emacs-lisp
-
-    ;; company-tooltip-align-annotations t
-    ;; company-require-match 'never
-    ;; company-global-modes
-    ;; '(not
-    ;;   erc-mode
-    ;;   eshell-mode
-    ;;   gud-mode
-    ;;   help-mode
-    ;;   message-mode
-    ;;   shell-mode
-    ;;   vterm-mode)
-    ;; company-frontends '(company-pseudo-tooltip-frontend
-    ;;                     company-echo-metadata-frontend)
-    ;; company-backends  '(company-capf)
-    ;; company-auto-commit nil
-    ;; company-auto-commit-chars nil
-    ;; company-dabbrev-other-buffers nil
-    ;; company-dabbrev-ignore-case nil
-    ;; company-dabbrev-downcase nil
-
   (use-package company
+    :diminish company-mode
     :after lsp-mode
     :hook (lsp-mode . company-mode)
     :config
+    (setq company-global-modes
+          '(not
+            erc-mode
+            eshell-mode
+            gud-mode
+            help-mode
+            message-mode
+            shell-mode
+            vterm-mode)
+
+          company-tooltip-align-annotations t
+          company-require-match 'never
+          company-auto-commit nil
+          company-auto-commit-chars nil
+          company-dabbrev-other-buffers nil
+          company-dabbrev-ignore-case nil
+          company-dabbrev-downcase nil)
+
     (define-key company-active-map (kbd "ESC") 'company-abort)
     (define-key company-active-map [tab] 'company-complete-common-or-cycle)
     :custom
-    (company-minimum-prefix-length 1)
+    (company-minimum-prefix-length 2)
     (company-idle-delay 0)
     (company-selection-wrap-around t)
     :ensure t)
 
-
-
-  ;; (eval-after-load 'company
-  ;;   '(progn
-  ;;      (define-key company-active-map (kbd "TAB") 'company-complete-selection)
-  ;;      (define-key company-active-map (kbd "<tab>") 'company-complete-selection)))
+  (eval-after-load 'company
+    '(progn
+       (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
+       (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)))
 
   (with-eval-after-load 'company
     (define-key company-active-map (kbd "C-j") (lambda () (interactive) (company-complete-common-or-cycle 1)))
     (define-key company-active-map (kbd "C-k") (lambda () (interactive) (company-complete-common-or-cycle -1))))
 
-  ;; :bind 
-  ;; (:map lsp-mode-map ("<tab>". company-indent-or-complete-common))
-
-  ;; (add-hook 'after-init-hook 'global-company-mode)
-  ;; (company-tng-configure-default)
-
-
-  ;; (eval-after-load 'company
-  ;;   '(progn
-  ;;      (define-key company-active-map (kbd "S-TAB") 'company-select-previous)
-  ;;      (define-key company-active-map (kbd "<backtab>") 'company-select-previous)))
-
+  (add-hook 'after-init-hook 'global-company-mode)
 #+END_SRC
 
 *** company-prescient
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
   (use-package company-prescient
     :hook (company-mode . company-prescient-mode)
-    :demand t
     :config
     (prescient-persist-mode +1))
 #+END_SRC
 
 *** company-box
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
   (use-package company-box
+    :diminish
     :hook (company-mode . company-box-mode)
     :config
     (setq company-box-show-single-candidate t
@@ -1429,7 +1456,7 @@ Nicer naming of buffers for files with identical names
 #+END_SRC
 
 *** company-dict
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
   (use-package company-dict
     :defer t)
 #+END_SRC
@@ -1438,6 +1465,22 @@ Nicer naming of buffers for files with identical names
 Generic completion frontend that's just awesome! Let's install and enable it.
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
+    :demand t
+    :diminish
+    :bind (("C-s" . swiper)
+           :map ivy-minibuffer-map
+           ("TAB" . ivy-alt-done)
+           ("C-f" . ivy-alt-done)
+           ("C-l" . ivy-alt-done)
+           ("C-j" . ivy-next-line)
+           ("C-k" . ivy-previous-line)
+           :map ivy-switch-buffer-map
+           ("C-k" . ivy-previous-line)
+           ("C-l" . ivy-done)
+           ("C-d" . ivy-switch-buffer-kill)
+           :map ivy-reverse-i-search-map
+           ("C-k" . ivy-previous-line)
+           ("C-d" . ivy-reverse-i-search-kill))
     :init
     (setq ivy-use-virtual-buffers t)
     (setq ivy-count-format "(%d/%d) ")
@@ -1449,7 +1492,40 @@ Generic completion frontend that's just awesome! Let's install and enable it.
     (ivy-mode 1)
     (evil-set-initial-state 'ivy-occur-grep-mode 'normal))
 
+  (use-package prescient
+    :after counsel
+    :config
+    (prescient-persist-mode 1))
+
+  (use-package ivy-prescient
+    :after prescient
+    :config
+    (ivy-prescient-mode 1))
+
   (use-package ivy-rich
+    :init
+    (ivy-rich-mode 1)
+    :after counsel
+    :config
+    (setq ivy-format-function #'ivy-format-function-line)
+    (setq ivy-rich-display-transformers-list
+          (plist-put ivy-rich-display-transformers-list
+                     'ivy-switch-buffer
+                     '(:columns
+                       ((ivy-rich-candidate (:width 40))
+                        (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right)); return the buffer indicators
+                        (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))          ; return the major mode info
+                        (ivy-rich-switch-buffer-project (:width 15 :face success))             ; return project name using `projectile'
+                        (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))  ; return file path relative to project root or `default-directory' if project is nil
+                       :predicate
+                       (lambda (cand)
+                         (if-let ((buffer (get-buffer cand)))
+                             ;; Don't mess with EXWM buffers
+                             (with-current-buffer buffer
+                               (not (derived-mode-p 'exwm-mode)))))))))
+
+  (use-package ivy-rich
+    :demand t
     :ensure t
     :after ivy
     :config
@@ -1460,33 +1536,22 @@ Generic completion frontend that's just awesome! Let's install and enable it.
     (ivy-rich-mode 1))
 
   (use-package all-the-icons-ivy-rich
+    :demand t
     :ensure t
     :init (all-the-icons-ivy-rich-mode 1))
-
-
-  (use-package ivy-posframe
-    :ensure t
-    :after ivy
-    :config
-    (setq ivy-posframe-parameters
-          '((left-fringe . 2)
-            (right-fringe . 2)
-            (internal-border-width . 2)
-            ))
-    (setq ivy-posframe-height-alist
-          '((swiper . 15)
-            (swiper-isearch . 15)
-            (t . 10)))
-    (setq ivy-posframe-display-functions-alist
-          '((complete-symbol . ivy-posframe-display-at-point)
-            (swiper . nil)
-            (swiper-isearch . nil)
-            (t . ivy-posframe-display-at-frame-center)))
-    (ivy-posframe-mode 1))
 
   (use-package all-the-icons-ivy
     :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
 #+END_SRC
+
+*** flx
+#+begin_src emacs-lisp
+(use-package flx  ;; Improves sorting for fuzzy-matched results
+  :after ivy
+  :defer t
+  :init
+  (setq ivy-flx-limit 10000))
+#+end_src
 
 *** counsel
 Counsel allows us to utilize ivy by replacing many built-in and common functions
@@ -1522,7 +1587,6 @@ with richer versions. Let's install it!
 *** wgrep
 #+BEGIN_SRC emacs-lisp
   (use-package wgrep
-    :demand t
     :init
     (setq wgrep-auto-save-buffer t))
 
@@ -1535,6 +1599,18 @@ with richer versions. Let's install it!
        (kbd "C-c C-c") 'wgrep-finish-edit))
 #+END_SRC
     
+*** savehist
+#+begin_src emacs-lisp
+(use-package savehist
+  :config
+  (setq history-length 25)
+  (savehist-mode 1))
+
+  ;; Individual history elements can be configured separately
+  ;;(put 'minibuffer-history 'history-length 25)
+  ;;(put 'evil-ex-history 'history-length 50)
+  ;;(put 'kill-ring 'history-length 25))
+#+end_src
 ** LANG
 *** php
 #+BEGIN_SRC emacs-lisp
@@ -1691,7 +1767,6 @@ with richer versions. Let's install it!
           ledger-use-iso-dates nil))
 
   (use-package flycheck-ledger
-    :demand t
     :hook (ledger-mode . flycheck-mode))
 
   (use-package evil-ledger
@@ -1770,6 +1845,7 @@ want is prioritized instead.
 
 #+begin_src emacs-lisp
   (use-package org
+    :diminish
     :ensure org-plus-contrib
 
     :config
@@ -1795,6 +1871,9 @@ want is prioritized instead.
     (org-level-2 ((t (:weight normal :height 1.3))))
     (org-level-3 ((t (:weight normal :height 1.3))))
     (org-image-actual-width '(600)))
+
+
+  (eval-after-load 'org-indent '(diminish 'org-indent-mode))
 #+end_src
 
 I'd like the initial scratch buffer to be in org:
@@ -1853,12 +1932,12 @@ Automatically put quick capture into insert mode
 
 Task Management & Agenda Views
 #+begin_src emacs-lisp
-  (setq org-directory "~/Sync/org")
+  (setq org-directory "~/org")
   (setq org-agenda-files (quote (
-                                 "~/Sync/org/personal/PTodo.org"
-                                 "~/Sync/org/spiritual/STodo.org"
-                                 "~/Sync/org/joint/JTodo.org"
-                                 "~/Sync/org/work/WTodo.org"
+                                 "~/org/personal/PTodo.org"
+                                 "~/org/spiritual/STodo.org"
+                                 "~/org/joint/JTodo.org"
+                                 "~/org/work/WTodo.org"
                                  )))
 #+end_src
 
@@ -1896,17 +1975,17 @@ Refile targets configuration
 
   (setq org-capture-templates
         '(
-          ("i" "Inbox" entry (file "~/Sync/org/personal/Inbox.org")
+          ("i" "Inbox" entry (file "~/org/personal/Inbox.org")
            "* TODO %?\n %i\n")
-          ("e" "Email" entry (file+headline "~/Sync/org/personal/Inbox.org" "Emails")
+          ("e" "Email" entry (file+headline "~/org/personal/Inbox.org" "Emails")
            "* TODO [#A] Process Email %:fromname on %:subject\nSCHEDULED:%t\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+2d\"))\n:PROPERTIES:\n:CREATED: %U\n:END:\n %a" :immediate-finish t :prepend t)
-          ("p" "Project" entry (file+headline "~/Sync/org/personal/PTodo.org" "1Projects")
-           (file "~/Sync/org/personal/templates/new-project.org"))
-          ("w" "workProject" entry (file+headline "~/Sync/org/work/WTodo.org" "1Projects")
-           (file "~/Sync/org/personal/templates/new-project.org"))
-          ("m" "MeetingWorkbook" entry (file+headline "~/Sync/org/spiritual/SNotes.org" "Life & Ministry Workbook Comments")
-           (file "~/Sync/org/spiritual/templates/workbook.org"))
-          ("s" "Someday" entry (file+headline "~/Sync/org/personal/PSomeday.org" "Someday")
+          ("p" "Project" entry (file+headline "~/org/personal/PTodo.org" "1Projects")
+           (file "~/org/personal/templates/new-project.org"))
+          ("w" "workProject" entry (file+headline "~/org/work/WTodo.org" "1Projects")
+           (file "~/org/personal/templates/new-project.org"))
+          ("m" "MeetingWorkbook" entry (file+headline "~/org/spiritual/SNotes.org" "Life & Ministry Workbook Comments")
+           (file "~/org/spiritual/templates/workbook.org"))
+          ("s" "Someday" entry (file+headline "~/org/personal/PSomeday.org" "Someday")
            "* SOMEDAY %?\n")))
 
 
@@ -1948,7 +2027,7 @@ Manage my contacts with org-mode
   (use-package org-contacts
     :ensure nil
     :after org
-    :custom (org-contacts-files '("~/Sync/org/personal/contacts/contacts.org")))
+    :custom (org-contacts-files '("~/org/personal/contacts/contacts.org")))
 #+end_src
 
 **** org-gcal
@@ -1966,8 +2045,9 @@ Manage my contacts with org-mode
 #+end_src
 
 **** org-jira
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package org-jira
+    :diminish
     :hook (org-mode . org-jira-mode)
     :after org
     :config
@@ -1990,6 +2070,7 @@ Manage my contacts with org-mode
 **** ox-slack
 #+begin_src emacs-lisp
   (use-package ox-slack
+    :demand t
     :init (add-to-list 'org-export-backends 'slack))
 
 #+end_src
@@ -2047,7 +2128,7 @@ can ensure that I always have an up to date project list.
 #+BEGIN_SRC emacs-lisp
   (defun go-to-projects ()
     (interactive)
-    (find-file "~/Sync/org/personal/PTodo.org")
+    (find-file "~/org/personal/PTodo.org")
     (widen)
     (beginning-of-buffer)
     (re-search-forward "* Projects")
@@ -2090,7 +2171,7 @@ to my “Projects” subtree.
 #+BEGIN_SRC emacs-lisp
   (defun go-to-areas ()
     (interactive)
-    (find-file "~/Sync/org/personal/PTodo.org")
+    (find-file "~/org/personal/PTodo.org")
     (widen)
     (beginning-of-buffer)
     (re-search-forward "* Areas")
@@ -2108,7 +2189,7 @@ to my “Projects” subtree.
   (defun my-new-daily-review ()
     (interactive)
     (let ((org-capture-templates '(("d" "Review: Daily Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                    (file "~/Sync/org/personal/reviews/daily-review-template.org")))))
+                                    (file "~/org/personal/reviews/daily-review-template.org")))))
       (progn
         (org-capture nil "d")
         (org-capture-finalize t)
@@ -2120,7 +2201,7 @@ to my “Projects” subtree.
   (defun my-new-weekly-review ()
     (interactive)
     (let ((org-capture-templates '(("w" "Review: Weekly Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                    (file "~/Sync/org/personal/reviews/weekly-review-template.org")))))
+                                    (file "~/org/personal/reviews/weekly-review-template.org")))))
       (progn
         (org-capture nil "w")
         (org-capture-finalize t)
@@ -2132,7 +2213,7 @@ to my “Projects” subtree.
   (defun my-new-monthly-review ()
     (interactive)
     (let ((org-capture-templates '(("m" "Review: Monthly Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                    (file "~/Sync/org/personal/reviews/monthly-review-template.org")))))
+                                    (file "~/org/personal/reviews/monthly-review-template.org")))))
       (progn
         (org-capture nil "m")
         (org-capture-finalize t)
@@ -2162,9 +2243,7 @@ package that automatically generates an up to date table of contents for us.
 
 mu4e alert
 #+BEGIN_SRC emacs-lisp
-  (use-package mu4e-alert
-    :demand t
-    :ensure t)
+  (use-package mu4e-alert)
 #+END_SRC
 
 ** TERMINAL
@@ -2259,6 +2338,8 @@ mu4e alert
 *** flycheck
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
+    :diminish
+    :demand t
     :ensure t
     :init
     (setq flycheck-emacs-lisp-load-path 'inherit
@@ -2288,6 +2369,7 @@ mu4e alert
     (setq ispell-program-name "aspell"))
 
   (use-package flyspell
+    :diminish
     :delight
     :hook ((markdown-mode org-mode text-mode) . flyspell-mode)
     (prog-mode . flyspell-prog-mode)
@@ -2362,20 +2444,18 @@ functions we invoke regularly outside of magit is called.
     :ensure t)
 
   (use-package browse-at-remote)
-  ;; (use-package evil-magit :demand t)
-  (use-package with-editor :demand t)
-  (use-package magit-todos :demand t)
-  (use-package magit-gitflow :demand t)
-  (use-package yagist :demand t)
-  (use-package bug-reference-github :demand t)
-  (use-package github-review :demand t)
+  (use-package with-editor)
+  (use-package magit-todos)
+  (use-package magit-gitflow)
+  (use-package yagist)
+  (use-package bug-reference-github)
+  (use-package github-review)
 #+END_SRC
 
 **** Highlight uncommitted changes
 Use the diff-hl package to highlight changed-and-uncommitted lines when programming.
 #+begin_src emacs-lisp
   (use-package diff-hl
-    :demand t
     :config
     (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
     (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
@@ -2396,10 +2476,10 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
 **** dap-mode
 #+BEGIN_SRC emacs-lisp
   (use-package dap-mode
-    :ensure t
     :commands dap-mode
     :config
     (dap-mode 1)
+    (require 'dap-php)
     (require 'dap-ui)
     (require 'dap-php)
     (require 'dap-lldb)
@@ -2407,7 +2487,6 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
     (dap-tooltip-mode 1)
     (tooltip-mode 1))
 
-  (require 'dap-php)
 #+END_SRC
     
 *** lsp-mode
@@ -2422,6 +2501,7 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
         lsp-file-watch-threshold 3000)
 
   (use-package lsp-mode
+    :diminish
     :commands (lsp lsp-deferred)
     :ensure t
     :hook ((java-mode
@@ -2483,8 +2563,8 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
 *** nov
 #+BEGIN_SRC emacs-lisp
   (defun my-nov-font-setup ()
-    (face-remap-add-relative 'variable-pitch :family "Lexend Deca"
-                             :height 1.2))
+    (face-remap-add-relative 'variable-pitch :family "Noto Sans"
+                             :height 1.4))
   (use-package nov)
 
   (add-hook 'nov-mode-hook 'my-nov-font-setup)
@@ -2758,21 +2838,42 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
     :ensure t
     :config
     (require 'emms-setup)
-    (require 'emms-player-mpd)
-    (emms-all) ; don't change this to values you see on stackoverflow questions if you expect emms to work
-    (setq emms-seek-seconds 5)
-    (setq emms-player-list '(emms-player-mpd))
-    (setq emms-info-functions '(emms-info-mpd))
-    (setq emms-player-mpd-server-name "localhost")
-    (setq emms-player-mpd-server-port "6600")
+    (require 'emms-history)
+    (emms-all)
+    (emms-default-players)
+    (setq emms-source-file-default-directory "~/Music/Tony"
+          emms-info-functions '(emms-info-tinytag)
+          emms-browser-covers 'emms-browser-cache-thumbnail-async
+          emms-playlist-buffer-name "*Music*")
     :bind
-    ("s-m p" . emms)
-    ("s-m b" . emms-smart-browse)
-    ("s-m r" . emms-player-mpd-update-all-reset-cache)
-    ("<XF86AudioPrev>" . emms-previous)
-    ("<XF86AudioNext>" . emms-next)
-    ("<XF86AudioPlay>" . emms-pause)
-    ("<XF86AudioStop>" . emms-stop))
+    (("<f5>" . emms-browser)
+     ("<M-f5>" . emms)
+     ("<XF86AudioPrev>" . emms-previous)
+     ("<XF86AudioNext>" . emms-next)
+     ("<XF86AudioPlay>" . emms-pause)))
+
+
+
+  ;; (use-package emms
+  ;;   :ensure t
+  ;;   :config
+  ;;   (require 'emms-setup)
+  ;;   (require 'emms-player-mpd)
+  ;;   (emms-all) ; don't change this to values you see on stackoverflow questions if you expect emms to work
+  ;;   (setq emms-seek-seconds 5)
+  ;;   (setq emms-player-list '(emms-player-mpd))
+  ;;   (setq emms-info-functions '(emms-info-mpd))
+  ;;   (setq emms-player-mpd-server-name "localhost")
+  ;;   (setq emms-player-mpd-server-port "6600")
+  ;;   (setq emms-directory "~/Music/Tony")
+  ;;   :bind
+  ;;   ("s-m p" . emms)
+  ;;   ("s-m b" . emms-smart-browse)
+  ;;   ("s-m r" . emms-player-mpd-update-all-reset-cache)
+  ;;   ("<XF86AudioPrev>" . emms-previous)
+  ;;   ("<XF86AudioNext>" . emms-next)
+  ;;   ("<XF86AudioPlay>" . emms-pause)
+  ;;   ("<XF86AudioStop>" . emms-stop))
 #+end_src
 **** MPC Setup
 Setting the default port
@@ -2823,6 +2924,54 @@ If you have an absolutely massive music library, it might be a good idea to get 
   (use-package confluence
     :ensure t)
 #+end_src
+*** slack
+#+begin_src emacs-lisp
+   (use-package slack
+     :commands (slack-start)
+     :init
+     (setq slack-buffer-emojify t) ;; if you want to enable emoji, default nil
+     (setq slack-prefer-current-team t)
+     :config
+     (slack-register-team
+      :name "elico-webteam"
+      :default t
+      :token (auth-source-pick-first-password
+              :host "elico-webteam.slack.com"
+              :user "token")
+      :subscribed-channels '(elico qa devops standup general ops-issues poker-planning php74upgrade)
+      :full-and-display-names t)
+
+
+     (evil-define-key 'normal slack-info-mode-map
+       ",u" 'slack-room-update-messages)
+     (evil-define-key 'normal slack-mode-map
+       ",c" 'slack-buffer-kill
+       ",ra" 'slack-message-add-reaction
+       ",rr" 'slack-message-remove-reaction
+       ",rs" 'slack-message-show-reaction-users
+       ",pl" 'slack-room-pins-list
+       ",pa" 'slack-message-pins-add
+       ",pr" 'slack-message-pins-remove
+       ",mm" 'slack-message-write-another-buffer
+       ",me" 'slack-message-edit
+       ",md" 'slack-message-delete
+       ",u" 'slack-room-update-messages
+       ",2" 'slack-message-embed-mention
+       ",3" 'slack-message-embed-channel
+       "\C-n" 'slack-buffer-goto-next-message
+       "\C-p" 'slack-buffer-goto-prev-message)
+      (evil-define-key 'normal slack-edit-message-mode-map
+       ",k" 'slack-message-cancel-edit
+       ",s" 'slack-message-send-from-buffer
+       ",2" 'slack-message-embed-mention
+       ",3" 'slack-message-embed-channel))
+
+   (use-package alert
+     :commands (alert)
+     :init
+     (setq alert-default-style 'notifier))
+#+end_src
+
 ** Post Initialisation
 Let's lower our GC thresholds back down to a sane level.
 
