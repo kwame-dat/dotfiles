@@ -11,6 +11,7 @@ import XMonad.Config.Desktop
 import XMonad.Config.Azerty
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Actions.SpawnOn
+import XMonad.Actions.WithAll
 import XMonad.Util.EZConfig (additionalKeys, additionalMouseBindings)
 import XMonad.Actions.CycleWS
 import XMonad.Hooks.UrgencyHook
@@ -89,7 +90,7 @@ topBarTheme = def
 
 myModMask = mod4Mask
 encodeCChar = map fromIntegral . B.unpack
-myFocusFollowsMouse = True
+myFocusFollowsMouse = False
 myBorderWidth = 4
 myWorkspaces    = ["\61612","\61899","\61557","\61501","\62043","\61888","\61485","\61723","\61705"]
 
@@ -109,6 +110,7 @@ myManageHook = composeAll
     [
       className =? "MPlayer"                                 --> doFloat
     , className =? "Gimp"                                    --> doFloat
+    , className =? "Evolution-alarm-notify"                  --> doFloat
     , resource  =? "desktop_window"                          --> doIgnore
     , resource  =? "kdesktop"                                --> doIgnore
     , className =? "qutebrowser"                             --> doShift ( myWorkspaces !! 0 )
@@ -117,9 +119,8 @@ myManageHook = composeAll
     , className =? "Chromium"                                --> doShift ( myWorkspaces !! 0 )
     , className =? "Brave-browser"                           --> doShift ( myWorkspaces !! 0 )
     , className =? "firefox"                                 --> doShift ( myWorkspaces !! 0 )
-    , className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )
+    -- , className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )
     , className =? "jetbrains-phpstorm"                      --> doShift ( myWorkspaces !! 1 )
-    , className =? "Evolution"                               --> doShift ( myWorkspaces !! 1 )
     , className =? "calibre"                                 --> doShift ( myWorkspaces !! 1 )
     , className =? "whatsapp-nativefier-d52542"              --> doShift ( myWorkspaces !! 2 )
     , className =? "Signal"                                  --> doShift ( myWorkspaces !! 2 )
@@ -133,6 +134,7 @@ myManageHook = composeAll
     , className =? "Postman"                                 --> doShift ( myWorkspaces !! 4 )
     , className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 5 )
     , className =? "obs"                                     --> doShift ( myWorkspaces !! 6 )
+    , className =? "Evolution"                               --> doShift ( myWorkspaces !! 8 )
     , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 8 )
     , className =? "Nextcloud"                               --> doShift ( myWorkspaces !! 8 )
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)
@@ -142,7 +144,7 @@ myManageHook = composeAll
 myLayout =
   mkToggle (single REFLECTX) $
   mkToggle (single REFLECTY) $
-  spacingRaw True (Border 0 10 10 10) True (Border 10 10 10 10) True $
+  spacingRaw True (Border 0 20 20 20) True (Border 20 20 20 20) True $
   mkToggle (NBFULL ?? NOBORDERS ?? EOT) $
   -- noFrillsDeco shrinkText topBarTheme $
   avoidStruts $
@@ -264,10 +266,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   --  XMONAD LAYOUT KEYS
 
   -- Cycle through the available layout algorithms.
-  , ((modMask, xK_Tab), sendMessage NextLayout)
+  , ((modMask, xK_Tab), toggleWS)
 
   --  Reset the layouts on the current workspace to default.
-  , ((modMask, xK_grave), setLayout $ XMonad.layoutHook conf)
+  , ((modMask, xK_grave), sendMessage NextLayout)
 
   --Focus selected desktop
   , ((modMask , xK_bracketleft ), prevWS)
@@ -285,12 +287,12 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 
   -- Swap the focused window with the next window.
-  , ((modMask .|. shiftMask, xK_j), windows W.swapDown  )
-  , ((modMask .|. shiftMask, xK_Down), windows W.swapDown  )
+  , ((modMask .|. shiftMask, xK_j), windows W.swapDown)
+  , ((modMask .|. shiftMask, xK_Down), windows W.swapDown)
 
   -- Swap the focused window with the previous window.
-  , ((modMask .|. shiftMask, xK_k), windows W.swapUp    )
-  , ((modMask .|. shiftMask, xK_Up), windows W.swapUp  )
+  , ((modMask .|. shiftMask, xK_k), windows W.swapUp)
+  , ((modMask .|. shiftMask, xK_Up), windows W.swapUp)
 
   -- Shrink the master area.
   , ((modMask, xK_h), sendMessage Shrink)
