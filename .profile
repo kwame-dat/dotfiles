@@ -14,7 +14,7 @@ export npm_config_prefix=~/.node_modules
 export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 
 # POLYBAR
-export POLYBAR_HEIGHT=60
+export POLYBAR_HEIGHT=40
 export POLYBAR_LINE_SIZE=3
 export POLYBAR_TRAY_MAXSIZE=30
 
