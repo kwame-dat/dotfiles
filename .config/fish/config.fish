@@ -1,76 +1,85 @@
 set fish_greeting
+
 function fish_user_key_bindings
   fish_vi_key_bindings
 end
 
-# Abbreviations
+# Vpn
 abbr -a -g vpn sudo openvpn --config Connection.ovpn
 abbr -a -g kvpn sudo killall openvpn
 
 # General
-alias e="exit"
-alias c="clear"
-alias h="cd ~/"
-alias o="open ."
-alias down="cd ~/Downloads"
-alias ckh="rm -rf ~/.ssh/known_hosts"
-alias getKey="pbcopy < ~/.ssh/id_rsa.pub"
+abbr -a -g h cd ~/
+abbr -a -g o open .
+abbr -a -g ckh rm -rf ~/.ssh/known_hosts
+abbr -a -g getKey pbcopy < ~/.ssh/id_rsa.pub
 
-# Repo
-alias rw1="cd ~/Repo/Work/1Projects"
-alias rw2="cd ~/Repo/Work/2Areas"
-alias rw3="cd ~/Repo/Work/3Resources"
-alias rw4="cd ~/Repo/Work/4Archives"
-alias rp1="cd ~/Repo/Personal/1Projects"
-alias rp2="cd ~/Repo/Personal/2Areas"
-alias rp3="cd ~/Repo/Personal/3Resources"
-alias rp4="cd ~/Repo/Personal/4Archives"
+abbr -a -g r1 cd ~/Repo/Work/1Projects
+abbr -a -g r2 cd ~/Repo/Work/2Areas
+abbr -a -g r3 cd ~/Repo/Work/3Resources
+abbr -a -g r4 cd ~/Repo/Work/4Archives
+abbr -a -g rr1 cd ~/Repo/Personal/1Projects
+abbr -a -g rr2 cd ~/Repo/Personal/2Areas
+abbr -a -g rr3 cd ~/Repo/Personal/3Resources
+abbr -a -g rr4 cd ~/Repo/Personal/4Archives
+abbr -a -g d cd ~/Downloads
+abbr -a -g dd cd ~/Documents
+abbr -a -g d1 cd ~/Documents/Work/1Projects
+abbr -a -g d2 cd ~/Documents/Work/2Areas
+abbr -a -g d3 cd ~/Documents/Work/3Resources
+abbr -a -g d4 cd ~/Documents/Work/4Archives
+abbr -a -g dd1 cd ~/Documents/Personal/1Projects
+abbr -a -g dd2 cd ~/Documents/Personal/2Areas
+abbr -a -g dd3 cd ~/Documents/Personal/3Resources
+abbr -a -g dd4 cd ~/Documents/Personal/4Archives
 
 # Composer
-alias cu="composer update"
-alias ci="composer install"
-alias cda="composer dump-autoload"
+abbr -a -g cu composer update
+abbr -a -g ci composer install
+abbr -a -g cda composer dump-autoload
 
 # Composer | Docker Commands
-alias dcu="docker-compose exec workspace composer update"
-alias dci="docker-compose exec workspace composer install"
-alias dcda="docker-compose exec workspace composer dump-autoload"
+abbr -a -g dcu docker-compose exec workspace composer update
+abbr -a -g dci docker-compose exec workspace composer install
+abbr -a -g dcda docker-compose exec workspace composer dump-autoload
 
 # PHP Test
-alias t="vendor/bin/phpunit"
-alias tc="vendor/bin/phpunit --coverage-html='tests/coverage/html'"
-alias tf="vendor/bin/phpunit --filter"
+abbr -a -g t bin/phpunit
+abbr -a -g tc bin/phpunit --coverage-html='tests/coverage/html'
+abbr -a -g tf bin/phpunit --filter
 
 # PHP Test | Docker Commands
-alias dt="docker-compose exec workspace ./vendor/bin/phpunit"
-alias dtc="docker-compose exec workspace ./vendor/bin/phpunit --coverage-html='tests/coverage/html'"
-alias dtf="docker-compose exec workspace ./vendor/bin/phpunit --filter"
+abbr -a -g dt docker-compose exec workspace bin/phpunit
+abbr -a -g dtc docker-compose exec workspace bin/phpunit --coverage-html='tests/coverage/html'
+abbr -a -g dtf docker-compose exec workspace bin/phpunit --filter
 
 # Laravel
-alias art="php artisan"
-alias rl="php artisan route:list"
-alias m="php artisan migrate"
-alias dbs="php artisan db:seed"
-alias mf="php artisan migrate:fresh"
-alias mfs="php artisan migrate:fresh --seed"
-alias pi="php artisan passport:install"
-alias tinker="php artisan tinker"
-alias dusk="php artisan dusk"
-alias at="php artisan tinker"
+abbr -a -g art php artisan
+abbr -a -g rl php artisan route:list
+abbr -a -g m php artisan migrate
+abbr -a -g dbs php artisan db:seed
+abbr -a -g mf php artisan migrate:fresh
+abbr -a -g mfs php artisan migrate:fresh --seed
+abbr -a -g pi php artisan passport:install
+abbr -a -g tinker php artisan tinker
+abbr -a -g dusk php artisan dusk
+abbr -a -g at php artisan tinker
 
 # Laravel | Docker Commands
-alias da="docker-compose exec workspace php artisan"
-alias dat="docker-compose exec workspace php artisan tinker"
-alias dam="docker-compose exec workspace php artisan migrate"
-alias das="docker-compose exec workspace php artisan db:seed"
+abbr -a -g da docker-compose exec workspace php artisan
+abbr -a -g dat docker-compose exec workspace php artisan tinker
+abbr -a -g dam docker-compose exec workspace php artisan migrate
+abbr -a -g das docker-compose exec workspace php artisan db:seed
 
 # Docker
-alias ds="docker ps"
+abbr -a -g ds docker ps
 
 # Emacs
-alias emc="emacsclient -c"
+abbr -a -g emc emacsclient -c
+
+
+# Exports
 export VISUAL="emacsclient -c"
 export EDITOR="emacsclient -t"
-
 export MPD_HOST="localhost"
 export MPD_PORT="6600"
