@@ -148,7 +148,7 @@ myLayout =
   mkToggle (NBFULL ?? NOBORDERS ?? EOT) $
   -- noFrillsDeco shrinkText topBarTheme $
   avoidStruts $
-  gaps [(U,20), (D,20), (R,20), (L,20)] $
+  gaps [(U,40), (D,40), (R,40), (L,40)] $
   reflectHoriz tiled |||
   Mirror tiled |||
   ThreeColMid 1 (1/100) (1/2) |||
