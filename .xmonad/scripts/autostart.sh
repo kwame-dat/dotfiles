@@ -7,10 +7,6 @@ function run {
   fi
 }
 
-# run single-ultrawide.sh &
-# xrandr --output eDP1 --auto --output DP1 --auto --scale 2x2 --panning 3840x1600 --right-of eDP1 &
-xrandr --output eDP1 --auto --output DP1 --panning 2560x1080 --scale 2x2 --auto --right-of eDP1
-
 # cursor active at boot
 xsetroot -cursor_name left_ptr &
 
