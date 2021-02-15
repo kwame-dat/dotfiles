@@ -47,4 +47,4 @@ copyq &
 run nextcloud &
 run syncthing -no-browser &
 run sudo mount -a &
-#run kdeconnect-indicator &
+run kdeconnect-indicator &
