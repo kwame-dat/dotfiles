@@ -92,7 +92,18 @@ myModMask = mod4Mask
 encodeCChar = map fromIntegral . B.unpack
 myFocusFollowsMouse = False
 myBorderWidth = 4
-myWorkspaces    = ["\61612","\61899","\61557","\61501","\62043","\61888","\61485","\61723","\61705"]
+myWorkspaces = [
+    "\61612",
+    "\61899",
+    "\61557",
+    "\61501",
+    "\61888",
+    "\62043",
+    "\62003",
+    "\61485",
+    "\61723",
+    "\61705"
+    ]
 
 myBaseConfig = desktopConfig
 
@@ -119,24 +130,27 @@ myManageHook = composeAll
     , className =? "Chromium"                                --> doShift ( myWorkspaces !! 0 )
     , className =? "Brave-browser"                           --> doShift ( myWorkspaces !! 0 )
     , className =? "firefox"                                 --> doShift ( myWorkspaces !! 0 )
-    -- , className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )
+    , className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )
     , className =? "jetbrains-phpstorm"                      --> doShift ( myWorkspaces !! 1 )
-    , className =? "calibre"                                 --> doShift ( myWorkspaces !! 1 )
-    , className =? "whatsapp-nativefier-d52542"              --> doShift ( myWorkspaces !! 2 )
-    , className =? "Signal"                                  --> doShift ( myWorkspaces !! 2 )
-    , className =? "whatsdesk"                               --> doShift ( myWorkspaces !! 2 )
+    , className =? "Evolution"                               --> doShift ( myWorkspaces !! 1 )
     , className =? "Slack"                                   --> doShift ( myWorkspaces !! 2 )
-    , className =? "Microsoft Teams - Preview"               --> doShift ( myWorkspaces !! 3 )
+    , className =? "Signal"                                  --> doShift ( myWorkspaces !! 2 )
+    , className =? "whatsapp-nativefier-d52542"              --> doShift ( myWorkspaces !! 2 )
+    , className =? "whatsdesk"                               --> doShift ( myWorkspaces !! 2 )
     , className =? "zoom"                                    --> doShift ( myWorkspaces !! 3 )
-    , className =? "Insomnia"                                --> doShift ( myWorkspaces !! 4 )
-    , className =? "Insomnia Designer"                       --> doShift ( myWorkspaces !! 4 )
-    , className =? "Stoplight Studio"                        --> doShift ( myWorkspaces !! 4 )
-    , className =? "Postman"                                 --> doShift ( myWorkspaces !! 4 )
-    , className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 5 )
-    , className =? "obs"                                     --> doShift ( myWorkspaces !! 6 )
-    , className =? "Evolution"                               --> doShift ( myWorkspaces !! 8 )
-    , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 8 )
-    , className =? "Nextcloud"                               --> doShift ( myWorkspaces !! 8 )
+    , className =? "Microsoft Teams - Preview"               --> doShift ( myWorkspaces !! 3 )
+    , className =? "obs"                                     --> doShift ( myWorkspaces !! 3 )
+    , className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 4 )
+    , className =? "Insomnia Designer"                       --> doShift ( myWorkspaces !! 5 )
+    , className =? "Stoplight Studio"                        --> doShift ( myWorkspaces !! 5 )
+    , className =? "Postman"                                 --> doShift ( myWorkspaces !! 5 )
+    , className =? "Insomnia"                                --> doShift ( myWorkspaces !! 5 )
+    , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 6 )
+    , className =? "calibre"                                 --> doShift ( myWorkspaces !! 7 )
+    , className =? "Nextcloud"                               --> doShift ( myWorkspaces !! 9 )
+    , className =? "Nitrogen"                                --> doShift ( myWorkspaces !! 9 )
+    , className =? "Pamac-manager"                           --> doShift ( myWorkspaces !! 9 )
+    , className =? "Pavucontrol"                             --> doShift ( myWorkspaces !! 9 )
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)
     ] <+> namedScratchpadManageHook myScratchPads
 
@@ -187,7 +201,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_space),   spawn $ "~/.config/rofi/launchers/misc/launcher.sh")
   , ((modMask, xK_p),       spawn $ "rofi-pass")
   , ((modMask, xK_b),       spawn $ "rofi-surfraw")
-  , ((modMask, xK_m),       namedScratchpadAction myScratchPads "music")
 
   -- MODKEY + SHIFT KEYS
   , ((modMask .|. shiftMask, xK_r),          spawn $ "xmonad --recompile && xmonad --restart")
@@ -196,41 +209,59 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. shiftMask, xK_q ),         killAll)
   , ((modMask .|. shiftMask, xK_s ),         spawn $ "flameshot gui")
   , ((modMask .|. shiftMask, xK_e ),         spawn $ "~/.config/rofi/powermenu/powermenu.sh")
+  , ((modMask .|. shiftMask, xK_m),          namedScratchpadAction myScratchPads "music")
 
   -- FUNCTION KEYS
   , ((0, xK_F7), namedScratchpadAction myScratchPads "vpn")
   , ((0, xK_F11), sendMessage $ XMonad.Layout.MultiToggle.Toggle NBFULL)
+  , ((0, xF86XK_Search), spawn $ "~/.config/rofi/launchers/misc/launcher.sh")
+  , ((0, xK_F8), namedScratchpadAction myScratchPads "music")
+  , ((0, xK_F9), spawn $ "~/.config/rofi/launchers/misc/launcher.sh")
 
   -- MODKEY + FUNCTIONS KEYS
-  , ((modMask, xK_F1), spawn $ "chromium")
-  , ((modMask, xK_F2), spawn $ "emacsclient -c -a ''")
-  , ((modMask, xK_F3), spawn $ "slack")
-  , ((modMask, xK_F4), spawn $ "teams")
-  , ((modMask, xK_F5), spawn $ "insomnia-designer")
-  , ((modMask, xK_F6), spawn $ "virtualbox")
-  , ((modMask, xK_F7), spawn $ "dbeaver")
+  , ((modMask, xK_F1), spawn $ "qutebrowser")
+  , ((modMask, xF86XK_AudioMute), spawn $ "qutebrowser")
 
-  -- CONTROL + ALT KEYS
-  , ((controlMask .|. mod1Mask, xK_a ),      spawn $ "emacsclient -c -a '' --eval '(itechytony/day-view)'")
-  , ((controlMask .|. mod1Mask, xK_e),       spawn $ "emacs")
-  , ((controlMask .|. mod1Mask, xK_m),       spawn $ "emacsclient -c -a '' --eval '(mu4e)'")
-  , ((controlMask .|. mod1Mask, xK_s),       spawn $ "slack")
-  , ((controlMask .|. mod1Mask, xK_t),       spawn $ "teams")
-  , ((controlMask .|. mod1Mask, xK_p),       spawn $ "pamac-manager")
-  , ((controlMask .|. mod1Mask, xK_f),       spawn $ "firefox")
-  , ((controlMask .|. mod1Mask, xK_m ),      spawn $ "xfce4-settings-manager")
-  , ((controlMask .|. mod1Mask, xK_g),       spawn $ "chromium -no-default-browser-check")
-  , ((controlMask .|. mod1Mask, xK_q),       spawn $ "qutebrowser")
-  , ((controlMask .|. mod1Mask, xK_b),       spawn $ "brave")
-  , ((controlMask .|. mod1Mask, xK_w),       spawn $ "whatsdesk")
-  , ((controlMask .|. mod1Mask, xK_d),       spawn $ "dbeaver")
-  , ((controlMask .|. mod1Mask, xK_z),       spawn $ "zoom")
-  , ((controlMask .|. mod1Mask, xK_i),       spawn $ "insomnia-designer")
-  , ((controlMask .|. mod1Mask, xK_c),       spawn $ "rofi -show calc")
-  , ((controlMask .|. mod1Mask, xK_o),       spawn $ "picom-toggle")
-  , ((controlMask .|. mod1Mask, xK_Delete),  spawn $ "xkill")
-  , ((controlMask .|. mod1Mask, xK_v),       spawn $ "pavucontrol")
-  , ((controlMask .|. mod1Mask, xK_Return ), spawn $ myTerminal )
+  , ((modMask, xK_F2), spawn $ "emacsclient -c -a ''")
+  , ((modMask, xF86XK_AudioLowerVolume), spawn $ "emacsclient -c -a ''")
+
+  , ((modMask, xK_F3), spawn $ "slack")
+  , ((modMask, xF86XK_AudioRaiseVolume), spawn $ "slack")
+
+  , ((modMask, xK_F4), spawn $ "teams")
+  , ((modMask, xF86XK_AudioPrev), spawn $ "teams")
+
+  , ((modMask, xK_F5), spawn $ "dbeaver")
+  , ((modMask, xF86XK_AudioPlay), spawn $ "dbeaver")
+
+  , ((modMask, xK_F6), spawn $ "insomnia-designer")
+  , ((modMask, xF86XK_AudioNext), spawn $ "insomnia-designer")
+
+  , ((modMask, xK_F7), spawn $ "virtualbox")
+
+  , ((modMask, xK_F8), spawn $ "calibre")
+
+  -- SUPER + ALT KEYS
+  , ((modMask .|. mod1Mask, xK_a),       spawn $ "emacsclient -c -a '' --eval '(itechytony/day-view)'")
+  , ((modMask .|. mod1Mask, xK_e),       spawn $ "emacs")
+  , ((modMask .|. mod1Mask, xK_m),       spawn $ "xfce4-settings-manager")
+  , ((modMask .|. mod1Mask, xK_s),       spawn $ "slack")
+  , ((modMask .|. mod1Mask, xK_t),       spawn $ "teams")
+  , ((modMask .|. mod1Mask, xK_u),       spawn $ "pamac-manager")
+  , ((modMask .|. mod1Mask, xK_p),       spawn $ "pavucontrol")
+  , ((modMask .|. mod1Mask, xK_v),       spawn $ "virtualbox")
+  , ((modMask .|. mod1Mask, xK_f),       spawn $ "firefox")
+  , ((modMask .|. mod1Mask, xK_g),       spawn $ "chromium -no-default-browser-check")
+  , ((modMask .|. mod1Mask, xK_q),       spawn $ "qutebrowser")
+  , ((modMask .|. mod1Mask, xK_b),       spawn $ "brave")
+  , ((modMask .|. mod1Mask, xK_w),       spawn $ "whatsdesk")
+  , ((modMask .|. mod1Mask, xK_d),       spawn $ "dbeaver")
+  , ((modMask .|. mod1Mask, xK_z),       spawn $ "zoom")
+  , ((modMask .|. mod1Mask, xK_i),       spawn $ "insomnia-designer")
+  , ((modMask .|. mod1Mask, xK_c),       spawn $ "rofi -show calc")
+  , ((modMask .|. mod1Mask, xK_o),       spawn $ "picom-toggle")
+  , ((modMask .|. mod1Mask, xK_Delete),  spawn $ "xkill")
+  , ((modMask .|. mod1Mask, xK_n),       spawn $ "nitrogen")
 
   --CONTROL + SHIFT KEYS
   , ((controlMask .|. shiftMask , xK_Escape ), spawn $ "xfce4-taskmanager")
@@ -310,7 +341,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- Move focus to the master window.
   , ((modMask, xK_0), windows W.focusMaster )
-
   ]
   ++
 
@@ -320,7 +350,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   --Keyboard layouts
   --qwerty users use this line
-   | (i, k) <- zip (XMonad.workspaces conf) [xK_1,xK_2,xK_3,xK_4,xK_5,xK_6,xK_7,xK_8,xK_9]
+   | (i, k) <- zip (XMonad.workspaces conf) [xK_1,xK_2,xK_3,xK_4,xK_5,xK_6,xK_7,xK_8,xK_9, xK_0]
       , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)
       , (\i -> W.greedyView i . W.shift i, shiftMask)]]
 
