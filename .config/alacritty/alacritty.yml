@@ -3,16 +3,16 @@ env:
   TERM: xterm-256color
 font:
   normal:
-    family: Cascadia Code
+    family: JetBrains Mono
     style: Retina
 
   # The bold font face
   bold:
-    family: Cascadia Code
+    family: JetBrains Mono
 
   # The italic font face
   italic:
-    family: Cascadia Code
+    family: JetBrains Mono
     style: "Medium Italic"
 
   # Point size of the font
@@ -103,12 +103,6 @@ colors:
 
 
 key_bindings:
-  - { key: V,        mods: Command,       action: Paste                        }
-  - { key: C,        mods: Command,       action: Copy                         }
-  - { key: Q,        mods: Command,       action: Quit                         }
-  - { key: N,        mods: Command,       action: SpawnNewInstance             }
-  - { key: Return,   mods: Command,       action: ToggleFullscreen             }
-
   - { key: Home,                          chars: "\x1bOH",   mode: AppCursor   }
   - { key: Home,                          chars: "\x1b[H",   mode: ~AppCursor  }
   - { key: End,                           chars: "\x1bOF",   mode: AppCursor   }

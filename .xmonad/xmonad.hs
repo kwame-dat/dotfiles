@@ -50,6 +50,12 @@ myStartupHook = do
 myTerminal = "alacritty"
 myFont      = "-*-terminus-medium-*-*-*-*-160-*-*-*-*-*-*"
 
+terminalScratchpadCmd = "alacritty --title=scratchpad " 
+vpnScratchpadCmd = "alacritty --title vpn --command sudo openvpn --config ~/Documents/Work/3Resources/vpn/Connection.ovpn"
+runscopeAgentScratchpadCmd = "alacritty --title runscope-agent --command runscope-radar -f ~/Documents/Work/3Resources/runscope/radar.conf"
+musicScratchpadCmd = "alacritty --title=music --command=ncmpcpp" 
+webcamScratchpadCmd = "mpv /dev/video2"
+
 -- colours
 base03  = "#002b36"
 base02  = "#073642"
@@ -110,10 +116,11 @@ myBaseConfig = desktopConfig
 -- Scratchpads
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [
-                  NS "terminal" "alacritty --title=scratchpad " (title =? "scratchpad") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
-                  NS "vpn" "alacritty --title vpn --command sudo openvpn --config Connection.ovpn" (title =? "vpn") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
-                  NS "music" "alacritty --title=music --command=ncmpcpp" (title =? "music") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
-                  NS "webcam" "mpv /dev/video0" (title =? "webcam") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
+                  NS "terminal" terminalScratchpadCmd (title =? "scratchpad") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
+                  NS "vpn" vpnScratchpadCmd (title =? "vpn") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
+                  NS "music" musicScratchpadCmd (title =? "music") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
+                  NS "webcam" webcamScratchpadCmd (title =? "webcam") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
+                  NS "runscope-agent" runscopeAgentScratchpadCmd (title =? "runscope-agent") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
                 ]
 
 -- Window Manipulations
@@ -132,7 +139,6 @@ myManageHook = composeAll
     , className =? "firefox"                                 --> doShift ( myWorkspaces !! 0 )
     , className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )
     , className =? "jetbrains-phpstorm"                      --> doShift ( myWorkspaces !! 1 )
-    , className =? "Evolution"                               --> doShift ( myWorkspaces !! 1 )
     , className =? "Slack"                                   --> doShift ( myWorkspaces !! 2 )
     , className =? "Signal"                                  --> doShift ( myWorkspaces !! 2 )
     , className =? "whatsapp-nativefier-d52542"              --> doShift ( myWorkspaces !! 2 )
@@ -148,9 +154,7 @@ myManageHook = composeAll
     , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 6 )
     , className =? "calibre"                                 --> doShift ( myWorkspaces !! 7 )
     , className =? "Nextcloud"                               --> doShift ( myWorkspaces !! 9 )
-    , className =? "Nitrogen"                                --> doShift ( myWorkspaces !! 9 )
-    , className =? "Pamac-manager"                           --> doShift ( myWorkspaces !! 9 )
-    , className =? "Pavucontrol"                             --> doShift ( myWorkspaces !! 9 )
+    , className =? "Evolution"                               --> doShift ( myWorkspaces !! 9 )
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)
     ] <+> namedScratchpadManageHook myScratchPads
 
@@ -158,11 +162,11 @@ myManageHook = composeAll
 myLayout =
   mkToggle (single REFLECTX) $
   mkToggle (single REFLECTY) $
-  spacingRaw True (Border 0 20 20 20) True (Border 20 20 20 20) True $
+  spacingRaw True (Border 0 10 10 10) True (Border 10 10 10 10) True $
   mkToggle (NBFULL ?? NOBORDERS ?? EOT) $
   -- noFrillsDeco shrinkText topBarTheme $
   avoidStruts $
-  gaps [(U,40), (D,40), (R,40), (L,40)] $
+  -- gaps [(U,15), (D,15), (R,15), (L,15)] $
   reflectHoriz tiled |||
   Mirror tiled |||
   ThreeColMid 1 (1/100) (1/2) |||
@@ -194,22 +198,23 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- MODKEY + ...
     ((modMask, xK_t),       namedScratchpadAction myScratchPads "terminal")
   , ((modMask, xK_f),       sendMessage $ XMonad.Layout.MultiToggle.Toggle NBFULL)
-  , ((modMask, xK_w),       namedScratchpadAction myScratchPads "webcam")
   , ((modMask, xK_q),       kill)
   , ((modMask, xK_e),       spawn $ "emacsclient -c -a ''")
   , ((modMask, xK_Return),  spawn $ "alacritty")
-  , ((modMask, xK_space),   spawn $ "~/.config/rofi/launchers/misc/launcher.sh")
+  , ((modMask, xK_space),   spawn $ "~/.config/rofi/launcher/launcher.sh")
   , ((modMask, xK_p),       spawn $ "rofi-pass")
   , ((modMask, xK_b),       spawn $ "rofi-surfraw")
+  , ((modMask, xK_r),       spawn $ "xmonad --recompile && xmonad --restart")
 
   -- MODKEY + SHIFT KEYS
-  , ((modMask .|. shiftMask, xK_r),          spawn $ "xmonad --recompile && xmonad --restart")
   , ((modMask .|. shiftMask, xK_v),          namedScratchpadAction myScratchPads "vpn")
+  , ((modMask .|. shiftMask, xK_r),          namedScratchpadAction myScratchPads "runscope-agent")
+  , ((modMask .|. shiftMask, xK_m),          namedScratchpadAction myScratchPads "music")
+  , ((modMask .|. shiftMask, xK_w),          namedScratchpadAction myScratchPads "webcam")
   , ((modMask .|. shiftMask, xK_Return ),    spawn $ "thunar")
   , ((modMask .|. shiftMask, xK_q ),         killAll)
   , ((modMask .|. shiftMask, xK_s ),         spawn $ "flameshot gui")
   , ((modMask .|. shiftMask, xK_e ),         spawn $ "~/.config/rofi/powermenu/powermenu.sh")
-  , ((modMask .|. shiftMask, xK_m),          namedScratchpadAction myScratchPads "music")
 
   -- FUNCTION KEYS
   , ((0, xK_F7), namedScratchpadAction myScratchPads "vpn")
@@ -247,9 +252,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. mod1Mask, xK_m),       spawn $ "xfce4-settings-manager")
   , ((modMask .|. mod1Mask, xK_s),       spawn $ "slack")
   , ((modMask .|. mod1Mask, xK_t),       spawn $ "teams")
-  , ((modMask .|. mod1Mask, xK_u),       spawn $ "pamac-manager")
-  , ((modMask .|. mod1Mask, xK_p),       spawn $ "pavucontrol")
-  , ((modMask .|. mod1Mask, xK_v),       spawn $ "virtualbox")
+  , ((modMask .|. mod1Mask, xK_p),       spawn $ "pamac-manager")
+  , ((modMask .|. mod1Mask, xK_v),       spawn $ "pavucontrol")
   , ((modMask .|. mod1Mask, xK_f),       spawn $ "firefox")
   , ((modMask .|. mod1Mask, xK_g),       spawn $ "chromium -no-default-browser-check")
   , ((modMask .|. mod1Mask, xK_q),       spawn $ "qutebrowser")
@@ -260,11 +264,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. mod1Mask, xK_i),       spawn $ "insomnia-designer")
   , ((modMask .|. mod1Mask, xK_c),       spawn $ "rofi -show calc")
   , ((modMask .|. mod1Mask, xK_o),       spawn $ "picom-toggle")
-  , ((modMask .|. mod1Mask, xK_Delete),  spawn $ "xkill")
   , ((modMask .|. mod1Mask, xK_n),       spawn $ "nitrogen")
 
-  --CONTROL + SHIFT KEYS
-  , ((controlMask .|. shiftMask , xK_Escape ), spawn $ "xfce4-taskmanager")
+  --CONTROL + ALT KEYS
+  , ((controlMask .|. mod1Mask, xK_Escape ), spawn $ "xfce4-taskmanager")
+  , ((controlMask .|. mod1Mask, xK_Delete ), spawn $ "xkill")
 
   --SCREENSHOTS
   , ((0, xK_Print), spawn $ "flameshot gui")
