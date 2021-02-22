@@ -1,5 +1,5 @@
-Xft.dpi: 96
-rofi.dpi: 96
+Xft.dpi: 110
+rofi.dpi: 110
 
 ! special
 *.foreground:   #c5c8c6

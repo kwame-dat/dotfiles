@@ -52,7 +52,6 @@
     - [[#diminish][diminish]]
     - [[#powerline-evil][powerline-evil]]
     - [[#prettify-symbols][Prettify Symbols]]
-    - [[#frames-only-mode][frames-only-mode]]
   - [[#completion][COMPLETION]]
     - [[#company-mode][company-mode]]
     - [[#company-prescient][company-prescient]]
@@ -110,6 +109,7 @@
     - [[#music][music]]
     - [[#confluence][confluence]]
     - [[#slack][slack]]
+    - [[#reading-books-with-calibre][Reading books with calibre]]
   - [[#post-initialisation][Post Initialisation]]
 
 ** ORG FILE TWEAKS
@@ -542,9 +542,10 @@ going to install it and make sure it's loaded immediately.
      "A" #'evil-mc-make-cursor-in-visual-selection-end)
 
     (general-create-definer my-leader-def
-      :states '(normal visual motion)
+      :states '(normal insert visual motion emacs)
       :keymaps 'override
-      :prefix "SPC")
+      :prefix "SPC"
+      :global-prefix "C-SPC")
 
     (general-create-definer my-local-leader-def
       :keymaps 'override
@@ -956,11 +957,11 @@ This allows me to  uncompress a .zip file
       "h" 'dired-single-up-directory
       "l" 'dired-single-buffer))
 
-    (general-def 'normal 'dired-mode-map
-      "<left>" 'dired-single-up-directory
-      "<right>" 'dired-single-buffer
-      "C-e" 'dired-toggle-read-only
-      "." 'dired-hide-dotfiles-mode)
+  (general-def 'normal 'dired-mode-map
+    "<left>" 'dired-single-up-directory
+    "<right>" 'dired-single-buffer
+    "C-e" 'dired-toggle-read-only
+    "." 'dired-hide-dotfiles-mode)
 #+end_src
 
 **** dired-open
@@ -1016,8 +1017,8 @@ This allows me to  uncompress a .zip file
 ** UI
 *** font
 #+BEGIN_SRC emacs-lisp
-  (setq itechytony/default-font "Cascadia Code")
-  (setq itechytony/default-font-size 11)
+  (setq itechytony/default-font "JetBrains Mono")
+  (setq itechytony/default-font-size 9)
   (setq itechytony/current-font-size itechytony/default-font-size)
 
   (setq itechytony/font-change-increment 1.1)
@@ -1067,16 +1068,16 @@ This allows me to  uncompress a .zip file
 
 *** theme
 #+begin_src emacs-lisp
-  (use-package doom-themes
+  (use-package base16-theme
     :ensure t
     :demand t
-    :config (load-theme 'atom-one-dark))
+    :config (load-theme 'base16-tomorrow-night))
 #+end_src
 
 *** all-the-icons
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons
-    :diminish
+    :diminish (all-the-icons-mode)
     :demand t)
 
   (use-package all-the-icons-ivy
@@ -1190,7 +1191,7 @@ Nicer naming of buffers for files with identical names
 *** workspaces
 
 **** eyebrowse
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp :tangle yes
   (use-package eyebrowse
     :demand t
     :config (progn
@@ -1336,15 +1337,6 @@ Nicer naming of buffers for files with identical names
 #+BEGIN_SRC emacs-lisp
   (global-prettify-symbols-mode +1)
 #+END_SRC
-*** frames-only-mode
-#+begin_src emacs-lisp
-  (use-package frames-only-mode
-    :demand t
-    :ensure t
-    :config
-    (frames-only-mode))
-#+end_src
-
 ** COMPLETION
 *** company-mode
 #+BEGIN_SRC emacs-lisp
@@ -1895,7 +1887,7 @@ I like seeing a little downward-pointing arrow instead of the usual ellipsis
 #+end_src
 
 #+begin_src emacs-lisp
-  (setq org-hide-emphasis-markers t)
+  ;; (setq org-hide-emphasis-markers t)
 #+end_src
 
 Use syntax highlighting in source blocks while editing.
@@ -2350,10 +2342,10 @@ mu4e alert
           flycheck-phpcs-standard "PSR12")
     (global-flycheck-mode))
 
-  ;; (defun my-flycheck-setup ()
-  ;;   (flycheck-add-next-checker 'lsp 'php-phpcs)
+  (defun my-flycheck-setup ()
+    (flycheck-add-next-checker 'lsp 'php-phpcs 'php-md))
 
-  ;; (add-hook 'php-mode-hook #'my-flycheck-setup)
+  (add-hook 'php-mode-hook #'my-flycheck-setup)
 #+END_SRC
 
 *** flyspell
@@ -2970,6 +2962,17 @@ If you have an absolutely massive music library, it might be a good idea to get 
      :commands (alert)
      :init
      (setq alert-default-style 'notifier))
+#+end_src
+*** Reading books with calibre
+#+begin_src emacs-lisp
+  (use-package calibredb
+    :defer t
+    :init
+    (autoload 'calibredb "calibredb")
+    :config
+    (setq calibredb-root-dir "~/Documents/Personal/3Resources/Calibre Library")
+    (setq calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
+    (setq calibredb-library-alist '(("~/Documents/Personal/3Resources/Calibre Library"))))
 #+end_src
 
 ** Post Initialisation

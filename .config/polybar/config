@@ -14,7 +14,7 @@ inactive = #073642
 monitor = ${env:MONITOR:}
 dpi = ${xrdb:Xft.dpi:-1}
 width = 100%
-height = 40
+height = ${env:POLYBAR_HEIGHT}
 background = ${colors.background}
 foreground = ${colors.foreground}
 line-size = ${env:POLYBAR_LINE_SIZE}
@@ -24,7 +24,7 @@ module-margin-right = 1
 padding-left = 0
 padding-right = 0
 
-font-0 = "Cascadia Code:size=8"
+font-0 = "JetBrains Mono:size=8"
 font-1 = "FontAwesome:size=8"
 
 modules-left = ewmh cpu memory temperature
@@ -400,7 +400,7 @@ label-discharging = %percentage%%
 ; Available tokens:
 ;   %percentage% (default) - is set to 100 if full-at is reached
 ;   %percentage_raw%
-label-full = 
+label-full = 
 format-full-underline = ${colors.primary}
 
 ; Only applies if <ramp-capacity> is used
@@ -634,3 +634,4 @@ toggle-off-foreground = ${color.red}
 type = custom/script
 exec = ~/.config/polybar/scripts/vpn-openvpn-isrunning.sh
 interval = 5
+background = #FF0000
