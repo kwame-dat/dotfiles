@@ -70,3 +70,8 @@ deploy-storage.eliservice.co.uk https://jenkins.eandl.co.uk/job/storage.eliservi
 deploy-taxonomy.eliservice.co.uk https://jenkins.eandl.co.uk/job/taxonomy.eliservice.co.uk-ansible-live/build?delay=0sec
 deploy-theinsuranceemporium.co.uk https://jenkins.eandl.co.uk/job/theinsuranceemporium.co.uk-ansible-live/build?delay=0sec
 deploy-utils https://jenkins.eandl.co.uk/job/utils-cron-ansible-live/build?delay=0sec
+brokerassess https://brokerassess.cii.co.uk/go/assess/about/
+runscope https://www.runscope.com/radar/q771lyzzwzkf
+projects-2021 https://theinsuranceemporium.sharepoint.com/:p:/r/sites/Projects/_layouts/15/guestaccess.aspx?e=mJF625&share=EU185qVO7U5OkQOaMX-jQJkBY4EBuYWY3-H2xkOrpiS-Cg
+trellis-github https://github.com/roots/trellis
+vagrant-docs https://www.vagrantup.com/docs
