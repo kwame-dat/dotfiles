@@ -5,7 +5,7 @@ jira.eandl.co.uk https://jira.eandl.co.uk/secure/RapidBoard.jspa?rapidView=40&vi
 kibana.eandl.co.uk https://kibana.eandl.co.uk
 sharedpoint https://theinsuranceemporium.sharepoint.com/sites/DevelopmentTeam
 sprint https://jira.eandl.co.uk/secure/RapidBoard.jspa?rapidView=40&selectedIssue=ELICO-7292
-pr https://bitbucket.eandl.co.uk
+code-review https://bitbucket.eandl.co.uk
 docker.theinsuranceemporium.co.uk https://docker.theinsuranceemporium.co.uk/
 test.theinsuranceemporium.co.uk https://test.theinsuranceemporium.co.uk/
 staging.theinsuranceemporium.co.uk https://staging.theinsuranceemporium.co.uk/
