@@ -5,7 +5,7 @@ function fish_user_key_bindings
 end
 
 # Vpn
-abbr -a -g vpn sudo openvpn --config Connection.ovpn
+abbr -a -g vpn sudo openvpn --config ~/Documents/Work/3Resources/vpn/Connection.ovpn
 abbr -a -g kvpn sudo killall openvpn
 
 # General
