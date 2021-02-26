@@ -27,3 +27,7 @@ export QT_FONT_DPI=96
 
 export MPD_HOST="localhost"
 export MPD_PORT="6600"
+
+# Ruby
+export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
+export PATH="$PATH:$GEM_HOME/bin"
