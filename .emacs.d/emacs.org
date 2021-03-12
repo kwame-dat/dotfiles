@@ -22,7 +22,7 @@
   - [[#core][CORE]]
     - [[#exec-path-from-shell][exec-path-from-shell]]
     - [[#projectile][projectile]]
-    - [[#keep-emacsd-clean-no-littering][Keep .emacs.d clean =no-littering=]]
+    - [[#keep-emacsd-clean][Keep .emacs.d clean]]
     - [[#functions][functions]]
   - [[#keybindings][KEYBINDINGS]]
     - [[#core-keybindings][core-keybindings]]
@@ -36,6 +36,7 @@
     - [[#auto-saving-changed-files][Auto Saving Changed Files]]
   - [[#emacs][EMACS]]
     - [[#dired][dired]]
+    - [[#tramp][tramp]]
   - [[#ui][UI]]
     - [[#font][font]]
     - [[#theme][theme]]
@@ -49,8 +50,9 @@
     - [[#unicode-fonts][unicode-fonts]]
     - [[#ligatures][ligatures]]
     - [[#powerline][powerline]]
-    - [[#diminish][diminish]]
     - [[#powerline-evil][powerline-evil]]
+    - [[#airline-powerline-theme][airline-powerline theme]]
+    - [[#diminish][diminish]]
     - [[#prettify-symbols][Prettify Symbols]]
   - [[#completion][COMPLETION]]
     - [[#company-mode][company-mode]]
@@ -81,6 +83,7 @@
     - [[#org-mode][org-mode]]
   - [[#terminal][TERMINAL]]
     - [[#vterm][vterm]]
+    - [[#eshell][eshell]]
   - [[#checkers][CHECKERS]]
     - [[#flycheck][flycheck]]
     - [[#flyspell][flyspell]]
@@ -213,11 +216,6 @@ Disable certain byte compiler warnings to cut down on the noise.
   (setq custom-safe-themes t)
   (setq large-file-warning-threshold nil)
   (setq split-width-threshold nil)
-  (setq tramp-default-method "ssh")
-
-  (setq tramp-histfile-override "/tmp/.tramp")
-  (require 'tramp-cache)
-  (setq tramp-persistency-file-name "/tmp/.tramp")
 
   (show-paren-mode 1)
   (setq show-paren-delay 0)
@@ -247,7 +245,6 @@ Disable certain byte compiler warnings to cut down on the noise.
 #+begin_src emacs-lisp
   (global-hl-line-mode)
 #+end_src
-
 
 *** Package Management
 
@@ -324,12 +321,12 @@ previously compiled manually then all of the package initialization will still t
 ** CORE
 *** exec-path-from-shell
 #+BEGIN_SRC emacs-lisp
-  (use-package exec-path-from-shell
-    :demand t
-    :init
-    (setq exec-path-from-shell-check-startup-files nil))
-  (when (memq window-system '(mac ns))
-    (exec-path-from-shell-initialize))
+(use-package exec-path-from-shell
+  :demand t
+  :init
+  (setq exec-path-from-shell-check-startup-files nil))
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
 #+END_SRC
 
 *** projectile
@@ -343,30 +340,35 @@ going to install it and make sure it's loaded immediately.
     :ensure t
     :init
     (setq projectile-project-search-path '(
-                                           "~/Repo/Personal/3Resources"
-                                           "~/Repo/Work/3Resources"
                                            "~/Documents/Work/2Areas"
                                            "~/Documents/Personal/2Areas"
                                            "~/Documents/Joint/2Areas"
-                                           "~/Documents/Spiritual/1Projects"
-                                           "~/Documents/Work/1Projects"
+                                           "~/Documents/Spiritual/3Resources"
+                                           "~/Documents/Spiritual/2Areas"
                                            "~/Documents/Personal/1Projects"
                                            "~/Documents/Joint/1Projects"
+                                           "~/Documents/Spiritual/1Projects"
+                                           "~/Documents/Work/1Projects"
+                                           "~/Nextcloud/"
+                                           "~/Repo/Personal/3Resources"
+                                           "~/Repo/Personal/2Areas"
+                                           "~/Repo/Personal/1Projects"
+                                           "~/Repo/Work/3Resources"
                                            "~/Repo/Work/2Areas/misc"
                                            "~/Repo/Work/2Areas/modules"
                                            "~/Repo/Work/2Areas/services"
                                            "~/Repo/Work/2Areas/sites"
-                                           "~/Repo/Personal/2Areas"
-                                           "~/Repo/Personal/1Projects"
                                            "~/Repo/Work/1Projects"
-                                           "~/org"
                                            ))
     (setq projectile-completion-system 'ivy)
     (setq projectile-switch-project-action #'projectile-dired)
     (projectile-mode))
+
+  (defadvice projectile-project-root (around ignore-remote first activate)
+    (unless (file-remote-p default-directory) ad-do-it))
 #+END_SRC
 
-*** Keep .emacs.d clean =no-littering=
+*** Keep .emacs.d clean
 #+begin_src emacs-lisp
   ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
   (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
@@ -623,10 +625,10 @@ going to install it and make sure it's loaded immediately.
       "ft"  'counsel-tramp
 
       ;;; <leader> d --- documents/downloads
-      "dp1" '(lambda() (interactive) (find-file "~/Documents/personal/1Projects"))
-      "dp2" '(lambda() (interactive) (find-file "~/Documents/personal/2Areas"))
-      "dp3" '(lambda() (interactive) (find-file "~/Documents/personal/3Resources"))
-      "dp4" '(lambda() (interactive) (find-file "~/Documents/personal/4Archives"))
+      "dp1" '(lambda() (interactive) (find-file "~/Documents/Personal/1Projects"))
+      "dp2" '(lambda() (interactive) (find-file "~/Documents/Personal/2Areas"))
+      "dp3" '(lambda() (interactive) (find-file "~/Documents/Personal/3Resources"))
+      "dp4" '(lambda() (interactive) (find-file "~/Documents/Personal/4Archives"))
       "dw1" '(lambda() (interactive) (find-file "~/Documents/Work/1Projects"))
       "dw2" '(lambda() (interactive) (find-file "~/Documents/Work/2Areas"))
       "dw3" '(lambda() (interactive) (find-file "~/Documents/Work/3Resources"))
@@ -656,7 +658,6 @@ going to install it and make sure it's loaded immediately.
       "bz"   #'bury-buffer
 
       ;;; <leader> s --- search
-      "s." #'+itechytony/search-project-for-symbol-at-point
       "sb" #'swiper
       ;; "sd" #'+itechytony/search-cwd
       ;; "sD" #'+itechytony/search-other-cwd
@@ -667,14 +668,16 @@ going to install it and make sure it's loaded immediately.
       "sm" #'bookmark-jump
       "so" #'counsel-search
       ;; "sO" #'+lookup/online-select
-      "sk" #'counsel-dash
-      "sK" #'counsel-dash-at-point
+      "sd" #'counsel-dash
+      "sD" #'counsel-dash-at-point
       "sp" #'counsel-projectile-rg
+      "sP" #'+itechytony/search-project-for-symbol-at-point
+      "s." #'+itechytony/search-project-for-symbol-at-point
       ;; "sP" #'+itechytony/search-other-project
       "ss" #'swiper-isearch
       "sS" #'swiper-isearch-thing-at-point
-      "st" #'wordnut-search
-      "sT" #'synosaurus-choose-and-replace
+      "sw" #'wordnut-search
+      "sW" #'synosaurus-choose-and-replace
 
       ;;; <leader> g --- git
       "gR"  'vc-revert
@@ -711,13 +714,11 @@ going to install it and make sure it's loaded immediately.
       ;;; <leader> n --- notes
       "nf" '(lambda() (interactive) (counsel-find-file "~/org"))
       "n." '(lambda() (interactive) (counsel-find-file "~/org"))
-      "ni" '(lambda() (interactive) (find-file "~/org/personal/Inbox.org"))
-      "npt" '(lambda() (interactive) (find-file "~/org/personal/PTodo.org"))
-      "npn" '(lambda() (interactive) (find-file "~/org/personal/PNotes.org"))
-      "nps" '(lambda() (interactive) (find-file "~/org/personal/PSomeday.org"))
-      "nwt" '(lambda() (interactive) (find-file "~/org/work/WTodo.org"))
-      "nwn" '(lambda() (interactive) (find-file "~/org/work/WNotes.org"))
-      "nws" '(lambda() (interactive) (find-file "~/org/work/WSomeday.org"))
+      "ni" '(lambda() (interactive) (find-file "~/org/Inbox.org"))
+      "np" '(lambda() (interactive) (find-file "~/org/PTodo.org"))
+      "nw" '(lambda() (interactive) (find-file "~/org/WTodo.org"))
+      "ns" '(lambda() (interactive) (find-file "~/org/STodo.org"))
+      "nj" '(lambda() (interactive) (find-file "~/org/joint/JTodo.org"))
       "na" 'org-agenda
       "nd" 'itechytony/day-view
       "nci" 'org-pomodoro
@@ -762,7 +763,6 @@ going to install it and make sure it's loaded immediately.
     "C-h" 'evil-window-left
     "C-k" 'evil-window-up
     "C-l" 'evil-window-right)
-
 #+END_SRC
 
 *** which-key
@@ -785,13 +785,24 @@ Install, automatically load, and enable evil. It's like vim.
     :demand t
     :init
     (setq evil-want-keybinding nil)
+    (setq evil-undo-system 'undo-fu)
     (setq evil-want-C-u-scroll t)
     (setq evil-vsplit-window-right t)
     (setq evil-split-window-below t)
     (setq evil-want-abbrev-expand-on-insert-exit nil)
+    (setq evil-search-module 'evil-search)
     :ensure t
     :config
-    (evil-mode 1))
+    (evil-mode 1)
+    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+
+    ;; Use visual line motions even outside of visual-line-mode buffers
+    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+    (evil-set-initial-state 'messages-buffer-mode 'normal)
+    (evil-set-initial-state 'dashboard-mode 'normal))
 #+END_SRC
 
 **** evil-commentary
@@ -848,6 +859,18 @@ Undo stuff
     :demand t
     :init
     (global-undo-tree-mode 1))
+#+end_src
+**** undo-fu
+#+begin_src emacs-lisp
+  (use-package undo-fu
+    :diminish
+    :demand t)
+#+end_src
+**** undo-fu-session
+#+begin_src emacs-lisp
+  (use-package undo-fu-session
+    :diminish
+    :demand t)
 #+end_src
 **** hint-link
 #+begin_src emacs-lisp
@@ -983,7 +1006,8 @@ This allows me to  uncompress a .zip file
             ("mp3" . "mpv")
             ("mp4" . "mpv")
             ("pdf" . "zathura")
-            ;; ("epub" . "emacs")
+            ("docx" . "libreoffice")
+            ("epub" . "foliate")
             ("png" . "feh")
             ("webm" . "mpv")
             ("xls" . "gnumeric")
@@ -1005,20 +1029,36 @@ This allows me to  uncompress a .zip file
 **** all-the-icons-dired
 #+begin_src emacs-lisp
   (use-package all-the-icons-dired
+    :diminish
     :hook (dired-mode . all-the-icons-dired-mode))
 #+end_src
 **** dired-dotfiles
 #+begin_src emacs-lisp
-(use-package dired-hide-dotfiles
-  :config
-  (dired-hide-dotfiles-mode)
-  (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
+  (use-package dired-hide-dotfiles
+    :diminish
+    :config
+    (dired-hide-dotfiles-mode)
+    (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
+#+end_src
+*** tramp
+#+begin_src emacs-lisp
+  (setq tramp-default-method "ssh")
+  (require 'tramp-cache)
+  (setq tramp-persistency-file-name "/tmp/.tramp")
+  (setq tramp-histfile-override "/dev/null") 
+
+  (setq vc-ignore-dir-regexp
+        (format "\\(%s\\)\\|\\(%s\\)"
+                vc-ignore-dir-regexp
+                tramp-file-name-regexp))
+
+  (add-to-list 'tramp-remote-process-environment "HISTCONTROL=erasedups")
 #+end_src
 ** UI
 *** font
 #+BEGIN_SRC emacs-lisp
   (setq itechytony/default-font "JetBrains Mono")
-  (setq itechytony/default-font-size 9)
+  (setq itechytony/default-font-size 10)
   (setq itechytony/current-font-size itechytony/default-font-size)
 
   (setq itechytony/font-change-increment 1.1)
@@ -1068,10 +1108,10 @@ This allows me to  uncompress a .zip file
 
 *** theme
 #+begin_src emacs-lisp
-  (use-package base16-theme
+  (use-package doom-themes
     :ensure t
     :demand t
-    :config (load-theme 'base16-tomorrow-night))
+    :config (load-theme 'doom-palenight))
 #+end_src
 
 *** all-the-icons
@@ -1241,97 +1281,26 @@ Nicer naming of buffers for files with identical names
 #+end_src
 *** powerline
 #+begin_src emacs-lisp
-  ;; 
-  ;; #E1B61A
-  ;; (defface my-pl-segment1-active
-  ;;   '((t (:foreground "#000000" :background "#568bbf")))
-  ;;   "Powerline first segment active face.")
-  ;; (defface my-pl-segment1-inactive
-  ;;   '((t (:foreground "#CEBFF3" :background "#3A2E58")))
-  ;;   "Powerline first segment inactive face.")
-  ;; (defface my-pl-segment2-active
-  ;;   '((t (:foreground "#d7d7d7" :background "#8f3d3d")))
-  ;;   "Powerline second segment active face.")
-  ;; (defface my-pl-segment2-inactive
-  ;;   '((t (:foreground "#CEBFF3" :background "#181818")))
-  ;;   "Powerline second segment inactive face.")
-  ;; (defface my-pl-segment3-active
-  ;;   '((t (:foreground "#CEBFF3" :background "#181818")))
-  ;;   "Powerline third segment active face.")
-  ;; (defface my-pl-segment3-inactive
-  ;;   '((t (:foreground "#CEBFF3" :background "#181818")))
-  ;;   "Powerline third segment inactive face.")
-
-  ;; (defun air--powerline-default-theme ()
-  ;;   "Set up my custom Powerline with Evil indicators."
-  ;;   (setq-default mode-line-format
-  ;;                 '("%e"
-  ;;                   (:eval
-  ;;                    (let* ((active (powerline-selected-window-active))
-  ;;                           (seg1 (if active 'my-pl-segment1-active 'my-pl-segment1-inactive))
-  ;;                           (seg2 (if active 'my-pl-segment2-active 'my-pl-segment2-inactive))
-  ;;                           (seg3 (if active 'my-pl-segment3-active 'my-pl-segment3-inactive))
-  ;;                           (separator-left (intern (format "powerline-%s-%s"
-  ;;                                                           (powerline-current-separator)
-  ;;                                                           (car powerline-default-separator-dir))))
-  ;;                           (separator-right (intern (format "powerline-%s-%s"
-  ;;                                                            (powerline-current-separator)
-  ;;                                                            (cdr powerline-default-separator-dir))))
-  ;;                           (lhs (list (let ((evil-face (powerline-evil-face)))
-  ;;                                        (if evil-mode
-  ;;                                            (powerline-raw (powerline-evil-tag) evil-face)
-  ;;                                          ))
-  ;;                                      (if evil-mode
-  ;;                                          (funcall separator-left (powerline-evil-face) seg1))
-  ;;                                      (powerline-buffer-id seg1 'l)
-  ;;                                      (powerline-raw "[%*]" seg1 'l)
-  ;;                                      (when (and (boundp 'which-func-mode) which-func-mode)
-  ;;                                        (powerline-raw which-func-format seg1 'l))
-  ;;                                      (powerline-raw " " seg1)
-  ;;                                      (funcall separator-left seg1 seg2)
-  ;;                                      (when (boundp 'erc-modified-channels-object)
-  ;;                                        (powerline-raw erc-modified-channels-object seg2 'l))
-  ;;                                      (powerline-major-mode seg2 'l)
-  ;;                                      (powerline-process seg2)
-  ;;                                      (powerline-minor-modes seg2 'l)
-  ;;                                      (powerline-narrow seg2 'l)
-  ;;                                      (powerline-raw " " seg2)
-  ;;                                      (funcall separator-left seg2 seg3)
-  ;;                                      (powerline-vc seg3 'r)
-  ;;                                      (when (bound-and-true-p nyan-mode)
-  ;;                                        (powerline-raw (list (nyan-create)) seg3 'l))))
-  ;;                           (rhs (list (powerline-raw global-mode-string seg3 'r)
-  ;;                                      (funcall separator-right seg3 seg2)
-  ;;                                      (unless window-system
-  ;;                                        (powerline-raw (char-to-string #xe0a1) seg2 'l))
-  ;;                                      (powerline-raw "%4l" seg2 'l)
-  ;;                                      (powerline-raw ":" seg2 'l)
-  ;;                                      (powerline-raw "%3c" seg2 'r)
-  ;;                                      (funcall separator-right seg2 seg1)
-  ;;                                      (powerline-raw " " seg1)
-  ;;                                      (powerline-raw "%6p" seg1 'r)
-  ;;                                      (when powerline-display-hud
-  ;;                                        (powerline-hud seg1 seg3)))))
-  ;;                      (concat (powerline-render lhs)
-  ;;                              (powerline-fill seg3 (powerline-width rhs))
-  ;;                              (powerline-render rhs)))))))
-
   (use-package powerline
     :demand t
     :config
     (setq powerline-default-separator (if (display-graphic-p) 'arrow
                                         nil)))
-  ;; (air--powerline-default-theme)
-
-  (powerline-center-evil-theme)
+#+end_src
+*** powerline-evil
+#+begin_src emacs-lisp
+  (use-package powerline-evil
+    :demand t)
+#+end_src
+*** airline-powerline theme
+#+begin_src emacs-lisp
+  (use-package airline-themes
+    :demand t)
+  (load-theme 'airline-base16_nord t)
 #+end_src
 *** diminish
 #+begin_src emacs-lisp
   (use-package diminish)
-#+end_src
-*** powerline-evil
-#+begin_src emacs-lisp
-  (use-package powerline-evil)
 #+end_src
 *** Prettify Symbols
 #+BEGIN_SRC emacs-lisp
@@ -1759,6 +1728,7 @@ with richer versions. Let's install it!
           ledger-use-iso-dates nil))
 
   (use-package flycheck-ledger
+    :demand t
     :hook (ledger-mode . flycheck-mode))
 
   (use-package evil-ledger
@@ -1821,14 +1791,14 @@ with richer versions. Let's install it!
 
 *** ansible
 #+begin_src emacs-lisp
-  (use-package ansible)
-  (use-package ansible-doc)
-  (use-package jinja2-mode)
-  (use-package company-ansible)
+(use-package ansible)
+(use-package ansible-doc)
+(use-package jinja2-mode)
+(use-package company-ansible)
 
-  (use-package yaml-mode
-    :mode "Procfile\\'")
-  (add-hook 'yaml-mode-hook 'display-line-numbers-mode)
+(use-package yaml-mode
+  :mode "Procfile\\'")
+(add-hook 'yaml-mode-hook 'display-line-numbers-mode)
 #+end_src
 *** org-mode
 Let's include a newer version of org-mode than the one that is built in. We're going
@@ -1836,36 +1806,41 @@ to manually remove the org directories from the load path, to ensure the version
 want is prioritized instead.
 
 #+begin_src emacs-lisp
-  (use-package org
-    :diminish
-    :ensure org-plus-contrib
+(use-package org
+  :diminish
+  :ensure org-plus-contrib
 
-    :config
-    (require 'org-tempo)
+  :config
+  (setq org-src-fontify-natively t
+        org-src-window-setup 'current-window
+        org-src-strip-leading-and-trailing-blank-lines t
+        org-src-preserve-indentation t
+        org-src-tab-acts-natively t)
+  (require 'org-tempo)
 
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((R . t)
-       (emacs-lisp . t)
-       (latex . t)
-       (shell . t)
-       (ledger . t)
-       (python . t)
-       (sql . t)
-       (ruby . t)
-       (tmux . t)
-       (sqlite . t)))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((R . t)
+     (emacs-lisp . t)
+     (latex . t)
+     (shell . t)
+     (ledger . t)
+     (python . t)
+     (sql . t)
+     (ruby . t)
+     (tmux . t)
+     (sqlite . t)))
 
-    :custom-face
-    (variable-pitch ((t (:family "Cantarell"))))
-    (org-document-title ((t (:weight bold ))))
-    (org-level-1 ((t (:weight bold :height 1.3))))
-    (org-level-2 ((t (:weight normal :height 1.3))))
-    (org-level-3 ((t (:weight normal :height 1.3))))
-    (org-image-actual-width '(600)))
+  :custom-face
+  (variable-pitch ((t (:family "Cantarell"))))
+  (org-document-title ((t (:weight bold ))))
+  (org-level-1 ((t (:weight bold :height 1.3))))
+  (org-level-2 ((t (:weight normal :height 1.3))))
+  (org-level-3 ((t (:weight normal :height 1.3))))
+  (org-image-actual-width '(600)))
 
 
-  (eval-after-load 'org-indent '(diminish 'org-indent-mode))
+(eval-after-load 'org-indent '(diminish 'org-indent-mode))
 #+end_src
 
 I'd like the initial scratch buffer to be in org:
@@ -1887,7 +1862,7 @@ I like seeing a little downward-pointing arrow instead of the usual ellipsis
 #+end_src
 
 #+begin_src emacs-lisp
-  ;; (setq org-hide-emphasis-markers t)
+  (setq org-hide-emphasis-markers t)
 #+end_src
 
 Use syntax highlighting in source blocks while editing.
@@ -1918,7 +1893,7 @@ Don't indent newly expanded blocks, even if they're under a heading.
 #+end_src
 
 Automatically put quick capture into insert mode
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (add-hook 'org-capture-mode-hook 'evil-insert-state)
 #+end_src
 
@@ -1926,10 +1901,10 @@ Task Management & Agenda Views
 #+begin_src emacs-lisp
   (setq org-directory "~/org")
   (setq org-agenda-files (quote (
-                                 "~/org/personal/PTodo.org"
-                                 "~/org/spiritual/STodo.org"
+                                 "~/org/PTodo.org"
+                                 "~/org/STodo.org"
                                  "~/org/joint/JTodo.org"
-                                 "~/org/work/WTodo.org"
+                                 "~/org/WTodo.org"
                                  )))
 #+end_src
 
@@ -1967,20 +1942,18 @@ Refile targets configuration
 
   (setq org-capture-templates
         '(
-          ("i" "Inbox" entry (file "~/org/personal/Inbox.org")
+          ("i" "Inbox" entry (file "~/org/Inbox.org")
            "* TODO %?\n %i\n")
-          ("e" "Email" entry (file+headline "~/org/personal/Inbox.org" "Emails")
+          ("e" "Email" entry (file+headline "~/org/Inbox.org" "Emails")
            "* TODO [#A] Process Email %:fromname on %:subject\nSCHEDULED:%t\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+2d\"))\n:PROPERTIES:\n:CREATED: %U\n:END:\n %a" :immediate-finish t :prepend t)
-          ("p" "Project" entry (file+headline "~/org/personal/PTodo.org" "1Projects")
-           (file "~/org/personal/templates/new-project.org"))
-          ("w" "workProject" entry (file+headline "~/org/work/WTodo.org" "1Projects")
-           (file "~/org/personal/templates/new-project.org"))
+          ("p" "Project" entry (file+headline "~/org/PTodo.org" "1Projects")
+           (file "~/org/templates/new-project.org"))
+          ("w" "workProject" entry (file+headline "~/org/WTodo.org" "1Projects")
+           (file "~/org/templates/new-project.org"))
           ("m" "MeetingWorkbook" entry (file+headline "~/org/spiritual/SNotes.org" "Life & Ministry Workbook Comments")
            (file "~/org/spiritual/templates/workbook.org"))
-          ("s" "Someday" entry (file+headline "~/org/personal/PSomeday.org" "Someday")
+          ("s" "Someday" entry (file+headline "~/org/PSomeday.org" "Someday")
            "* SOMEDAY %?\n")))
-
-
 #+END_SRC
 
 My leader keybinding for org mode
@@ -2019,7 +1992,7 @@ Manage my contacts with org-mode
   (use-package org-contacts
     :ensure nil
     :after org
-    :custom (org-contacts-files '("~/org/personal/contacts/contacts.org")))
+    :custom (org-contacts-files '("~/org/contacts/contacts.org")))
 #+end_src
 
 **** org-gcal
@@ -2120,7 +2093,7 @@ can ensure that I always have an up to date project list.
 #+BEGIN_SRC emacs-lisp
   (defun go-to-projects ()
     (interactive)
-    (find-file "~/org/personal/PTodo.org")
+    (find-file "~/org/PTodo.org")
     (widen)
     (beginning-of-buffer)
     (re-search-forward "* Projects")
@@ -2163,7 +2136,7 @@ to my “Projects” subtree.
 #+BEGIN_SRC emacs-lisp
   (defun go-to-areas ()
     (interactive)
-    (find-file "~/org/personal/PTodo.org")
+    (find-file "~/org/PTodo.org")
     (widen)
     (beginning-of-buffer)
     (re-search-forward "* Areas")
@@ -2181,7 +2154,7 @@ to my “Projects” subtree.
   (defun my-new-daily-review ()
     (interactive)
     (let ((org-capture-templates '(("d" "Review: Daily Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                    (file "~/org/personal/reviews/daily-review-template.org")))))
+                                    (file "~/org/reviews/daily-review-template.org")))))
       (progn
         (org-capture nil "d")
         (org-capture-finalize t)
@@ -2193,7 +2166,7 @@ to my “Projects” subtree.
   (defun my-new-weekly-review ()
     (interactive)
     (let ((org-capture-templates '(("w" "Review: Weekly Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                    (file "~/org/personal/reviews/weekly-review-template.org")))))
+                                    (file "~/org/reviews/weekly-review-template.org")))))
       (progn
         (org-capture nil "w")
         (org-capture-finalize t)
@@ -2205,7 +2178,7 @@ to my “Projects” subtree.
   (defun my-new-monthly-review ()
     (interactive)
     (let ((org-capture-templates '(("m" "Review: Monthly Review" entry (file+olp+datetree "/tmp/reviews.org")
-                                    (file "~/org/personal/reviews/monthly-review-template.org")))))
+                                    (file "~/org/reviews/monthly-review-template.org")))))
       (progn
         (org-capture nil "m")
         (org-capture-finalize t)
@@ -2260,41 +2233,47 @@ mu4e alert
 
   (use-package vterm
     :ensure t
+
     :config
+    (setq vterm-max-scrollback 10000)
+    (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")  ;; Set this to match your custom shell prompt
+
     (setq vterm-shell "/usr/bin/fish")
     (setq vterm-kill-buffer-on-exit t)
-    (add-hook 'vterm-mode-hook
-              (lambda ()
-                (setq-local evil-insert-state-cursor 'box)
-                (evil-insert-state)))
-    (define-key vterm-mode-map [return]                      #'vterm-send-return)
 
-    (setq vterm-keymap-exceptions nil)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-e")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-f")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-a")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-v")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-b")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-w")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-u")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-n")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-m")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-p")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-j")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-k")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-r")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-t")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-g")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-c")      #'vterm--self-insert)
-    (evil-define-key 'insert vterm-mode-map (kbd "C-SPC")    #'vterm--self-insert)
-    (evil-define-key 'normal vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
-    (evil-define-key 'normal vterm-mode-map (kbd ",c")       #'multi-libvterm)
-    (evil-define-key 'normal vterm-mode-map (kbd ",n")       #'multi-libvterm-next)
-    (evil-define-key 'normal vterm-mode-map (kbd ",p")       #'multi-libvterm-prev)
-    (evil-define-key 'normal vterm-mode-map (kbd "i")        #'evil-insert-resume)
-    (evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
-    (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume))
+    ;; (add-hook 'vterm-mode-hook
+    ;;           (lambda ()
+    ;;             (setq-local evil-insert-state-cursor 'box)
+    ;;             (evil-insert-state)))
+    ;; (define-key vterm-mode-map [return]                      #'vterm-send-return)
+
+    ;; (setq vterm-keymap-exceptions nil)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-e")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-f")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-a")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-v")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-b")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-w")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-u")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-n")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-m")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-p")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-j")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-k")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-r")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-t")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-g")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-c")      #'vterm--self-insert)
+    ;; (evil-define-key 'insert vterm-mode-map (kbd "C-SPC")    #'vterm--self-insert)
+    ;; (evil-define-key 'normal vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
+    ;; (evil-define-key 'normal vterm-mode-map (kbd ",c")       #'multi-libvterm)
+    ;; (evil-define-key 'normal vterm-mode-map (kbd ",n")       #'multi-libvterm-next)
+    ;; (evil-define-key 'normal vterm-mode-map (kbd ",p")       #'multi-libvterm-prev)
+    ;; (evil-define-key 'normal vterm-mode-map (kbd "i")        #'evil-insert-resume)
+    ;; (evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
+    ;; (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume)
+    )
 
   (add-hook 'vterm-mode-hook (lambda () (setq global-hl-line-mode nil)))
 
@@ -2322,10 +2301,40 @@ mu4e alert
    '(shell-pop-shell-type (quote ("vterm" "*vterm*" (lambda nil (vterm)))))
    '(shell-pop-window-size 50)
    '(shell-pop-full-span t)
-   '(shell-pop-term-shell "/usr/bin/fish")
+   '(shell-pop-term-shell "/usr/bash")
    '(shell-pop-window-position "bottom"))
 #+END_SRC 
+*** eshell
+#+begin_src emacs-lisp
+(defun efs/configure-eshell ()
+  ;; Save command history when commands are entered
+  (add-hook 'eshell-pre-command-hook 'eshell-save-some-history)
 
+  ;; Truncate buffer for performance
+  (add-to-list 'eshell-output-filter-functions 'eshell-truncate-buffer)
+
+  ;; Bind some useful keys for evil-mode
+  (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'counsel-esh-history)
+  (evil-define-key '(normal insert visual) eshell-mode-map (kbd "<home>") 'eshell-bol)
+  (evil-normalize-keymaps)
+
+  (setq eshell-history-size         10000
+        eshell-buffer-maximum-lines 10000
+        eshell-hist-ignoredups t
+        eshell-scroll-to-bottom-on-input t))
+
+(use-package eshell-git-prompt)
+
+(use-package eshell
+  :hook (eshell-first-time-mode . efs/configure-eshell)
+  :config
+
+  (with-eval-after-load 'esh-opt
+    (setq eshell-destroy-buffer-when-process-dies t)
+    (setq eshell-visual-commands '("htop" "zsh" "vim")))
+
+  (eshell-git-prompt-use-theme 'powerline))
+#+end_src
 ** CHECKERS
 *** flycheck
 #+BEGIN_SRC emacs-lisp
@@ -2823,93 +2832,7 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
     :init
     (setq alert-default-style 'notifier))
 #+END_SRC
-*** music
-**** emms
-#+begin_src emacs-lisp
-  (use-package emms
-    :ensure t
-    :config
-    (require 'emms-setup)
-    (require 'emms-history)
-    (emms-all)
-    (emms-default-players)
-    (setq emms-source-file-default-directory "~/Music/Tony"
-          emms-info-functions '(emms-info-tinytag)
-          emms-browser-covers 'emms-browser-cache-thumbnail-async
-          emms-playlist-buffer-name "*Music*")
-    :bind
-    (("<f5>" . emms-browser)
-     ("<M-f5>" . emms)
-     ("<XF86AudioPrev>" . emms-previous)
-     ("<XF86AudioNext>" . emms-next)
-     ("<XF86AudioPlay>" . emms-pause)))
-
-
-
-  ;; (use-package emms
-  ;;   :ensure t
-  ;;   :config
-  ;;   (require 'emms-setup)
-  ;;   (require 'emms-player-mpd)
-  ;;   (emms-all) ; don't change this to values you see on stackoverflow questions if you expect emms to work
-  ;;   (setq emms-seek-seconds 5)
-  ;;   (setq emms-player-list '(emms-player-mpd))
-  ;;   (setq emms-info-functions '(emms-info-mpd))
-  ;;   (setq emms-player-mpd-server-name "localhost")
-  ;;   (setq emms-player-mpd-server-port "6600")
-  ;;   (setq emms-directory "~/Music/Tony")
-  ;;   :bind
-  ;;   ("s-m p" . emms)
-  ;;   ("s-m b" . emms-smart-browse)
-  ;;   ("s-m r" . emms-player-mpd-update-all-reset-cache)
-  ;;   ("<XF86AudioPrev>" . emms-previous)
-  ;;   ("<XF86AudioNext>" . emms-next)
-  ;;   ("<XF86AudioPlay>" . emms-pause)
-  ;;   ("<XF86AudioStop>" . emms-stop))
-#+end_src
-**** MPC Setup
-Setting the default port
-We use non-default settings for the socket, to use the built in mpc functionality we need to set up a variable. Adjust according to your setup.
-
-#+begin_src emacs-lisp
-(setq mpc-host "localhost:6601")
-#+end_src>
-**** Some more fun stuff
-Starting the daemon from within emacs
-If you have an absolutely massive music library, it might be a good idea to get rid of mpc-update and only invoke it manually when needed.
-
-#+begin_src emacs-lisp
-  (defun mpd/start-music-daemon ()
-    "Start MPD, connects to it and syncs the metadata cache."
-    (interactive)
-    (shell-command "mpd")
-    (mpd/update-database)
-    (emms-player-mpd-connect)
-    (emms-cache-set-from-mpd-all)
-    (message "MPD Started!"))
-  (global-set-key (kbd "s-m c") 'mpd/start-music-daemon)
-#+end_src
-
-**** Killing the daemon from within emacs
-#+begin_src emacs-lisp
-  (defun mpd/kill-music-daemon ()
-    "Stops playback and kill the music daemon."
-    (interactive)
-    (emms-stop)
-    (call-process "killall" nil nil nil "mpd")
-    (message "MPD Killed!"))
-  (global-set-key (kbd "s-m k") 'mpd/kill-music-daemon)
-#+end_src
-
-**** Updating the database easily.
-#+begin_src emacs-lisp
-  (defun mpd/update-database ()
-    "Updates the MPD database synchronously."
-    (interactive)
-    (call-process "mpc" nil nil nil "update")
-    (message "MPD Database Updated!"))
-  (global-set-key (kbd "s-m u") 'mpd/update-database)
-#+end_src
+*** TODO music
 *** confluence
 #+begin_src emacs-lisp
   (setq confluence-url "https://confluence.eandl.co.uk/confluence/rpc/xmlrpc")
@@ -2966,13 +2889,12 @@ If you have an absolutely massive music library, it might be a good idea to get 
 *** Reading books with calibre
 #+begin_src emacs-lisp
   (use-package calibredb
-    :defer t
     :init
     (autoload 'calibredb "calibredb")
     :config
-    (setq calibredb-root-dir "~/Documents/Personal/3Resources/Calibre Library")
+    (setq calibredb-root-dir "~/Documents/Spiritual/3Resources/Library")
     (setq calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
-    (setq calibredb-library-alist '(("~/Documents/Personal/3Resources/Calibre Library"))))
+    (setq calibredb-library-alist '(("~/Documents/3Resources/Calibre Library"))))
 #+end_src
 
 ** Post Initialisation
