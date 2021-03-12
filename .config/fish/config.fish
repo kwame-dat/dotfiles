@@ -1,11 +1,8 @@
 set fish_greeting
-
-function fish_user_key_bindings
-  fish_vi_key_bindings
-end
+set -U fish_key_bindings fish_default_key_bindings
 
 # Vpn
-abbr -a -g vpn sudo openvpn --config ~/Documents/Work/3Resources/vpn/Connection.ovpn
+abbr -a -g cvpn sudo openvpn --config ~/Documents/Work/3Resources/vpn/Connection.ovpn
 abbr -a -g kvpn sudo killall openvpn
 
 # General
