@@ -11,24 +11,27 @@ abbr -a -g o open .
 abbr -a -g ckh rm -rf ~/.ssh/known_hosts
 abbr -a -g getKey pbcopy < ~/.ssh/id_rsa.pub
 
-abbr -a -g r1 cd ~/Repo/Work/1Projects
-abbr -a -g r2 cd ~/Repo/Work/2Areas
-abbr -a -g r3 cd ~/Repo/Work/3Resources
-abbr -a -g r4 cd ~/Repo/Work/4Archives
-abbr -a -g rr1 cd ~/Repo/Personal/1Projects
-abbr -a -g rr2 cd ~/Repo/Personal/2Areas
-abbr -a -g rr3 cd ~/Repo/Personal/3Resources
-abbr -a -g rr4 cd ~/Repo/Personal/4Archives
-abbr -a -g d cd ~/Downloads
-abbr -a -g dd cd ~/Documents
-abbr -a -g d1 cd ~/Documents/Work/1Projects
-abbr -a -g d2 cd ~/Documents/Work/2Areas
-abbr -a -g d3 cd ~/Documents/Work/3Resources
-abbr -a -g d4 cd ~/Documents/Work/4Archives
-abbr -a -g dd1 cd ~/Documents/Personal/1Projects
-abbr -a -g dd2 cd ~/Documents/Personal/2Areas
-abbr -a -g dd3 cd ~/Documents/Personal/3Resources
-abbr -a -g dd4 cd ~/Documents/Personal/4Archives
+abbr -a -g f1 cd ~/Repo/Personal/1Projects
+abbr -a -g f2 cd ~/Repo/Personal/2Areas
+abbr -a -g f3 cd ~/Repo/Personal/3Resources
+abbr -a -g f4 cd ~/Repo/Personal/4Archives
+
+abbr -a -g f6 cd ~/Repo/Work/1Projects
+abbr -a -g f7 cd ~/Repo/Work/2Areas
+abbr -a -g f8 cd ~/Repo/Work/3Resources
+abbr -a -g f9 cd ~/Repo/Work/4Archives
+
+abbr -a -g d1 cd ~/Documents/Personal/1Projects
+abbr -a -g d2 cd ~/Documents/Personal/2Areas
+abbr -a -g d3 cd ~/Documents/Personal/3Resources
+abbr -a -g d4 cd ~/Documents/Personal/4Archives
+abbr -a -g d5 cd ~/Downloads
+
+abbr -a -g d6 cd ~/Documents/Work/1Projects
+abbr -a -g d7 cd ~/Documents/Work/2Areas
+abbr -a -g d8 cd ~/Documents/Work/3Resources
+abbr -a -g d9 cd ~/Documents/Work/4Archives
+abbr -a -g d0 cd ~/Documents
 
 # Composer
 abbr -a -g cu composer update
