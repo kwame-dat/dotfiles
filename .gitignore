@@ -5,6 +5,7 @@
 !.emacs.d/README.md
 !.emacs.d/Makefile
 !.emacs.d/init.el
+!.emacs.d/manual
 !.emacs.d/resources
 !.emacs.d/snippets
 /.config/gtk-3.0/bookmarks
