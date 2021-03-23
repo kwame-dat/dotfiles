@@ -9,7 +9,7 @@ iface="${BLOCK_INSTANCE}"
 iface="${IFACE:-$iface}"
 dt="${DT:-3}"
 unit="${UNIT:-Mb}"
-LABEL="${LABEL:  }" # down arrow up arrow
+LABEL="${LABEL: }" # down arrow up arrow
 printf_command="${PRINTF_COMMAND:-"printf \"${LABEL}%-5.1f/%5.1f %s/s\\n\", rx, wx, unit;"}"
 
 function default_interface {
@@ -63,14 +63,14 @@ while [ -z "$iface" ]; do
 done
 
 case "$unit" in
-    Kb|Kbit|Kbits)   bytes_per_unit=$((1024 / 8));;
-    KB|KByte|KBytes) bytes_per_unit=$((1024));;
-    Mb|Mbit|Mbits)   bytes_per_unit=$((1024 * 1024 / 8));;
-    MB|MByte|MBytes) bytes_per_unit=$((1024 * 1024));;
-    Gb|Gbit|Gbits)   bytes_per_unit=$((1024 * 1024 * 1024 / 8));;
-    GB|GByte|GBytes) bytes_per_unit=$((1024 * 1024 * 1024));;
-    Tb|Tbit|Tbits)   bytes_per_unit=$((1024 * 1024 * 1024 * 1024 / 8));;
-    TB|TByte|TBytes) bytes_per_unit=$((1024 * 1024 * 1024 * 1024));;
+    kb|Kbit|Kbits)   bytes_per_unit=$((1024 / 8));;
+    kB|KByte|KBytes) bytes_per_unit=$((1024));;
+    mb|Mbit|Mbits)   bytes_per_unit=$((1024 * 1024 / 8));;
+    mB|MByte|MBytes) bytes_per_unit=$((1024 * 1024));;
+    gb|Gbit|Gbits)   bytes_per_unit=$((1024 * 1024 * 1024 / 8));;
+    gB|GByte|GBytes) bytes_per_unit=$((1024 * 1024 * 1024));;
+    tb|Tbit|Tbits)   bytes_per_unit=$((1024 * 1024 * 1024 * 1024 / 8));;
+    tB|TByte|TBytes) bytes_per_unit=$((1024 * 1024 * 1024 * 1024));;
     *) echo Bad unit "$unit" && exit 1;;
 esac
 
