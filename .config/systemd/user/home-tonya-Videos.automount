@@ -3,10 +3,10 @@
   Requires=network-online.target
   After=network-online.service
 
-[Mount]
+[Automount]
   What=//192.168.1.3/Videos
   Where=/home/tonya/Videos
-  Options=_netdev,credentials=/etc/samba/credentials/music-share,iocharset=utf8,vers=2.0,file_mode=0777
+  Options=_netdev,credentials=/etc/samba/credentials/music-share,iocharset=utf8,vers=2.0,file_mode=0777,dir_mode=0777
   Type=cifs
 
 [Install]
