@@ -54,6 +54,7 @@
     - [[#airline-powerline-theme][airline-powerline theme]]
     - [[#diminish][diminish]]
     - [[#prettify-symbols][Prettify Symbols]]
+    - [[#tweak-mini-buffer][tweak mini buffer]]
   - [[#completion][COMPLETION]]
     - [[#company-mode][company-mode]]
     - [[#company-prescient][company-prescient]]
@@ -454,6 +455,7 @@ going to install it and make sure it's loaded immediately.
   (counsel-rg
    (substring-no-properties (or (thing-at-point 'symbol) ""))))
 #+END_SRC
+
 ** KEYBINDINGS
 *** core-keybindings
 #+BEGIN_SRC emacs-lisp
@@ -494,6 +496,16 @@ going to install it and make sure it's loaded immediately.
 (global-set-key (kbd "H-k") 'kill-buffer)
 (global-set-key (kbd "H-x") 'kill-region)
 (global-set-key (kbd "H-s") 'save-buffer)
+
+(global-set-key (kbd "H-1") 'eyebrowse-switch-to-window-config-1)
+(global-set-key (kbd "H-2") 'eyebrowse-switch-to-window-config-2)
+(global-set-key (kbd "H-3") 'eyebrowse-switch-to-window-config-3)
+(global-set-key (kbd "H-4") 'eyebrowse-switch-to-window-config-4)
+(global-set-key (kbd "H-5") 'eyebrowse-switch-to-window-config-5)
+(global-set-key (kbd "H-6") 'eyebrowse-switch-to-window-config-6)
+(global-set-key (kbd "H-7") 'eyebrowse-switch-to-window-config-7)
+(global-set-key (kbd "H-8") 'eyebrowse-switch-to-window-config-8)
+(global-set-key (kbd "H-9") 'eyebrowse-switch-to-window-config-9)
 #+END_SRC
 
 *** general
@@ -813,6 +825,7 @@ Install, automatically load, and enable evil. It's like vim.
   :config
   (evil-commentary-mode))
 #+end_src
+
 **** evil-collection
 Install =evil-collection=, which provides evil-friendly bindings for many modes.
 
@@ -826,6 +839,7 @@ Install =evil-collection=, which provides evil-friendly bindings for many modes.
   (setq evil-collection-want-unimpaired-p nil)
   (evil-collection-init))
 #+end_src
+
 **** evil-surround
 Enable =surround= everywhere.
 
@@ -850,6 +864,7 @@ Use =evil= with org agendas.
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 #+end_src
+
 **** undo-tree
 Undo stuff
 #+begin_src emacs-lisp
@@ -859,18 +874,21 @@ Undo stuff
   :init
   (global-undo-tree-mode 1))
 #+end_src
+
 **** undo-fu
 #+begin_src emacs-lisp
 (use-package undo-fu
   :diminish
   :demand t)
 #+end_src
+
 **** undo-fu-session
 #+begin_src emacs-lisp
 (use-package undo-fu-session
   :diminish
   :demand t)
 #+end_src
+
 **** hint-link
 #+begin_src emacs-lisp
 (use-package link-hint
@@ -889,6 +907,7 @@ Undo stuff
         '("~/.emacs.d/snippets"))
   (yas-global-mode 1))
 #+END_SRC
+
 **** yasnippet-snippets
 Install some snippets collections
 #+begin_src emacs-lisp
@@ -928,10 +947,12 @@ Install some snippets collections
 (use-package evil-multiedit
   :ensure t)
 #+END_SRC
+
 *** Edit Indirect
 #+begin_src emacs-lisp :tangle yes
 (use-package edit-indirect)
 #+end_src
+
 *** Auto Saving Changed Files
 #+begin_src emacs-lisp
 (use-package super-save
@@ -967,6 +988,7 @@ This allows me to  uncompress a .zip file
   '(add-to-list 'dired-compress-file-suffixes 
                 '("\\.zip\\'" ".zip" "unzip")))
 #+END_SRC
+
 **** dired
 #+begin_src emacs-lisp
 (use-package dired
@@ -1021,16 +1043,19 @@ This allows me to  uncompress a .zip file
   :config
   (dired-async-mode 1))
 #+end_src
+
 **** dired-single
 #+begin_src emacs-lisp
 (use-package dired-single)
 #+end_src
+
 **** all-the-icons-dired
 #+begin_src emacs-lisp
 (use-package all-the-icons-dired
   :diminish
   :hook (dired-mode . all-the-icons-dired-mode))
 #+end_src
+
 **** dired-dotfiles
 #+begin_src emacs-lisp
 (use-package dired-hide-dotfiles
@@ -1039,6 +1064,7 @@ This allows me to  uncompress a .zip file
   (dired-hide-dotfiles-mode)
   (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
 #+end_src
+
 *** tramp
 #+begin_src emacs-lisp
 (setq tramp-default-method "ssh")
@@ -1053,10 +1079,12 @@ This allows me to  uncompress a .zip file
 
 (add-to-list 'tramp-remote-process-environment "HISTCONTROL=erasedups")
 #+end_src
+
 ** UI
 *** font
 #+BEGIN_SRC emacs-lisp
-(setq itechytony/default-font "JetBrains Mono")
+(setq-default line-spacing 0.5)
+(setq itechytony/default-font "Cascadia Code")
 (setq itechytony/default-font-size 10)
 (setq itechytony/current-font-size itechytony/default-font-size)
 
@@ -1110,7 +1138,7 @@ This allows me to  uncompress a .zip file
 (use-package doom-themes
   :ensure t
   :demand t
-  :config (load-theme 'doom-palenight))
+  :config (load-theme 'doom-tomorrow-night))
 #+end_src
 
 *** all-the-icons
@@ -1243,11 +1271,13 @@ Nicer naming of buffers for files with identical names
 (use-package emojify
   :hook (after-init . global-emojify-mode))
 #+end_src
+
 *** unicode-fonts
 #+begin_src emacs-lisp :tangle yes
 (use-package unicode-fonts
   :ensure t)
 #+end_src
+
 *** ligatures
 #+begin_src emacs-lisp
 (use-package ligature
@@ -1278,6 +1308,7 @@ Nicer naming of buffers for files with identical names
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 #+end_src
+
 *** powerline
 #+begin_src emacs-lisp
 (use-package powerline
@@ -1286,25 +1317,39 @@ Nicer naming of buffers for files with identical names
   (setq powerline-default-separator (if (display-graphic-p) 'arrow
                                       nil)))
 #+end_src
+
 *** powerline-evil
 #+begin_src emacs-lisp
 (use-package powerline-evil
   :demand t)
 #+end_src
+
 *** airline-powerline theme
 #+begin_src emacs-lisp
 (use-package airline-themes
   :demand t)
-(load-theme 'airline-base16_nord t)
+(load-theme 'airline-base16_tomorrow t)
 #+end_src
+
 *** diminish
 #+begin_src emacs-lisp
 (use-package diminish)
 #+end_src
+
 *** Prettify Symbols
 #+BEGIN_SRC emacs-lisp
 (global-prettify-symbols-mode +1)
 #+END_SRC
+
+*** tweak mini buffer
+#+begin_src emacs-lisp
+(defun my-minibuffer-setup ()
+       (set (make-local-variable 'face-remapping-alist)
+          '((default :height 1.3))))
+
+(add-hook 'minibuffer-setup-hook 'my-minibuffer-setup)
+#+end_src
+
 ** COMPLETION
 *** company-mode
 #+BEGIN_SRC emacs-lisp
@@ -1571,6 +1616,7 @@ with richer versions. Let's install it!
 ;;(put 'evil-ex-history 'history-length 50)
 ;;(put 'kill-ring 'history-length 25))
 #+end_src
+
 ** LANG
 *** php
 #+BEGIN_SRC emacs-lisp
@@ -1705,6 +1751,7 @@ with richer versions. Let's install it!
   :config
   (setq scss-compile-at-save nil))
 #+END_SRC
+
 *** less
 #+BEGIN_SRC emacs-lisp
 (use-package less-css-mode)
@@ -1714,6 +1761,7 @@ with richer versions. Let's install it!
 #+BEGIN_SRC emacs-lisp
 (use-package haskell-mode)
 #+END_SRC
+
 *** ledger
 
 #+BEGIN_SRC emacs-lisp
@@ -1762,7 +1810,10 @@ with richer versions. Let's install it!
      
 *** restclient
 #+BEGIN_SRC emacs-lisp
-(use-package restclient)
+(use-package restclient
+  :demand t)
+(use-package company-restclient
+  :demand t)
 #+END_SRC
 
 *** csv
@@ -1799,6 +1850,7 @@ with richer versions. Let's install it!
   :mode "Procfile\\'")
 (add-hook 'yaml-mode-hook 'display-line-numbers-mode)
 #+end_src
+
 *** org-mode
 Let's include a newer version of org-mode than the one that is built in. We're going
 to manually remove the org directories from the load path, to ensure the version we
@@ -2036,8 +2088,8 @@ Manage my contacts with org-mode
 (use-package ox-slack
   :demand t
   :init (add-to-list 'org-export-backends 'slack))
-
 #+end_src
+
 **** ox-twbs
 #+begin_src emacs-lisp
 (use-package ox-twbs
@@ -2207,7 +2259,9 @@ package that automatically generates an up to date table of contents for us.
 
 mu4e alert
 #+BEGIN_SRC emacs-lisp
-(use-package mu4e-alert)
+(use-package mu4e-alert
+  :ensure t
+  :demand t)
 #+END_SRC
 
 ** TERMINAL
@@ -2303,6 +2357,7 @@ mu4e alert
  '(shell-pop-term-shell "/usr/bash")
  '(shell-pop-window-position "bottom"))
 #+END_SRC 
+
 *** eshell
 #+begin_src emacs-lisp
 (defun efs/configure-eshell ()
@@ -2332,8 +2387,9 @@ mu4e alert
     (setq eshell-destroy-buffer-when-process-dies t)
     (setq eshell-visual-commands '("htop" "zsh" "vim")))
 
-  (eshell-git-prompt-use-theme 'powerline))
+  (eshell-git-prompt-use-theme 'simple))
 #+end_src
+
 ** CHECKERS
 *** flycheck
 #+BEGIN_SRC emacs-lisp
@@ -2414,6 +2470,7 @@ mu4e alert
 (use-package docker
   :ensure t)
 #+END_SRC
+
 *** vagrant
 #+begin_src emacs-lisp
 (use-package vagrant
@@ -2649,6 +2706,7 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
   :config
   (setq dash-docs-enable-debugging nil))
 #+end_src
+
 ** EMAIL
 *** mu4e=
 #+BEGIN_SRC emacs-lisp
@@ -2824,6 +2882,7 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
     (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
     ))) 
 #+end_src
+
 *** alert
 #+BEGIN_SRC emacs-lisp
 (use-package alert
@@ -2831,6 +2890,7 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
   :init
   (setq alert-default-style 'notifier))
 #+END_SRC
+
 *** TODO music
 *** confluence
 #+begin_src emacs-lisp
@@ -2838,6 +2898,7 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
 (use-package confluence
   :ensure t)
 #+end_src
+
 *** slack
 #+begin_src emacs-lisp
 (use-package slack
@@ -2885,6 +2946,7 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
   :init
   (setq alert-default-style 'notifier))
 #+end_src
+
 ** Post Initialisation
 Let's lower our GC thresholds back down to a sane level.
 
