@@ -30,7 +30,6 @@ import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.IndependentScreens
 import XMonad.Layout.NoFrillsDecoration
 import XMonad.Layout.CenteredMaster(centerMaster)
-import XMonad.Layout.Reflect
 
 import Graphics.X11.ExtraTypes.XF86
 import qualified XMonad.StackSet as W
@@ -105,9 +104,9 @@ myWorkspaces = [
     "\61501",
     "\61888",
     "\62043",
-    "\62003",
     "\61485",
     "\61723",
+    "\62003",
     "\61705"
     ]
 
@@ -133,42 +132,38 @@ myManageHook = composeAll
     , resource  =? "kdesktop"                                --> doIgnore
     , className =? "qutebrowser"                             --> doShift ( myWorkspaces !! 0 )
     , className =? "Google-chrome"                           --> doShift ( myWorkspaces !! 0 )
-    , className =? "Vivaldi-stable"                          --> doShift ( myWorkspaces !! 0 )
-    , className =? "Chromium"                                --> doShift ( myWorkspaces !! 0 )
     , className =? "Brave-browser"                           --> doShift ( myWorkspaces !! 0 )
     , className =? "firefox"                                 --> doShift ( myWorkspaces !! 0 )
     , className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )
     , className =? "jetbrains-phpstorm"                      --> doShift ( myWorkspaces !! 1 )
     , className =? "Slack"                                   --> doShift ( myWorkspaces !! 2 )
+    , className =? "TelegramDesktop"                         --> doShift ( myWorkspaces !! 2 )
+    , className =? "whatsapp-nativefier-d40211"              --> doShift ( myWorkspaces !! 2 )
     , className =? "Signal"                                  --> doShift ( myWorkspaces !! 2 )
-    , className =? "whatsapp-nativefier-d52542"              --> doShift ( myWorkspaces !! 2 )
-    , className =? "whatsdesk"                               --> doShift ( myWorkspaces !! 2 )
-    , className =? "zoom"                                    --> doShift ( myWorkspaces !! 3 )
     , className =? "Microsoft Teams - Preview"               --> doShift ( myWorkspaces !! 3 )
-    , className =? "obs"                                     --> doShift ( myWorkspaces !! 3 )
+    , className =? "zoom"                                    --> doShift ( myWorkspaces !! 3 )
+    , className =? "Jitsi Meet"                              --> doShift ( myWorkspaces !! 3 )
     , className =? "DBeaver"                                 --> doShift ( myWorkspaces !! 4 )
     , className =? "Insomnia Designer"                       --> doShift ( myWorkspaces !! 5 )
+    , className =? "Insomnia"                                --> doShift ( myWorkspaces !! 5 )
     , className =? "Stoplight Studio"                        --> doShift ( myWorkspaces !! 5 )
     , className =? "Postman"                                 --> doShift ( myWorkspaces !! 5 )
-    , className =? "Insomnia"                                --> doShift ( myWorkspaces !! 5 )
-    , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 6 )
-    , className =? "calibre"                                 --> doShift ( myWorkspaces !! 7 )
-    , className =? "Nextcloud"                               --> doShift ( myWorkspaces !! 9 )
-    , className =? "Evolution"                               --> doShift ( myWorkspaces !! 9 )
+    , className =? "calibre"                                 --> doShift ( myWorkspaces !! 6 )
+    , className =? "Nextcloud"                               --> doShift ( myWorkspaces !! 8 )
+    , className =? "Evolution"                               --> doShift ( myWorkspaces !! 8 )
+    , className =? "obs"                                     --> doShift ( myWorkspaces !! 9 )
+    , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 9 )
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)
     ] <+> namedScratchpadManageHook myScratchPads
 
 
 myLayout =
-  mkToggle (single REFLECTX) $
-  mkToggle (single REFLECTY) $
-  spacingRaw True (Border 0 10 10 10) True (Border 10 10 10 10) True $
+  spacingRaw True (Border 0 20 20 20) True (Border 20 20 20 20) True $
   mkToggle (NBFULL ?? NOBORDERS ?? EOT) $
   -- noFrillsDeco shrinkText topBarTheme $
   avoidStruts $
-  -- gaps [(U,15), (D,15), (R,15), (L,15)] $
-  reflectHoriz tiled |||
-  Mirror tiled |||
+  gaps [(U,25), (D,25), (R,25), (L,25)] $
+  tiled |||
   ThreeColMid 1 (1/100) (1/2) |||
   Full
     where
@@ -204,24 +199,29 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_space),   spawn $ "~/.config/rofi/launcher/launcher.sh")
   , ((modMask, xK_p),       spawn $ "rofi-pass")
   , ((modMask, xK_b),       spawn $ "rofi-surfraw")
-  , ((modMask, xK_r),       spawn $ "xmonad --recompile && xmonad --restart")
 
   -- MODKEY + SHIFT KEYS
   , ((modMask .|. shiftMask, xK_v),          namedScratchpadAction myScratchPads "vpn")
-  , ((modMask .|. shiftMask, xK_r),          namedScratchpadAction myScratchPads "runscope-agent")
+  , ((modMask .|. shiftMask, xK_a),          namedScratchpadAction myScratchPads "runscope-agent")
+  , ((modMask .|. shiftMask, xK_r),          spawn $ "xmonad --recompile && xmonad --restart")
   , ((modMask .|. shiftMask, xK_m),          namedScratchpadAction myScratchPads "music")
   , ((modMask .|. shiftMask, xK_w),          namedScratchpadAction myScratchPads "webcam")
   , ((modMask .|. shiftMask, xK_Return ),    spawn $ "thunar")
   , ((modMask .|. shiftMask, xK_q ),         killAll)
-  , ((modMask .|. shiftMask, xK_s ),         spawn $ "flameshot gui")
+  , ((modMask .|. shiftMask, xK_s ),         spawn $ "maim -s | xclip -selection clipboard -t image/png")
   , ((modMask .|. shiftMask, xK_e ),         spawn $ "~/.config/rofi/powermenu/powermenu.sh")
 
   -- FUNCTION KEYS
-  , ((0, xK_F7), namedScratchpadAction myScratchPads "vpn")
+  -- Take a full screenshot and save it in downloads
+  , ((0, xK_F5), spawn $ "maim ~/Downloads/screenshot_$(date +%s).png")
+  -- Take screenshot of active window and save it in downloads
+  , ((0, xK_F6), spawn $ "maim -i $(xdotool getactivewindow) ~/Downloads/screenshot_$(date +%s).jpg")
+  -- Take screenshot in clipboard
+  , ((0, xK_F7), spawn $ "maim -s | xclip -selection clipboard -t image/png")
+  -- , ((0, xK_F9), spawn $ "~/.config/rofi/launchers/misc/launcher.sh")
   , ((0, xK_F11), sendMessage $ XMonad.Layout.MultiToggle.Toggle NBFULL)
+
   , ((0, xF86XK_Search), spawn $ "~/.config/rofi/launchers/misc/launcher.sh")
-  , ((0, xK_F8), namedScratchpadAction myScratchPads "music")
-  , ((0, xK_F9), spawn $ "~/.config/rofi/launchers/misc/launcher.sh")
 
   -- MODKEY + FUNCTIONS KEYS
   , ((modMask, xK_F1), spawn $ "qutebrowser")
@@ -255,24 +255,23 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. mod1Mask, xK_p),       spawn $ "pamac-manager")
   , ((modMask .|. mod1Mask, xK_v),       spawn $ "pavucontrol")
   , ((modMask .|. mod1Mask, xK_f),       spawn $ "firefox")
-  , ((modMask .|. mod1Mask, xK_g),       spawn $ "chromium -no-default-browser-check")
+  , ((modMask .|. mod1Mask, xK_g),       spawn $ "google-chrome-stable -no-default-browser-check")
   , ((modMask .|. mod1Mask, xK_q),       spawn $ "qutebrowser")
-  , ((modMask .|. mod1Mask, xK_b),       spawn $ "brave")
-  , ((modMask .|. mod1Mask, xK_w),       spawn $ "whatsdesk")
+  , ((modMask .|. mod1Mask, xK_b),       spawn $ "google-chrome-stable -no-default-browser-check")
+  , ((modMask .|. mod1Mask, xK_w),       spawn $ "whatsapp-nativefier")
   , ((modMask .|. mod1Mask, xK_d),       spawn $ "dbeaver")
   , ((modMask .|. mod1Mask, xK_z),       spawn $ "zoom")
   , ((modMask .|. mod1Mask, xK_i),       spawn $ "insomnia-designer")
   , ((modMask .|. mod1Mask, xK_c),       spawn $ "rofi -show calc")
-  , ((modMask .|. mod1Mask, xK_o),       spawn $ "picom-toggle")
-  , ((modMask .|. mod1Mask, xK_n),       spawn $ "nitrogen")
+  -- , ((modMask .|. mod1Mask, xK_o),       spawn $ "picom-toggle")
 
   --CONTROL + ALT KEYS
-  , ((controlMask .|. mod1Mask, xK_Escape ), spawn $ "xfce4-taskmanager")
-  , ((controlMask .|. mod1Mask, xK_Delete ), spawn $ "xkill")
+  , ((controlMask .|. mod1Mask, xK_Escape ), spawn $ "xkill")
+  , ((controlMask .|. mod1Mask, xK_Delete ), spawn $ "xfce4-taskmanager")
 
   --SCREENSHOTS
-  , ((0, xK_Print), spawn $ "flameshot gui")
-  , ((controlMask .|. shiftMask , xK_Print ), spawn $ "gnome-screenshot -i")
+  -- , ((0, xK_Print), spawn $ "flameshot gui")
+  -- , ((controlMask .|. shiftMask , xK_Print ), spawn $ "gnome-screenshot -i")
 
 
   --MULTIMEDIA KEYS
@@ -281,16 +280,16 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((0, xF86XK_AudioMute), spawn $ "amixer -q set Master toggle")
 
   -- Decrease volume
-  , ((0, xF86XK_AudioLowerVolume), spawn $ "amixer -q set Master 2%-")
+  , ((0, xF86XK_AudioLowerVolume), spawn $ "amixer -q set Master 10%-")
 
   -- Increase volume
-  , ((0, xF86XK_AudioRaiseVolume), spawn $ "amixer -q set Master 2%+")
+  , ((0, xF86XK_AudioRaiseVolume), spawn $ "amixer -q set Master 10%+")
 
   -- Increase brightness
-  , ((0, xF86XK_MonBrightnessUp),  spawn $ "xbacklight -inc 2")
+  , ((0, xF86XK_MonBrightnessUp),  spawn $ "xbacklight -inc 10")
 
   -- Decrease brightness
-  , ((0, xF86XK_MonBrightnessDown), spawn $ "xbacklight -dec 2")
+  , ((0, xF86XK_MonBrightnessDown), spawn $ "xbacklight -dec 10")
 
   , ((0, xF86XK_AudioPlay), spawn $ "mpc toggle")
   , ((0, xF86XK_AudioNext), spawn $ "mpc next")
