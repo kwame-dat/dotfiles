@@ -25,26 +25,19 @@ xcape -e 'Control_L=Escape'
 ## Increase keyboard key repeat
 xset r rate 300 80 &
 
-(sleep 2; run $HOME/.config/polybar/launch.sh) &
 xrdb ~/.Xresources
 
-# Cursor active at boot
-xsetroot -cursor_name left_ptr &
-
 # Starting utility applications at boot time
-run nitrogen --restore &
 run nm-applet &
-run xfce4-power-manager &
-numlockx on &
-picom &
-dunst &
+run picom &
+run dunst &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+run variety &
 xmodmap ~/.Xmodmap &
+run $HOME/.config/polybar/launch.sh &
 
 # starting user applications at boot time
-/usr/bin/emacs --daemon &
-copyq &
+run /usr/bin/emacs --daemon &
+run copyq &
 run nextcloud &
-run syncthing -no-browser &
-run sudo mount -a &
 run kdeconnect-indicator &
