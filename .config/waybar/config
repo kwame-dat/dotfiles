@@ -5,11 +5,28 @@
 	// "width": 1280, // Waybar width
 
 	// Choose the order of the modules
-	"modules-left": ["sway/workspaces", "sway/mode", "backlight", "pulseaudio", "cpu", "memory", "custom/vpn"],
-	"modules-center": ["sway/window"],
-	"modules-right": ["network", "temperature", "custom/mail", "battery", "clock", "idle_inhibitor", "tray"],
-
-	// Modules configuration
+	"modules-left": [
+    "sway/workspaces",
+    "temperature",
+    "cpu",
+    "memory",
+    "custom/vpn",
+    "sway/mode"
+   ],
+  "modules-center": [
+    "sway/window"
+  ],
+  "modules-right": [
+    // "custom/mail",
+    "network",
+    "backlight",
+    "pulseaudio",
+    "battery",
+    "clock",
+    "idle_inhibitor",
+    "tray"
+  ],
+  // Modules configuration
 	"sway/workspaces": {
 		"disable-scroll": true,
 		"all-outputs": true,
@@ -19,8 +36,8 @@
       "2": "",
       "3": "",
       "4": "",
-      "5": "",
-      "6": "",
+      "5": "",
+      "6": "",
       "7": "",
       "8": "",
       "9": "",
@@ -66,10 +83,10 @@
 	"custom/mail": {
 		"format": "📩 {}",
 		"interval": 30,
-		"exec": "notmuch count tag:flagged OR tag:inbox AND NOT tag:killed"
+		"exec": "mu find unread"
 	},
 	"network": {
-		"format-wifi": " {bandwidthUpBits}      {bandwidthDownBits}     {signalStrength}",
+		"format-wifi": " {bandwidthUpBits}   {bandwidthDownBits}   {signalStrength}",
 		"format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
 		"format-linked": "{ifname} (No IP) ",
 		"format-disconnected": "Disconnected ⚠",
@@ -83,9 +100,9 @@
 	},
 	"pulseaudio": {
 		// "scroll-step": 1, // %, can be a float
-		"format": "{icon}{volume}       {format_source}",
+		"format": "{icon}{volume}   {format_source}",
 		"format-muted": "🔇 {format_source}",
-		"format-bluetooth": "{icon} {volume}% {format_source}",
+		"format-bluetooth": "{icon} {volume}%   {format_source}",
 		"format-bluetooth-muted": "🔇 {format_source}",
 
 		"format-source": " {volume}",
@@ -115,11 +132,9 @@
 			"warning": 20,
 			"critical": 10
 		},
-		"format": "<span color='#e88939'>{icon}</span> {capacity} ({time})",
+		"format": "<span color='#e88939'>{icon}</span> {capacity}",
 		"format-charging": "<span color='#e88939'> </span> {capacity}%",
-		"format-plugged":  "<span color='#e88939'>{icon} </span> {capacity}%",
-		// "format-good": "", // An empty format will hide the module
-		// "format-full": "",
+		"format-plugged": "<span color='#e88939'>{icon} </span> {capacity}%",
 		"format-icons": ["", "", "", "", ""]
 	},
 	"battery#bat2": {

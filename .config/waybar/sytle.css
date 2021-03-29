@@ -1,8 +1,8 @@
 * {
     border: none;
     border-radius: 0;
-    font-family: Cantarell, Helvetica, Arial, sans-serif;
-    font-size: 12px;
+    font-family: Cascadia Code, Helvetica, Arial, sans-serif;
+    font-size: 10px;
     min-height: 0;
 }
 
@@ -13,7 +13,7 @@ window#waybar {
 
 #window {
     font-weight: bold;
-    font-family: "Ubuntu";
+    font-family: "Cascadia Code";
 }
 
 #workspaces {
@@ -40,7 +40,7 @@ window#waybar {
 
 #clock, #battery, #cpu, #memory, #network, #pulseaudio, #temperature, #tray, #mode, #backlight {
     padding: 0 0px;
-    margin: 5px 8px;
+    margin: 2px 8px;
 }
 
 #clock {
