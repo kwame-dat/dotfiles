@@ -1,0 +1,8 @@
+[Unit]
+  Description=Automount Downloads
+
+[Automount]
+  Where=/home/tonya/mnt/Downloads
+
+[Install]
+  WantedBy=multi-user.target

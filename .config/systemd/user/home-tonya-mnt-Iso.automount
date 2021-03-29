@@ -1,8 +1,8 @@
 [Unit]
-  Description=Automount Videos
+  Description=Automount Iso
 
 [Automount]
-  Where=/home/tonya/Videos
+  Where=/home/tonya/mnt/Iso
 
 [Install]
   WantedBy=multi-user.target
