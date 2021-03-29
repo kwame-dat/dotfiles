@@ -4,18 +4,7 @@
 #
 # Read `man 5 sway` for a complete reference.
 
-exec setxkbmap -option ctrl:nocaps
-exec xcape -e 'Caps_Lock=Escape'
-exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec /usr/bin/emacs --daemon
-exec syncthing -no-browser
-exec nextcloud
-exec sudo mount -a
-exec nm-applet
-exec caffeine
-exec kdeconnect-indicator
-
-font pango:Cantarell 10px
+font pango:Operator Mono 14px
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
@@ -30,7 +19,7 @@ set $term alacritty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu ~/.config/rofi/launchers/misc/launcher.sh
+set $menu wofi --show drun
 
 gaps inner 15
 gaps outer 15
@@ -39,15 +28,18 @@ gaps outer 15
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/Wallpapers/general/0170.jpg fill
+output * bg ~/Documents/Personal/3Resources/Wallpapers/T_T-66.jpg fill
 
+
+default_border none
+default_border pixel 2
 
 #
 # Example configuration:
 #
 #
 
-focus output DP-1
+# focus output DP-1
 output eDP-1 resolution 3840x2160 position 0,0 
 output DP-1 resolution 3840x1600@75Hz
 # You can get the names of your outputs by running: swaymsg -t get_outputs
@@ -77,13 +69,13 @@ input "type:keyboard" {
     xkb_layout gb
     repeat_delay 300
     repeat_rate 100
-    xkb_options caps:escape
+    xkb_options ctrl:nocaps
 }
 
 input "1739:31251:SYNA2393:00_06CB:7A13_Touchpad" {
     tap enabled
     natural_scroll enabled
-    pointer_accel 0.7
+    pointer_accel 0.9
 }
 
 ### Key bindings
@@ -101,6 +93,8 @@ input "1739:31251:SYNA2393:00_06CB:7A13_Touchpad" {
 
     bindsym $mod+space exec $menu
     bindsym $mod+s sticky toggle
+    bindsym $mod+Tab workspace back_and_forth
+
 
     # Reload the configuration file
     bindsym $mod+Shift+r reload
@@ -124,46 +118,46 @@ input "1739:31251:SYNA2393:00_06CB:7A13_Touchpad" {
 
 
     # Volume & Brightness Control
-    bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-    bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-    bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-    bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-    bindsym XF86MonBrightnessDown exec brightnessctl set 2%-
-    bindsym XF86MonBrightnessUp exec brightnessctl set +2%
+    bindsym XF86AudioRaiseVolume exec amixer -q set Master 10%+
+    bindsym XF86AudioLowerVolume exec amixer -q set Master 10%-
+    bindsym XF86AudioMute exec amixer -q set Master toggle
+    bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
+    bindsym XF86MonBrightnessUp exec brightnessctl set +10%
     bindsym XF86AudioPlay exec playerctl play-pause
     bindsym XF86AudioNext exec playerctl next
     bindsym XF86AudioPrev exec playerctl previous
 
+    # MOD + ALT KEYS
+    bindsym $mod+Alt+a exec emacsclient -c -a '' --eval '(itechytony/day-view)'
+    bindsym $mod+Alt+e exec emacs
+    bindsym $mod+Alt+m exec xfce4-settings-manager
+    bindsym $mod+Alt+s exec slack
+    bindsym $mod+Alt+t exec teams
+    bindsym $mod+Alt+p exec pamac-manager
+    bindsym $mod+Alt+v exec pavucontrol
+    bindsym $mod+Alt+f exec firefox
+    bindsym $mod+Alt+g exec google-chrome-stable -no-default-browser-check
+    bindsym $mod+Alt+q exec qutebrowser
+    bindsym $mod+Alt+w exec whatsapp-for-linux
+    bindsym $mod+Alt+d exec dbeaver
+    bindsym $mod+Alt+z exec zoom
+    bindsym $mod+Alt+i exec insomnia-designer
+    bindsym $mod+Alt+c exec rofi -show calc
+    bindsym $mod+Alt+j exec variety -n && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&
+    bindsym $mod+Alt+k exec variety -p && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&
+
+
     # CONTROL + ALT KEYS
-    bindsym Control+Alt+a exec emacsclient -c -a '' --eval '(itechytony/day-view)'
-    bindsym Control+Alt+e exec emacsclient -c -a ''
-    bindsym Control+Alt+m exec emacsclient -c -a '' --eval '(mu4e)'
-    bindsym Control+Alt+s exec slack
-    bindsym Control+Alt+t exec teams
-    bindsym Control+Alt+g exec chromium -no-default-browser-check
-    bindsym Control+Alt+b exec qutebrowser
-    bindsym Control+Alt+q exec brave
-    bindsym Control+Alt+w exec whatsdesk
-    bindsym Control+Alt+d exec dbeaver
-    bindsym Control+Alt+z exec zoom
-    bindsym Control+Alt+p exec pamac-manager
-    bindsym Control+Alt+i exec insomnia-designer
-    bindsym Control+Alt+v exec pavucontrol
     bindsym Control+Alt+delete exec xfce4-taskmanager
-    # bindsym Control+Alt+c exec rofi -show calc
-    # bindsym Control+Alt+c exec phpstorm
 
-
-
-    # ALT + SHIFT KEYS
-    bindsym Alt+Shift+n exec variety -n && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&
-    bindsym Alt+Shift+p exec variety -p && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)
-
+    # MOD + SHIFT KEYS
+    bindsym $mod+Shift+v exec sh -c 'swaymsg [app_id="vpn"] scratchpad show || exec $term --class vpn --title vpn --command sudo openvpn --config /home/tonya/Documents/Work/3Resources/vpn/Connection.ovpn'
+    bindsym $mod+Shift+m exec sh -c 'swaymsg [app_id="musicScratchPad"] scratchpad show || exec $term --class musicScratchPad --title musicScratchPad --command ncmpcpp'
+    bindsym $mod+Shift+w exec sh -c 'swaymsg [app_id="webcamScratchPad"] scratchpad show || exec mplayer tv://device=/dev/video02 -title webcamScratchPad'
+    bindsym $mod+Shift+s exec grim -g "$(slurp)" $(xdg-user-dir PICTURES)/$(date +'%s_grim.png') 
     bindsym Print exec grim $(xdg-user-dir PICTURES)/$(date +'%s_grim.png')
     bindsym $mod+Print exec grim -g "$(slurp -d)" - | wl-copy
 
-
-    bindsym F7 exec sh -c 'swaymsg [app_id="vpn"] scratchpad show || exec $term --class vpn --title vpn --command sudo openvpn --config Connection.ovpn'
 
 #
 # Moving around:
@@ -278,39 +272,52 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+# Function Keys bindings
+    bindsym F5 exec grim $(xdg-user-dir PICTURES)/$(date +'%s_grim.png')
+    bindsym F6 exec grim -g "$(slurp)" $(xdg-user-dir PICTURES)/$(date +'%s_grim.png')
+    bindsym F7 exec grim - | wl-copy
+
 #
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
-bar {
-    swaybar_command waybar
-}
 
 include /etc/sway/config.d/*
 
-for_window [app_id="vpn"] move scratchpad
-for_window [app_id="vpn"] scratchpad show
-for_window [app_id="terminal"] move scratchpad
-for_window [app_id="terminal"] scratchpad show
+for_window [app_id="vpn"] move scratchpad, scratchpad show
+for_window [app_id="terminal"] move scratchpad, scratchpad show
+for_window [app_id="musicScratchPad"] move scratchpad, scratchpad show
+for_window [app_id="webcamScratchPad"] move scratchpad, scratchpad show
 for_window [app_id="galculator"] floating enable
-assign [class="qutebrowser"]  1
+assign [app_id="org.qutebrowser.qutebrowser"]  1
 assign [class="Google-chrome"]  1
-assign [class="Vivaldi-stable"]  1
-assign [class="Chromium"]  1
-assign [class="Brave-browser"]  1
 assign [class="firefox"]  1
-# assign [class="Emacs"]  2
-assign [class="calibre"] 2
-assign [class="Thunderbird"] 2
+assign [class="Emacs"]  2
 assign [class="jetbrains-phpstorm"]  2
-assign [class="whatsdesk"]  3
+assign [class="calibre"] 2
+assign [class="whatsapp-for-linux"]  3
 assign [class="Signal"]  3
+assign [app_id="telegramdesktop"]  3
 assign [class="Slack"]  3
 assign [class="Microsoft Teams - Preview"]  4
 assign [class="zoom"] 4
-assign [class="Insomnia-Designer"] 5
-assign [class="Postman"] 5
-assign [class="DBeaver"] 6
-assign [class="VirtualBox Manager"]  9
-assign [class="Nextcloud"] 0
-assign [class="^Urxvt$" instance="^htop$"]  9
+assign [class="DBeaver"] 5
+assign [class="Insomnia Designer"] 6
+assign [class="Postman"] 6
+assign [class="Stoplight Studio"] 6
+assign [app_id="VirtualBox Manager"]  9
+assign [app_id="Nextcloud"] 9
+assign [app_id="evolution"] 9
+assign [app_id="^Urxvt$" instance="^htop$"]  9
+
+exec waybar -s /home/tonya/.config/waybar/sytle.css -c /home/tonya/.config/waybar/config
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec /usr/bin/emacs --daemon
+exec nextcloud
+exec nm-applet
+exec kdeconnect-indicator
+exec xrdb -load ~/.Xresources
+exec_always xcape -e 'Control_L=Escape'
+# exec xcape -e 'Shift_L=Escape'
+# exec xcape -e 'Shift_R=Escape'
+exec variety
