@@ -19,8 +19,8 @@ background = ${colors.background}
 foreground = ${colors.foreground}
 line-size = 0
 line-color = ${colors.background}
-module-margin-left = 2
-module-margin-right = 2
+module-margin-left = 1
+module-margin-right = 1
 padding-left = 0
 padding-right = 0
 
@@ -51,7 +51,7 @@ type = internal/cpu
 interval = 1
 format-prefix-foreground = ${colors.foreground}
 format-underline = ${colors.secondary}
-format-prefix = " "
+format-prefix = " CPU: "
 
 label-font = 1
 
@@ -107,7 +107,7 @@ interval = 1
 label = %gb_used%
 
 format = "<label>"
-format-prefix = " "
+format-prefix = " MEM: "
 format-prefix-foreground = ${colors.foreground}
 format-underline = ${colors.primary}
 

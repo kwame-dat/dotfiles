@@ -14,6 +14,7 @@ import XMonad.Actions.SpawnOn
 import XMonad.Actions.WithAll
 import XMonad.Util.EZConfig (additionalKeys, additionalMouseBindings)
 import XMonad.Actions.CycleWS
+import XMonad.Actions.CopyWindow
 import XMonad.Hooks.UrgencyHook
 import qualified Codec.Binary.UTF8.String as UTF8
 
@@ -95,8 +96,8 @@ topBarTheme = def
 
 myModMask = mod4Mask
 encodeCChar = map fromIntegral . B.unpack
-myFocusFollowsMouse = False
-myBorderWidth = 4
+myFocusFollowsMouse = True
+myBorderWidth = 1
 myWorkspaces = [
     "\61612",
     "\61899",
@@ -199,6 +200,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_space),   spawn $ "~/.config/rofi/launcher/launcher.sh")
   , ((modMask, xK_p),       spawn $ "rofi-pass")
   , ((modMask, xK_b),       spawn $ "rofi-surfraw")
+  , ((modMask, xK_s),       windows copyToAll)
+  , ((modMask .|. shiftMask, xK_s),       killAllOtherCopies)
+
 
   -- MODKEY + SHIFT KEYS
   , ((modMask .|. shiftMask, xK_v),          namedScratchpadAction myScratchPads "vpn")
@@ -208,7 +212,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. shiftMask, xK_w),          namedScratchpadAction myScratchPads "webcam")
   , ((modMask .|. shiftMask, xK_Return ),    spawn $ "thunar")
   , ((modMask .|. shiftMask, xK_q ),         killAll)
-  , ((modMask .|. shiftMask, xK_s ),         spawn $ "maim -s | xclip -selection clipboard -t image/png")
+  -- , ((modMask .|. shiftMask, xK_s ),         spawn $ "maim -s | xclip -selection clipboard -t image/png")
   , ((modMask .|. shiftMask, xK_e ),         spawn $ "~/.config/rofi/powermenu/powermenu.sh")
 
   -- FUNCTION KEYS
@@ -257,13 +261,15 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. mod1Mask, xK_f),       spawn $ "firefox")
   , ((modMask .|. mod1Mask, xK_g),       spawn $ "google-chrome-stable -no-default-browser-check")
   , ((modMask .|. mod1Mask, xK_q),       spawn $ "qutebrowser")
-  , ((modMask .|. mod1Mask, xK_b),       spawn $ "google-chrome-stable -no-default-browser-check")
+  , ((modMask .|. mod1Mask, xK_b),       spawn $ "")
   , ((modMask .|. mod1Mask, xK_w),       spawn $ "whatsapp-nativefier")
   , ((modMask .|. mod1Mask, xK_d),       spawn $ "dbeaver")
   , ((modMask .|. mod1Mask, xK_z),       spawn $ "zoom")
   , ((modMask .|. mod1Mask, xK_i),       spawn $ "insomnia-designer")
   , ((modMask .|. mod1Mask, xK_c),       spawn $ "rofi -show calc")
-  -- , ((modMask .|. mod1Mask, xK_o),       spawn $ "picom-toggle")
+  , ((modMask .|. mod1Mask, xK_o),       spawn $ "picom-toggle")
+  , ((modMask .|. mod1Mask, xK_j),       spawn $ "variety -n && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
+  , ((modMask .|. mod1Mask, xK_k),       spawn $ "variety -p && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
 
   --CONTROL + ALT KEYS
   , ((controlMask .|. mod1Mask, xK_Escape ), spawn $ "xkill")
@@ -350,18 +356,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- mod-[1..9], Switch to workspace N
   -- mod-shift-[1..9], Move client to workspace N
   [((m .|. modMask, k), windows $ f i)
-
-  --Keyboard layouts
-  --qwerty users use this line
-   | (i, k) <- zip (XMonad.workspaces conf) [xK_1,xK_2,xK_3,xK_4,xK_5,xK_6,xK_7,xK_8,xK_9, xK_0]
-      , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)
-      , (\i -> W.greedyView i . W.shift i, shiftMask)]]
-
-  ++
-  -- super+ctrl-{.,,}, Switch to physical/Xinerama screens 1, 2, or 3
-  [((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
-      | (key, sc) <- zip [xK_comma, xK_period] [0..]
-      , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+      | (i, k) <- zip (myWorkspaces) [xK_1,xK_2,xK_3,xK_4,xK_5,xK_6,xK_7,xK_8,xK_9, xK_0]
+      , (f, m) <- [(W.view, 0), (W.shift, shiftMask), (copy, controlMask)]]
 
 
 main :: IO ()
