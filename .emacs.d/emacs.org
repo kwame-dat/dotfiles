@@ -1,4 +1,4 @@
-#+TITLE: My Emacs Literate Configuration
+# +TITLE: My Emacs Literate Configuration
 
 #+AUTHOR: Tony Ampomah
 #+PROPERTY: header-args :tangle yes :results silent
@@ -1765,47 +1765,46 @@ with richer versions. Let's install it!
 *** ledger
 
 #+BEGIN_SRC emacs-lisp
-(use-package ledger-mode
-  :mode ("\\.\\(ledger\\|ldg\\|dat\\)\\'" . ledger-mode)
-  :init
-  (setq ledger-clear-whole-transactions 1
-        ledger-mode-should-check-version nil)
-  (setq ledger-post-amount-alignment-column 70)
-  (setq ledger-highlight-xact-under-point nil
-        ledger-use-iso-dates nil))
+  (use-package ledger-mode
+    :mode ("\\.\\(ledger\\|ldg\\|dat\\)\\'" . ledger-mode)
+    :init
+    (setq ledger-clear-whole-transactions 1
+          ledger-add-transaction-prompt-for-text nil
+          ledger-mode-should-check-version nil)
+    (setq ledger-post-amount-alignment-column 70))
 
-(use-package flycheck-ledger
-  :demand t
-  :hook (ledger-mode . flycheck-mode))
+  (use-package flycheck-ledger
+    :demand t
+    :hook (ledger-mode . flycheck-mode))
 
-(use-package evil-ledger
-  :hook (ledger-mode . evil-ledger-mode))
-(add-hook 'ledger-mode-hook 'display-line-numbers-mode)
+  (use-package evil-ledger
+    :hook (ledger-mode . evil-ledger-mode))
+  (add-hook 'ledger-mode-hook 'display-line-numbers-mode)
 
-(my-local-leader-def 'normal ledger-mode-map
-  "a" 'ledger-add-transaction
-  "]]" #'ledger-navigate-next-xact-or-directive
-  "[[" #'ledger-navigate-prev-xact-or-directive)
+  (my-local-leader-def 'normal ledger-mode-map
+    "a" 'ledger-add-transaction
+    "]]" #'ledger-navigate-next-xact-or-directive
+    "[[" #'ledger-navigate-prev-xact-or-directive)
 
-(my-local-leader-def 'normal ledger-report-mode-map
-  "q"   #'ledger-report-quit
-  "RET" #'ledger-report-edit-report
-  "gd"  #'ledger-report-visit-source
-  "gr"  #'ledger-report-redo)
+  (my-local-leader-def 'normal ledger-report-mode-map
+    "q"   #'ledger-report-quit
+    "RET" #'ledger-report-edit-report
+    "gd"  #'ledger-report-visit-source
+    "gr"  #'ledger-report-redo)
 
-(my-local-leader-def 'normal ledger-mode-map
-  "hd" #'ledger-delete-current-transaction
-  "a" #'ledger-add-transaction
-  "b" #'ledger-post-edit-amount
-  "c" #'ledger-toggle-current
-  "C" #'ledger-mode-clean-buffer
-  "l" #'ledger-display-ledger-stats
-  "p" #'ledger-display-balance-at-point
-  "q" #'ledger-post-align-xact
-  "r" #'ledger-reconcile
-  "R" #'ledger-report
-  "t" #'ledger-insert-effective-date
-  "y" #'ledger-set-year)
+  (my-local-leader-def 'normal ledger-mode-map
+    "hd" #'ledger-delete-current-transaction
+    "a" #'ledger-add-transaction
+    "b" #'ledger-post-edit-amount
+    "c" #'ledger-toggle-current
+    "C" #'ledger-mode-clean-buffer
+    "l" #'ledger-display-ledger-stats
+    "p" #'ledger-display-balance-at-point
+    "q" #'ledger-post-align-xact
+    "r" #'ledger-reconcile
+    "R" #'ledger-report
+    "t" #'ledger-insert-effective-date
+    "y" #'ledger-set-year)
 #+END_SRC
      
 *** restclient
@@ -2379,6 +2378,10 @@ mu4e alert
 
 (use-package eshell-git-prompt)
 
+(use-package eshell-toggle
+  :ensure t
+  :demand t)
+
 (use-package eshell
   :hook (eshell-first-time-mode . efs/configure-eshell)
   :config
@@ -2913,7 +2916,7 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
    :token (auth-source-pick-first-password
            :host "elico-webteam.slack.com"
            :user "token")
-   :subscribed-channels '(elico qa devops standup general ops-issues poker-planning php74upgrade)
+   :subscribed-channels '(elico qa devops standup general ops-issues poker-planning)
    :full-and-display-names t)
 
 
@@ -2942,6 +2945,7 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
     ",3" 'slack-message-embed-channel))
 
 (use-package alert
+  :demand t
   :commands (alert)
   :init
   (setq alert-default-style 'notifier))
