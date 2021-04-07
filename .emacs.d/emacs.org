@@ -352,11 +352,10 @@ going to install it and make sure it's loaded immediately.
                                          "~/Repo/Personal/3Resources"
                                          "~/Repo/Personal/2Areas"
                                          "~/Repo/Personal/1Projects"
-                                         "~/Repo/Work/3Resources"
-                                         "~/Repo/Work/2Areas/misc"
                                          "~/Repo/Work/2Areas/modules"
-                                         "~/Repo/Work/2Areas/services"
-                                         "~/Repo/Work/2Areas/sites"
+                                         "~/Repo/Work/2Areas/docker-development-environment/services"
+                                         "~/Repo/Work/2Areas/docker-development-environment/sites"
+                                         "~/Repo/Work/2Areas"
                                          "~/Repo/Work/1Projects"
                                          ))
   (setq projectile-completion-system 'ivy)
@@ -1279,7 +1278,7 @@ Nicer naming of buffers for files with identical names
 #+end_src
 
 *** ligatures
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package ligature
   :demand t
   :load-path "~/.emacs.d/manual/ligatures"
