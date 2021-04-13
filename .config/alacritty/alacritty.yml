@@ -3,16 +3,16 @@ env:
   TERM: xterm-256color
 font:
   normal:
-    family: Cascadia Code
+    family: JetBrains Mono
     style: Retina
 
   # The bold font face
   bold:
-    family: Cascadia Code
+    family: JetBrains Mono
 
   # The italic font face
   italic:
-    family: Cascadia Mono
+    family: JetBrains Mono
     style: "Medium Italic"
 
   # Point size of the font
@@ -22,7 +22,7 @@ font:
   # as modifying the linespacing, and offset.x as modifying the letter spacing.
   offset:
     x: 0
-    y: 20
+    y: 0
 
   # Glyph offset determines the locations of the glyphs within their cells with
   # the default being at the bottom. Increase the x offset to move the glyph to
@@ -34,50 +34,50 @@ font:
   use_thin_strokes: false
 
 draw_bold_text_with_bright_colors: true
-
-
-# Base16 Tomorrow Night 256 - alacritty color config
-# Chris Kempson (http://chriskempson.com)
+# Base16 One Light 256 - alacritty color config
+# Daniel Pfeifer (http://github.com/purpleKarrot)
 colors:
   # Default colors
   primary:
-    background: '0x1d1f21'
-    foreground: '0xc5c8c6'
+    background: '0xfafafa'
+    foreground: '0x383a42'
 
   # Colors the cursor will use if `custom_cursor_colors` is true
   cursor:
-    text: '0x1d1f21'
-    cursor: '0xc5c8c6'
+    text: '0xfafafa'
+    cursor: '0x383a42'
 
   # Normal colors
   normal:
-    black:   '0x1d1f21'
-    red:     '0xcc6666'
-    green:   '0xb5bd68'
-    yellow:  '0xf0c674'
-    blue:    '0x81a2be'
-    magenta: '0xb294bb'
-    cyan:    '0x8abeb7'
-    white:   '0xc5c8c6'
+    black:   '0xfafafa'
+    red:     '0xca1243'
+    green:   '0x50a14f'
+    yellow:  '0xc18401'
+    blue:    '0x4078f2'
+    magenta: '0xa626a4'
+    cyan:    '0x0184bc'
+    white:   '0x383a42'
 
   # Bright colors
   bright:
-    black:   '0x969896'
-    red:     '0xcc6666'
-    green:   '0xb5bd68'
-    yellow:  '0xf0c674'
-    blue:    '0x81a2be'
-    magenta: '0xb294bb'
-    cyan:    '0x8abeb7'
-    white:   '0xffffff'
+    black:   '0xa0a1a7'
+    red:     '0xca1243'
+    green:   '0x50a14f'
+    yellow:  '0xc18401'
+    blue:    '0x4078f2'
+    magenta: '0xa626a4'
+    cyan:    '0x0184bc'
+    white:   '0x090a0b'
 
   indexed_colors:
-    - { index: 16, color: '0xde935f' }
-    - { index: 17, color: '0xa3685a' }
-    - { index: 18, color: '0x282a2e' }
-    - { index: 19, color: '0x373b41' }
-    - { index: 20, color: '0xb4b7b4' }
-    - { index: 21, color: '0xe0e0e0' }
+    - { index: 16, color: '0xd75f00' }
+    - { index: 17, color: '0x986801' }
+    - { index: 18, color: '0xf0f0f1' }
+    - { index: 19, color: '0xe5e5e6' }
+    - { index: 20, color: '0x696c77' }
+    - { index: 21, color: '0x202227' }
+
+
 
 key_bindings:
   - { key: Home,                          chars: "\x1bOH",   mode: AppCursor   }
@@ -171,7 +171,7 @@ cursor:
   # window is not focused.
   unfocused_hollow: true
 
-background_opacity: 1.0
+background_opacity: 1
 # dynamic_title: false
 
 # Live config reload (changes require restart)
