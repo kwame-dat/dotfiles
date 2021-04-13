@@ -4,7 +4,7 @@
 #
 # Read `man 5 sway` for a complete reference.
 
-font pango:Operator Mono 14px
+font pango:JetBrains Mono 10px
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
@@ -19,7 +19,7 @@ set $term alacritty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu wofi --show drun
+set $menu albert toggle
 
 gaps inner 15
 gaps outer 15
@@ -32,7 +32,7 @@ output * bg ~/Documents/Personal/3Resources/Wallpapers/T_T-66.jpg fill
 
 
 default_border none
-default_border pixel 2
+default_border pixel 3
 
 #
 # Example configuration:
@@ -75,7 +75,7 @@ input "type:keyboard" {
 input "1739:31251:SYNA2393:00_06CB:7A13_Touchpad" {
     tap enabled
     natural_scroll enabled
-    pointer_accel 0.9
+    pointer_accel 0.4
 }
 
 ### Key bindings
@@ -121,8 +121,8 @@ input "1739:31251:SYNA2393:00_06CB:7A13_Touchpad" {
     bindsym XF86AudioRaiseVolume exec amixer -q set Master 10%+
     bindsym XF86AudioLowerVolume exec amixer -q set Master 10%-
     bindsym XF86AudioMute exec amixer -q set Master toggle
-    bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
-    bindsym XF86MonBrightnessUp exec brightnessctl set +10%
+    bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+    bindsym XF86MonBrightnessUp exec brightnessctl set +5%
     bindsym XF86AudioPlay exec playerctl play-pause
     bindsym XF86AudioNext exec playerctl next
     bindsym XF86AudioPrev exec playerctl previous
@@ -314,10 +314,8 @@ exec waybar -s /home/tonya/.config/waybar/sytle.css -c /home/tonya/.config/wayba
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec /usr/bin/emacs --daemon
 exec nextcloud
-exec nm-applet
 exec kdeconnect-indicator
 exec xrdb -load ~/.Xresources
 exec_always xcape -e 'Control_L=Escape'
-# exec xcape -e 'Shift_L=Escape'
-# exec xcape -e 'Shift_R=Escape'
-exec variety
+exec albert
+exec redshift
