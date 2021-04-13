@@ -1,5 +1,6 @@
 # +TITLE: My Emacs Literate Configuration
 
+
 #+AUTHOR: Tony Ampomah
 #+PROPERTY: header-args :tangle yes :results silent
 
@@ -105,6 +106,7 @@
     - [[#lookup][lookup]]
     - [[#elastic-search][Elastic Search]]
     - [[#dash][dash]]
+    - [[#xml-format][xml-format]]
   - [[#email][EMAIL]]
     - [[#mu4e][mu4e=]]
   - [[#app][APP]]
@@ -340,23 +342,26 @@ going to install it and make sure it's loaded immediately.
   :ensure t
   :init
   (setq projectile-project-search-path '(
-                                         "~/Nextcloud/Documents/Work/2Areas"
-                                         "~/Nextcloud/Documents/Personal/2Areas"
-                                         "~/Nextcloud/Documents/Joint/2Areas"
-                                         "~/Nextcloud/Documents/Spiritual/3Resources"
-                                         "~/Nextcloud/Documents/Spiritual/2Areas"
-                                         "~/Nextcloud/Documents/Personal/1Projects"
-                                         "~/Nextcloud/Documents/Joint/1Projects"
-                                         "~/Nextcloud/Documents/Spiritual/1Projects"
-                                         "~/Nextcloud/Documents/Work/1Projects"
-                                         "~/Repo/Personal/3Resources"
-                                         "~/Repo/Personal/2Areas"
-                                         "~/Repo/Personal/1Projects"
                                          "~/Repo/Work/2Areas/modules"
-                                         "~/Repo/Work/2Areas/docker-development-environment/services"
-                                         "~/Repo/Work/2Areas/docker-development-environment/sites"
+                                         "~/Repo/Work/2Areas/elico-docker/services"
+                                         "~/Repo/Work/2Areas/elico-docker/sites"
+                                         "~/Nextcloud/Documents/Work/2Areas"
+                                         "~/Nextcloud/Documents/Work/1Projects"
+
                                          "~/Repo/Work/2Areas"
                                          "~/Repo/Work/1Projects"
+                                         "~/Nextcloud/Documents/Joint/2Areas"
+                                         "~/Nextcloud/Documents/Joint/1Projects"
+
+                                         "~/Nextcloud/Documents/Spiritual/3Resources"
+                                         "~/Nextcloud/Documents/Spiritual/2Areas"
+                                         "~/Nextcloud/Documents/Spiritual/1Projects"
+
+                                         "~/Repo/Personal/3Resources"
+                                         "~/Nextcloud/Documents/Personal/2Areas"
+                                         "~/Repo/Personal/2Areas"
+                                         "~/Nextcloud/Documents/Personal/1Projects"
+                                         "~/Repo/Personal/1Projects"
                                          ))
   (setq projectile-completion-system 'ivy)
   (setq projectile-switch-project-action #'projectile-dired)
@@ -1083,7 +1088,7 @@ This allows me to  uncompress a .zip file
 *** font
 #+BEGIN_SRC emacs-lisp
 (setq-default line-spacing 0.5)
-(setq itechytony/default-font "Cascadia Code")
+(setq itechytony/default-font "JetBrains Mono")
 (setq itechytony/default-font-size 10)
 (setq itechytony/current-font-size itechytony/default-font-size)
 
@@ -1137,7 +1142,7 @@ This allows me to  uncompress a .zip file
 (use-package doom-themes
   :ensure t
   :demand t
-  :config (load-theme 'doom-tomorrow-night))
+  :config (load-theme 'doom-one-light))
 #+end_src
 
 *** all-the-icons
@@ -2707,6 +2712,13 @@ Use the diff-hl package to highlight changed-and-uncommitted lines when programm
   :ensure t
   :config
   (setq dash-docs-enable-debugging nil))
+#+end_src
+
+*** xml-format
+#+begin_src emacs-lisp
+(use-package xml-format
+  :demand t
+  :after nxml-mode)
 #+end_src
 
 ** EMAIL
