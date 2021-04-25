@@ -1,23 +1,6 @@
-bitbucket.eandl.co.uk https://bitbucket.eandl.co.uk
-jenkins.eandl.co.uk https://jenkins.eandl.co.uk
-confluence.eandl.co.uk https://confluence.eandl.co.uk
-jira.eandl.co.uk https://jira.eandl.co.uk/secure/RapidBoard.jspa?rapidView=40&view=detail&selectedIssue=ELICO-7506
-kibana.eandl.co.uk https://kibana.eandl.co.uk
-sharedpoint https://theinsuranceemporium.sharepoint.com/sites/DevelopmentTeam
-sprint https://jira.eandl.co.uk/secure/RapidBoard.jspa?rapidView=40&selectedIssue=ELICO-7292
-code-review https://bitbucket.eandl.co.uk
-docker.theinsuranceemporium.co.uk https://docker.theinsuranceemporium.co.uk/
-test.theinsuranceemporium.co.uk https://test.theinsuranceemporium.co.uk/
-staging.theinsuranceemporium.co.uk https://staging.theinsuranceemporium.co.uk/
-tie theinsuranceemporium.co.uk https://theinsuranceemporium.co.uk
-docker.pet-insurance.co.uk https://docker.pet-insurance.co.uk/
-test.pet-insurance.co.uk https://test.pet-insurance.co.uk/
-staging.pet-insurance.co.uk https://staging.pet-insurance.co.uk/
-pet-insurance.co.uk https://docker.pet-insurance.co.uk/
-docker.pet.api.eandl.co.uk https://docker.pet.api.eandl.co.uk/
-test.pet.api.eandl.co.uk https://test.pet.api.eandl.co.uk/
-staging.pet.api.eandl.co.uk https://staging.pet.api.eandl.co.uk/
-pet.api.eandl.co.uk https://docker.pet.api.eandl.co.uk/
+###########################################################################
+# PERSONAL
+###########################################################################
 untangle.theampomahs.com https://untangle.theampomahs.com
 unraid.theampomahs.com https://unraid.theampomahs.com
 proxmox.theampomahs.com https://proxmox.theampomahs.com
@@ -32,12 +15,216 @@ bible https://wol.jw.org/en/wol/binav/r1/lp-e
 daily-text https://wol.jw.org/en/wol/h/r1/lp-e
 netflix.com https://www.netflix.com/browse
 calendar https://calendar.google.com/calendar/u/1/r/month/2020/10/1?tab=mc
+
+
+###########################################################################
+# WORK
+###########################################################################
+bitbucket.eandl.co.uk https://bitbucket.eandl.co.uk
+jenkins.eandl.co.uk https://jenkins.eandl.co.uk
+confluence.eandl.co.uk https://confluence.eandl.co.uk
+jira.eandl.co.uk https://jira.eandl.co.uk/secure/RapidBoard.jspa?rapidView=40&view=detail&selectedIssue=ELICO-7506
+kibana.eandl.co.uk https://kibana.eandl.co.uk
+sharedpoint https://theinsuranceemporium.sharepoint.com/sites/DevelopmentTeam
+sprint https://jira.eandl.co.uk/secure/RapidBoard.jspa?rapidView=40&selectedIssue=ELICO-7292
+code-review https://bitbucket.eandl.co.uk
 spamtitan http://spamtitan.ccsleeds.co.uk/
 packagist https://packagist.eandl.co.uk/oauth/login/
 timeweb http://emp-sysutils/timeweb/Personal/Login.aspx
 emp-sysutils http://emp-sysutils/timeweb/Personal/Login.aspx
 sharedpoint https://theinsuranceemporium.sharepoint.com/sites/Projects/Shared%20Documents/Forms/AllItems.aspx
 rollbar https://rollbar.com/EandLInsurance/all/items/
+brokerassess https://brokerassess.cii.co.uk/go/assess/about/
+runscope https://www.runscope.com/radar/q771lyzzwzkf
+projects-2021 https://theinsuranceemporium.sharepoint.com/:p:/r/sites/Projects/_layouts/15/guestaccess.aspx?e=mJF625&share=EU185qVO7U5OkQOaMX-jQJkBY4EBuYWY3-H2xkOrpiS-Cg
+signinghub https://web.signinghub.com/
+newrelic https://newrelic.com/
+
+
+###########################################################################
+# WORK DOCKER ENV
+###########################################################################
+docker.pet.api.eandl.co.uk https://docker.pet.api.eandl.co.uk
+docker.secure.eandl.co.uk https://docker.secure.eandl.co.uk
+docker.eandl.co.uk https://docker.eandl.co.uk
+docker.cat-breeds.co.uk https://docker.cat-breeds.co.uk
+docker.dog-breeds.co.uk https://docker.dog-breeds.co.uk
+docker.aggregator.theinsuranceemporium.co.uk https://docker.aggregator.theinsuranceemporium.co.uk
+docker.portal.theinsuranceemporium.co.uk https://docker.portal.theinsuranceemporium.co.uk
+docker.blog.theinsuranceemporium.co.uk https://docker.blog.theinsuranceemporium.co.uk
+docker.theinsuranceemporium.co.uk https://docker.theinsuranceemporium.co.uk
+docker.horse-insurance.co.uk https://docker.horse-insurance.co.uk
+docker.pet-insurance.co.uk https://docker.pet-insurance.co.uk
+docker.my-weddinginsurance.co.uk https://docker.my-weddinginsurance.co.uk
+docker.kamkit.co.uk https://docker.kamkit.co.uk
+docker.policyplus.eandl.co.uk https://docker.policyplus.eandl.co.uk
+docker.rossboroughpetinsurance.co.uk https://docker.rossboroughpetinsurance.co.uk
+docker.insurance4mycaravan.co.uk https://docker.insurance4mycaravan.co.uk
+docker.address.eliservice.co.uk https://docker.address.eliservice.co.uk
+docker.area.eliservice.co.uk https://docker.area.eliservice.co.uk
+docker.breeds.eliservice.co.uk https://docker.breeds.eliservice.co.uk
+docker.customer.eliservice.co.uk https://docker.customer.eliservice.co.uk
+docker.competition.eliservice.co.uk https://docker.competition.eliservice.co.uk
+docker.colcharge.eliservice.co.uk https://docker.colcharge.eliservice.co.uk
+docker.declarations.eliservice.co.uk https://docker.declarations.eliservice.co.uk
+docker.discount.eliservice.co.uk https://docker.discount.eliservice.co.uk
+docker.email.eliservice.co.uk https://docker.email.eliservice.co.uk
+docker.gateway.eliservice.co.uk https://docker.gateway.eliservice.co.uk
+docker.redirect.eliservice.co.uk https://docker.redirect.eliservice.co.uk
+docker.rates.eliservice.co.uk https://docker.rates.eliservice.co.uk
+docker.taxonomy.eliservice.co.uk https://docker.taxonomy.eliservice.co.uk
+docker.quote-reference.eliservice.co.uk https://docker.quote-reference.eliservice.co.uk
+docker.policy.eliservice.co.uk https://docker.policy.eliservice.co.uk
+docker.mail.eliservice.co.uk https://docker.mail.eliservice.co.uk
+docker.policy-upgrade.eliservice.co.uk https://docker.policy-upgrade.eliservice.co.uk
+docker.agents.eliservice.co.uk https://docker.agents.eliservice.co.uk
+docker.payment.eliservice.co.uk https://docker.payment.eliservice.co.uk
+docker.policyplus.eliservice.co.uk https://docker.policyplus.eliservice.co.uk
+docker.polnum.eliservice.co.uk https://docker.polnum.eliservice.co.uk
+docker.scheme.eliservice.co.uk https://docker.scheme.eliservice.co.uk
+docker.voucher.eliservice.co.uk https://docker.voucher.eliservice.co.uk
+docker.storage.eliservice.co.uk https://docker.storage.eliservice.co.uk
+docker.node-test.co.uk https://docker.node-test.co.uk
+
+
+###########################################################################
+# WORK TEST ENV
+###########################################################################
+test.pet.api.eandl.co.uk https://test.pet.api.eandl.co.uk
+test.secure.eandl.co.uk https://test.secure.eandl.co.uk
+test.eandl.co.uk https://test.eandl.co.uk
+test.cat-breeds.co.uk https://test.cat-breeds.co.uk
+test.dog-breeds.co.uk https://test.dog-breeds.co.uk
+test.aggregator.theinsuranceemporium.co.uk https://test.aggregator.theinsuranceemporium.co.uk
+test.portal.theinsuranceemporium.co.uk https://test.portal.theinsuranceemporium.co.uk
+test.blog.theinsuranceemporium.co.uk https://test.blog.theinsuranceemporium.co.uk
+test.theinsuranceemporium.co.uk https://test.theinsuranceemporium.co.uk
+test.horse-insurance.co.uk https://test.horse-insurance.co.uk
+test.pet-insurance.co.uk https://test.pet-insurance.co.uk
+test.my-weddinginsurance.co.uk https://test.my-weddinginsurance.co.uk
+test.kamkit.co.uk https://test.kamkit.co.uk
+test.policyplus.eandl.co.uk https://test.policyplus.eandl.co.uk
+test.rossboroughpetinsurance.co.uk https://test.rossboroughpetinsurance.co.uk
+test.insurance4mycaravan.co.uk https://test.insurance4mycaravan.co.uk
+test.address.eliservice.co.uk https://test.address.eliservice.co.uk
+test.area.eliservice.co.uk https://test.area.eliservice.co.uk
+test.breeds.eliservice.co.uk https://test.breeds.eliservice.co.uk
+test.customer.eliservice.co.uk https://test.customer.eliservice.co.uk
+test.competition.eliservice.co.uk https://test.competition.eliservice.co.uk
+test.colcharge.eliservice.co.uk https://test.colcharge.eliservice.co.uk
+test.declarations.eliservice.co.uk https://test.declarations.eliservice.co.uk
+test.discount.eliservice.co.uk https://test.discount.eliservice.co.uk
+test.email.eliservice.co.uk https://test.email.eliservice.co.uk
+test.gateway.eliservice.co.uk https://test.gateway.eliservice.co.uk
+test.redirect.eliservice.co.uk https://test.redirect.eliservice.co.uk
+test.rates.eliservice.co.uk https://test.rates.eliservice.co.uk
+test.taxonomy.eliservice.co.uk https://test.taxonomy.eliservice.co.uk
+test.quote-reference.eliservice.co.uk https://test.quote-reference.eliservice.co.uk
+test.policy.eliservice.co.uk https://test.policy.eliservice.co.uk
+test.mail.eliservice.co.uk https://test.mail.eliservice.co.uk
+test.policy-upgrade.eliservice.co.uk https://test.policy-upgrade.eliservice.co.uk
+test.agents.eliservice.co.uk https://test.agents.eliservice.co.uk
+test.payment.eliservice.co.uk https://test.payment.eliservice.co.uk
+test.policyplus.eliservice.co.uk https://test.policyplus.eliservice.co.uk
+test.polnum.eliservice.co.uk https://test.polnum.eliservice.co.uk
+test.scheme.eliservice.co.uk https://test.scheme.eliservice.co.uk
+test.voucher.eliservice.co.uk https://test.voucher.eliservice.co.uk
+test.storage.eliservice.co.uk https://test.storage.eliservice.co.uk
+
+
+###########################################################################
+# WORK STAGING ENV
+###########################################################################
+staging.pet.api.eandl.co.uk https://staging.pet.api.eandl.co.uk
+staging.secure.eandl.co.uk https://staging.secure.eandl.co.uk
+staging.eandl.co.uk https://staging.eandl.co.uk
+staging.cat-breeds.co.uk https://staging.cat-breeds.co.uk
+staging.dog-breeds.co.uk https://staging.dog-breeds.co.uk
+staging.aggregator.theinsuranceemporium.co.uk https://staging.aggregator.theinsuranceemporium.co.uk
+staging.portal.theinsuranceemporium.co.uk https://staging.portal.theinsuranceemporium.co.uk
+staging.blog.theinsuranceemporium.co.uk https://staging.blog.theinsuranceemporium.co.uk
+staging.theinsuranceemporium.co.uk https://staging.theinsuranceemporium.co.uk
+staging.horse-insurance.co.uk https://staging.horse-insurance.co.uk
+staging.pet-insurance.co.uk https://staging.pet-insurance.co.uk
+staging.my-weddinginsurance.co.uk https://staging.my-weddinginsurance.co.uk
+staging.kamkit.co.uk https://staging.kamkit.co.uk
+staging.policyplus.eandl.co.uk https://staging.policyplus.eandl.co.uk
+staging.rossboroughpetinsurance.co.uk https://staging.rossboroughpetinsurance.co.uk
+staging.insurance4mycaravan.co.uk https://staging.insurance4mycaravan.co.uk
+staging.address.eliservice.co.uk https://staging.address.eliservice.co.uk
+staging.area.eliservice.co.uk https://staging.area.eliservice.co.uk
+staging.breeds.eliservice.co.uk https://staging.breeds.eliservice.co.uk
+staging.customer.eliservice.co.uk https://staging.customer.eliservice.co.uk
+staging.competition.eliservice.co.uk https://staging.competition.eliservice.co.uk
+staging.colcharge.eliservice.co.uk https://staging.colcharge.eliservice.co.uk
+staging.declarations.eliservice.co.uk https://staging.declarations.eliservice.co.uk
+staging.discount.eliservice.co.uk https://staging.discount.eliservice.co.uk
+staging.email.eliservice.co.uk https://staging.email.eliservice.co.uk
+staging.gateway.eliservice.co.uk https://staging.gateway.eliservice.co.uk
+staging.redirect.eliservice.co.uk https://staging.redirect.eliservice.co.uk
+staging.rates.eliservice.co.uk https://staging.rates.eliservice.co.uk
+staging.taxonomy.eliservice.co.uk https://staging.taxonomy.eliservice.co.uk
+staging.quote-reference.eliservice.co.uk https://staging.quote-reference.eliservice.co.uk
+staging.policy.eliservice.co.uk https://staging.policy.eliservice.co.uk
+staging.mail.eliservice.co.uk https://staging.mail.eliservice.co.uk
+staging.policy-upgrade.eliservice.co.uk https://staging.policy-upgrade.eliservice.co.uk
+staging.agents.eliservice.co.uk https://staging.agents.eliservice.co.uk
+staging.payment.eliservice.co.uk https://staging.payment.eliservice.co.uk
+staging.policyplus.eliservice.co.uk https://staging.policyplus.eliservice.co.uk
+staging.polnum.eliservice.co.uk https://staging.polnum.eliservice.co.uk
+staging.scheme.eliservice.co.uk https://staging.scheme.eliservice.co.uk
+staging.voucher.eliservice.co.uk https://staging.voucher.eliservice.co.uk
+staging.storage.eliservice.co.uk https://staging.storage.eliservice.co.uk
+
+
+###########################################################################
+# WORK PROD ENV
+###########################################################################
+pet.api.eandl.co.uk https://pet.api.eandl.co.uk
+secure.eandl.co.uk https://secure.eandl.co.uk
+eandl.co.uk https://eandl.co.uk
+cat-breeds.co.uk https://cat-breeds.co.uk
+dog-breeds.co.uk https://dog-breeds.co.uk
+aggregator.theinsuranceemporium.co.uk https://aggregator.theinsuranceemporium.co.uk
+portal.theinsuranceemporium.co.uk https://portal.theinsuranceemporium.co.uk
+blog.theinsuranceemporium.co.uk https://blog.theinsuranceemporium.co.uk
+theinsuranceemporium.co.uk https://theinsuranceemporium.co.uk
+horse-insurance.co.uk https://horse-insurance.co.uk
+pet-insurance.co.uk https://pet-insurance.co.uk
+my-weddinginsurance.co.uk https://my-weddinginsurance.co.uk
+kamkit.co.uk https://kamkit.co.uk
+policyplus.eandl.co.uk https://policyplus.eandl.co.uk
+rossboroughpetinsurance.co.uk https://rossboroughpetinsurance.co.uk
+insurance4mycaravan.co.uk https://insurance4mycaravan.co.uk
+address.eliservice.co.uk https://address.eliservice.co.uk
+area.eliservice.co.uk https://area.eliservice.co.uk
+breeds.eliservice.co.uk https://breeds.eliservice.co.uk
+customer.eliservice.co.uk https://customer.eliservice.co.uk
+competition.eliservice.co.uk https://competition.eliservice.co.uk
+colcharge.eliservice.co.uk https://colcharge.eliservice.co.uk
+declarations.eliservice.co.uk https://declarations.eliservice.co.uk
+discount.eliservice.co.uk https://discount.eliservice.co.uk
+email.eliservice.co.uk https://email.eliservice.co.uk
+gateway.eliservice.co.uk https://gateway.eliservice.co.uk
+redirect.eliservice.co.uk https://redirect.eliservice.co.uk
+rates.eliservice.co.uk https://rates.eliservice.co.uk
+taxonomy.eliservice.co.uk https://taxonomy.eliservice.co.uk
+quote-reference.eliservice.co.uk https://quote-reference.eliservice.co.uk
+policy.eliservice.co.uk https://policy.eliservice.co.uk
+mail.eliservice.co.uk https://mail.eliservice.co.uk
+policy-upgrade.eliservice.co.uk https://policy-upgrade.eliservice.co.uk
+agents.eliservice.co.uk https://agents.eliservice.co.uk
+payment.eliservice.co.uk https://payment.eliservice.co.uk
+policyplus.eliservice.co.uk https://policyplus.eliservice.co.uk
+polnum.eliservice.co.uk https://polnum.eliservice.co.uk
+scheme.eliservice.co.uk https://scheme.eliservice.co.uk
+voucher.eliservice.co.uk https://voucher.eliservice.co.uk
+storage.eliservice.co.uk https://storage.eliservice.co.uk
+
+
+###########################################################################
+# WORK DEPLOYMENT
+###########################################################################
 deploy-tie https://jenkins.eandl.co.uk/job/theinsuranceemporium.co.uk-ansible-live/build?delay=0sec
 deploy-pet.api.eandl.co.uk https://jenkins.eandl.co.uk/job/pet.api.eandl.co.uk-ansible-live/build?delay=0sec
 deploy-pet-insurance.co.uk https://jenkins.eandl.co.uk/view/Production/job/pet-insurance.co.uk-ansible-live/build?delay=0sec
@@ -70,10 +257,3 @@ deploy-storage.eliservice.co.uk https://jenkins.eandl.co.uk/job/storage.eliservi
 deploy-taxonomy.eliservice.co.uk https://jenkins.eandl.co.uk/job/taxonomy.eliservice.co.uk-ansible-live/build?delay=0sec
 deploy-theinsuranceemporium.co.uk https://jenkins.eandl.co.uk/job/theinsuranceemporium.co.uk-ansible-live/build?delay=0sec
 deploy-utils https://jenkins.eandl.co.uk/job/utils-cron-ansible-live/build?delay=0sec
-brokerassess https://brokerassess.cii.co.uk/go/assess/about/
-runscope https://www.runscope.com/radar/q771lyzzwzkf
-projects-2021 https://theinsuranceemporium.sharepoint.com/:p:/r/sites/Projects/_layouts/15/guestaccess.aspx?e=mJF625&share=EU185qVO7U5OkQOaMX-jQJkBY4EBuYWY3-H2xkOrpiS-Cg
-trellis-github https://github.com/roots/trellis
-vagrant-docs https://www.vagrantup.com/docs
-signinghub https://web.signinghub.com/
-newrelic https://newrelic.com/
