@@ -16,3 +16,4 @@
 /.mpd/*.pid
 /.mpd/mpdstate
 /.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml.rej
+/.doom.d/custom.el
