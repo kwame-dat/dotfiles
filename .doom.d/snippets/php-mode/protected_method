@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: protected_method
+# key: pro       
+# --
+protected function $1($2)$3
+{
+  $0
+}

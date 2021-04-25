@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: private_method
+# key: pri                                                
+# --
+private function $1($2)$3
+{
+  $0
+}
