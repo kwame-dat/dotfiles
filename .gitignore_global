@@ -5,6 +5,7 @@
 .envrc
 .idea
 .php_cs.cache
+.vagrant
 GPATH
 GRTAGS
 GTAGS
