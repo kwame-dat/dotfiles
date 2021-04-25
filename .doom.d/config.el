@@ -1,197 +1,350 @@
 (setq doom-localleader-key ",")
-(setq display-line-numbers-type 'relative)
-(setq doom-theme 'doom-one)
-(add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
-
-(setq company-idle-delay 0.1)
-(setq company-minimum-prefix-length 3)
-
 (setq user-full-name "Tony Ampomah"
       user-mail-address "tony@arksolutions.it"
 
-      doom-font (font-spec :family "Fira Code" :size 14)
-      doom-big-font (font-spec :family "Fira Code" :size 14)
-      doom-variable-pitch-font (font-spec :family "Fira Code" :size 14)
+      doom-scratch-initial-major-mode 'lisp-interaction-mode
+      doom-theme 'doom-one
+      treemacs-width 32
+
+      ;; Line numbers are pretty slow all around. The performance boost of
+      ;; disabling them outweighs the utility of always keeping them on.
+      display-line-numbers-type nil
+
+      company-idle-delay nil
+
+      lsp-ui-sideline-enable nil
+      lsp-enable-symbol-highlighting nil
+      +lsp-prompt-to-install-server nil
+
 
       which-key-idle-delay 0.40
-      lsp-ui-sideline-enable nil
-      lsp-ui-doc-enable nil
-      dart-format-on-save t
       web-mode-markup-indent-offset 2
       web-mode-code-indent-offset 2
       web-mode-css-indent-offset 2
       js-indent-level 2
       typescript-indent-level 2
       json-reformat:indent-width 2
+      css-indent-offset 2
       prettier-js-args '("--single-quote")
       dired-dwim-target t
-      css-indent-offset 2)
 
-(auth-source-pass-enable)
-(setq auth-sources '((:source "~/.authinfo.gpg")))
-(setq lsp-enable-file-watchers nil)
 
-(when IS-LINUX
-  (font-put doom-font :weight 'semi-light))
-(when IS-MAC
-  (setq ns-use-thin-smoothing t)
-  (add-hook 'window-setup-hook #'toggle-frame-maximized))
+      ;; More common use-case
+      evil-ex-substitute-global t)
 
-;; keybindings
-(map! :m "M-j" #'multi-next-line
-      :m "M-k" #'multi-previous-line
-      :m "<f5>" #'open-agenda
-      :m "§" #'my-org-super-agenda-today
+
+;;
+;;; UI
+;; Prevents some cases of Emacs flickering
+(add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
+
+
+;;
+;;; Keybinds
+
+(map! :n [tab] (cmds! (and (featurep! :editor fold)
+                           (save-excursion (end-of-line) (invisible-p (point))))
+                      #'+fold/toggle
+                      (fboundp 'evil-jump-item)
+                      #'evil-jump-item)
+      :v [tab] (cmds! (and (bound-and-true-p yas-minor-mode)
+                           (or (eq evil-visual-selection 'line)
+                               (not (memq (char-after) (list ?\( ?\[ ?\{ ?\} ?\] ?\))))))
+                      #'yas-insert-snippet
+                      (fboundp 'evil-jump-item)
+                      #'evil-jump-item)
+
+      :g "s-/" #'comment-line
+      :g "H-p" #'projectile-find-file
+      :g "H-b" #'ivy-switch-buffer
+      :g "H-P" #'projectile-switch-project
+      :g "H-q" #'save-buffers-kill-emacs
+      :g "H-k" #'kill-buffer
+      :g "H-x" #'kill-region
+      :g "H-s" #'save-buffer
+
 
       ;; Easier window movement
       :n "C-h" #'evil-window-left
       :n "C-j" #'evil-window-down
       :n "C-k" #'evil-window-up
       :n "C-l" #'evil-window-right
-      "s-r" #'counsel-imenu
-      "s-p" #'+ivy/projectile-find-file
-      "s-S-p" #'counsel-projectile-switch-project
-      "s-S-f" #'+default/search-project
 
-      (:map evil-treemacs-state-map
-        "C-h" #'evil-window-left
-        "C-l" #'evil-window-right)
 
-      (:when IS-LINUX
-        "s-x" #'execute-extended-command
-        "s-;" #'eval-expression
-        ;; use super for window/frame navigation/manipulation
-        "s-w" #'delete-window
-        "s-W" #'delete-frame
-        "s-n" #'+default/new-buffer
-        "s-N" #'make-frame
-        "s-q" (if (daemonp) #'delete-frame #'evil-quit-all)
-        ;; Restore OS undo, save, copy, & paste keys (without cua-mode, because
-        ;; it imposes some other functionality and overhead we don't need)
-        "s-z" #'undo
-        "s-c" (if (featurep 'evil) #'evil-yank #'copy-region-as-kill)
-        "s-v" #'yank
-        "s-s" #'save-buffer
-        ;; Buffer-local font scaling
-        "s-+" #'doom/reset-font-size
-        "s-=" #'doom/increase-font-size
-        "s--" #'doom/decrease-font-size
-        ;; Conventional text-editing keys
-        "s-a" #'mark-whole-buffer
-        :gi [s-return]    #'+default/newline-below
-        :gi [s-S-return]  #'+default/newline-above
-        :gi [s-backspace] #'doom/backward-kill-to-bol-and-indent)
+  ;; (evil-collection-define-key 'normal 'dired-mode-map
+  ;;   "h" 'dired-single-up-directory
+  ;;   "l" 'dired-single-buffer))
+
+      (:after dired
+       :map dired-mode-map
+       :n "q" #'quit-window
+       :n "v" #'evil-visual-char
+       :nv "j" #'dired-next-line
+       :nv "k" #'dired-previous-line
+       :n "h" #'dired-up-directory
+       :n "l" #'dired-find-file
+       :n "#" #'dired-flag-auto-save-files
+       :n "." #'evil-repeat
+       :n "~" #'dired-flag-backup-files
+       ;; Comparison commands
+       :n "=" #'dired-diff
+       :n "|" #'dired-compare-directories
+       ;; move to marked files
+       :m "[m" #'dired-prev-marked-file
+       :m "]m" #'dired-next-marked-file
+       :m "[d" #'dired-prev-dirline
+       :m "]d" #'dired-next-dirline
+       ;; Lower keys for commands not operating on all the marked files
+       :desc "wdired" :n "w" #'wdired-change-to-wdired-mode
+       :n "a" #'dired-find-alternate-file
+       :nv "d" #'dired-flag-file-deletion
+       :n "K" #'dired-do-kill-lines
+       :n "r" #'dired-do-redisplay
+       :nv "m" #'dired-mark
+       :nv "t" #'dired-toggle-marks
+       :nv "u" #'dired-unmark           ; also "*u"
+       :nv "p" #'dired-unmark-backward
+       ;; :n "W" #'browse-url-of-dired-file
+       :n "x" #'dired-do-flagged-delete
+       :n "y" #'dired-copy-filename-as-kill
+       :n "Y" (cmd! (dired-copy-filename-as-kill 0))
+       :n "+" #'dired-create-directory
+       :n "O" #'dired-open-mac
+       :n "o" #'dired-preview-mac
+       ;; hiding
+       :n "<tab>" #'dired-hide-subdir ;; FIXME: This can probably live on a better binding.
+       :n "<backtab>" #'dired-hide-all
+       :n "$" #'dired-hide-details-mode
+       ;; misc
+       :n "U" #'dired-undo
+       ;; subtree
+       )
 
       :leader
-      (:prefix "f"
-        "t" #'+tonyampomah/find-in-dotfiles
-        "T" #'+tonyampomah/browse-dotfiles)
-      (:prefix "o"
-        "m" #'mu4e
-        "." #'+pass/edit-entry)
-      (:prefix "n"
-        "m" #'+tonyampomah/find-notes-for-major-mode
-        "p" #'+tonyampomah/find-notes-for-project))
+      "f t" #'counsel-tramp
+      "f vs" #'+kwame-dat/visit-ssh-config
+      "f vh" #'+kwame-dat/visit-host-file
+      "f vr" #'+kwame-dat/visit-resolv-config
+      "f ve" #'+kwame-dat/visit-emacs-config
+      "f vd" #'+kwame-dat/visit-dwm-config)
 
-;; lang/php keybinding
-(map! :localleader
-      :map php-mode-map
-      "i" #'phpactor-import-class
-      "m" #'phpactor-move-class
+;; (evil-collection-define-key 'normal 'dired-mode-map
+;;     "h" 'dired-up-directory
+;;     "l" 'dired-find-file)
 
-      :prefix "f"
-      "r" #'lsp-find-references
-      "d" #'lsp-describe-thing-at-point
+;;
+;;; Modules
 
-      :prefix "g"
-      "d" #'phpactor-goto-definition
-      "i" #'phpactor-find-references
+(after! ivy
+  ;; I prefer search matching to be ordered; it's more precise
+  (add-to-list 'ivy-re-builders-alist '(counsel-projectile-find-file . ivy--regex-plus)))
 
-      :prefix "t"
-      "p" #'phpunit-current-project
-      "c" #'phpunit-current-class
-      "t" #'phpunit-current-test)
-(map! :n "C-]" #'lsp-find-definition)
-(global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
+;; Switch to the new window after splitting
+(setq evil-split-window-below t
+      evil-vsplit-window-right t)
 
-;; Org Mode Configuration
-(after! org
-  (add-to-list 'org-modules 'org-habit t))
-(setq org-directory "~/Dropbox/org")
-(setq org-agenda-files (quote ("~/Dropbox/org/todo.org"
-                               "~/Dropbox/org/inbox.org"
-                               "~/Dropbox/org/goals.org"
-                               "~/Dropbox/org/calendar/gcal.org")))
-;; org capture templates
-(setq org-capture-templates
-      '(("t" "Task" entry (file "~/Dropbox/org/inbox.org")
-         "* TODO %?\n")
-        ("p" "Project" entry (file+headline "~/Dropbox/org/todo.org" "Projects")
-         (file "~/Dropbox/org/templates/newprojecttemplate.org"))
-        ("s" "Goals" entry (file+headline "~/Dropbox/org/goals.org" "Goals")
-         "* SOMEDAY %?\n")
-        ("l" "Log" entry (file+olp+datetree "~/Dropbox/org/log.org" "Log")
-         (file "~/Dropbox/org/templates/logtemplate.org"))))
-
-(setq org-agenda-inhibit-startup nil
-      org-agenda-start-on-weekday nil
-      org-agenda-skip-deadline-if-done t
-      org-agenda-skip-scheduled-if-done t)
-
-(setq-default flycheck-phpcs-standard "PSR2")
 
 ;; projectile
-(setq projectile-project-search-path '("~/Desktop"
-                                       "~/Downloads"
-                                       "~/Repo/2Areas"
-                                       "~/Repo/1Projects"))
+(setq projectile-project-search-path '(
+                                       "~/Repo/Work/2Areas/modules"
+                                       "~/Repo/Work/2Areas/elico-docker/services"
+                                       "~/Repo/Work/2Areas/elico-docker/sites"
+                                       "~/Nextcloud/Documents/Work/2Areas"
+                                       "~/Nextcloud/Documents/Work/1Projects"
+
+                                       "~/Repo/Work/2Areas"
+                                       "~/Repo/Work/1Projects"
+                                       "~/Nextcloud/Documents/Joint/2Areas"
+                                       "~/Nextcloud/Documents/Joint/1Projects"
+
+                                       "~/Nextcloud/Documents/Spiritual/3Resources"
+                                       "~/Nextcloud/Documents/Spiritual/2Areas"
+                                       "~/Nextcloud/Documents/Spiritual/1Projects"
+
+                                       "~/Repo/Personal/3Resources"
+                                       "~/Nextcloud/Documents/Personal/2Areas"
+                                       "~/Repo/Personal/2Areas"
+                                       "~/Nextcloud/Documents/Personal/1Projects"
+                                       "~/Repo/Personal/1Projects"
+                                       ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; :tools
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; :lang org
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq
+      org-directory "~/Nextcloud/org/"
+      org-archive-location (concat org-directory ".archive/%s::")
+      org-roam-directory (concat org-directory "notes/")
+      org-roam-db-location (concat org-roam-directory ".org-roam.db")
+      org-journal-encrypt-journal t
+      org-journal-file-format "%Y%m%d.org"
+      org-startup-folded 'overview
+      org-ellipsis " [...] ")
+
+;;; :ui doom-dashboard
+(setq fancy-splash-image (concat doom-private-dir "splash.png"))
+;; Don't need the menu; I know them all by heart
+(remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-shortmenu)
 
 ;; ledger
 (setq ledger-post-amount-alignment-column 70)
 
-;; configure email
-(setq +mu4e-backend 'offlineimap)
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
-(set-email-account! "arksolutions.it"
-                    '((mu4e-sent-folder       . "/arksolutions.it/Sent")
-                      (mu4e-drafts-folder     . "/arksolutions.it/Drafts")
-                      (mu4e-trash-folder      . "/arksolutions.it/Trash")
-                      (mu4e-refile-folder     . "/arksolutions.it/INBOX")
-                      (smtpmail-smtp-user     . "tony@arksolutions.it")
-                      (user-mail-address      . "tony@arksolutions.it")
-                      (mu4e-compose-signature . "---\nTony Ampomah"))
-                    t)
-(after! mu4e
-  ;; load package to be able to capture emails for GTD
-  (require 'org-mu4e)
-  ;; do not use rich text emails
-  (remove-hook! 'mu4e-compose-mode-hook #'org-mu4e-compose-org-mode)
+;;
+;;; Language customizations
 
-  ;; configure mu4e options
-  (setq mu4e-confirm-quit nil ; quit without asking
-        mu4e-attachment-dir "~/Downloads"
-        mu4e-get-mail-command "offlineimap"
-        mu4e-user-mail-address-list (list "tony@arksolutions.it" "tony.ampomah@netsells.co.uk"))
+(custom-theme-set-faces! 'doom-one
+  `(markdown-code-face :background ,(doom-darken 'bg 0.075))
+  `(font-lock-variable-name-face :foreground ,(doom-lighten 'magenta 0.6)))
 
-  (setq mu4e-bookmarks
-        '( ("flag:unread AND NOT flag:trashed"                "Unread messages"        ?u)
-           ("date:today..now"                                 "Today's messages"       ?t)
-           ("date:7d..now"                                    "Last 7 days"            ?w)
-           ("maildir:/sent"                                   "sent"                   ?s)
-           ("maildir:/arksolutions.it/INBOX AND date:7d..now" "Personal Last 7 days"   ?p)
-           ("maildir:/netsells.co.uk/INBOX AND date:7d..now"  "Work Last 7 days"       ?n)
-           ("mime:image/*"                                    "Messages with images"   ?i)))
 
-  (setq mu4e-maildir-shortcuts
-        '( ("/netsells.co.uk/INBOX" . ?w)
-           ("/arksolutions.it/INBOX"       . ?p)
-           ("/sent"            . ?s)))
 
-  (setq message-send-mail-function 'smtpmail-send-it
-        smtpmail-stream-type 'starttls
-        smtpmail-default-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-service 587)
-  ;; add custom actions for messages
-  (add-to-list 'mu4e-view-actions
-	             '("View in browser" . mu4e-action-view-in-browser) t))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Mu4e
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq mu4e-maildir "~/Maildir")
+
+(setq send-mail-function 'smtpmail-send-it)
+
+;; Default account on startup
+(setq user-full-name  "Tony Ampomah"
+      mu4e-sent-folder "/tony@arksolutions.it/Sent"
+      mu4e-drafts-folder "/tony@arksolutions.it/Drafts"
+      mu4e-trash-folder "/tony@arksolutions.it/Trash")
+
+;; This is set to 't' to avoid mail syncing issues when using mbsync
+(setq mu4e-change-filenames-when-moving t)
+
+;; Refresh mail using isync every 10 minutes
+(setq mu4e-update-interval (* 10 60))
+(setq smtpmail-debug-info t
+      message-kill-buffer-on-exit t
+      ;; Custom script to run offlineimap in parallel for multiple
+      ;; accounts as discussed here:
+      ;; http://www.offlineimap.org/configuration/2016/01/29/why-i-m-not-using-maxconnctions.html
+      ;; This halves the time for checking mails for 4 accounts for me
+      ;; (when nothing has to be synched anyway)
+      mu4e-get-mail-command "mbsync -a"
+      mu4e-attachment-dir "~/Downloads")
+
+
+;; show full addresses in view message (instead of just names)
+;; toggle per name with M-RET
+(setq mu4e-view-show-addresses t)
+
+;; Do not show related messages by default (toggle with =W= works
+;; anyway)
+(setq mu4e-headers-include-related nil)
+
+;; Alternatives are the following, however in first tests they
+;; show inferior results
+;; (setq mu4e-html2text-command "textutil -stdin -format html -convert txt -stdout")
+;; (setq mu4e-html2text-command "html2text -utf8 -width 72")
+;; (setq mu4e-html2text-command "w3m -dump -T text/html")
+
+(defvar my-mu4e-account-alist
+  '(("tony@arksolutions.it"
+     (user-full-name  "Tony Ampomah")
+     (mu4e-compose-signature . (concat "Many thanks\n" "Tony\n"))
+     (mu4e-compose-signature-auto-include t)
+     (mu4e-sent-folder "/tony@arksolutions.it/Sent")
+     (mu4e-drafts-folder "/tony@arksolutions.it/Drafts")
+     (mu4e-trash-folder "/tony@arksolutions.it/Trash")
+     (user-mail-address "tony@arksolutions.it")
+     (smtpmail-default-smtp-server "smtp.zoho.com")
+     (smtpmail-local-domain "zoho.com")
+     (smtpmail-smtp-user "tony@arksolutions.it")
+     (smtpmail-smtp-server "smtp.zoho.com")
+     (smtpmail-stream-type starttls)
+     (smtpmail-smtp-service 587))
+
+    ("tony.ampomah.jw@gmail.com"
+     (user-full-name  "Tony Ampomah")
+     (mu4e-compose-signature . (concat
+                                "Warm love\n"
+                                "Tony\n"))
+     (mu4e-compose-signature-auto-include t)
+     (mu4e-sent-folder "/tony.ampomah.jw@gmail.com/[Gmail].Sent Mail")
+     (mu4e-drafts-folder "/tony.ampomah.jw@gmail.com/[Gmail].Drafts")
+     (mu4e-trash-folder "/tony.ampomah.jw@gmail.com/[Gmail].Trash")
+     (user-mail-address "tony.ampomah.jw@gmail")
+     (smtpmail-default-smtp-server "smtp.gmail.com")
+     (smtpmail-local-domain "gmail.com")
+     (smtpmail-smtp-user "tony.ampomah.jw@gmail.com")
+     (smtpmail-smtp-server "smtp.gmail.com")
+     (smtpmail-stream-type starttls)
+     (smtpmail-smtp-service 587))
+    ))
+
+;; Whenever a new mail is to be composed, change all relevant
+;; configuration variables to the respective account. This method is
+;; taken from the MU4E documentation:
+;; http://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html#Multiple-accounts
+(defun my-mu4e-set-account ()
+  "Set the account for composing a message."
+  (let* ((account
+          (if mu4e-compose-parent-message
+              (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
+                (string-match "/\\(.*?\\)/" maildir)
+                (match-string 1 maildir))
+            (completing-read (format "Compose with account: (%s) "
+                                     (mapconcat #'(lambda (var) (car var))
+                                                my-mu4e-account-alist "/"))
+                             (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
+                             nil t nil nil (caar my-mu4e-account-alist))))
+         (account-vars (cdr (assoc account my-mu4e-account-alist))))
+    (if account-vars
+        (mapc #'(lambda (var)
+                  (set (car var) (cadr var)))
+              account-vars)
+      (error "No email account found"))))
+
+
+(add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
+(add-hook 'mu4e-compose-mode-hook (lambda ()
+                                    (ispell-change-dictionary "en_GB")))
+
+(setq mu4e-trash-folder
+      (lambda (msg)
+        (cond
+         ((string-match "^/tony@arksolutions.it.*"
+                        (mu4e-message-field msg :maildir))
+          "/tony@arksolutions.it/Trash")
+         ;; everything else goes to /archive
+         (t  "/archive"))))
+
+(setq mu4e-refile-folder
+      (lambda (msg)
+        (cond
+         ((string-match "^/tony@arksolutions.it.*"
+                        (mu4e-message-field msg :maildir))
+          "/tony@arksolutions.it/4Archives")
+         ((string-match "^/tony.ampomah.jw@gmail.com*"
+                        (mu4e-message-field msg :maildir))
+          "/tony.ampomah.jw@gmail.com/4Archives")
+         ((string-match "^/tampomah@emporium.co.uk*"
+                        (mu4e-message-field msg :maildir))
+          "/tampomah@emporium.co.uk/Archive")
+         ((string-match "^/itechytony@gmail.com.*"
+                        (mu4e-message-field msg :maildir))
+          "/itechytony@gmail.com/4Archives")
+         ;; everything else goes to /archive
+         (t  "/archive"))))
+
+;; use org structures and tables in message mode
+;; (add-hook 'message-mode-hook 'turn-on-orgstruct++)
+(add-hook 'message-mode-hook 'visual-fill-column-mode)
+
+;; view HTML email in browser
+;; (add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+
+;; display unread email on mode line
+;; (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)

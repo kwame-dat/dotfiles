@@ -1,30 +1,41 @@
 ;;; ~/.config/doom/autoload/tonyampomah.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
-(defun itechytony/visit-emacs-config ()
+(defun +kwame-dat/visit-emacs-config ()
   (interactive)
   (find-file "~/.emacs.d/emacs.org"))
 
-(defun itechytony/visit-host-file ()
+;;;###autoload
+(defun +kwame-dat/visit-host-file ()
   (interactive)
   (find-file "/sudo:root@localhost:/etc/hosts"))
 
-(defun itechytony/edit-ssh-config ()
+;;;###autoload
+(defun +kwame-dat/visit-ssh-config ()
   (interactive)
   (find-file "~/.ssh/config"))
 
-(defun itechytony/edit-emacs-config ()
+;;;###autoload
+(defun +kwame-dat/visit-emacs-config ()
   (interactive)
-  (find-file "~/.emacs.d/config.org"))
+  (find-file "~/.doom/config.el"))
 
-(defun itechytony/visit-resolv-conf ()
+;;;###autoload
+(defun +kwame-dat/visit-dwm-config ()
+  (interactive)
+  (find-file "~/Repo/Personal/2Areas/dwm/config.h"))
+
+;;;###autoload
+(defun +kwame-dat/visit-resolv-config ()
   (interactive)
   (find-file "/sudo:root@localhost:/etc/resolv.conf"))
 
-(defun itechytony/find-in-notes ()
+;;;###autoload
+(defun +kwame-dat/find-in-notes ()
   (interactive)
-  (counsel-find-file "~/org"))
+  (counsel-find-file "~/Nextcloud/org"))
 
+;;;###autoload
 (defun open-terminal-in-projectile-root ()
   (interactive)
   (let ((workdir (if (projectile-project-root)
@@ -33,7 +44,8 @@
     (call-process-shell-command
      (concat "alacritty --working-directory  "workdir) nil 0)))
 
-(defun itechytony/sudo-this-file (&optional arg)
+;;;###autoload
+(defun +kwame-dat/sudo-this-file (&optional arg)
   "Edit currently visited file as root.
 
   With a prefix ARG prompt for a file to visit.
@@ -45,13 +57,8 @@
                          (ido-read-file-name "Find file(as root): ")))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
-(defun itechytony/sudo-find-file (file-name)
-  "Like find file, but opens the file as root."
-  (interactive "FSudo Find File: ")
-  (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
-    (find-file tramp-file-name)))
-
-(defun itechytony/day-view ()
+;;;###autoload
+(defun +kwame-dat/day-view ()
   (interactive)
   (progn (org-agenda nil "a")
          (org-agenda-day-view)))
@@ -61,9 +68,3 @@
   (unless (and buffer-file-name
                (file-writable-p buffer-file-name))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
-
-(defun +itechytony/search-project-for-symbol-at-point ()
-  "Bring up a `counsel-dash' search interface with symbol at point."
-  (interactive)
-  (counsel-rg
-   (substring-no-properties (or (thing-at-point 'symbol) ""))))
