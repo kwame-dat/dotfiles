@@ -1,22 +1,22 @@
-import System.IO
+import System.IO (Handle, hPutStrLn)
 import System.Exit
-
 import XMonad
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.Minimize
 import XMonad.Hooks.ManageHelpers(doFullFloat, doCenterFloat, isFullscreen, isDialog)
 import XMonad.Config.Desktop
 import XMonad.Config.Azerty
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Actions.SpawnOn
-import XMonad.Actions.WithAll
 import XMonad.Util.EZConfig (additionalKeys, additionalMouseBindings)
 import XMonad.Actions.CycleWS
-import XMonad.Actions.CopyWindow
 import XMonad.Hooks.UrgencyHook
 import qualified Codec.Binary.UTF8.String as UTF8
+import qualified XMonad.Actions.DynamicWorkspaceOrder as DO
+
 
 import XMonad.Layout.Spacing
 import XMonad.Layout.Gaps
@@ -25,30 +25,61 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.Fullscreen (fullscreenFull)
 import XMonad.Layout.Cross(simpleCross)
 import XMonad.Layout.Spiral(spiral)
+import XMonad.Layout.Grid
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.IndependentScreens
-import XMonad.Layout.NoFrillsDecoration
 import XMonad.Layout.CenteredMaster(centerMaster)
+import XMonad.Layout.Minimize
 
 import Graphics.X11.ExtraTypes.XF86
+import qualified System.IO
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 import qualified Data.ByteString as B
-import Control.Monad (liftM2)
-import qualified DBus as D
-import qualified DBus.Client as D
+
 
 import XMonad.Util.NamedScratchpad
-import XMonad.ManageHook
 
+import Control.Monad (liftM2)
+
+--mod4Mask= super key
+--mod1Mask= alt key
+--controlMask= ctrl key
+--shiftMask= shift key
+
+myModMask                     = mod4Mask
+mydefaults = def {
+          normalBorderColor   = "#4c566a"
+        , focusedBorderColor  = "#5e81ac"
+        , focusFollowsMouse   = True
+        , mouseBindings       = myMouseBindings
+        , workspaces          = myWorkspaces
+        , keys                = myKeys
+        , modMask             = myModMask
+        , borderWidth         = 2
+        , layoutHook          = myLayoutHook
+        , startupHook         = myStartupHook
+        , manageHook          = myManageHook
+        , handleEventHook     = fullscreenEventHook <+> docksEventHook <+> minimizeEventHook
+        }
+
+-- Autostart
 myStartupHook = do
     spawn "$HOME/.xmonad/scripts/autostart.sh"
     setWMName "LG3D"
 
-myTerminal = "alacritty"
-myFont      = "-*-terminus-medium-*-*-*-*-160-*-*-*-*-*-*"
+
+encodeCChar = map fromIntegral . B.unpack
+
+myTitleColor = "#c91a1a" -- color of window title
+myTitleLength = 80 -- truncate window title to this length
+myCurrentWSColor = "#6790eb" -- color of active workspace
+myVisibleWSColor = "#aaaaaa" -- color of inactive workspace
+myUrgentWSColor = "#c91a1a" -- color of workspace with 'urgent' window
+myHiddenNoWindowsWSColor = "white"
+
 
 terminalScratchpadCmd = "alacritty --title=scratchpad " 
 vpnScratchpadCmd = "alacritty --title vpn --command sudo openvpn --config ~/Documents/Work/3Resources/vpn/Connection.ovpn"
@@ -56,49 +87,30 @@ runscopeAgentScratchpadCmd = "alacritty --title runscope-agent --command runscop
 musicScratchpadCmd = "alacritty --title=music --command=ncmpcpp" 
 webcamScratchpadCmd = "mpv /dev/video2"
 
--- colours
-base03  = "#002b36"
-base02  = "#073642"
-base01  = "#586e75"
-base00  = "#657b83"
-base0   = "#839496"
-base1   = "#93a1a1"
-base2   = "#eee8d5"
-base3   = "#fdf6e3"
-yellow  = "#b58900"
-orange  = "#cb4b16"
-red     = "#dc322f"
-magenta = "#d33682"
-violet  = "#6c71c4"
-blue    = "#268bd2"
-cyan    = "#2aa198"
-green   = "#859900"
+myLayoutHook =
+  spacingRaw True (Border 0 20 20 20) True (Border 20 20 20 20) True $
+  mkToggle (NBFULL ?? NOBORDERS ?? EOT) $
+  -- noFrillsDeco shrinkText topBarTheme $
+  avoidStruts $
+  gaps [(U,25), (D,25), (R,25), (L,25)] $
+  tiled |||
+  ThreeColMid 1 (1/100) (1/2) |||
+  Full
+    where
+        tiled = Tall nmaster delta tiled_ratio
+        nmaster = 1
+        delta = 3/100
+        tiled_ratio = 1/2
 
-active      = blue
-activeWarn  = red
-inactive    = base02
-focusColor  = blue
-unfocusColor = base02
 
-topBarTheme = def
-    { 
-      fontName              = myFont
-    , inactiveBorderColor   = base03
-    , inactiveColor         = base03
-    , inactiveTextColor     = base03
-    , activeBorderColor     = active
-    , activeColor           = active
-    , activeTextColor       = active
-    , urgentBorderColor     = activeWarn
-    , urgentTextColor       = activeWarn
-    , decoHeight            = 30
-    }
 
-myModMask = mod4Mask
-encodeCChar = map fromIntegral . B.unpack
-myFocusFollowsMouse = True
-myBorderWidth = 1
-myWorkspaces = [
+--WORKSPACES
+xmobarEscape = concatMap doubleLts
+    where doubleLts '<' = "<<"
+          doubleLts x = [x]
+
+myWorkspaces :: [String]
+myWorkspaces = clickable . (map xmobarEscape) $ [
     "\61612",
     "\61899",
     "\61557",
@@ -108,10 +120,12 @@ myWorkspaces = [
     "\61485",
     "\61723",
     "\62003",
-    "\61705"
-    ]
+    "\61705",
+    "\61872"
+  ]
+    where
+               clickable l = [ "<action=xdotool key super+" ++ show (n) ++ ">" ++ ws ++ "</action>" | (i,ws) <- zip [1, 2, 3, 4, 5, 6, 7, 8, 9, 0] l, let n = i ]
 
-myBaseConfig = desktopConfig
 
 -- Scratchpads
 myScratchPads :: [NamedScratchpad]
@@ -123,7 +137,8 @@ myScratchPads = [
                   NS "runscope-agent" runscopeAgentScratchpadCmd (title =? "runscope-agent") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
                 ]
 
--- Window Manipulations
+
+-- window manipulations
 myManageHook = composeAll
     [
       className =? "MPlayer"                                 --> doFloat
@@ -156,40 +171,12 @@ myManageHook = composeAll
     , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 9 )
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)
     ] <+> namedScratchpadManageHook myScratchPads
+-- keys config
 
-
-myLayout =
-  spacingRaw True (Border 0 20 20 20) True (Border 20 20 20 20) True $
-  mkToggle (NBFULL ?? NOBORDERS ?? EOT) $
-  -- noFrillsDeco shrinkText topBarTheme $
-  avoidStruts $
-  gaps [(U,25), (D,25), (R,25), (L,25)] $
-  tiled |||
-  ThreeColMid 1 (1/100) (1/2) |||
-  Full
-    where
-        tiled = Tall nmaster delta tiled_ratio
-        nmaster = 1
-        delta = 3/100
-        tiled_ratio = 1/2
-
-
--- Mouse Configuration
-myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
-    -- mod-button1, Set the window to floating mode and move by dragging
-    [ ((modMask, 1), (\w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster))
-
-    -- mod-button2, Raise the window to the top of the stack
-    , ((modMask, 2), (\w -> focus w >> windows W.shiftMaster))
-
-    -- mod-button3, Set the window to floating mode and resize by dragging
-    , ((modMask, 3), (\w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster))
-    ]
-
-
--- Keys Configuration
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   ----------------------------------------------------------------------
+  -- SUPER + FUNCTION KEYS
+
   [
   -- MODKEY + ...
     ((modMask, xK_t),       namedScratchpadAction myScratchPads "terminal")
@@ -197,11 +184,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_q),       kill)
   , ((modMask, xK_e),       spawn $ "emacsclient -c -a ''")
   , ((modMask, xK_Return),  spawn $ "alacritty")
-  , ((modMask, xK_space),   spawn $ "~/.config/rofi/launcher/launcher.sh")
+  , ((modMask, xK_space),   spawn $ "~/.config/rofi/launcher.sh")
   , ((modMask, xK_p),       spawn $ "rofi-pass")
   , ((modMask, xK_b),       spawn $ "rofi-surfraw")
-  , ((modMask, xK_s),       windows copyToAll)
-  , ((modMask .|. shiftMask, xK_s),       killAllOtherCopies)
 
 
   -- MODKEY + SHIFT KEYS
@@ -211,9 +196,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. shiftMask, xK_m),          namedScratchpadAction myScratchPads "music")
   , ((modMask .|. shiftMask, xK_w),          namedScratchpadAction myScratchPads "webcam")
   , ((modMask .|. shiftMask, xK_Return ),    spawn $ "thunar")
-  , ((modMask .|. shiftMask, xK_q ),         killAll)
-  -- , ((modMask .|. shiftMask, xK_s ),         spawn $ "maim -s | xclip -selection clipboard -t image/png")
-  , ((modMask .|. shiftMask, xK_e ),         spawn $ "~/.config/rofi/powermenu/powermenu.sh")
+  , ((modMask .|. shiftMask, xK_e ),         spawn $ "~/.config/rofi/power-menu.sh")
 
   -- FUNCTION KEYS
   -- Take a full screenshot and save it in downloads
@@ -274,10 +257,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   --CONTROL + ALT KEYS
   , ((controlMask .|. mod1Mask, xK_Escape ), spawn $ "xkill")
   , ((controlMask .|. mod1Mask, xK_Delete ), spawn $ "xfce4-taskmanager")
-
   --SCREENSHOTS
-  -- , ((0, xK_Print), spawn $ "flameshot gui")
-  -- , ((controlMask .|. shiftMask , xK_Print ), spawn $ "gnome-screenshot -i")
+
+  , ((0, xK_Print), spawn $ "scrot 'ArcoLinux-%Y-%m-%d-%s_screenshot_$wx$h.jpg' -e 'mv $f $$(xdg-user-dir PICTURES)'")
+  , ((controlMask, xK_Print), spawn $ "xfce4-screenshooter" )
+  , ((controlMask .|. shiftMask , xK_Print ), spawn $ "gnome-screenshot -i")
 
 
   --MULTIMEDIA KEYS
@@ -286,21 +270,27 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((0, xF86XK_AudioMute), spawn $ "amixer -q set Master toggle")
 
   -- Decrease volume
-  , ((0, xF86XK_AudioLowerVolume), spawn $ "amixer -q set Master 10%-")
+  , ((0, xF86XK_AudioLowerVolume), spawn $ "amixer -q set Master 5%-")
 
   -- Increase volume
-  , ((0, xF86XK_AudioRaiseVolume), spawn $ "amixer -q set Master 10%+")
+  , ((0, xF86XK_AudioRaiseVolume), spawn $ "amixer -q set Master 5%+")
 
   -- Increase brightness
-  , ((0, xF86XK_MonBrightnessUp),  spawn $ "xbacklight -inc 10")
+  , ((0, xF86XK_MonBrightnessUp),  spawn $ "xbacklight -inc 5")
 
   -- Decrease brightness
-  , ((0, xF86XK_MonBrightnessDown), spawn $ "xbacklight -dec 10")
+  , ((0, xF86XK_MonBrightnessDown), spawn $ "xbacklight -dec 5")
 
-  , ((0, xF86XK_AudioPlay), spawn $ "mpc toggle")
-  , ((0, xF86XK_AudioNext), spawn $ "mpc next")
-  , ((0, xF86XK_AudioPrev), spawn $ "mpc previous")
-  , ((0, xF86XK_AudioStop), spawn $ "mpc stop")
+--  , ((0, xF86XK_AudioPlay), spawn $ "mpc toggle")
+--  , ((0, xF86XK_AudioNext), spawn $ "mpc next")
+--  , ((0, xF86XK_AudioPrev), spawn $ "mpc prev")
+--  , ((0, xF86XK_AudioStop), spawn $ "mpc stop")
+
+  , ((0, xF86XK_AudioPlay), spawn $ "playerctl play-pause")
+  , ((0, xF86XK_AudioNext), spawn $ "playerctl next")
+  , ((0, xF86XK_AudioPrev), spawn $ "playerctl previous")
+  , ((0, xF86XK_AudioStop), spawn $ "playerctl stop")
+
 
   --------------------------------------------------------------------
   --  XMONAD LAYOUT KEYS
@@ -356,30 +346,55 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- mod-[1..9], Switch to workspace N
   -- mod-shift-[1..9], Move client to workspace N
   [((m .|. modMask, k), windows $ f i)
-      | (i, k) <- zip (myWorkspaces) [xK_1,xK_2,xK_3,xK_4,xK_5,xK_6,xK_7,xK_8,xK_9, xK_0]
-      , (f, m) <- [(W.view, 0), (W.shift, shiftMask), (copy, controlMask)]]
 
+  --Keyboard layouts
+  --qwerty users use this line
+   | (i, k) <- zip (XMonad.workspaces conf) [xK_1,xK_2,xK_3,xK_4,xK_5,xK_6,xK_7,xK_8,xK_9,xK_0]
 
-main :: IO ()
+      , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)
+      , (\i -> W.greedyView i . W.shift i, shiftMask)]]
+  ++
+  -- ctrl-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
+  -- ctrl-shift-{w,e,r}, Move client to screen 1, 2, or 3
+  [((m .|. controlMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
+      | (key, sc) <- zip [xK_comma, xK_period] [0..]
+      , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+
+myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
+
+    -- mod-button1, Set the window to floating mode and move by dragging
+    [ ((modMask, 1), (\w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster))
+
+    -- mod-button2, Raise the window to the top of the stack
+    , ((modMask, 2), (\w -> focus w >> windows W.shiftMaster))
+
+    -- mod-button3, Set the window to floating mode and resize by dragging
+    , ((modMask, 3), (\w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster))
+
+    ]
+
+--XMOBAR
 main = do
-    dbus <- D.connectSession
-    -- Request access to the DBus name
-    D.requestName dbus (D.busName_ "org.xmonad.Log")
-        [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
 
-    xmonad . ewmh $
-            myBaseConfig
-                { startupHook = myStartupHook
-                , layoutHook = smartBorders $ myLayout
-                , manageHook = manageSpawn <+> myManageHook <+> manageHook myBaseConfig
-                , modMask = myModMask
-                , terminal = myTerminal
-                , borderWidth = myBorderWidth
-                , handleEventHook = handleEventHook myBaseConfig <+> fullscreenEventHook
-                , focusFollowsMouse = myFocusFollowsMouse
-                , workspaces = myWorkspaces
-                , focusedBorderColor = active
-                , normalBorderColor = inactive
-                , keys = myKeys
-                , mouseBindings = myMouseBindings
+        xmproc0 <- spawnPipe "xmobar -x 0 $HOME/.xmobarrc" -- xmobar monitor 1
+        xmproc1 <- spawnPipe "xmobar -x 1 $HOME/.xmobarrc" -- xmobar monitor 2
+        xmonad $ ewmh $ mydefaults {
+        logHook =  dynamicLogWithPP $ def {
+        ppOutput = \x -> System.IO.hPutStrLn xmproc0 x  >> System.IO.hPutStrLn xmproc1 x
+        , ppTitle = xmobarColor myTitleColor "" . ( \ str -> "")
+        , ppCurrent = xmobarColor myCurrentWSColor "" . wrap """"
+        , ppVisible = xmobarColor myVisibleWSColor "" . wrap """"
+        , ppHidden = wrap """"
+        , ppHiddenNoWindows = xmobarColor myHiddenNoWindowsWSColor ""
+        , ppUrgent = xmobarColor myUrgentWSColor ""
+        , ppSep = "  "
+        , ppWsSep = "  "
+        , ppLayout = (\ x -> case x of
+           "Spacing Tall"                 -> "<fn=1>Tall</fn>"
+           "Spacing Grid"                 -> "<fn=1>Grid</fn>"
+           "Spacing Spiral"               -> "<fn=1>Spiral</fn>"
+           "Spacing ThreeCol"             -> "<fn=1>ThreeColMid</fn>"
+           "Spacing Full"                 -> "<fn=1>Full</fn>"
+           _                                         -> x )
+ }
 }
