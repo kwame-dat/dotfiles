@@ -23,7 +23,7 @@ Config {
    , alignSep         = "}{"
    , template         = "  <fc=white><fn=2><action=button=4><action=button=5>%UnsafeStdinReader%</action></action></fn></fc>} <fc=white> %update% </fc>    %coretemp%    %multicpu%    %memory%   {<action=`networkmanager_dmenu`>%dynnetwork%</action>    %battery%    <action=`pavucontrol` button=3><action=`XMMute` button=1><action=button=4><action=button=5>%XVol%</action></action></action></action>    <action=`gsimplecal` button=1>%date%</action>   "
    , commands         =
-      [ Run MultiCpu                            [ "--template" , "<fc=white><fn=2>  </fn></fc><fc=white></fc> Cpu: <total> %"
+      [ Run MultiCpu                            [ "--template" , "<fc=white><fn=2>  </fn></fc><fc=white></fc><total>%"
                                                 , "--Low"      , "50"        -- units: %
                                                 , "--High"     , "85"        -- units: %
                                                 , "--low"      , "#ffffff"
@@ -49,7 +49,7 @@ Config {
                                                 ] 10
 
       , Run Memory                              [ "--template",
-                                                  "<fc=white><fn=2> </fn></fc><fc=white></fc> Mem: <usedratio> %",
+                                                  "<fc=white><fn=2> </fn></fc><fc=white></fc><usedratio>%",
                                                   "--Low"      , "19",        -- units: %
                                                   "--High"     , "65",       -- units: %
                                                   "--low"      , "#A6E22E",
@@ -65,7 +65,7 @@ Config {
                                                  , "-h", "#3ae03a"
                                                  , "--" -- battery specific options
                                                    -- discharging status
-                                                 , "-o","<left>% (<timeleft>) <watts>W"
+                                                 , "-o","<left>%"
                                                    -- AC "on" status
                                                  , "-O","<fn=2>\xf1e6</fn> <left>%"
                                                    -- charged status
