@@ -1,38 +1,19 @@
 Xft.dpi: 100
 rofi.dpi: 100
 
-! special
-*.foreground:   #c5c8c6
-*.background:   #1d1f21
+! DWM Dark Theme
+! dwm.normbgcolor:            #222222
+! dwm.normbordercolor:        #444444
+! dwm.normfgcolor:            #bbbbbb
+! dwm.selfgcolor:             #eeeeee
+! dwm.selbordercolor:         #005577
+! dwm.selbgcolor:             #005577
 
-! black
-*.color0:       #000000
-*.color8:       #444444
 
-! red
-*.color1:       #ed0b0b
-*.color9:       #b55454
-
-! green
-*.color2:       #40a62f
-*.color10:      #78a670
-
-! yellow
-*.color3:       #f2e635
-*.color11:      #faf380
-
-! blue
-*.color4:       #268bd2
-*.color12:      #68a7d4
-
-! magenta
-*.color5:       #b30ad0
-*.color13:      #c583d0
-
-! cyan
-*.color6:       #32d0fc
-*.color14:      #8adaf1
-
-! white
-*.color7:       #555555
-*.color15:      #e0e3e7
+! DWM Light Theme
+dwm.normbgcolor:            #fafafa
+dwm.normbordercolor:        #f0f0f0
+dwm.normfgcolor:            #1c1f24
+dwm.selfgcolor:             #eeeeee
+dwm.selbordercolor:         #005577
+dwm.selbgcolor:             #005577
