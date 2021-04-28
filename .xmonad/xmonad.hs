@@ -73,9 +73,9 @@ myStartupHook = do
 
 encodeCChar = map fromIntegral . B.unpack
 
-myTitleColor = "#c91a1a" -- color of window title
 myTitleLength = 80 -- truncate window title to this length
 myCurrentWSColor = "#6790eb" -- color of active workspace
+myTitleColor = myCurrentWSColor -- color of window title
 myVisibleWSColor = "#aaaaaa" -- color of inactive workspace
 myUrgentWSColor = "#c91a1a" -- color of workspace with 'urgent' window
 myHiddenNoWindowsWSColor = "white"
@@ -381,14 +381,14 @@ main = do
         xmonad $ ewmh $ mydefaults {
         logHook =  dynamicLogWithPP $ def {
         ppOutput = \x -> System.IO.hPutStrLn xmproc0 x  >> System.IO.hPutStrLn xmproc1 x
-        , ppTitle = xmobarColor myTitleColor "" . ( \ str -> "")
+        , ppTitle = xmobarColor myTitleColor "" . ( shorten myTitleLength)
         , ppCurrent = xmobarColor myCurrentWSColor "" . wrap """"
         , ppVisible = xmobarColor myVisibleWSColor "" . wrap """"
         , ppHidden = wrap """"
         , ppHiddenNoWindows = xmobarColor myHiddenNoWindowsWSColor ""
         , ppUrgent = xmobarColor myUrgentWSColor ""
-        , ppSep = "  "
-        , ppWsSep = "  "
+        , ppSep = "    "
+        , ppWsSep = "    "
         , ppLayout = (\ x -> case x of
            "Spacing Tall"                 -> "<fn=1>Tall</fn>"
            "Spacing Grid"                 -> "<fn=1>Grid</fn>"
