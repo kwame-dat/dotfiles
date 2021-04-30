@@ -52,13 +52,13 @@ import Control.Monad (liftM2)
 myModMask                     = mod4Mask
 mydefaults = def {
           normalBorderColor   = "#4c566a"
-        , focusedBorderColor  = "#5e81ac"
+        , focusedBorderColor  = "#FFDC00"
         , focusFollowsMouse   = True
         , mouseBindings       = myMouseBindings
         , workspaces          = myWorkspaces
         , keys                = myKeys
         , modMask             = myModMask
-        , borderWidth         = 2
+        , borderWidth         = 3
         , layoutHook          = myLayoutHook
         , startupHook         = myStartupHook
         , manageHook          = myManageHook
@@ -92,6 +92,7 @@ myLayoutHook =
   mkToggle (NBFULL ?? NOBORDERS ?? EOT) $
   -- noFrillsDeco shrinkText topBarTheme $
   avoidStruts $
+  smartBorders $
   gaps [(U,25), (D,25), (R,25), (L,25)] $
   tiled |||
   ThreeColMid 1 (1/100) (1/2) |||
@@ -187,6 +188,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_space),   spawn $ "~/.config/rofi/launcher.sh")
   , ((modMask, xK_p),       spawn $ "rofi-pass")
   , ((modMask, xK_b),       spawn $ "rofi-surfraw")
+  , ((modMask, xK_Escape),     spawn $ "xkill")
 
 
   -- MODKEY + SHIFT KEYS
@@ -244,7 +246,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. mod1Mask, xK_f),       spawn $ "firefox")
   , ((modMask .|. mod1Mask, xK_g),       spawn $ "google-chrome-stable -no-default-browser-check")
   , ((modMask .|. mod1Mask, xK_q),       spawn $ "qutebrowser")
-  , ((modMask .|. mod1Mask, xK_b),       spawn $ "")
   , ((modMask .|. mod1Mask, xK_w),       spawn $ "whatsapp-nativefier")
   , ((modMask .|. mod1Mask, xK_d),       spawn $ "dbeaver")
   , ((modMask .|. mod1Mask, xK_z),       spawn $ "zoom")
@@ -255,10 +256,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. mod1Mask, xK_k),       spawn $ "variety -p && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
 
   --CONTROL + ALT KEYS
-  , ((controlMask .|. mod1Mask, xK_Escape ), spawn $ "xkill")
   , ((controlMask .|. mod1Mask, xK_Delete ), spawn $ "xfce4-taskmanager")
-  --SCREENSHOTS
 
+  --SCREENSHOTS
   , ((0, xK_Print), spawn $ "scrot 'ArcoLinux-%Y-%m-%d-%s_screenshot_$wx$h.jpg' -e 'mv $f $$(xdg-user-dir PICTURES)'")
   , ((controlMask, xK_Print), spawn $ "xfce4-screenshooter" )
   , ((controlMask .|. shiftMask , xK_Print ), spawn $ "gnome-screenshot -i")
