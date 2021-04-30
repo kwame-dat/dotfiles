@@ -1,10 +1,10 @@
 Config {
-    font = "xft:Noto Sans LGC:size=10:style=Regular",
+    font = "xft:Noto Sans:size=9:style=Regular,FontAwesome:style=Regular:size=9,JoyPixels:size=9:antialias=true:autohint=true",
     additionalFonts = [
-        "xft:Noto Sans:size=10:style=Bold",
-        "xft:FontAwesome:style=Regular:size=10"
+        "xft:Noto Sans:size=9:style=Bold,FontAwesome:style=Regular:size=9",
+        "xft:FontAwesome:style=Regular:size=9"
         ]
-   , bgColor          = "#2F343F"
+   , bgColor          = "#1E2127"
    , fgColor          = "white"
    , position         = TopSize C 100 30
    , textOffset       = -1
@@ -21,7 +21,7 @@ Config {
    , persistent       = True
    , sepChar          = "%"
    , alignSep         = "}{"
-   , template         = "  <fc=white><fn=2><action=button=4><action=button=5>%UnsafeStdinReader%</action></action></fn></fc>} <fc=white> %update% </fc>    %coretemp%    %multicpu%    %memory%   {<action=`networkmanager_dmenu`>%dynnetwork%</action>    %battery%    <action=`pavucontrol` button=3><action=`XMMute` button=1><action=button=4><action=button=5>%XVol%</action></action></action></action>    <action=`gsimplecal` button=1>%date%</action>   "
+   , template         = "  %UnsafeStdinReader%}   %coretemp%    %multicpu%    %memory%   {%vpn%    <action=`networkmanager_dmenu`>%dynnetwork%</action>    %bright%    %update%    %battery%    <action=`pavucontrol` button=3><action=`XMMute` button=1><action=button=4><action=button=5>%XVol%</action></action></action></action>    <action=`gsimplecal` button=1>%date%</action>   "
    , commands         =
       [ Run MultiCpu                            [ "--template" , "<fc=white><fn=2>  </fn></fc><fc=white></fc><total>%"
                                                 , "--Low"      , "50"        -- units: %
@@ -65,7 +65,7 @@ Config {
                                                  , "-h", "#3ae03a"
                                                  , "--" -- battery specific options
                                                    -- discharging status
-                                                 , "-o","<left>%"
+                                                 , "-o","<fn=2>\xf240</fn> <left>%"
                                                    -- AC "on" status
                                                  , "-O","<fn=2>\xf1e6</fn> <left>%"
                                                    -- charged status
@@ -80,13 +80,17 @@ Config {
                                                  , "-l", "#a6e22e" -- power lower than the -L threshold
                                                  ] 10
 
+      , Run Com                                  "/bin/bash" ["-c", "vpn-openvpn-isrunning"] "vpn" 25
+
       , Run Wireless                             "wlp0s20u2u3" ["-t", "<fc=green>Wifi:</fc> <quality>"] 10
+
+      , Run Brightness                           [ "-t", "🔆 <percent>%", "--", "-D", "intel_backlight" ] 60
 
       , Run Com                                  "/bin/bash" ["-c", "XMgetvolume"]  "XVol" 10
 
       , Run UnsafeStdinReader
 
-      , Run Com                                  "/bin/bash" ["-c",  "XMKupdate"] "update" 600
+      , Run Com                                  "/bin/bash" ["-c",  "pacupdate"] "update" 600
 
       , Run Date                                 "%a %b %d    %H:%M" "date" 60]
 
