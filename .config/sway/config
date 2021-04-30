@@ -19,7 +19,7 @@ set $term alacritty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu albert toggle
+set $menu ~/.config/rofi/launcher.sh
 
 gaps inner 15
 gaps outer 15
@@ -28,7 +28,7 @@ gaps outer 15
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/Documents/Personal/3Resources/Wallpapers/T_T-66.jpg fill
+output * bg ~/Documents/Personal/3Resources/Wallpapers/general/0001.jpg fill
 
 
 default_border none
@@ -273,8 +273,8 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Function Keys bindings
-    bindsym F5 exec grim $(xdg-user-dir PICTURES)/$(date +'%s_grim.png')
-    bindsym F6 exec grim -g "$(slurp)" $(xdg-user-dir PICTURES)/$(date +'%s_grim.png')
+    bindsym F5 exec grim $HOME/Downloads/$(date +'%s_grim.png')
+    bindsym F6 exec grim -g "$(slurp)" $HOME/Downloads/$(date +'%s_grim.png')
     bindsym F7 exec grim - | wl-copy
 
 #
@@ -295,7 +295,7 @@ assign [class="firefox"]  1
 assign [class="Emacs"]  2
 assign [class="jetbrains-phpstorm"]  2
 assign [class="calibre"] 2
-assign [class="whatsapp-for-linux"]  3
+assign [app_id="whatsapp-for-linux"]  3
 assign [class="Signal"]  3
 assign [app_id="telegramdesktop"]  3
 assign [class="Slack"]  3
@@ -317,5 +317,4 @@ exec nextcloud
 exec kdeconnect-indicator
 exec xrdb -load ~/.Xresources
 exec_always xcape -e 'Control_L=Escape'
-exec albert
 exec redshift
