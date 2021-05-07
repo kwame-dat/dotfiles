@@ -13,6 +13,7 @@ import XMonad.Util.Run(spawnPipe)
 import XMonad.Actions.SpawnOn
 import XMonad.Util.EZConfig (additionalKeys, additionalMouseBindings)
 import XMonad.Actions.CycleWS
+import XMonad.Actions.CopyWindow
 import XMonad.Hooks.UrgencyHook
 import qualified Codec.Binary.UTF8.String as UTF8
 import qualified XMonad.Actions.DynamicWorkspaceOrder as DO
@@ -75,7 +76,7 @@ encodeCChar = map fromIntegral . B.unpack
 
 myTitleLength = 80 -- truncate window title to this length
 myCurrentWSColor = "#6790eb" -- color of active workspace
-myTitleColor = myCurrentWSColor -- color of window title
+myTitleColor = "#FFFFFF" -- color of window title
 myVisibleWSColor = "#aaaaaa" -- color of inactive workspace
 myUrgentWSColor = "#c91a1a" -- color of workspace with 'urgent' window
 myHiddenNoWindowsWSColor = "white"
@@ -151,7 +152,7 @@ myManageHook = composeAll
     , className =? "Google-chrome"                           --> doShift ( myWorkspaces !! 0 )
     , className =? "Brave-browser"                           --> doShift ( myWorkspaces !! 0 )
     , className =? "firefox"                                 --> doShift ( myWorkspaces !! 0 )
-    , className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )
+    -- , className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )
     , className =? "jetbrains-phpstorm"                      --> doShift ( myWorkspaces !! 1 )
     , className =? "Slack"                                   --> doShift ( myWorkspaces !! 2 )
     , className =? "TelegramDesktop"                         --> doShift ( myWorkspaces !! 2 )
@@ -316,6 +317,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_Up), windows W.focusUp )
 
 
+  , ((modMask, xK_s ), windows copyToAll) -- @@ Make focused window always visible
+  , ((modMask .|. shiftMask, xK_s ),  killAllOtherCopies) -- @@ Toggle window state back
+
+
   -- Swap the focused window with the next window.
   , ((modMask .|. shiftMask, xK_k), windows W.swapDown)
   , ((modMask .|. shiftMask, xK_Up), windows W.swapDown)
@@ -343,22 +348,18 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   ]
   ++
 
-  -- mod-[1..9], Switch to workspace N
-  -- mod-shift-[1..9], Move client to workspace N
-  [((m .|. modMask, k), windows $ f i)
-
-  --Keyboard layouts
-  --qwerty users use this line
-   | (i, k) <- zip (XMonad.workspaces conf) [xK_1,xK_2,xK_3,xK_4,xK_5,xK_6,xK_7,xK_8,xK_9,xK_0]
-
-      , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)
-      , (\i -> W.greedyView i . W.shift i, shiftMask)]]
+  -- mod-[1..9] @@ Switch to workspace N
+  -- mod-shift-[1..9] @@ Move client to workspace N
+  -- mod-control-[1..9] @@ Copy client to workspace N
+    [((m .|. modMask, k), windows $ f i)
+        | (i, k) <- zip (XMonad.workspaces conf) [xK_1 ..]
+        , (f, m) <- [(W.view, 0), (W.shift, shiftMask), (copy, controlMask)]]
   ++
-  -- ctrl-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
-  -- ctrl-shift-{w,e,r}, Move client to screen 1, 2, or 3
-  [((m .|. controlMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
+  [((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
       | (key, sc) <- zip [xK_comma, xK_period] [0..]
       , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+
+
 
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 
