@@ -12,9 +12,9 @@ IMAPStore arksolutions-remote
 Account arksolutions
 
 MaildirStore arksolutions-local
-Path ~/Maildir/tony@arksolutions.it/
-Inbox ~/Maildir/tony@arksolutions.it/Inbox
-Trash ~/Maildir/tony@arksolutions.it/Trash
+Path ~/.mail/tony@arksolutions.it/
+Inbox ~/.mail/tony@arksolutions.it/Inbox
+Trash ~/.mail/tony@arksolutions.it/Trash
 SubFolders Verbatim
 
 Channel arksolutions
@@ -33,8 +33,8 @@ IMAPAccount emporium
 Host outlook.office365.com
 User tampomah@emporium.co.uk
 PassCmd "pass 2Areas/emails/emporium.co.uk"
-# SSLType IMAPS
-# SSLVersion TLSv1.2
+SSLType IMAPS
+SSLVersion TLSv1.2
 AuthMechs PLAIN
 CertificateFile ~/.ca-bundle.crt
 
@@ -42,10 +42,10 @@ IMAPStore emporium-remote
 Account emporium
 
 MaildirStore emporium-local
-Path ~/Maildir/tampomah@emporium.co.uk/
-Inbox ~/Maildir/tampomah@emporium.co.uk/Inbox
-# Trash ~/Maildir/tampomah@emporium.co.uk/Deleted Items
-SubFolders Verbatim
+Path ~/.mail/tampomah@emporium.co.uk/
+Inbox ~/.mail/tampomah@emporium.co.uk/Inbox
+# Trash ~/.mail/tampomah@emporium.co.uk/Deleted Items
+SubFolders Legacy
 
 Channel emporium
 Far :emporium-remote:
@@ -73,8 +73,8 @@ Account tony.ampomah.jw-gmail
 MaildirStore tony.ampomah.jw-gmail-local
 SubFolders Verbatim
 # The trailing "/" is important
-Path ~/Maildir/tony.ampomah.jw@gmail.com/
-Inbox ~/Maildir/tony.ampomah.jw@gmail.com/Inbox
+Path ~/.mail/tony.ampomah.jw@gmail.com/
+Inbox ~/.mail/tony.ampomah.jw@gmail.com/Inbox
 
 Channel tony.ampomah.jw-gmail
 Far :tony.ampomah.jw-gmail-remote:
@@ -105,8 +105,8 @@ Account itechytony-gmail
 MaildirStore itechytony-gmail-local
 SubFolders Verbatim
 # The trailing "/" is important
-Path ~/Maildir/itechytony@gmail.com/
-Inbox ~/Maildir/itechytony@gmail.com/Inbox
+Path ~/.mail/itechytony@gmail.com/
+Inbox ~/.mail/itechytony@gmail.com/Inbox
 
 Channel itechytony-gmail
 Far :itechytony-gmail-remote:
