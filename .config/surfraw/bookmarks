@@ -86,6 +86,7 @@ docker.scheme.eliservice.co.uk https://docker.scheme.eliservice.co.uk
 docker.voucher.eliservice.co.uk https://docker.voucher.eliservice.co.uk
 docker.storage.eliservice.co.uk https://docker.storage.eliservice.co.uk
 docker.node-test.co.uk https://docker.node-test.co.uk
+docker.dash2.eandl.co.uk https://docker.dash2.eandl.co.uk
 
 
 ###########################################################################
@@ -131,6 +132,7 @@ test.polnum.eliservice.co.uk https://test.polnum.eliservice.co.uk
 test.scheme.eliservice.co.uk https://test.scheme.eliservice.co.uk
 test.voucher.eliservice.co.uk https://test.voucher.eliservice.co.uk
 test.storage.eliservice.co.uk https://test.storage.eliservice.co.uk
+test.dash2.eandl.co.uk https://test.dash2.eandl.co.uk
 
 
 ###########################################################################
@@ -221,6 +223,7 @@ polnum.eliservice.co.uk https://polnum.eliservice.co.uk
 scheme.eliservice.co.uk https://scheme.eliservice.co.uk
 voucher.eliservice.co.uk https://voucher.eliservice.co.uk
 storage.eliservice.co.uk https://storage.eliservice.co.uk
+dash2.eandl.co.uk https://dash2.eandl.co.uk
 
 
 ###########################################################################
