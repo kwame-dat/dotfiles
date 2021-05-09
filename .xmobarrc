@@ -1,8 +1,8 @@
 Config {
-    font = "xft:Noto Sans:size=9:style=Regular,FontAwesome:style=Regular:size=9,JoyPixels:size=9:antialias=true:autohint=true",
+    font = "xft:Canterell:size=10:style=Regular,FontAwesome:style=Regular:size=10,JoyPixels:size=10:antialias=true:autohint=true",
     additionalFonts = [
-        "xft:Noto Sans:size=9:style=Bold,FontAwesome:style=Regular:size=9",
-        "xft:FontAwesome:style=Regular:size=9"
+        "xft:Canterell:size=10:style=Bold,FontAwesome:style=Regular:size=10",
+        "xft:FontAwesome:style=Regular:size=10"
         ]
    , bgColor          = "#1E2127"
    , fgColor          = "white"
@@ -23,7 +23,7 @@ Config {
    , alignSep         = "}{"
    , template         = "  %UnsafeStdinReader%}   %coretemp%    %multicpu%    %memory%   {%vpn%    <action=`networkmanager_dmenu`>%dynnetwork%</action>    %bright%    %update%    %battery%    <action=`pavucontrol` button=3><action=`XMMute` button=1><action=button=4><action=button=5>%XVol%</action></action></action></action>    <action=`gsimplecal` button=1>%date%</action>   "
    , commands         =
-      [ Run MultiCpu                            [ "--template" , "<fc=white><fn=2>  </fn></fc><fc=white></fc><total>%"
+      [ Run MultiCpu                            [ "--template" , "<fc=white><fn=2>  </fn></fc><fc=white></fc>CPU: <total>%"
                                                 , "--Low"      , "50"        -- units: %
                                                 , "--High"     , "85"        -- units: %
                                                 , "--low"      , "#ffffff"
@@ -49,7 +49,7 @@ Config {
                                                 ] 10
 
       , Run Memory                              [ "--template",
-                                                  "<fc=white><fn=2> </fn></fc><fc=white></fc><usedratio>%",
+                                                  "<fc=white><fn=2> </fn></fc><fc=white></fc>MEM: <usedratio>%",
                                                   "--Low"      , "19",        -- units: %
                                                   "--High"     , "65",       -- units: %
                                                   "--low"      , "#A6E22E",
