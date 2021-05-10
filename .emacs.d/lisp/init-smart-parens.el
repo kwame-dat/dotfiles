@@ -2,6 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 (use-package smartparens
+  :diminish
   :defer t
   :hook (prog-mode . smartparens-mode))
 
