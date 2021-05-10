@@ -86,6 +86,7 @@
 
 (use-package diminish)
 (diminish 'company-mode)
+(diminish 'which-key-mode)
 (diminish 'subword-mode)
 (diminish 'mixed-pitch-mode)
 (diminish 'indented-text-mode)
