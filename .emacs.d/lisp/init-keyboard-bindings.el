@@ -195,8 +195,7 @@
 
 ;; Keybinding Panel (which-key)
 (use-package which-key
-  :diminish
-  :init
+  :config
   (setq which-key-idle-delay 0.3)
   :config (which-key-mode))
 
