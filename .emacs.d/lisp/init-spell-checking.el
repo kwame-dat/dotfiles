@@ -15,6 +15,7 @@
   (setq ispell-program-name "aspell"))
 
 (use-package flyspell
+  :diminish
   :defer t
   :delight
   :hook ((markdown-mode org-mode text-mode) . flyspell-mode)

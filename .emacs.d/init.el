@@ -14,9 +14,7 @@
 ;; Native Compilation
 (setq comp-async-report-warnings-errors nil)
 
-
 ;; (require 'init-benchmarking) ;; Measure startup time
-
 (defconst *spell-check-support-enabled* nil) ;; Enable with t if you prefer
 (defconst *is-a-mac* (eq system-type 'darwin))
 
@@ -43,6 +41,8 @@
 (require 'init-workspace) ;; fix persp mode
 (require 'init-configuration-files)
 (require 'init-search-n-lookup)
+(require 'init-notifications)
+(require 'init-toggles)
 
 ;; File Browsing
 (require 'init-dired)

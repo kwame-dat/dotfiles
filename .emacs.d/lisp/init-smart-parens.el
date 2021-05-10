@@ -7,6 +7,7 @@
 
 ;; Hightlight Matching Braces
 (use-package paren
+  :diminish
   :defer t
   :config
   (set-face-attribute 'show-paren-match-expression nil :background "#363e4a")

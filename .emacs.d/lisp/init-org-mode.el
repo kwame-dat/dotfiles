@@ -112,7 +112,6 @@
   :defer t)
 
 (use-package evil-org
-  :defer t
   :after org
   :config
   (add-hook 'org-mode-hook 'evil-org-mode)

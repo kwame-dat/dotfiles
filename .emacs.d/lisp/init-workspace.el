@@ -5,8 +5,7 @@
   :config
   (persp-mode))
 
-
-;; (use-package persp-projectile)
+(use-package persp-projectile)
 
 (kd/leader-key-def
         ;;; <leader> w --- workspaces

@@ -2,6 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 (use-package company
+  :diminish
   :defer t
   :after lsp-mode
   :hook (lsp-mode . company-mode)
@@ -27,7 +28,7 @@
   (define-key company-active-map (kbd "ESC") 'company-abort)
   (define-key company-active-map [tab] 'company-complete-common-or-cycle)
   :custom
-  (company-minimum-prefix-length 2)
+  (company-minimum-prefix-length 1)
   (company-idle-delay 0)
   (company-selection-wrap-around t))
 

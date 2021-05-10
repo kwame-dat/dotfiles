@@ -65,6 +65,7 @@
   (evil-set-initial-state 'dashboard-mode 'normal))
 
 (use-package evil-commentary
+  :diminish
   :demand t
   :ensure t
   :config
@@ -85,6 +86,7 @@
   (global-evil-surround-mode 1))
 
 (use-package undo-tree
+  :diminish
   :demand t
   :init
   (global-undo-tree-mode 1))
@@ -193,6 +195,7 @@
 
 ;; Keybinding Panel (which-key)
 (use-package which-key
+  :diminish
   :init
   (setq which-key-idle-delay 0.3)
   :config (which-key-mode))

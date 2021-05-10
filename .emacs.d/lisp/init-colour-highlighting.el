@@ -7,6 +7,7 @@
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package rainbow-mode
+  :diminish
   :defer t
   :hook (org-mode
 	 emacs-lisp-mode

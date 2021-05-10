@@ -2,9 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
-
-(straight-use-package 'doom-themes)
-(load-theme 'doom-tomorrow-night t)
+(straight-use-package 'color-theme-sanityinc-tomorrow)
+(load-theme 'sanityinc-tomorrow-night t)
 
 (provide 'init-themes)
 ;;; init-themes.el ends here

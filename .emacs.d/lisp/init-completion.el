@@ -3,6 +3,7 @@
 ;;; Code:
 
 (use-package ivy
+  :diminish
   :bind (("C-s" . swiper)
          :map ivy-minibuffer-map
          ("TAB" . ivy-alt-done)

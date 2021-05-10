@@ -2,6 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 (use-package yasnippet
+  :diminish (yas-minor-mode)
   :defer t
   :hook (prog-mode . yas-minor-mode)
   :config

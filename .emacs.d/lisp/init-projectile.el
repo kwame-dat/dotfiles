@@ -2,6 +2,7 @@
 ;;; Commentary: Manage projects inside of Emacs
 ;;; Code:
 (use-package projectile
+  :diminish
   :defer t
   :config
   (setq projectile-project-search-path '(
