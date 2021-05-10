@@ -52,14 +52,14 @@ import Control.Monad (liftM2)
 
 myModMask                     = mod4Mask
 mydefaults = def {
-          normalBorderColor   = "#4c566a"
-        , focusedBorderColor  = "#FFDC00"
+          normalBorderColor   = "#1d1f21"
+        , focusedBorderColor  = "#288AD6"
         , focusFollowsMouse   = True
         , mouseBindings       = myMouseBindings
         , workspaces          = myWorkspaces
         , keys                = myKeys
         , modMask             = myModMask
-        , borderWidth         = 3
+        , borderWidth         = 2
         , layoutHook          = myLayoutHook
         , startupHook         = myStartupHook
         , manageHook          = myManageHook
