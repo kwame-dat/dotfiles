@@ -74,11 +74,11 @@
 		"format-icons": ["", "", ""]
 	},
 	"cpu": {
-		"format": " Cpu:{usage}",
+		"format": " CPU:{usage}",
 		"tooltip": false
 	},
 	"memory": {
-		"format": " Mem:{used:0.1f}G"
+		"format": " MEM:{used:0.1f}G"
 	},
 	"custom/mail": {
 		"format": "📩 {}",
