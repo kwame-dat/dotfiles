@@ -122,7 +122,6 @@ myWorkspaces = clickable . (map xmobarEscape) $ [
     "\61485",
     "\61723",
     "\62003",
-    "\61705",
     "\61872"
   ]
     where
@@ -152,7 +151,7 @@ myManageHook = composeAll
     , className =? "Google-chrome"                           --> doShift ( myWorkspaces !! 0 )
     , className =? "Brave-browser"                           --> doShift ( myWorkspaces !! 0 )
     , className =? "firefox"                                 --> doShift ( myWorkspaces !! 0 )
-    -- , className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )
+    , className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )
     , className =? "jetbrains-phpstorm"                      --> doShift ( myWorkspaces !! 1 )
     , className =? "Slack"                                   --> doShift ( myWorkspaces !! 2 )
     , className =? "TelegramDesktop"                         --> doShift ( myWorkspaces !! 2 )
@@ -169,8 +168,8 @@ myManageHook = composeAll
     , className =? "calibre"                                 --> doShift ( myWorkspaces !! 6 )
     , className =? "Nextcloud"                               --> doShift ( myWorkspaces !! 8 )
     , className =? "Evolution"                               --> doShift ( myWorkspaces !! 8 )
-    , className =? "obs"                                     --> doShift ( myWorkspaces !! 9 )
-    , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 9 )
+    , className =? "obs"                                     --> doShift ( myWorkspaces !! 8 )
+    , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 8 )
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)
     ] <+> namedScratchpadManageHook myScratchPads
 -- keys config
@@ -277,10 +276,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((0, xF86XK_AudioRaiseVolume), spawn $ "amixer -q set Master 5%+")
 
   -- Increase brightness
-  , ((0, xF86XK_MonBrightnessUp),  spawn $ "xbacklight -inc 5")
+  , ((0, xF86XK_MonBrightnessUp),  spawn $ "xbacklight -inc 2")
 
   -- Decrease brightness
-  , ((0, xF86XK_MonBrightnessDown), spawn $ "xbacklight -dec 5")
+  , ((0, xF86XK_MonBrightnessDown), spawn $ "xbacklight -dec 2")
 
 --  , ((0, xF86XK_AudioPlay), spawn $ "mpc toggle")
 --  , ((0, xF86XK_AudioNext), spawn $ "mpc next")
@@ -388,8 +387,8 @@ main = do
         , ppHidden = wrap """"
         , ppHiddenNoWindows = xmobarColor myHiddenNoWindowsWSColor ""
         , ppUrgent = xmobarColor myUrgentWSColor ""
-        , ppSep = "    "
-        , ppWsSep = "    "
+        , ppSep = " "
+        , ppWsSep = "  "
         , ppLayout = (\ x -> case x of
            "Spacing Tall"                 -> "<fn=1>Tall</fn>"
            "Spacing Grid"                 -> "<fn=1>Grid</fn>"
