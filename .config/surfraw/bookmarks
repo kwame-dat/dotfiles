@@ -30,7 +30,8 @@ sprint https://jira.eandl.co.uk/secure/RapidBoard.jspa?rapidView=40&selectedIssu
 code-review https://bitbucket.eandl.co.uk
 spamtitan http://spamtitan.ccsleeds.co.uk/
 packagist https://packagist.eandl.co.uk/oauth/login/
-timeweb http://emp-sysutils/timeweb/Personal/Login.aspx
+timesheet  http://timesheet.local/timeweb/Personal/Login.aspx
+timeweb  http://timesheet.local/timeweb/Personal/Login.aspx
 emp-sysutils http://emp-sysutils/timeweb/Personal/Login.aspx
 sharedpoint https://theinsuranceemporium.sharepoint.com/sites/Projects/Shared%20Documents/Forms/AllItems.aspx
 rollbar https://rollbar.com/EandLInsurance/all/items/
