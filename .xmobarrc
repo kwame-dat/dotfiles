@@ -1,12 +1,12 @@
 Config {
-    font = "xft:Canterell:size=10:style=Regular,FontAwesome:style=Regular:size=10,JoyPixels:size=10:antialias=true:autohint=true",
+    font = "xft:Cascadia Code:size=9:style=Light,FontAwesome:style=Light:size=8,JoyPixels:size=8:antialias=true:autohint=true",
     additionalFonts = [
-        "xft:Canterell:size=10:style=Bold,FontAwesome:style=Regular:size=10",
-        "xft:FontAwesome:style=Regular:size=10"
+        "xft:Cascadia Code:size=9:style=Light,FontAwesome:style=Light:size=8",
+        "xft:FontAwesome:style=Light:size=8"
         ]
    , bgColor          = "#1E2127"
    , fgColor          = "white"
-   , position         = TopSize C 100 30
+   , position         = TopSize C 100 50
    , textOffset       = -1
    , iconOffset       = -8
    , alpha            = 255
@@ -21,9 +21,9 @@ Config {
    , persistent       = True
    , sepChar          = "%"
    , alignSep         = "}{"
-   , template         = "  %UnsafeStdinReader%}   %coretemp%    %multicpu%    %memory%   {%vpn%    <action=`networkmanager_dmenu`>%dynnetwork%</action>    %bright%    %update%    %battery%    <action=`pavucontrol` button=3><action=`XMMute` button=1><action=button=4><action=button=5>%XVol%</action></action></action></action>    <action=`gsimplecal` button=1>%date%</action>   "
+   , template         = " %UnsafeStdinReader%}   {%vpn%  <action=`networkmanager_dmenu`>%dynnetwork%</action>  %coretemp%  %multicpu%  %memory%  %bright%  %update%  %battery%  <action=`pavucontrol` button=3><action=`XMMute` button=1><action=button=4><action=button=5>%XVol%</action></action></action></action>  <action=`gsimplecal` button=1>%date%</action> "
    , commands         =
-      [ Run MultiCpu                            [ "--template" , "<fc=white><fn=2>  </fn></fc><fc=white></fc>CPU: <total>%"
+      [ Run MultiCpu                            [ "--template" , "<fc=white><fn=2>  </fn></fc><fc=white></fc><total>%"
                                                 , "--Low"      , "50"        -- units: %
                                                 , "--High"     , "85"        -- units: %
                                                 , "--low"      , "#ffffff"
@@ -39,7 +39,7 @@ Config {
                                                 , "--high"     , "#fd0537"
                                                 ] 10
 
-      , Run DynNetwork                          [ "--template" , "    <fc=#f9f9f2><fn=2>\xf019</fn></fc> <rx>      <fc=#f9f9f2><fn=2>\xf093</fn></fc> <tx>"
+      , Run DynNetwork                          [ "--template" , "    <fc=#f9f9f2><fn=2>\xf019</fn></fc> <rx>  <fc=#f9f9f2><fn=2>\xf093</fn></fc> <tx>"
                                                   , "--Low"      , "50000"       -- units: B/s
                                                   , "--High"     , "1000000"       -- units: B/s
                                                   , "--low"      , "#f9f9f2"
@@ -49,7 +49,7 @@ Config {
                                                 ] 10
 
       , Run Memory                              [ "--template",
-                                                  "<fc=white><fn=2> </fn></fc><fc=white></fc>MEM: <usedratio>%",
+                                                  "<fc=white><fn=2> </fn></fc><fc=white></fc><usedratio>%",
                                                   "--Low"      , "19",        -- units: %
                                                   "--High"     , "65",       -- units: %
                                                   "--low"      , "#A6E22E",
@@ -92,6 +92,6 @@ Config {
 
       , Run Com                                  "/bin/bash" ["-c",  "pacupdate"] "update" 600
 
-      , Run Date                                 "%a %b %d    %H:%M" "date" 60]
+      , Run Date                                 "%a %b %d  %H:%M" "date" 60]
 
 }
