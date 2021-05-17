@@ -223,6 +223,11 @@
 ;;                         '(("^ *\\([-]\\) "
 ;;                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
+;; Generate Table of Contents Dynamically
+(use-package toc-org
+  :after org
+  :init (add-hook 'org-mode-hook #'toc-org-enable))
+
 ;; Increase the size of various headings
 (set-face-attribute 'org-document-title nil :font "Cantarell" :weight 'bold :height 1.3)
 (dolist (face '((org-level-1 . 1.2)

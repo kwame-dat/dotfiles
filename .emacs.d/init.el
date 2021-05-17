@@ -48,6 +48,9 @@
 (require 'init-dired)
 (require 'init-tramp)
 
+;; Window
+(require 'init-window-management)
+
 ;; Development
 (require 'init-git)
 (require 'init-projectile)

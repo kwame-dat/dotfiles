@@ -68,7 +68,8 @@
 
 
 (use-package dired-open
-  :defer t
+  ;; :hook (dired-mode . dired-open-hook)
+  ;; :defer t
   :ensure t
   :config
   (setq dired-open-extensions
@@ -82,7 +83,7 @@
           ("jpg" . "eog")
           ("mkv" . "mpv")
           ("mov" . "mpv")
-          ("mp3" . "mpv")
+          ("mp3" . "mpc")
           ("mp4" . "mpv")
           ("pdf" . "evince")
           ("docx" . "libreoffice")

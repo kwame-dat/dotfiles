@@ -19,8 +19,7 @@
 		    ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
 		    ("account" "%(binary) -f %(ledger-file) reg %(account)"))))
 
-(use-package flycheck-ledger
-  :defer t)
+(use-package flycheck-ledger)
 
 (kd/my-local-leader-def 'normal ledger-mode-map
   "a" 'ledger-add-transaction
