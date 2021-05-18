@@ -170,6 +170,7 @@ myManageHook = composeAll
     , className =? "Evolution"                               --> doShift ( myWorkspaces !! 8 )
     , className =? "obs"                                     --> doShift ( myWorkspaces !! 8 )
     , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 8 )
+    , isDialog --> doCenterFloat
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)
     ] <+> namedScratchpadManageHook myScratchPads
 -- keys config
