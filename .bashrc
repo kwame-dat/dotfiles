@@ -1,6 +1,6 @@
 export OSH=/home/tonya/.oh-my-bash
 
-OSH_THEME="powerline-naked"
+OSH_THEME="powerline"
 
 completions=(
   git
@@ -37,3 +37,22 @@ export STUDIO_JDK=/usr/lib/jvm/java-14-openjdk
 
 # For Gradle
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
+
+# Aliases for software managment
+# pacman or pm
+alias pacman='sudo pacman --color auto'
+alias update='sudo pacman -Syyu'
+
+# yay as aur helper - updates everything
+alias pksyua="yay -Syu --noconfirm"
+alias upall="yay -Syu --noconfirm"
+
+#ps
+alias psa="ps auxf"
+alias psgrep="ps aux | grep -v grep | grep -i -e VSZ -e"
+
+#grub update
+alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
+
+#add new fonts
+alias update-fc='sudo fc-cache -fv'
