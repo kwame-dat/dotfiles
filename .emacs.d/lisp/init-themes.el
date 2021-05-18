@@ -2,8 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
-(straight-use-package 'color-theme-sanityinc-tomorrow)
-(load-theme 'sanityinc-tomorrow-night t)
+(straight-use-package 'gruvbox-theme)
+(load-theme 'gruvbox-dark-hard t)
 
 (provide 'init-themes)
 ;;; init-themes.el ends here
