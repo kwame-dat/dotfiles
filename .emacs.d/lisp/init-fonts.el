@@ -5,7 +5,7 @@
 
 (setq-default line-spacing 0.5)
 (setq kd/default-font "Cascadia Code")
-(setq kd/default-font-size 11)
+(setq kd/default-font-size 12)
 (setq kd/current-font-size kd/default-font-size)
 
 (setq kd/font-change-increment 1.1)
