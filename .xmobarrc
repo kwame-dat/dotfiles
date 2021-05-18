@@ -6,7 +6,7 @@ Config {
         ]
    , bgColor          = "#1E2127"
    , fgColor          = "white"
-   , position         = TopSize C 100 50
+   , position         = TopSize C 100 25
    , textOffset       = -1
    , iconOffset       = -8
    , alpha            = 255
@@ -92,6 +92,6 @@ Config {
 
       , Run Com                                  "/bin/bash" ["-c",  "pacupdate"] "update" 600
 
-      , Run Date                                 "%a %b %d  %H:%M" "date" 60]
+      , Run Date                                 "%a, %b %d  %H:%M" "date" 60]
 
 }
