@@ -33,6 +33,7 @@ import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.IndependentScreens
 import XMonad.Layout.CenteredMaster(centerMaster)
 import XMonad.Layout.Minimize
+import XMonad.Layout.Reflect
 
 import Graphics.X11.ExtraTypes.XF86
 import qualified System.IO
@@ -95,9 +96,9 @@ myLayoutHook =
   avoidStruts $
   smartBorders $
   gaps [(U,25), (D,25), (R,25), (L,25)] $
-  tiled |||
-  ThreeColMid 1 (1/100) (1/2) |||
-  Full
+  mkToggle (single REFLECTX) $
+  mkToggle (single REFLECTY) $
+  (reflectHoriz  tiled  ||| reflectVert (ThreeColMid 1 (1/100) (1/2)) ||| Full)
     where
         tiled = Tall nmaster delta tiled_ratio
         nmaster = 1
@@ -344,7 +345,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_minus), sendMessage (IncMasterN (-1)))
 
   -- Move focus to the master window.
-  , ((modMask, xK_0), windows W.focusMaster )
+  , ((modMask, xK_0), setLayout $ XMonad.layoutHook conf )
   ]
   ++
 
