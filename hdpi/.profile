@@ -3,7 +3,7 @@ PATH="$PATH:/$HOME/local/.bin"
 PATH="$PATH:/$HOME/.bin/statusbar"
 
 # JAVA
-export _JAVA_AWT_WM_NONREPARENTING=1 
+export _JAVA_AWT_WM_NONREPARENTING=1
 export AWT_TOOLKIT=MToolkit
 
 # NPM
