@@ -1,8 +1,8 @@
 Config {
-    font = "xft:Cascadia Code:size=9:style=Light,FontAwesome:style=Light:size=8,JoyPixels:size=8:antialias=true:autohint=true",
+    font = "xft:JetBrains Mono:size=10:style=Light,FontAwesome:style=Light:size=9,JoyPixels:size=9:antialias=true:autohint=true",
     additionalFonts = [
-        "xft:Cascadia Code:size=9:style=Light,FontAwesome:style=Light:size=8",
-        "xft:FontAwesome:style=Light:size=8"
+        "xft:JetBrains Mono:size=10:style=Light,FontAwesome:style=Light:size=9",
+        "xft:FontAwesome:style=Light:size=9"
         ]
    , bgColor          = "#1E2127"
    , fgColor          = "white"

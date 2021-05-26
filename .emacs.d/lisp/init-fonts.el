@@ -4,7 +4,7 @@
 
 
 ;; (setq-default line-spacing 0.5)
-(setq kd/default-font "Cascadia Code")
+(setq kd/default-font "JetBrains Mono")
 (setq kd/default-font-size 11)
 (setq kd/current-font-size kd/default-font-size)
 
