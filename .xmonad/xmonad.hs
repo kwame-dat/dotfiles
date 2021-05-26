@@ -230,8 +230,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_F5), spawn $ "dbeaver")
   , ((modMask, xF86XK_AudioPlay), spawn $ "dbeaver")
 
-  , ((modMask, xK_F6), spawn $ "insomnia-designer")
-  , ((modMask, xF86XK_AudioNext), spawn $ "insomnia-designer")
+  , ((modMask, xK_F6), spawn $ "insomnia")
+  , ((modMask, xF86XK_AudioNext), spawn $ "insomnia")
 
   , ((modMask, xK_F7), spawn $ "virtualbox")
 
@@ -251,7 +251,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. mod1Mask, xK_w),       spawn $ "whatsapp-nativefier")
   , ((modMask .|. mod1Mask, xK_d),       spawn $ "dbeaver")
   , ((modMask .|. mod1Mask, xK_z),       spawn $ "zoom")
-  , ((modMask .|. mod1Mask, xK_i),       spawn $ "insomnia-designer")
+  , ((modMask .|. mod1Mask, xK_i),       spawn $ "insomnia")
   , ((modMask .|. mod1Mask, xK_c),       spawn $ "rofi -show calc")
   , ((modMask .|. mod1Mask, xK_o),       spawn $ "picom-toggle")
   , ((modMask .|. mod1Mask, xK_j),       spawn $ "variety -n && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&")
@@ -392,10 +392,10 @@ main = do
         , ppSep = " "
         , ppWsSep = "  "
         , ppLayout = (\ x -> case x of
-           "Spacing Tall"                 -> "<fn=1>Tall</fn>"
+           "Spacing ReflectX Tall"        -> "<fn=1>Tall</fn>"
            "Spacing Grid"                 -> "<fn=1>Grid</fn>"
            "Spacing Spiral"               -> "<fn=1>Spiral</fn>"
-           "Spacing ThreeCol"             -> "<fn=1>ThreeColMid</fn>"
+           "Spacing ReflectY ThreeCol"    -> "<fn=1>ThreeColMid</fn>"
            "Spacing Full"                 -> "<fn=1>Full</fn>"
            _                                         -> x )
  }
