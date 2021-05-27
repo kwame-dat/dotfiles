@@ -162,7 +162,7 @@ c.fonts.statusbar = '12pt "JetBrains Mono"'
 
 
 # Setting dark mode
-config.set('colors.webpage.darkmode.enabled', True)
+config.set('colors.webpage.darkmode.enabled', False)
 
 # Bindings for normal mode
 config.bind('M', 'hint links spawn mpv {hint-url}')
