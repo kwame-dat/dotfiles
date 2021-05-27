@@ -90,12 +90,12 @@ musicScratchpadCmd = "alacritty --title=music --command=ncmpcpp"
 webcamScratchpadCmd = "mpv /dev/video2"
 
 myLayoutHook =
-  spacingRaw True (Border 0 20 20 20) True (Border 20 20 20 20) True $
+  spacingRaw True (Border 0 10 10 10) True (Border 10 10 10 10) True $
   mkToggle (NBFULL ?? NOBORDERS ?? EOT) $
   -- noFrillsDeco shrinkText topBarTheme $
   avoidStruts $
   smartBorders $
-  gaps [(U,25), (D,25), (R,25), (L,25)] $
+  gaps [(U,15), (D,15), (R,15), (L,15)] $
   mkToggle (single REFLECTX) $
   mkToggle (single REFLECTY) $
   (reflectHoriz  tiled  ||| reflectVert (ThreeColMid 1 (1/100) (1/2)) ||| Full)
