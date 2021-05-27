@@ -14,8 +14,8 @@
    :default t
    :token (auth-source-pick-first-password
            :host "elico-webteam.slack.com"
-           :user "token")
-   :subscribed-channels '(elico qa devops standup general ops-issues poker-planning)
+           :user "tampomah@emporium.co.uk")
+   :subscribed-channels '(elico qa devops standup general ops-issues)
    :full-and-display-names t)
 
 
