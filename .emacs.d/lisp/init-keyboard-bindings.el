@@ -27,7 +27,6 @@
 (global-set-key (kbd "s-k") 'kill-buffer)
 (global-set-key (kbd "s-x") 'kill-region)
 (global-set-key (kbd "s-s") 'save-buffer)
-;; (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "H-/") 'comment-line)
 (global-set-key (kbd "H-f") 'swiper)
 (global-set-key (kbd "H-o") (kbd "C-x o"))
@@ -38,7 +37,6 @@
 (global-set-key (kbd "H-k") 'kill-buffer)
 (global-set-key (kbd "H-x") 'kill-region)
 (global-set-key (kbd "H-s") 'save-buffer)
-
 
 ;; Vim Emulation inside of Emacs with (Evil Mode)
 (use-package evil
