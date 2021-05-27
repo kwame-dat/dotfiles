@@ -6,6 +6,8 @@
   :config
   (add-hook 'ledger-mode-hook 'smartparens-mode)
   (setq ledger-clear-whole-transactions 1
+	ledger-highlight-xact-under-point nil
+	ledger-use-iso-dates nil
 	ledger-add-transaction-prompt-for-text nil
 	ledger-mode-should-check-version nil
 	ledger-post-amount-alignment-column 70)
