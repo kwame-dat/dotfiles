@@ -185,8 +185,8 @@
 	 (file "~/org/templates/new-project.org"))
 	("w" "workProject" entry (file+headline "~/org/WTodo.org" "1Projects")
 	 (file "~/org/templates/new-project.org"))
-	("m" "MeetingWorkbook" entry (file+headline "~/org/spiritual/SNotes.org" "Life & Ministry Workbook Comments")
-	 (file "~/org/spiritual/templates/workbook.org"))
+	("m" "MeetingWorkbook" entry (file+headline "~/org/STodo.org" "Life & Ministry Workbook")
+	 (file "~/org/templates/workbook.org"))
 	("s" "Someday" entry (file+headline "~/org/PSomeday.org" "Someday")
 	 "* SOMEDAY %?\n")))
 
