@@ -2,8 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
-(straight-use-package 'gruvbox-theme)
-(load-theme 'gruvbox-dark-hard t)
+(straight-use-package 'kaolin-themes)
+(load-theme 'kaolin-light t)
 
 (provide 'init-themes)
 ;;; init-themes.el ends here
