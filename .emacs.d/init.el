@@ -94,6 +94,7 @@
 (kd/leader-key-def
   "a"  '(:ignore t :which-key "apps"))
 (require 'init-calendar)
+(require 'init-alert)
 (require 'init-chat)
 (require 'init-music)
 (require 'init-mail)

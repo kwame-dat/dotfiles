@@ -1,10 +1,12 @@
-;;; init-themes.el --- themes -*- lexical-binding: t -*-
+;;; init-alert.el --- Alert -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; Code:
 
+(use-package alert
+  :commands (alert)
+  :init
+  (setq alert-default-style 'notifier))
 
-(straight-use-package 'doom-themes)
-(load-theme 'doom-tomorrow-night t)
 
-(provide 'init-themes)
-;;; init-themes.el ends here
+(provide 'init-alert)
+;;; init-alert.el ends here

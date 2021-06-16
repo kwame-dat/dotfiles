@@ -25,6 +25,7 @@
 	org-edit-src-content-indentation 2
 	org-hide-block-startup nil
 	org-src-preserve-indentation nil
+	org-agenda-skip-scheduled-if-done t
 	org-startup-folded t
 	org-cycle-separator-lines 2)
 
@@ -141,6 +142,7 @@
 			       "~/org/STodo.org"
 			       "~/org/joint/JTodo.org"
 			       "~/org/WTodo.org"
+			       "~/org/Gcal.org"
 			       )))
 
 
@@ -210,13 +212,9 @@
 
 ;; Fonts & Bullets
 ;; I like to see an outline of pretty bullets instead of a list of asterisks.
-(use-package org-superstar
-  :defer t
-  :after org
-  :hook (org-mode . org-superstar-mode)
-  :custom
-  (org-superstar-remove-leading-stars t)
-  (org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●")))
+(use-package org-bullets
+  :init
+  (add-hook 'org-mode-hook 'org-bullets-mode))
 
 ;; Replace list hyphen with dot
 ;; (font-lock-add-keywords 'org-mode

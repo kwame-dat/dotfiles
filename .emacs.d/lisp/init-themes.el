@@ -2,8 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
-(straight-use-package 'kaolin-themes)
-(load-theme 'kaolin-light t)
+(straight-use-package 'doom-themes)
+(load-theme 'doom-one t)
 
 (provide 'init-themes)
 ;;; init-themes.el ends here
