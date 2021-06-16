@@ -1,10 +1,10 @@
 Config {
-    font = "xft:JetBrains Mono:size=10:style=Light,FontAwesome:style=Light:size=9,JoyPixels:size=9:antialias=true:autohint=true",
+    font = "xft:Operator Mono:size=10:style=Regular,FontAwesome:style=Regular:size=10,JoyPixels:size=10:antialias=true:autohint=true",
     additionalFonts = [
-        "xft:JetBrains Mono:size=10:style=Light,FontAwesome:style=Light:size=9",
-        "xft:FontAwesome:style=Light:size=9"
+        "xft:Operator Mono:size=10:style=Regular,FontAwesome:style=Regular:size=10",
+        "xft:FontAwesome:style=Regular:size=10"
         ]
-   , bgColor          = "#1E2127"
+   , bgColor          = "#282c34"
    , fgColor          = "white"
    , position         = TopSize C 100 25
    , textOffset       = -1
