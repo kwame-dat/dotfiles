@@ -1,19 +1,2 @@
 Xft.dpi: 96
 rofi.dpi: 96
-
-! DWM Dark Theme
-! dwm.normbgcolor:            #222222
-! dwm.normbordercolor:        #444444
-! dwm.normfgcolor:            #bbbbbb
-! dwm.selfgcolor:             #eeeeee
-! dwm.selbordercolor:         #005577
-! dwm.selbgcolor:             #005577
-
-
-! DWM Light Theme
-dwm.normbgcolor:            #fafafa
-dwm.normbordercolor:        #f0f0f0
-dwm.normfgcolor:            #1c1f24
-dwm.selfgcolor:             #eeeeee
-dwm.selbordercolor:         #005577
-dwm.selbgcolor:             #005577

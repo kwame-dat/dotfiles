@@ -13,11 +13,6 @@ export npm_config_prefix=~/.node_modules
 # COMPOSER
 export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 
-# POLYBAR
-export POLYBAR_HEIGHT=50
-export POLYBAR_LINE_SIZE=3
-export POLYBAR_TRAY_MAXSIZE=30
-
 # GDK
 export GDK_SCALE=2
 export GDK_DPI_SCALE=0.5
