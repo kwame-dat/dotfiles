@@ -84,6 +84,8 @@ input "1739:31251:SYNA2393:00_06CB:7A13_Mouse" {
     pointer_accel 1
 }
 
+input * xkb_capslock disable
+input * xkb_numlock enable
 ### Key bindings
 ########################## Super + Keys
     # Start a terminal
@@ -310,17 +312,17 @@ assign [class="firefox"]  1
 assign [class="Emacs"]  2
 assign [class="jetbrains-phpstorm"]  2
 assign [class="calibre"] 2
-assign [app_id="whatsapp-for-linux"]  3
-assign [class="Signal"]  3
-assign [app_id="telegramdesktop"]  3
 assign [class="Slack"]  3
-assign [class="Microsoft Teams - Preview"]  4
+assign [class="Microsoft Teams - Preview"]  3
 assign [class="zoom"] 4
 assign [class="DBeaver"] 5
 assign [class="Insomnia Designer"] 6
 assign [class="Postman"] 6
 assign [class="Stoplight Studio"] 6
 assign [app_id="VirtualBox Manager"]  9
+assign [app_id="whatsapp-for-linux"]  9
+assign [class="Signal"]  9
+assign [app_id="telegramdesktop"]  9
 assign [app_id="Nextcloud"] 9
 assign [app_id="evolution"] 9
 assign [app_id="^Urxvt$" instance="^htop$"]  9
