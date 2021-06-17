@@ -1,6 +1,6 @@
 export OSH=/home/tonya/.oh-my-bash
 
-OSH_THEME="powerline"
+OSH_THEME="bakke"
 
 completions=(
   git

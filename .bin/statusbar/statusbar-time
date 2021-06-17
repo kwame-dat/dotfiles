@@ -1,3 +1,0 @@
-#!/bin/sh
-NOW=$(date '+%H:%M')
-echo " 🕑 ${NOW}";
