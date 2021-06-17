@@ -162,8 +162,6 @@ input "1739:31251:SYNA2393:00_06CB:7A13_Mouse" {
     bindsym $mod+Shift+m exec sh -c 'swaymsg [app_id="musicScratchPad"] scratchpad show || exec $term --class musicScratchPad --title musicScratchPad --command ncmpcpp'
     bindsym $mod+Shift+w exec sh -c 'swaymsg [app_id="webcamScratchPad"] scratchpad show || exec mplayer tv://device=/dev/video02 -title webcamScratchPad'
     bindsym $mod+Shift+s exec grim -g "$(slurp)" $(xdg-user-dir PICTURES)/$(date +'%s_grim.png') 
-    bindsym Print exec grim $(xdg-user-dir PICTURES)/$(date +'%s_grim.png')
-    bindsym $mod+Print exec grim -g "$(slurp -d)" - | wl-copy
 
 
 #
@@ -280,9 +278,19 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Function Keys bindings
-    bindsym F5 exec grim $HOME/Downloads/$(date +'%s_grim.png')
-    bindsym F6 exec grim -g "$(slurp)" $HOME/Downloads/$(date +'%s_grim.png')
-    bindsym F7 exec grim - | wl-copy
+
+
+######################################################################################
+### SCREENSHOT BINDINGS
+######################################################################################
+# Printscreen keybindings
+bindsym Print exec grim -g "$(slurp)" - | swappy -f -
+bindsym $mod+Print exec grim -g "$(slurp -d)" - | wl-copy
+bindsym Alt+Print exec grim $HOME/Downloads/$(date +'%s_grim.png')
+# F7 keybindings
+bindsym F7 exec grim -g "$(slurp)" - | swappy -f -
+bindsym $mod+F7 exec grim -g "$(slurp -d)" - | wl-copy
+bindsym Alt+F7 exec grim $HOME/Downloads/$(date +'%s_grim.png')
 
 #
 # Status Bar:
