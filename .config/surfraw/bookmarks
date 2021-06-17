@@ -15,6 +15,7 @@ bible https://wol.jw.org/en/wol/binav/r1/lp-e
 daily-text https://wol.jw.org/en/wol/h/r1/lp-e
 netflix.com https://www.netflix.com/browse
 calendar https://calendar.google.com/calendar/u/1/r/month/2020/10/1?tab=mc
+energy https://my.avroenergy.co.uk/sign-in
 
 
 ###########################################################################
@@ -27,11 +28,9 @@ jira.eandl.co.uk https://jira.eandl.co.uk/secure/RapidBoard.jspa?rapidView=40&vi
 kibana.eandl.co.uk https://kibana.eandl.co.uk
 sharedpoint https://theinsuranceemporium.sharepoint.com/sites/DevelopmentTeam
 sprint https://jira.eandl.co.uk/secure/RapidBoard.jspa?rapidView=40&selectedIssue=ELICO-7292
-code-review https://bitbucket.eandl.co.uk
 spamtitan http://spamtitan.ccsleeds.co.uk/
 packagist https://packagist.eandl.co.uk/oauth/login/
 timesheet  http://timesheet.local/timeweb/Personal/Login.aspx
-timeweb  http://timesheet.local/timeweb/Personal/Login.aspx
 emp-sysutils http://emp-sysutils/timeweb/Personal/Login.aspx
 sharedpoint https://theinsuranceemporium.sharepoint.com/sites/Projects/Shared%20Documents/Forms/AllItems.aspx
 rollbar https://rollbar.com/EandLInsurance/all/items/
@@ -41,6 +40,9 @@ projects-2021 https://theinsuranceemporium.sharepoint.com/:p:/r/sites/Projects/_
 signinghub https://web.signinghub.com/
 newrelic https://newrelic.com/
 sprint-retro https://www.reetro.app/board/6077033545d3f40016294623/6077033545d3f40016294625
+outlook https://outlook.office.com/mail/inbox
+review-kibana https://kibana.eandl.co.uk/goto/87c23c19e2339ef37feb2e88e8711938
+review-newrelic https://newrelic.com/
 
 
 ###########################################################################
