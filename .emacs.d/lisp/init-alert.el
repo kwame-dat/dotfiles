@@ -3,10 +3,10 @@
 ;;; Code:
 
 (use-package alert
-  :commands (alert)
-  :init
-  (setq alert-default-style 'notifier))
-
+  :demand t
+  :commands alert
+  :config
+  (setq alert-default-style 'notifications))
 
 (provide 'init-alert)
 ;;; init-alert.el ends here

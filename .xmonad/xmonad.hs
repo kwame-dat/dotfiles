@@ -90,15 +90,13 @@ musicScratchpadCmd = "alacritty --title=music --command=ncmpcpp"
 webcamScratchpadCmd = "mpv /dev/video2"
 
 myLayoutHook =
-  spacingRaw True (Border 0 10 10 10) True (Border 10 10 10 10) True $
+  spacingRaw True (Border 0 20 20 20) True (Border 20 20 20 20) True $
   mkToggle (NBFULL ?? NOBORDERS ?? EOT) $
   -- noFrillsDeco shrinkText topBarTheme $
   avoidStruts $
   smartBorders $
   gaps [(U,15), (D,15), (R,15), (L,15)] $
-  mkToggle (single REFLECTX) $
-  mkToggle (single REFLECTY) $
-  (reflectHoriz  tiled  ||| reflectVert (ThreeColMid 1 (1/100) (1/2)) ||| Full)
+  (tiled  ||| (ThreeColMid 1 (1/100) (1/2)) ||| Full)
     where
         tiled = Tall nmaster delta tiled_ratio
         nmaster = 1
@@ -152,7 +150,7 @@ myManageHook = composeAll
     , className =? "Google-chrome"                           --> doShift ( myWorkspaces !! 0 )
     , className =? "Brave-browser"                           --> doShift ( myWorkspaces !! 0 )
     , className =? "firefox"                                 --> doShift ( myWorkspaces !! 0 )
-    , className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )
+    -- , className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )
     , className =? "jetbrains-phpstorm"                      --> doShift ( myWorkspaces !! 1 )
     , className =? "Slack"                                   --> doShift ( myWorkspaces !! 2 )
     , className =? "TelegramDesktop"                         --> doShift ( myWorkspaces !! 2 )
@@ -170,6 +168,7 @@ myManageHook = composeAll
     , className =? "Nextcloud"                               --> doShift ( myWorkspaces !! 8 )
     , className =? "Evolution"                               --> doShift ( myWorkspaces !! 8 )
     , className =? "obs"                                     --> doShift ( myWorkspaces !! 8 )
+    , className =? "Spotify"                                 --> doShift ( myWorkspaces !! 8 )
     , className =? "VirtualBox Manager"                      --> doShift ( myWorkspaces !! 8 )
     , isDialog --> doCenterFloat
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)
@@ -186,7 +185,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_f),       sendMessage $ XMonad.Layout.MultiToggle.Toggle NBFULL)
   , ((modMask, xK_q),       kill)
   , ((modMask, xK_e),       spawn $ "emacsclient -c -a ''")
-  , ((modMask, xK_Return),  spawn $ "alacritty")
+  , ((modMask, xK_Return),  spawn $ "emacsclient -c -a '' --eval '(vterm)'")
   , ((modMask, xK_space),   spawn $ "~/.config/rofi/launcher.sh")
   , ((modMask, xK_p),       spawn $ "rofi-pass")
   , ((modMask, xK_b),       spawn $ "rofi-surfraw")
@@ -392,11 +391,11 @@ main = do
         , ppSep = " "
         , ppWsSep = "  "
         , ppLayout = (\ x -> case x of
-           "Spacing ReflectX Tall"        -> "<fn=1>Tall</fn>"
-           "Spacing Grid"                 -> "<fn=1>Grid</fn>"
-           "Spacing Spiral"               -> "<fn=1>Spiral</fn>"
-           "Spacing ReflectY ThreeCol"    -> "<fn=1>ThreeColMid</fn>"
-           "Spacing Full"                 -> "<fn=1>Full</fn>"
+           "Spacing Tall"        -> "<fn=1>Tall</fn>"
+           "Spacing Grid"        -> "<fn=1>Grid</fn>"
+           "Spacing Spiral"      -> "<fn=1>Spiral</fn>"
+           "Spacing ThreeCol"    -> "<fn=1>ThreeColMid</fn>"
+           "Spacing Full"        -> "<fn=1>Full</fn>"
            _                                         -> x )
  }
 }

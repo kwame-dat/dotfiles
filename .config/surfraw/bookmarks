@@ -33,16 +33,19 @@ packagist https://packagist.eandl.co.uk/oauth/login/
 timesheet  http://timesheet.local/timeweb/Personal/Login.aspx
 emp-sysutils http://emp-sysutils/timeweb/Personal/Login.aspx
 sharedpoint https://theinsuranceemporium.sharepoint.com/sites/Projects/Shared%20Documents/Forms/AllItems.aspx
-rollbar https://rollbar.com/EandLInsurance/all/items/
 brokerassess https://brokerassess.cii.co.uk/go/assess/about/
 runscope https://www.runscope.com/radar/q771lyzzwzkf
 projects-2021 https://theinsuranceemporium.sharepoint.com/:p:/r/sites/Projects/_layouts/15/guestaccess.aspx?e=mJF625&share=EU185qVO7U5OkQOaMX-jQJkBY4EBuYWY3-H2xkOrpiS-Cg
 signinghub https://web.signinghub.com/
 newrelic https://newrelic.com/
 sprint-retro https://www.reetro.app/board/6077033545d3f40016294623/6077033545d3f40016294625
+aws-amazon-console https://eu-west-2.console.aws.amazon.com/console/home?nc2=h_ct&src=header-signin&region=eu-west-2
 outlook https://outlook.office.com/mail/inbox
+work-calendar https://outlook.office.com/calendar/view/workweek
 review-kibana https://kibana.eandl.co.uk/goto/87c23c19e2339ef37feb2e88e8711938
 review-newrelic https://newrelic.com/
+review-code https://bitbucket.eandl.co.uk
+review-rollbar https://rollbar.com/EandLInsurance/all/items/
 
 
 ###########################################################################

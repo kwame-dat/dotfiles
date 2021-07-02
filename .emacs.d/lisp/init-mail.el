@@ -180,8 +180,7 @@
 ;; display unread email on mode line
 (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
 
-(use-package mu4e-alert
-  :defer t)
+(use-package mu4e-alert)
 
 (provide 'init-mail)
 ;;; init-mail.el ends here

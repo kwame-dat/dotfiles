@@ -1,13 +1,13 @@
 * {
     border: none;
     border-radius: 0;
-    font-family: Cascadia Code, Helvetica, Arial, sans-serif;
-    font-size: 14px;
+    font-family: Operator Mono, Helvetica, Arial, sans-serif;
+    font-size: 11px;
     min-height: 0;
 }
 
 window#waybar {
-    background: #1d1f21;
+    background: #282c34;
     color: white;
 }
 

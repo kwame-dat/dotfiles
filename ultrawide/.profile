@@ -1,6 +1,5 @@
-PATH="$PATH:/$HOME/.bin"
-PATH="$PATH:/$HOME/local/.bin"
-PATH="$PATH:/$HOME/.bin/statusbar"
+PATH="$PATH:/$HOME/.local/bin"
+PATH="$PATH:/$HOME/.local/bin/statusbar"
 
 # JAVA
 export _JAVA_AWT_WM_NONREPARENTING=1

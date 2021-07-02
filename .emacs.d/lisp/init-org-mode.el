@@ -15,6 +15,7 @@
 (use-package org
   :defer t
   :straight (:type built-in)
+  :ensure org-plus-contrib
   ;; :straight org-plus-contrib
   :hook (org-mode . kd/org-mode-setup)
   :config
@@ -59,6 +60,11 @@
      (ledger . t)))
 
   (push '("conf-unix" . conf-unix) org-src-lang-modes))
+
+;; (use-package org-notify
+;;   :ensure nil
+;;   :after org
+;;   :config (org-notify-start))
 
 (use-package org-pomodoro
   :defer t

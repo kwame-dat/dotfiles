@@ -21,7 +21,7 @@ Config {
    , persistent       = True
    , sepChar          = "%"
    , alignSep         = "}{"
-   , template         = " %UnsafeStdinReader%}   {%vpn%  <action=`networkmanager_dmenu`>%dynnetwork%</action>  %coretemp%  %multicpu%  %memory%  %bright%  %update%  %battery%  <action=`pavucontrol` button=3><action=`XMMute` button=1><action=button=4><action=button=5>%XVol%</action></action></action></action>  <action=`gsimplecal` button=1>%date%</action> "
+   , template         = " %UnsafeStdinReader%}   {%vpn%  <action=`networkmanager_dmenu`>%dynnetwork%</action> %anniversary% %coretemp%  %multicpu%  %memory%  %bright%  %update%  %battery%  <action=`pavucontrol` button=3><action=`XMMute` button=1><action=button=4><action=button=5>%XVol%</action></action></action></action>  <action=`gsimplecal` button=1>%date%</action> "
    , commands         =
       [ Run MultiCpu                            [ "--template" , "<fc=white><fn=2>  </fn></fc><fc=white></fc><total>%"
                                                 , "--Low"      , "50"        -- units: %
@@ -80,7 +80,7 @@ Config {
                                                  , "-l", "#a6e22e" -- power lower than the -L threshold
                                                  ] 10
 
-      , Run Com                                  "/bin/bash" ["-c", "vpn-openvpn-isrunning"] "vpn" 25
+      , Run Com                                  "/bin/bash" ["-c", "sb-vpn-openvpn-isrunning"] "vpn" 25
 
       , Run Wireless                             "wlp0s20u2u3" ["-t", "<fc=green>Wifi:</fc> <quality>"] 10
 
@@ -90,7 +90,9 @@ Config {
 
       , Run UnsafeStdinReader
 
-      , Run Com                                  "/bin/bash" ["-c",  "pacupdate"] "update" 600
+      , Run Com                                  "/bin/bash" ["-c",  "sb-anniversary"] "anniversary" 600
+
+      , Run Com                                  "/bin/bash" ["-c",  "sb-pacupdate"] "update" 600
 
       , Run Date                                 "%a, %b %d  %H:%M" "date" 60]
 

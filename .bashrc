@@ -19,7 +19,6 @@ aliases=(
 
 plugins=(
   git
-  ansible
   bashmarks
 )
 
@@ -56,3 +55,5 @@ alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 
 #add new fonts
 alias update-fc='sudo fc-cache -fv'
+
+neofetch
