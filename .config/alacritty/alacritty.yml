@@ -3,12 +3,12 @@ env:
   TERM: xterm-256color
 font:
   normal:
-    family: Operator Mono
-    style: Light
+    family: NotoSansMono Nerd Font
+    style: Medium
 
   # The bold font face
   bold:
-    family: Operator Mono
+    family: NotoSansMono Nerd Font
     style: Bold
 
   # The italic font face
