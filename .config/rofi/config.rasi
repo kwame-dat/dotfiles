@@ -8,5 +8,5 @@ configuration {
     run-command: "{cmd}";
     hide-scrollbar: true;
     run-command: "{cmd}";
-    theme: "slate";
+    theme: "one";
 }
