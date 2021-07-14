@@ -2,7 +2,7 @@
   Description=Automount Videos
 
 [Automount]
-  Where=/home/tonya/Videos
+  Where=/home/tonyampomah/Videos
 
 [Install]
   WantedBy=multi-user.target

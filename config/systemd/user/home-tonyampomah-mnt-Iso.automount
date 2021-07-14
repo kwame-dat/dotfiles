@@ -2,7 +2,7 @@
   Description=Automount Iso
 
 [Automount]
-  Where=/home/tonya/mnt/Iso
+  Where=/home/tonyampomah/mnt/Iso
 
 [Install]
   WantedBy=multi-user.target
