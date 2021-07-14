@@ -168,7 +168,7 @@ bindsym Control+Alt+delete exec xfce4-taskmanager
 
 # MOD + SHIFT KEYS
 bindsym $mod+Shift+q exec swaylock
-bindsym $mod+Shift+v exec sh -c 'swaymsg [app_id="vpn"] scratchpad show || exec $term --class vpn --title vpn --command sudo openvpn --config /home/tonya/Documents/Work/3Resources/vpn/Connection.ovpn'
+bindsym $mod+Shift+v exec sh -c ''
 bindsym $mod+Shift+m exec sh -c 'swaymsg [app_id="musicScratchPad"] scratchpad show || exec $term --class musicScratchPad --title musicScratchPad --command ncmpcpp'
 bindsym $mod+Shift+w exec sh -c 'swaymsg [app_id="webcamScratchPad"] scratchpad show || exec mplayer tv://device=/dev/video02 -title webcamScratchPad'
 bindsym $mod+Shift+s exec grim -g "$(slurp)" $(xdg-user-dir PICTURES)/$(date +'%s_grim.png') 
@@ -338,7 +338,7 @@ assign [app_id="^Urxvt$" instance="^htop$"]  9
 ######################################################################################
 ### Startup Apps
 ######################################################################################
-exec waybar -s /home/tonya/.config/waybar/sytle.css -c /home/tonya/.config/waybar/config
+exec waybar -s /home/tonyampomah/.config/waybar/sytle.css -c /home/tonyampomah/.config/waybar/config
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec /usr/bin/emacs --daemon
 exec nextcloud
