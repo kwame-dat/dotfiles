@@ -1,3 +1,5 @@
+#!/bin/bash 
+
 volstat="$(amixer get Master)"
 
 echo "$volstat" | grep "\[off\]" >/dev/null && printf "🔇\\n" && exit
@@ -12,4 +14,4 @@ else
 	icon="🔉"
 fi
 
-printf "%s%s%%\\n" "$icon" "$vol"
+printf "%s%s%%\\n" "$icon " "$vol"

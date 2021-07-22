@@ -9,4 +9,4 @@ $diffInHours   = $interval->h; //8
 $diffInDays    = $interval->d; //21
 $diffInMonths  = $interval->m; //4
 $diffInYears   = $interval->y; //1
-echo "💍" . $diffInDays . "D " . $diffInMonths . "M " . $diffInYears . "Y ";
+echo "💍 " . $diffInDays . "D-" . $diffInMonths . "M-" . $diffInYears . "Y ";
