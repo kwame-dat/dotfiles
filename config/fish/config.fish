@@ -1,217 +1,213 @@
 set fish_greeting
 set -U fish_key_bindings fish_default_key_bindings
 
-# Vpn
-abbr -a -g cvpn sudo openvpn --config ~/Documents/Work/3Resources/vpn/Connection.ovpn
-abbr -a -g kvpn sudo killall openvpn
+# ## General
+# abbr -a -g h cd ~/
+# abbr -a -g o open .
+# abbr -a -g ckh rm -rf ~/.ssh/known_hosts
+# # abbr -a -g getKey pbcopy < ~/.ssh/id_rsa.pub
 
-# General
-abbr -a -g h cd ~/
-abbr -a -g o open .
-abbr -a -g ckh rm -rf ~/.ssh/known_hosts
-abbr -a -g getKey pbcopy < ~/.ssh/id_rsa.pub
+# abbr -a -g f1 cd ~/Repo/Personal/1Projects
+# abbr -a -g f2 cd ~/Repo/Personal/2Areas
+# abbr -a -g f3 cd ~/Repo/Personal/3Resources
+# abbr -a -g f4 cd ~/Repo/Personal/4Archives
 
-abbr -a -g f1 cd ~/Repo/Personal/1Projects
-abbr -a -g f2 cd ~/Repo/Personal/2Areas
-abbr -a -g f3 cd ~/Repo/Personal/3Resources
-abbr -a -g f4 cd ~/Repo/Personal/4Archives
+# abbr -a -g f6 cd ~/Repo/Work/1Projects
+# abbr -a -g f7 cd ~/Repo/Work/2Areas
+# abbr -a -g f8 cd ~/Repo/Work/3Resources
+# abbr -a -g f9 cd ~/Repo/Work/4Archives
 
-abbr -a -g f6 cd ~/Repo/Work/1Projects
-abbr -a -g f7 cd ~/Repo/Work/2Areas
-abbr -a -g f8 cd ~/Repo/Work/3Resources
-abbr -a -g f9 cd ~/Repo/Work/4Archives
+# abbr -a -g d1 cd ~/Documents/Personal/1Projects
+# abbr -a -g d2 cd ~/Documents/Personal/2Areas
+# abbr -a -g d3 cd ~/Documents/Personal/3Resources
+# abbr -a -g d4 cd ~/Documents/Personal/4Archives
+# abbr -a -g d5 cd ~/Downloads
 
-abbr -a -g d1 cd ~/Documents/Personal/1Projects
-abbr -a -g d2 cd ~/Documents/Personal/2Areas
-abbr -a -g d3 cd ~/Documents/Personal/3Resources
-abbr -a -g d4 cd ~/Documents/Personal/4Archives
-abbr -a -g d5 cd ~/Downloads
+# abbr -a -g d6 cd ~/Documents/Work/1Projects
+# abbr -a -g d7 cd ~/Documents/Work/2Areas
+# abbr -a -g d8 cd ~/Documents/Work/3Resources
+# abbr -a -g d9 cd ~/Documents/Work/4Archives
+# abbr -a -g d0 cd ~/Documents
 
-abbr -a -g d6 cd ~/Documents/Work/1Projects
-abbr -a -g d7 cd ~/Documents/Work/2Areas
-abbr -a -g d8 cd ~/Documents/Work/3Resources
-abbr -a -g d9 cd ~/Documents/Work/4Archives
-abbr -a -g d0 cd ~/Documents
+# # # Composer
+# abbr -a -g cu composer update
+# abbr -a -g ci composer install
+# abbr -a -g cda composer dump-autoload
 
-# Composer
-abbr -a -g cu composer update
-abbr -a -g ci composer install
-abbr -a -g cda composer dump-autoload
+# # # Composer | Docker Commands
+# abbr -a -g dcu docker-compose exec workspace composer update
+# abbr -a -g dci docker-compose exec workspace composer install
+# abbr -a -g dcda docker-compose exec workspace composer dump-autoload
 
-# Composer | Docker Commands
-abbr -a -g dcu docker-compose exec workspace composer update
-abbr -a -g dci docker-compose exec workspace composer install
-abbr -a -g dcda docker-compose exec workspace composer dump-autoload
+# # # PHP Test
+# abbr -a -g t bin/phpunit
+# abbr -a -g tc bin/phpunit --coverage-html='tests/coverage/html'
+# abbr -a -g tf bin/phpunit --filter
 
-# PHP Test
-abbr -a -g t bin/phpunit
-abbr -a -g tc bin/phpunit --coverage-html='tests/coverage/html'
-abbr -a -g tf bin/phpunit --filter
+# # # PHP Test | Docker Commands
+# abbr -a -g dt docker-compose exec workspace bin/phpunit
+# abbr -a -g dtc docker-compose exec workspace bin/phpunit --coverage-html='tests/coverage/html'
+# abbr -a -g dtf docker-compose exec workspace bin/phpunit --filter
 
-# PHP Test | Docker Commands
-abbr -a -g dt docker-compose exec workspace bin/phpunit
-abbr -a -g dtc docker-compose exec workspace bin/phpunit --coverage-html='tests/coverage/html'
-abbr -a -g dtf docker-compose exec workspace bin/phpunit --filter
+# # # Laravel
+# abbr -a -g art php artisan
+# abbr -a -g rl php artisan route:list
+# abbr -a -g m php artisan migrate
+# abbr -a -g dbs php artisan db:seed
+# abbr -a -g mf php artisan migrate:fresh
+# abbr -a -g mfs php artisan migrate:fresh --seed
+# abbr -a -g pi php artisan passport:install
+# abbr -a -g tinker php artisan tinker
+# abbr -a -g dusk php artisan dusk
+# abbr -a -g at php artisan tinker
 
-# Laravel
-abbr -a -g art php artisan
-abbr -a -g rl php artisan route:list
-abbr -a -g m php artisan migrate
-abbr -a -g dbs php artisan db:seed
-abbr -a -g mf php artisan migrate:fresh
-abbr -a -g mfs php artisan migrate:fresh --seed
-abbr -a -g pi php artisan passport:install
-abbr -a -g tinker php artisan tinker
-abbr -a -g dusk php artisan dusk
-abbr -a -g at php artisan tinker
+# # # Laravel | Docker Commands
+# abbr -a -g da docker-compose exec workspace php artisan
+# abbr -a -g dat docker-compose exec workspace php artisan tinker
+# abbr -a -g dam docker-compose exec workspace php artisan migrate
+# abbr -a -g das docker-compose exec workspace php artisan db:seed
 
-# Laravel | Docker Commands
-abbr -a -g da docker-compose exec workspace php artisan
-abbr -a -g dat docker-compose exec workspace php artisan tinker
-abbr -a -g dam docker-compose exec workspace php artisan migrate
-abbr -a -g das docker-compose exec workspace php artisan db:seed
+# # # Docker
+# abbr -a -g ds docker ps
 
-# Docker
-abbr -a -g ds docker ps
-
-# Emacs
-abbr -a -g emc emacsclient -c
+# # # Emacs
+# abbr -a -g emc emacsclient -c
 
 
-# Exports
-export VISUAL="emacsclient -c"
-export EDITOR="emacsclient -t"
-export MPD_HOST="localhost"
-export MPD_PORT="6600"
+# # Exports
+# export VISUAL="emacsclient -c"
+# export EDITOR="emacsclient -t"
+# export MPD_HOST="localhost"
+# export MPD_PORT="6600"
 
 
 
-#list
-alias ls='ls --color=auto'
-alias la='ls -a'
-alias ll='ls -la'
-alias l='ls'
-alias l.="ls -A | egrep '^\.'"
+# #list
+# alias ls='ls --color=auto'
+# alias la='ls -a'
+# alias ll='ls -la'
+# alias l='ls'
+# alias l.="ls -A | egrep '^\.'"
 
-#fix obvious typo's
-alias cd..='cd ..'
-alias pdw="pwd"
-alias udpate='sudo pacman -Syyu'
-alias upate='sudo pacman -Syyu'
-alias updte='sudo pacman -Syyu'
-alias updqte='sudo pacman -Syyu'
-alias upqll="yay -Syu --noconfirm"
+# #fix obvious typo's
+# alias cd..='cd ..'
+# alias pdw="pwd"
+# alias udpate='sudo pacman -Syyu'
+# alias upate='sudo pacman -Syyu'
+# alias updte='sudo pacman -Syyu'
+# alias updqte='sudo pacman -Syyu'
+# alias upqll="yay -Syu --noconfirm"
 
-## Colorize the grep command output for ease of use (good for log files)##
-alias grep='grep --color=auto'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
+# ## Colorize the grep command output for ease of use (good for log files)##
+# alias grep='grep --color=auto'
+# alias egrep='egrep --color=auto'
+# alias fgrep='fgrep --color=auto'
 
-#readable output
-alias df='df -h'
+# #readable output
+# alias df='df -h'
 
-#pacman unlock
-alias unlock="sudo rm /var/lib/pacman/db.lck"
-alias rmpacmanlock="sudo rm /var/lib/pacman/db.lck"
+# #pacman unlock
+# alias unlock="sudo rm /var/lib/pacman/db.lck"
+# alias rmpacmanlock="sudo rm /var/lib/pacman/db.lck"
 
-#arcolinux logout unlock
-alias rmlogoutlock="sudo rm /tmp/arcologout.lock"
+# #arcolinux logout unlock
+# alias rmlogoutlock="sudo rm /tmp/arcologout.lock"
 
-#free
-alias free="free -mt"
+# #free
+# alias free="free -mt"
 
-#use all cores
-alias uac="sh ~/.bin/main/000*"
+# #use all cores
+# alias uac="sh ~/.bin/main/000*"
 
-#continue download
-alias wget="wget -c"
+# #continue download
+# alias wget="wget -c"
 
-#userlist
-alias userlist="cut -d: -f1 /etc/passwd"
+# #userlist
+# alias userlist="cut -d: -f1 /etc/passwd"
 
-#merge new settings
-alias merge="xrdb -merge ~/.Xresources"
+# #merge new settings
+# alias merge="xrdb -merge ~/.Xresources"
 
-# Aliases for software managment
-# pacman or pm
-alias pacman='sudo pacman --color auto'
-alias update='sudo pacman -Syyu'
+# # Aliases for software managment
+# # pacman or pm
+# alias pacman='sudo pacman --color auto'
+# alias update='sudo pacman -Syyu'
 
-# yay as aur helper - updates everything
-alias pksyua="yay -Syu --noconfirm"
-alias upall="yay -Syu --noconfirm"
+# # yay as aur helper - updates everything
+# alias pksyua="yay -Syu --noconfirm"
+# alias upall="yay -Syu --noconfirm"
 
-#ps
-alias psa="ps auxf"
-alias psgrep="ps aux | grep -v grep | grep -i -e VSZ -e"
+# #ps
+# alias psa="ps auxf"
+# alias psgrep="ps aux | grep -v grep | grep -i -e VSZ -e"
 
-#grub update
-alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
+# #grub update
+# alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 
-#add new fonts
-alias update-fc='sudo fc-cache -fv'
+# #add new fonts
+# alias update-fc='sudo fc-cache -fv'
 
-#hardware info --short
-alias hw="hwinfo --short"
+# #hardware info --short
+# alias hw="hwinfo --short"
 
-#skip integrity check
-alias yayskip='yay -S --mflags --skipinteg'
-alias trizenskip='trizen -S --skipinteg'
+# #skip integrity check
+# alias yayskip='yay -S --mflags --skipinteg'
+# alias trizenskip='trizen -S --skipinteg'
 
-#check vulnerabilities microcode
-alias microcode='grep . /sys/devices/system/cpu/vulnerabilities/*'
+# #check vulnerabilities microcode
+# alias microcode='grep . /sys/devices/system/cpu/vulnerabilities/*'
 
-#mounting the folder Public for exchange between host and guest on virtualbox
-alias vbm="sudo /usr/local/bin/arcolinux-vbox-share"
+# #mounting the folder Public for exchange between host and guest on virtualbox
+# alias vbm="sudo /usr/local/bin/arcolinux-vbox-share"
 
-#youtube-dl
-alias yta-aac="youtube-dl --extract-audio --audio-format aac "
-alias yta-best="youtube-dl --extract-audio --audio-format best "
-alias yta-flac="youtube-dl --extract-audio --audio-format flac "
-alias yta-m4a="youtube-dl --extract-audio --audio-format m4a "
-alias yta-mp3="youtube-dl --extract-audio --audio-format mp3 "
-alias yta-opus="youtube-dl --extract-audio --audio-format opus "
-alias yta-vorbis="youtube-dl --extract-audio --audio-format vorbis "
-alias yta-wav="youtube-dl --extract-audio --audio-format wav "
+# #youtube-dl
+# alias yta-aac="youtube-dl --extract-audio --audio-format aac "
+# alias yta-best="youtube-dl --extract-audio --audio-format best "
+# alias yta-flac="youtube-dl --extract-audio --audio-format flac "
+# alias yta-m4a="youtube-dl --extract-audio --audio-format m4a "
+# alias yta-mp3="youtube-dl --extract-audio --audio-format mp3 "
+# alias yta-opus="youtube-dl --extract-audio --audio-format opus "
+# alias yta-vorbis="youtube-dl --extract-audio --audio-format vorbis "
+# alias yta-wav="youtube-dl --extract-audio --audio-format wav "
 
-alias ytv-best="youtube-dl -f bestvideo+bestaudio "
+# alias ytv-best="youtube-dl -f bestvideo+bestaudio "
 
-#Recent Installed Packages
-alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
-alias riplong="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -3000 | nl"
+# #Recent Installed Packages
+# alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
+# alias riplong="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -3000 | nl"
 
-#iso and version used to install ArcoLinux
-alias iso="cat /etc/dev-rel | awk -F '=' '/ISO/ {print $2}'"
+# #iso and version used to install ArcoLinux
+# alias iso="cat /etc/dev-rel | awk -F '=' '/ISO/ {print $2}'"
 
 
-#get the error messages from journalctl
-alias jctl="journalctl -p 3 -xb"
+# #get the error messages from journalctl
+# alias jctl="journalctl -p 3 -xb"
 
-#nano for important configuration files
-#know what you do in these files
-alias nlightdm="sudo nano /etc/lightdm/lightdm.conf"
-alias npacman="sudo nano /etc/pacman.conf"
-alias ngrub="sudo nano /etc/default/grub"
-alias nconfgrub="sudo nano /boot/grub/grub.cfg"
-alias nmkinitcpio="sudo nano /etc/mkinitcpio.conf"
-alias nmirrorlist="sudo nano /etc/pacman.d/mirrorlist"
-alias bls="betterlockscreen -u /usr/share/backgrounds/arcolinux/"
+# #nano for important configuration files
+# #know what you do in these files
+# alias nlightdm="sudo nano /etc/lightdm/lightdm.conf"
+# alias npacman="sudo nano /etc/pacman.conf"
+# alias ngrub="sudo nano /etc/default/grub"
+# alias nconfgrub="sudo nano /boot/grub/grub.cfg"
+# alias nmkinitcpio="sudo nano /etc/mkinitcpio.conf"
+# alias nmirrorlist="sudo nano /etc/pacman.d/mirrorlist"
+# alias bls="betterlockscreen -u /usr/share/backgrounds/arcolinux/"
 
-#gpg
-#verify signature for isos
-alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify"
-#receive the key of a developer
-alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"
+# #gpg
+# #verify signature for isos
+# alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify"
+# #receive the key of a developer
+# alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"
 
-#maintenance
-alias big="expac -H M '%m\t%n' | sort -h | nl"
-alias downgrada="sudo downgrade --ala-url https://bike.seedhost.eu/arcolinux/"
+# #maintenance
+# alias big="expac -H M '%m\t%n' | sort -h | nl"
+# alias downgrada="sudo downgrade --ala-url https://bike.seedhost.eu/arcolinux/"
 
-#systeminfo
-alias probe="sudo -E hw-probe -all -upload"
+# #systeminfo
+# alias probe="sudo -E hw-probe -all -upload"
 
-#shutdown or reboot
-alias ssn="sudo shutdown now"
-alias sr="sudo reboot"
+# #shutdown or reboot
+# alias ssn="sudo shutdown now"
+# alias sr="sudo reboot"
 
-neofetch
+# # neofetch

@@ -28,36 +28,6 @@ Create Both
 SyncState *
 
 
-### tampomah@emporium.co.uk #########################################
-IMAPAccount emporium
-Host outlook.office365.com
-User tampomah@emporium.co.uk
-PassCmd "pass 2Areas/emails/emporium.co.uk"
-SSLType IMAPS
-SSLVersion TLSv1.2
-AuthMechs PLAIN
-CertificateFile ~/.ca-bundle.crt
-
-IMAPStore emporium-remote
-Account emporium
-
-MaildirStore emporium-local
-Path ~/.mail/tampomah@emporium.co.uk/
-Inbox ~/.mail/tampomah@emporium.co.uk/Inbox
-# Trash ~/.mail/tampomah@emporium.co.uk/Deleted Items
-SubFolders Legacy
-
-Channel emporium
-Far :emporium-remote:
-Near :emporium-local:
-Patterns *
-Expunge None
-CopyArrivalDate yes
-Sync All
-Create Both
-SyncState *
-
-
 ### tony.ampomah.jw@gmail.com #########################################
 IMAPAccount tony.ampomah.jw-gmail
 # Address to connect to
@@ -89,7 +59,6 @@ Create Both
 SyncState *
 
 
-
 ### itechytony@gmail #########################################
 IMAPAccount itechytony-gmail
 # Address to connect to
@@ -119,4 +88,3 @@ Patterns * ![Gmail]* "[Gmail]/Sent Mail" "[Gmail]/Starred" "[Gmail]/All Mail"
 Create Both
 # Save the synchronization state files in the relevant directory
 SyncState *
-

@@ -338,7 +338,7 @@ assign [app_id="^Urxvt$" instance="^htop$"]  9
 ######################################################################################
 ### Startup Apps
 ######################################################################################
-exec waybar -s /home/tonyampomah/.config/waybar/sytle.css -c /home/tonyampomah/.config/waybar/config
+exec waybar -s /home/kwame-dat/.config/waybar/sytle.css -c /home/kwame-dat/.config/waybar/config
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec /usr/bin/emacs --daemon
 exec nextcloud

@@ -1,4 +1,4 @@
-export OSH=/home/tonya/.oh-my-bash
+export OSH=/home/kwame-dat/.oh-my-bash
 
 OSH_THEME="bakke"
 

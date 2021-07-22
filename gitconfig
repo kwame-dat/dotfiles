@@ -18,7 +18,3 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
-[github]
-	user = itechytony
-[github "github.thetrainline.com/api/v3"]
-	user = tonya
