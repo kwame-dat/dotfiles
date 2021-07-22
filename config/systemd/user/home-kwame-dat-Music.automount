@@ -4,7 +4,7 @@
   After=network-online.service
 
 [Automount]
-  Where=/home/tonyampomah/Music
+  Where=/home/kwame-dat/Music
 
 [Install]
   WantedBy=multi-user.target

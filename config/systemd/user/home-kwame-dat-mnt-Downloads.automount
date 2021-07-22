@@ -2,7 +2,7 @@
   Description=Automount Downloads
 
 [Automount]
-  Where=/home/tonyampomah/mnt/Downloads
+  Where=/home/kwame-dat/mnt/Downloads
 
 [Install]
   WantedBy=multi-user.target
