@@ -8,6 +8,7 @@
 
 (setq mu4e-maildir "~/.mail")
 
+(setq mu4e-change-filenames-when-moving t)
 (setq send-mail-function 'smtpmail-send-it)
 
 ;; Default account on startup
