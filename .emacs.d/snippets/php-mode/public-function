@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: public function
-# key: pf
-# --
-public function $1($2)$3
-{
-  $0
-}
