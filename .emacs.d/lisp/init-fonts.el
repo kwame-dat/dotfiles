@@ -3,8 +3,8 @@
 ;;; Code:
 
 
-;; (setq-default line-spacing 0.5)
-(setq kd/default-font "NotoSansMono Nerd Font")
+(setq-default line-spacing 0.5)
+(setq kd/default-font "Victor Mono")
 (setq kd/default-font-size 12)
 (setq kd/current-font-size kd/default-font-size)
 
