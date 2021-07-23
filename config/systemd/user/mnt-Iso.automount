@@ -2,7 +2,7 @@
   Description=Automount Iso
 
 [Automount]
-  Where=/home/kwame-dat/mnt/Iso
+  Where=/mnt/Iso
 
 [Install]
   WantedBy=multi-user.target

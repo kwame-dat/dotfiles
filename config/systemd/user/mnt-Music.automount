@@ -4,7 +4,7 @@
   After=network-online.service
 
 [Automount]
-  Where=/home/kwame-dat/Music
+  Where=/mnt/Music
 
 [Install]
   WantedBy=multi-user.target

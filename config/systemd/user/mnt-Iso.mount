@@ -5,9 +5,9 @@
 
 [Mount]
   What=//192.168.1.3/Iso
-  Where=/home/kwame-dat/mnt/Iso
+  Where=/mnt/Iso
   Type=cifs
-  Options=_netdev,credentials=/etc/samba/credentials/music-share,rw,file_mode=0777,dir_mode=0777
+  Options=_netdev,credentials=/home/kwame-dat/.server_creds,rw,file_mode=0777,dir_mode=0777
   DirectoryMode=0700
 
 [Install]

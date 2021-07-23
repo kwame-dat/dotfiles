@@ -2,7 +2,7 @@
   Description=Automount Pictures
 
 [Automount]
-  Where=/home/kwame-dat/Pictures
+  Where=/mnt/Pictures
 
 [Install]
   WantedBy=multi-user.target

@@ -2,7 +2,7 @@
   Description=Automount Videos
 
 [Automount]
-  Where=/home/kwame-dat/Videos
+  Where=/mnt/Videos
 
 [Install]
   WantedBy=multi-user.target

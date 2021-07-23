@@ -2,7 +2,7 @@
   Description=Automount Downloads
 
 [Automount]
-  Where=/home/kwame-dat/mnt/Downloads
+  Where=/mnt/Downloads
 
 [Install]
   WantedBy=multi-user.target
