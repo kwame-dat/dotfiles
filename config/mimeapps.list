@@ -1,12 +1,12 @@
 [Default Applications]
 x-scheme-handler/msteams=teams.desktop
-text/html=org.qutebrowser.qutebrowser.desktop
-x-scheme-handler/http=org.qutebrowser.qutebrowser.desktop
-x-scheme-handler/https=org.qutebrowser.qutebrowser.desktop
-x-scheme-handler/about=org.qutebrowser.qutebrowser.desktop
-x-scheme-handler/unknown=org.qutebrowser.qutebrowser.desktop
-application/pdf=org.pwmt.zathura-pdf-mupdf.desktop
-x-scheme-handler/webcal=org.qutebrowser.qutebrowser.desktop
+text/html=brave.desktop
+x-scheme-handler/http=brave.desktop
+x-scheme-handler/https=brave.desktop
+x-scheme-handler/about=brave.desktop
+x-scheme-handler/unknown=brave.desktop
+application/pdf=org.gnome.Evince.desktop
+x-scheme-handler/webcal=brave.desktop
 application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice-writer.desktop
 
 [Added Associations]
@@ -14,7 +14,7 @@ application/x-compressed-tar=org.gnome.FileRoller.desktop;
 x-scheme-handler/http=exo-web-browser.desktop;
 x-scheme-handler/https=exo-web-browser.desktop;
 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=libreoffice-calc.desktop;
-application/pdf=org.pwmt.zathura-pdf-mupdf.desktop;
+application/pdf=evince.desktop;org.gnome.Evince.desktop;
 application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice-writer.desktop;
 audio/mpeg=vlc.desktop;
 image/png=gimp.desktop;
