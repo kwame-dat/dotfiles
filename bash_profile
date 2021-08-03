@@ -3,7 +3,6 @@
 #
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
-
 PATH="$PATH:/$HOME/.local/bin"
 PATH="$PATH:/$HOME/.local/bin/statusbar"
 
@@ -18,17 +17,10 @@ export npm_config_prefix=~/.node_modules
 # COMPOSER
 export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 
-# POLYBAR
-export POLYBAR_HEIGHT=30
-export POLYBAR_LINE_SIZE=2
-export POLYBAR_TRAY_MAXSIZE=20
-export POLYBAR_EWMH_PADDING=2
-
 export MPD_HOST="localhost"
 export MPD_PORT="6600"
 
-
-# GDK
+## GDK
 export GDK_SCALE=2
 export GDK_DPI_SCALE=0.5
 export QT_AUTO_SCREEN_SET_FACTOR=0
