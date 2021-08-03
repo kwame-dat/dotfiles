@@ -3,17 +3,17 @@ env:
   TERM: xterm-256color
 font:
   normal:
-    family: Victor Mono
+    family: MonoLisa
     style: Medium
 
   # The bold font face
   bold:
-    family: Victor Mono
+    family: MonoLisa
     style: Bold
 
   # The italic font face
   italic:
-    family: Victor Mono
+    family: MonoLisa
     style: Italic
 
   # Point size of the font
