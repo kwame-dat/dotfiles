@@ -86,7 +86,7 @@ Config {
 
       , Run Brightness                           [ "-t", "🔆 <percent>%", "--", "-D", "intel_backlight" ] 60
 
-      , Run Com                                  "/bin/bash" ["-c", "XMgetvolume"]  "XVol" 10
+      , Run Com                                  "/bin/bash" ["-c", "sb-volume"]  "XVol" 10
 
       , Run UnsafeStdinReader
 
