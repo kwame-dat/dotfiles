@@ -236,7 +236,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   , ((modMask, xK_F8), spawn $ "calibre")
 
-  -- SUPER + ALT KEYS
+  -- SUPER + ALT KEYS for Launching Apps
   , ((modMask .|. mod1Mask, xK_a),       spawn $ "emacsclient -c -a '' --eval '(itechytony/day-view)'")
   , ((modMask .|. mod1Mask, xK_e),       spawn $ "emacs")
   , ((modMask .|. mod1Mask, xK_m),       spawn $ "xfce4-settings-manager")
@@ -246,6 +246,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. mod1Mask, xK_v),       spawn $ "pavucontrol")
   , ((modMask .|. mod1Mask, xK_f),       spawn $ "firefox")
   , ((modMask .|. mod1Mask, xK_g),       spawn $ "google-chrome-stable -no-default-browser-check")
+  , ((modMask .|. mod1Mask, xK_b),       spawn $ "brave")
   , ((modMask .|. mod1Mask, xK_q),       spawn $ "qutebrowser")
   , ((modMask .|. mod1Mask, xK_w),       spawn $ "whatsapp-nativefier")
   , ((modMask .|. mod1Mask, xK_d),       spawn $ "dbeaver")
@@ -277,20 +278,20 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((0, xF86XK_AudioRaiseVolume), spawn $ "amixer -q set Master 5%+")
 
   -- Increase brightness
-  , ((0, xF86XK_MonBrightnessUp),  spawn $ "xbacklight -inc 2")
+  , ((0, xF86XK_MonBrightnessUp),  spawn $ "light -A 5")
 
   -- Decrease brightness
-  , ((0, xF86XK_MonBrightnessDown), spawn $ "xbacklight -dec 2")
+  , ((0, xF86XK_MonBrightnessDown), spawn $ "light -U 5")
 
---  , ((0, xF86XK_AudioPlay), spawn $ "mpc toggle")
---  , ((0, xF86XK_AudioNext), spawn $ "mpc next")
---  , ((0, xF86XK_AudioPrev), spawn $ "mpc prev")
---  , ((0, xF86XK_AudioStop), spawn $ "mpc stop")
+ , ((0, xF86XK_AudioPlay), spawn $ "mpc toggle")
+ , ((0, xF86XK_AudioNext), spawn $ "mpc next")
+ , ((0, xF86XK_AudioPrev), spawn $ "mpc prev")
+ , ((0, xF86XK_AudioStop), spawn $ "mpc stop")
 
-  , ((0, xF86XK_AudioPlay), spawn $ "playerctl play-pause")
-  , ((0, xF86XK_AudioNext), spawn $ "playerctl next")
-  , ((0, xF86XK_AudioPrev), spawn $ "playerctl previous")
-  , ((0, xF86XK_AudioStop), spawn $ "playerctl stop")
+  -- , ((0, xF86XK_AudioPlay), spawn $ "playerctl play-pause")
+  -- , ((0, xF86XK_AudioNext), spawn $ "playerctl next")
+  -- , ((0, xF86XK_AudioPrev), spawn $ "playerctl previous")
+  -- , ((0, xF86XK_AudioStop), spawn $ "playerctl stop")
 
 
   --------------------------------------------------------------------
