@@ -85,7 +85,6 @@ myHiddenNoWindowsWSColor = "white"
 
 terminalScratchpadCmd = "alacritty --title=scratchpad " 
 vpnScratchpadCmd = "alacritty --title vpn --command sudo openvpn --config ~/Documents/Work/3Resources/vpn/Connection.ovpn"
-runscopeAgentScratchpadCmd = "alacritty --title runscope-agent --command runscope-radar -f ~/Documents/Work/3Resources/runscope/radar.conf"
 musicScratchpadCmd = "alacritty --title=music --command=ncmpcpp" 
 webcamScratchpadCmd = "mpv /dev/video2"
 
@@ -133,8 +132,7 @@ myScratchPads = [
                   NS "terminal" terminalScratchpadCmd (title =? "scratchpad") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
                   NS "vpn" vpnScratchpadCmd (title =? "vpn") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
                   NS "music" musicScratchpadCmd (title =? "music") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
-                  NS "webcam" webcamScratchpadCmd (title =? "webcam") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)),
-                  NS "runscope-agent" runscopeAgentScratchpadCmd (title =? "runscope-agent") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
+                  NS "webcam" webcamScratchpadCmd (title =? "webcam") (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
                 ]
 
 
@@ -194,7 +192,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- MODKEY + SHIFT KEYS
   , ((modMask .|. shiftMask, xK_v),          namedScratchpadAction myScratchPads "vpn")
-  , ((modMask .|. shiftMask, xK_a),          namedScratchpadAction myScratchPads "runscope-agent")
   , ((modMask .|. shiftMask, xK_r),          spawn $ "xmonad --recompile && xmonad --restart")
   , ((modMask .|. shiftMask, xK_m),          namedScratchpadAction myScratchPads "music")
   , ((modMask .|. shiftMask, xK_w),          namedScratchpadAction myScratchPads "webcam")
