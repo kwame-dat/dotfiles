@@ -95,7 +95,7 @@ myLayoutHook =
   -- noFrillsDeco shrinkText topBarTheme $
   avoidStruts $
   smartBorders $
-  gaps [(U,15), (D,15), (R,15), (L,15)] $
+  gaps [(U,60), (D,60), (R,60), (L,60)] $
   (tiled  ||| (ThreeColMid 1 (1/100) (1/2)) ||| Full)
     where
         tiled = Tall nmaster delta tiled_ratio
