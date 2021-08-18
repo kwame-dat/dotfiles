@@ -4,7 +4,7 @@ Config {
         "xft:Operator Mono:size=10:style=Regular,FontAwesome:style=Regular:size=10",
         "xft:FontAwesome:style=Regular:size=10"
         ]
-   , bgColor          = "#282c34"
+   , bgColor          = "#2D2D2D"
    , fgColor          = "white"
    , position         = TopSize C 100 25
    , textOffset       = -1

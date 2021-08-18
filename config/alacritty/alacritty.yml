@@ -3,17 +3,17 @@ env:
   TERM: xterm-256color
 font:
   normal:
-    family: MonoLisa
-    style: Medium
+    family: Operator Mono
+    style: Regular
 
   # The bold font face
   bold:
-    family: MonoLisa
+    family: Operator Mono
     style: Bold
 
   # The italic font face
   italic:
-    family: MonoLisa
+    family: Operator Mono
     style: Italic
 
   # Point size of the font
@@ -37,48 +37,39 @@ font:
 draw_bold_text_with_bright_colors: true
 
 
-# Base16 Tomorrow Night 256 - alacritty color config
-# Chris Kempson (http://chriskempson.com)
+# Colors (Tomorrow Night)
 colors:
   # Default colors
   primary:
-    background: '0x1d1f21'
+    background: '0x2d2d2d'
     foreground: '0xc5c8c6'
 
   # Colors the cursor will use if `custom_cursor_colors` is true
   cursor:
     text: '0x1d1f21'
-    cursor: '0xc5c8c6'
+    cursor: '0xffffff'
 
   # Normal colors
   normal:
     black:   '0x1d1f21'
     red:     '0xcc6666'
     green:   '0xb5bd68'
-    yellow:  '0xf0c674'
+    yellow:  '0xe6c547'
     blue:    '0x81a2be'
     magenta: '0xb294bb'
-    cyan:    '0x8abeb7'
-    white:   '0xc5c8c6'
+    cyan:    '0x70c0ba'
+    white:   '0x373b41'
 
   # Bright colors
   bright:
-    black:   '0x969896'
-    red:     '0xcc6666'
-    green:   '0xb5bd68'
+    black:   '0x666666'
+    red:     '0xff3334'
+    green:   '0x9ec400'
     yellow:  '0xf0c674'
     blue:    '0x81a2be'
-    magenta: '0xb294bb'
-    cyan:    '0x8abeb7'
-    white:   '0xffffff'
-
-  indexed_colors:
-    - { index: 16, color: '0xde935f' }
-    - { index: 17, color: '0xa3685a' }
-    - { index: 18, color: '0x282a2e' }
-    - { index: 19, color: '0x373b41' }
-    - { index: 20, color: '0xb4b7b4' }
-    - { index: 21, color: '0xe0e0e0' }
+    magenta: '0xb77ee0'
+    cyan:    '0x54ced6'
+    white:   '0x282a2e'
 
   # Indexed Colors
   #
