@@ -34,7 +34,7 @@ run dunst &
 run xmodmap ~/.Xmodmap &
 run xbindkeys -f ~/.xbindkeysrc &
 run variety &
-run picom &
+run picom --experimental-backends &
 
 # starting user applications at boot time
 run /usr/bin/emacs --daemon &
