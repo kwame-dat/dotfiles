@@ -148,7 +148,7 @@ myManageHook = composeAll
     , className =? "Google-chrome"                           --> doShift ( myWorkspaces !! 0 )
     , className =? "Brave-browser"                           --> doShift ( myWorkspaces !! 0 )
     , className =? "firefox"                                 --> doShift ( myWorkspaces !! 0 )
-    -- , className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )
+    , className =? "Emacs"                                   --> doShift ( myWorkspaces !! 1 )
     , className =? "jetbrains-phpstorm"                      --> doShift ( myWorkspaces !! 1 )
     , className =? "Slack"                                   --> doShift ( myWorkspaces !! 2 )
     , className =? "TelegramDesktop"                         --> doShift ( myWorkspaces !! 2 )
@@ -183,7 +183,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_f),       sendMessage $ XMonad.Layout.MultiToggle.Toggle NBFULL)
   , ((modMask, xK_q),       kill)
   , ((modMask, xK_e),       spawn $ "emacsclient -c -a ''")
-  , ((modMask, xK_Return),  spawn $ "emacsclient -c -a '' --eval '(vterm)'")
+  , ((modMask, xK_Return),  spawn $ "alacritty")
   , ((modMask, xK_space),   spawn $ "~/.config/rofi/launcher.sh")
   , ((modMask, xK_p),       spawn $ "rofi-pass")
   , ((modMask, xK_b),       spawn $ "rofi-surfraw")
@@ -280,15 +280,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- Decrease brightness
   , ((0, xF86XK_MonBrightnessDown), spawn $ "light -U 5")
 
- , ((0, xF86XK_AudioPlay), spawn $ "mpc toggle")
- , ((0, xF86XK_AudioNext), spawn $ "mpc next")
- , ((0, xF86XK_AudioPrev), spawn $ "mpc prev")
- , ((0, xF86XK_AudioStop), spawn $ "mpc stop")
-
-  -- , ((0, xF86XK_AudioPlay), spawn $ "playerctl play-pause")
-  -- , ((0, xF86XK_AudioNext), spawn $ "playerctl next")
-  -- , ((0, xF86XK_AudioPrev), spawn $ "playerctl previous")
-  -- , ((0, xF86XK_AudioStop), spawn $ "playerctl stop")
+  , ((0, xF86XK_AudioPlay), spawn $ "playerctl play-pause")
+  , ((0, xF86XK_AudioNext), spawn $ "playerctl next")
+  , ((0, xF86XK_AudioPrev), spawn $ "playerctl previous")
+  , ((0, xF86XK_AudioStop), spawn $ "playerctl stop")
 
 
   --------------------------------------------------------------------
@@ -320,12 +315,12 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 
   -- Swap the focused window with the next window.
-  , ((modMask .|. shiftMask, xK_k), windows W.swapDown)
-  , ((modMask .|. shiftMask, xK_Up), windows W.swapDown)
+  , ((modMask .|. shiftMask, xK_k), windows W.swapUp)
+  , ((modMask .|. shiftMask, xK_Up), windows W.swapUp)
 
   -- Swap the focused window with the previous window.
-  , ((modMask .|. shiftMask, xK_j), windows W.swapUp)
-  , ((modMask .|. shiftMask, xK_Down), windows W.swapUp)
+  , ((modMask .|. shiftMask, xK_j), windows W.swapDown)
+  , ((modMask .|. shiftMask, xK_Down), windows W.swapDown)
 
   -- Shrink the master area.
   , ((modMask, xK_l), sendMessage Shrink)
